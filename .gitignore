@@ -1,0 +1,10 @@
+*.pyc
+*.o
+*.so
+*.dll
+*.exe
+.vscode/
+.idea/
+.DS_Store
+.clangd/
+*.iml
