@@ -1,23 +1,13 @@
-# Copyright 2018 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    https://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""RL environment for Hanabi, using an API similar to OpenAI Gym."""
+# RL environment for Hanabi, using an API similar to OpenAI Gym.
 
 from __future__ import absolute_import
 from __future__ import division
 
 import pyhanabi
-from pyhanabi import color_char_to_idx
+from pyhanabi import color_char_to_idx, HanabiMoveType
+
+import time
+from record_moves import RecordMoves
 
 MOVE_TYPES = [_.name for _ in pyhanabi.HanabiMoveType]
 
@@ -103,19 +93,20 @@ class HanabiEnv(Environment):
     assert isinstance(config, dict), "Expected config to be of type dict."
     self.game = pyhanabi.HanabiGame(config)
 
-    self.observation_encoder = pyhanabi.ObservationEncoder(
-        self.game, pyhanabi.ObservationEncoderType.CANONICAL)
+    #self.observation_encoder = pyhanabi.ObservationEncoder(
+    #    self.game, pyhanabi.ObservationEncoderType.CANONICAL)
     self.players = self.game.num_players()
+    self.record_moves = RecordMoves(self.players)
+    self.start_time = time.time()
 
   def reset(self):
-    r"""Resets the environment for a new game."""
+    """Resets the environment for a new game."""
     self.state = self.game.new_initial_state()
-
     while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
       self.state.deal_random_card()
-
     obs = self._make_observation_all_players()
     obs["current_player"] = self.state.cur_player()
+    self.record_moves.reset(obs["player_observations"][obs["current_player"]])
     return obs
 
   def vectorized_observation_shape(self):
@@ -124,7 +115,8 @@ class HanabiEnv(Environment):
     Returns:
       A list of integer dimensions describing the observation shape.
     """
-    return self.observation_encoder.shape()
+    # MB: Edits made to allow RIS-MCTS broke observation encoding
+    # return self.observation_encoder.shape()
 
   def num_moves(self):
     """Returns the total number of moves in this game (legal or not).
@@ -135,137 +127,55 @@ class HanabiEnv(Environment):
     return self.game.max_moves()
 
   def step(self, action):
-    """Take one step in the game.
+    debug = False
+    elapsed_time = int(round((time.time() - self.start_time)*1000))
 
-    Args:
-      action: dict, mapping to a legal action taken by an agent. The following
-        actions are supported:
-          - { 'action_type': 'PLAY', 'card_index': int }
-          - { 'action_type': 'DISCARD', 'card_index': int }
-          - {
-              'action_type': 'REVEAL_COLOR',
-              'color': str,
-              'target_offset': int >=0
-            }
-          - {
-              'action_type': 'REVEAL_RANK',
-              'rank': str,
-              'target_offset': int >=0
-            }
-        Alternatively, action may be an int in range [0, num_moves()).
-
-    Returns:
-      observation: dict, containing the full observation about the game at the
-        current step. *WARNING* This observation contains all the hands of the
-        players and should not be passed to the agents.
-        An example observation:
-        {'current_player': 0,
-         'player_observations': [{'current_player': 0,
-                            'current_player_offset': 0,
-                            'deck_size': 40,
-                            'discard_pile': [],
-                            'fireworks': {'B': 0,
-                                      'G': 0,
-                                      'R': 0,
-                                      'W': 0,
-                                      'Y': 0},
-                            'information_tokens': 8,
-                            'legal_moves': [{'action_type': 'PLAY',
-                                         'card_index': 0},
-                                        {'action_type': 'PLAY',
-                                         'card_index': 1},
-                                        {'action_type': 'PLAY',
-                                         'card_index': 2},
-                                        {'action_type': 'PLAY',
-                                         'card_index': 3},
-                                        {'action_type': 'PLAY',
-                                         'card_index': 4},
-                                        {'action_type': 'REVEAL_COLOR',
-                                         'color': 'R',
-                                         'target_offset': 1},
-                                        {'action_type': 'REVEAL_COLOR',
-                                         'color': 'G',
-                                         'target_offset': 1},
-                                        {'action_type': 'REVEAL_COLOR',
-                                         'color': 'B',
-                                         'target_offset': 1},
-                                        {'action_type': 'REVEAL_RANK',
-                                         'rank': 0,
-                                         'target_offset': 1},
-                                        {'action_type': 'REVEAL_RANK',
-                                         'rank': 1,
-                                         'target_offset': 1},
-                                        {'action_type': 'REVEAL_RANK',
-                                         'rank': 2,
-                                         'target_offset': 1}],
-                            'life_tokens': 3,
-                            'observed_hands': [[{'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1}],
-                                           [{'color': 'G', 'rank': 2},
-                                            {'color': 'R', 'rank': 0},
-                                            {'color': 'R', 'rank': 1},
-                                            {'color': 'B', 'rank': 0},
-                                            {'color': 'R', 'rank': 1}]],
-                            'num_players': 2,
-                            'vectorized': [ 0, 0, 1, ... ]},
-                           {'current_player': 0,
-                            'current_player_offset': 1,
-                            'deck_size': 40,
-                            'discard_pile': [],
-                            'fireworks': {'B': 0,
-                                      'G': 0,
-                                      'R': 0,
-                                      'W': 0,
-                                      'Y': 0},
-                            'information_tokens': 8,
-                            'legal_moves': [],
-                            'life_tokens': 3,
-                            'observed_hands': [[{'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1},
-                                            {'color': None, 'rank': -1}],
-                                           [{'color': 'W', 'rank': 2},
-                                            {'color': 'Y', 'rank': 4},
-                                            {'color': 'Y', 'rank': 2},
-                                            {'color': 'G', 'rank': 0},
-                                            {'color': 'W', 'rank': 1}]],
-                            'num_players': 2,
-                            'vectorized': [ 0, 0, 1, ... ]}]}
-      reward: float, Reward obtained from taking the action.
-      done: bool, Whether the game is done.
-      info: dict, Optional debugging information.
-
-    Raises:
-      AssertionError: When an illegal action is provided.
-    """
     if isinstance(action, dict):
       # Convert dict action HanabiMove
-      action = self._build_move(action)
+      move = self._build_move(action)
     elif isinstance(action, int):
       # Convert int action into a Hanabi move.
-      action = self.game.get_move(action)
+      move = self.game.get_move(action)
+    elif isinstance(action, pyhanabi.HanabiMove):
+      move = action
     else:
       raise ValueError("Expected action as dict or int, got: {}".format(
           action))
 
-    last_score = self.state.score()
-    # Apply the action to the state.
-    self.state.apply_move(action)
+    # Apply the action to the state
+    action_player = self.state.cur_player()
+    if debug: print(f"rl_env.step: Player {self.state.cur_player()} applying action {action}")
+    self.state.apply_move(move)
+    done = self.state.is_terminal()
 
+    # MB: Deals with standard scenario if player need another card
     while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
+      if debug: print("rl_env.step: Dealing random card")
       self.state.deal_random_card()
 
-    observation = self._make_observation_all_players()
-    done = self.state.is_terminal()
-    # Reward is score differential. May be large and negative at game end.
-    reward = self.state.score() - last_score
-    info = {}
+    observations = self._make_observation_all_players()
 
-    return (observation, reward, done, info)
+    self.record_moves.update(move, observations["player_observations"][action_player], action_player, elapsed_time)
+    if debug: self.print_state()
+    if debug: print(f"rl_env.step: Game Stats: {self.record_moves.game_stats}")
+    if debug: print(f"rl_env.step: Player Stats: {self.record_moves.player_stats}")
+
+    reward = self.score()
+    self.start_time = time.time()
+    info = {}
+    return (observations, reward, done, info)
+
+  def score(self):
+    return self.state.score()
+
+  def progress(self):
+    return self.state.progress()
+
+  def game_stats(self):
+    return self.record_moves.game_stats
+
+  def player_stats(self,player):
+    return self.record_moves.player_stats[player]
 
   def _make_observation_all_players(self):
     """Make observation for all players.
@@ -298,6 +208,7 @@ class HanabiEnv(Environment):
     obs_dict["information_tokens"] = observation.information_tokens()
     obs_dict["num_players"] = observation.num_players()
     obs_dict["deck_size"] = observation.deck_size()
+    obs_dict["turns_to_play"] = self.state.turns_to_play()
 
     obs_dict["fireworks"] = {}
     fireworks = self.state.fireworks()
@@ -318,8 +229,7 @@ class HanabiEnv(Environment):
     obs_dict["discard_pile"] = [
         card.to_dict() for card in observation.discard_pile()
     ]
-
-    # Return hints received.
+    # Return hints received (MB: Surely this can be improved with previous knowledge?)
     obs_dict["card_knowledge"] = []
     for player_hints in observation.card_knowledge():
       player_hints_as_dicts = []
@@ -332,11 +242,10 @@ class HanabiEnv(Environment):
         hint_d["rank"] = hint.rank()
         player_hints_as_dicts.append(hint_d)
       obs_dict["card_knowledge"].append(player_hints_as_dicts)
-
     # ipdb.set_trace()
-    obs_dict["vectorized"] = self.observation_encoder.encode(observation)
+    # Edits to framework introducing ReturnCard and DealSpecific broke observation encoding
+    # obs_dict["vectorized"] = self.observation_encoder.encode(observation)
     obs_dict["pyhanabi"] = observation
-
     return obs_dict
 
   def _build_move(self, action):
@@ -347,6 +256,7 @@ class HanabiEnv(Environment):
         actions are supported:
           - { 'action_type': 'PLAY', 'card_index': int }
           - { 'action_type': 'DISCARD', 'card_index': int }
+          - {'action_type': 'RETURN;, 'card_index': int, 'player' int}
           - {
               'action_type': 'REVEAL_COLOR',
               'color': str,
@@ -370,13 +280,16 @@ class HanabiEnv(Environment):
     action_type = action["action_type"]
     assert (action_type in MOVE_TYPES), (
         "action_type: {} should be one of: {}".format(action_type, MOVE_TYPES))
-
     if action_type == "PLAY":
       card_index = action["card_index"]
       move = pyhanabi.HanabiMove.get_play_move(card_index=card_index)
     elif action_type == "DISCARD":
       card_index = action["card_index"]
       move = pyhanabi.HanabiMove.get_discard_move(card_index=card_index)
+    elif action_type == "RETURN":
+      card_index = action["card_index"]
+      player = action["player"]
+      move = pyhanabi.HanabiMove.get_return_move(card_index=card_index, player=player)
     elif action_type == "REVEAL_RANK":
       target_offset = action["target_offset"]
       rank = action["rank"]
@@ -391,14 +304,17 @@ class HanabiEnv(Environment):
     else:
       raise ValueError("Unknown action_type: {}".format(action_type))
 
-    legal_moves = self.state.legal_moves()
-    assert (str(move) in map(
+    # MB: HAck to skip RETURN move step
+    if action_type != "RETURN":
+      legal_moves = self.state.legal_moves()
+      assert (str(move) in map(
         str,
         legal_moves)), "Illegal action: {}. Move should be one of : {}".format(
             move, legal_moves)
-
     return move
 
+  def print_state(self):
+    print("------------------ STATE -------------------\n{}\n--------------- END STATE ------------------".format(self.state))
 
 def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
   """Make an environment.
@@ -435,7 +351,9 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
             "max_life_tokens":
                 3,
             "observation_type":
-                pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value
+                pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value,
+            'random_start_player':
+                True
         })
   elif environment_name == "Hanabi-Full-Minimal":
     return HanabiEnv(
@@ -493,29 +411,7 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
 
 
 class Agent(object):
-  """Agent interface.
-
-  All concrete implementations of an Agent should derive from this interface
-  and implement the method stubs.
-
-
-  ```python
-
-  class MyAgent(Agent):
-    ...
-
-  agents = [MyAgent(config) for _ in range(players)]
-  while not done:
-    ...
-    for agent_id, agent in enumerate(agents):
-      action = agent.act(observation)
-      if obs.current_player == agent_id:
-        assert action is not None
-      else
-        assert action is None
-    ...
-  ```
-  """
+  """Agent interface."""
 
   def __init__(self, config, *args, **kwargs):
     r"""Initialize the agent.
