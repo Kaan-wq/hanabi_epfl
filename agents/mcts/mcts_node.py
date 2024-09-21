@@ -1,36 +1,37 @@
 import random
 
-class MCTSNode():
+class MCTS_Node():
     """
     Node for MCTS. Represents an information set in the game.
     """
 
-    def __init__(self, moves):
+    def __init__(self, moves, rules):
         self.moves = moves
-        self.state = None
-        self._visits = 0
-        self._rewards = 0
+        self.focused_state = None
+        self.rules = rules
 
-    def children(self, observation):
+    def find_children(self, observation):
+        assert self.focused_state is not None
+
         if self.is_terminal():
             return []
         
-        return observation['legal_moves']
+        if self.rules is not None:
+            actions_by_rules = [rule(observation) for rule in self.rules]
+            children = [action for action in actions_by_rules if action is not None]
+        else:
+            children = self.focused_state.legal_moves()
+        
+        return children
     
-    def random_child(self):
+    def find_random_child(self):
         return random.choice(self.children())
     
-    def update_reward(self, reward):
-        self._rewards += reward
-
-    def update_visit(self):
-        self._visits += 1
-
-    def moves(self):
-        return self.moves
+    def initial_move(self):
+        return self.moves[0]
 
     def is_terminal(self):
-        return self.state.is_terminal()
+        return self.focused_state.is_terminal()
     
     def __str__(self):
         return f"{self.moves}"
@@ -43,5 +44,3 @@ class MCTSNode():
 
     def __eq__(self, other):
         return self.moves == other.moves
-    
-    

@@ -367,14 +367,14 @@ class HanabiMove(object):
     return HanabiMove(c_move)
 
   def __hash__(self):
-    # Hash a move by concatenating all identifiers
+    """hash function for moves."""
     return hash(self.__str__())
 
   def __eq__(self, other):
-    # MB: Overide the move check for equality. Depends on move type
+    """check if two moves are equal."""
     if self.type() != other.type():
       return False
-    # MB: Define what move equality means, depending on MoveType
+    
     if self.type() == HanabiMoveType.PLAY:
       return self.card_index() == other.card_index()
     elif self.type() == HanabiMoveType.DISCARD:
@@ -390,7 +390,7 @@ class HanabiMove(object):
     elif self.type() == HanabiMoveType.DEAL_SPECIFIC:
       return self.color() == other.color() and self.rank() == other.rank()
     else:
-      print(f"MB: pyhanabi.HanabiMove.__eq__ : failed to recognise move type: {self.type()} {other.type()}")
+      print(f"Error: pyhanabi.HanabiMove.__eq__ : failed to recognise move type: {self.type()} {other.type()}")
       return False
 
   def __str__(self):
@@ -614,7 +614,7 @@ class HanabiState(object):
     return firework_list
 
   def progress(self):
-    """MB: Utility function. Return the combined fireworks score"""
+    """Utility function. Return the combined fireworks score"""
     score=0
     fireworks = self.fireworks()
     for f in fireworks:
@@ -622,7 +622,7 @@ class HanabiState(object):
     return score
 
   def score(self):
-    """MB: Utility function. Return the strict score"""
+    """Utility function. Return the strict score"""
     if self.life_tokens() == 0:
       return 0
     else:
@@ -633,7 +633,7 @@ class HanabiState(object):
     lib.StateDealCard(self._state)
 
   def deal_specific_card(self, color, rank, card_index):
-    """MB: if cur_player = CHANCE_PLAYER_ID, make a specific card-deal move"""
+    """if cur_player = CHANCE_PLAYER_ID, make a specific card-deal move"""
     assert self.cur_player() == CHANCE_PLAYER_ID
     move = HanabiMove.get_deal_specific_move(color, rank, card_index)
     self.apply_move(move)
