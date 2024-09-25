@@ -17,8 +17,11 @@ class MCTS_Sampler(object):
         discard_pile,
         fireworks,
         card_knowledge=None,
-        additional_cards=[],
+        additional_cards=None,
     ):
+        if additional_cards is None:
+            additional_cards = []
+
         sampled_hand = []
 
         self.deck.reset_deck()
@@ -31,7 +34,7 @@ class MCTS_Sampler(object):
             sampled_hand = []
 
             for card_idx in range(original_hand_size):
-                deck_card = HanabiDeck(self.deck.card_count.copy(), self.deck.total_count)
+                deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)
                 deck_card.remove_by_cards(sampled_hand)
                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
 
@@ -44,7 +47,6 @@ class MCTS_Sampler(object):
                     sampled_card = random.choice(sampled_cards)
                     sampled_hand.append(sampled_card)
                 else:
-                    print("Error: No cards left in the deck to sample. Restarting the sampling process.")
                     break
 
         return sampled_hand
@@ -57,8 +59,11 @@ class MCTS_Sampler(object):
         discard_pile,
         fireworks,
         card_knowledge=None,
-        additional_cards=[],
+        additional_cards=None,
     ):
+        if additional_cards is None:
+            additional_cards = []
+
         valid_cards = self.valid_cards(
             player,
             card_index,
@@ -81,8 +86,11 @@ class MCTS_Sampler(object):
         discard_pile,
         fireworks,
         card_knowledge=None,
-        additional_cards=[],
+        additional_cards=None,
     ):
+        if additional_cards is None:
+            additional_cards = []
+
         self.deck.reset_deck()
         self.deck.remove_by_cards(discard_pile)
         self.deck.remove_by_hands(player, player_hands, card_index)
@@ -101,64 +109,69 @@ class HanabiDeck(object):
     def __init__(self, card_count=None, total_count=None):
         self.num_ranks = 5
         self.num_colors = 5
-
         self.num_dict = {0: 3, 1: 2, 2: 2, 3: 2, 4: 1}
 
         if card_count and total_count:
-            self.card_count = card_count
+            self.card_count = card_count.copy()
             self.total_count = total_count
         else:
-            self.card_count = []
-            self.total_count = 0
             self.reset_deck()
 
     def get_deck(self):
-        cards = []
-        append_card = cards.append  # Local function binding
-        for color in range(self.num_colors):
-            for rank in range(self.num_ranks):
-                card_index = self.card_to_index(color, rank)
-                for _ in range(self.card_count[card_index]):
-                    append_card(HanabiCard(color, rank))
-        return cards
+        num_ranks = self.num_ranks
+        card_count = self.card_count
+        return [
+            HanabiCard(idx // num_ranks, idx % num_ranks)
+            for idx, count in enumerate(card_count)
+            for _ in range(count)
+        ]
 
     def remove_by_knowledge(self, card_knowledge):
-        for color in range(self.num_colors):
-            for rank in range(self.num_ranks):
-                if not (
-                    card_knowledge.color_plausible(color)
-                    and card_knowledge.rank_plausible(rank)
-                ):
-                    self.remove_all_card(color, rank)
+        remove_all_card = self.remove_all_card
+        num_colors = self.num_colors
+        num_ranks = self.num_ranks
+        for color in range(num_colors):
+            color_plausible = card_knowledge.color_plausible(color)
+            for rank in range(num_ranks):
+                if not (color_plausible and card_knowledge.rank_plausible(rank)):
+                    remove_all_card(color, rank)
 
     def remove_by_cards(self, cards):
-        remove_card = self.remove_card  # Local function binding
+        remove_card = self.remove_card
         for card in cards:
             remove_card(card.color(), card.rank())
 
     def remove_by_hands(self, player, hands, card_index=-1):
-        remove_card = self.remove_card  # Local function binding
+        remove_card = self.remove_card
         len_hands = len(hands)
         for other_player in range(len_hands):
             if other_player == player and card_index == -1:
                 continue
-
             for idx, card in enumerate(hands[other_player]):
                 if other_player == player and idx == card_index:
                     continue
                 remove_card(card.color(), card.rank())
 
     def remove_by_own_hand(self, player, hands, card_index):
-        remove_card = self.remove_card  # Local function binding
+        remove_card = self.remove_card
         for idx, card in enumerate(hands[player]):
             if idx == card_index:
                 continue
             remove_card(card.color(), card.rank())
 
     def remove_by_fireworks(self, fireworks):
-        for color in range(self.num_colors):
-            for rank in range(fireworks[color]):
-                self.remove_card(color, rank)
+        num_ranks = self.num_ranks
+        card_count = self.card_count
+        total_count = self.total_count
+        for color, firework in enumerate(fireworks):
+            if firework > 0:
+                start_idx = color * num_ranks
+                end_idx = start_idx + firework
+                for idx in range(start_idx, end_idx):
+                    if card_count[idx] > 0:
+                        card_count[idx] -= 1
+                        total_count -= 1
+        self.total_count = total_count
 
     def reset_deck(self):
         self.card_count = [
@@ -170,10 +183,8 @@ class HanabiDeck(object):
 
     def remove_card(self, color, rank):
         card_idx = self.card_to_index(color, rank)
-
         if self.card_count[card_idx] == 0:
             return
-
         self.card_count[card_idx] -= 1
         self.total_count -= 1
 
@@ -193,11 +204,15 @@ class HanabiDeck(object):
         output.append(f"\n{'=' * 30}DECK{'=' * 30}\n")
         color_names = ["R", "Y", "G", "W", "B"]
 
-        header = "          " + "     ".join(f"Rank {rank+1}" for rank in range(self.num_ranks))
+        header = "          " + "     ".join(
+            f"Rank {rank+1}" for rank in range(self.num_ranks)
+        )
         output.append(header)
 
         max_counts = [self.num_dict[rank] for rank in range(self.num_ranks)]
-        max_counts_line = "Max Qty:  " + "".join(f"   {count}       " for count in max_counts)
+        max_counts_line = "Max Qty:  " + "".join(
+            f"   {count}       " for count in max_counts
+        )
         output.append(max_counts_line)
         output.append("          " + "-" * (10 * self.num_ranks))
 

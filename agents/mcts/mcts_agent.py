@@ -19,11 +19,32 @@ AGENT_CLASSES = {'VanDenBerghAgent': VanDenBerghAgent,'FlawedAgent':FlawedAgent
                   , 'OuterAgent':OuterAgent, 'InnerAgent':InnerAgent, 'PiersAgent':PiersAgent, 'IGGIAgent':IGGIAgent
                   , 'LegalRandomAgent':LegalRandomAgent,'MuteAgent':MuteAgent}
 
+# Timer decorator
+def timeit(method):
+    def timed(*args, **kw):
+        start_time = time.perf_counter()
+        result = method(*args, **kw)
+        end_time = time.perf_counter()
+
+        elapsed_time = end_time - start_time
+        method_name = method.__name__
+
+        if method_name not in args[0].timing_table:
+            args[0].timing_table[method_name] = []
+
+        args[0].timing_table[method_name].append(elapsed_time)
+
+        return result
+
+    return timed
+
 class MCTS_Agent(Agent):
   """Agent based on Redeterminizing Information Set Monte Carlo Tree Search"""
 
   def __init__(self, config):
     """Initialize the agent."""
+    
+    self.timing_table = {}  # To store timings for functions
 
     self.children = dict()
     self.Q = defaultdict(int)
@@ -32,13 +53,13 @@ class MCTS_Agent(Agent):
     self.root_state = None
     self.player_id = config["player_id"]
 
-    self.max_time_limit =  1000 # 1 second
-    self.max_rollout_num = 50
-
-    self.max_simulation_steps = 3
-    self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
+    self.max_time_limit =  1000 * 10 # 1 second
+    self.max_rollout_num = 50 * 10
+    self.max_simulation_steps = 3 * 10
+    self.max_depth = 100 * 10
     self.exploration_weight = 2.5
-    self.max_depth = 100
+
+    self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
     self.determine_type = mcts_env.DetermineType.RESTORE
     self.score_type = mcts_env.ScoreType.SCORE
 
@@ -60,6 +81,7 @@ class MCTS_Agent(Agent):
                                      ,determine_type = self.determine_type, score_type = self.score_type)
     self.max_information_tokens = config.get('information_tokens', 8)
 
+  @timeit
   def _edit_mcts_config(self, mcts_type, config):
     """Interpret the mcts_type character"""
     if mcts_type == '0': #default
@@ -206,18 +228,7 @@ class MCTS_Agent(Agent):
     else:
       print(f"'mcts_config_error {mcts_type}',")
 
-  def _get_mcts_config(self):
-    return f"{{'max_time_limit':{self.max_time_limit}, 'max_rollout_num':{self.max_rollout_num}" \
-           f",'agents':'{self.agents}', 'max_simulation_steps':{self.max_simulation_steps}, 'max_depth':{self.max_depth}" \
-           f", 'determine_type':{self.determine_type}, 'score_type':{self.score_type}, 'exploration_weight':{self.exploration_weight}" \
-           f",'playable_now_convention':{self.playable_now_convention},'playable_now_convention_sim':{self.playable_now_convention_sim}, 'rules':'{self.rules}'}}," \
-
-  def __str__(self):
-    return 'MCTS_Agent'+str(self.mcts_type)
-
-  def __repr__(self):
-    return str(self)
-
+  @timeit
   def act(self, observation, state):
     if observation['current_player_offset'] != 0:
       return None
@@ -249,6 +260,7 @@ class MCTS_Agent(Agent):
     
     return best_node.initial_move()
 
+  @timeit
   def mcts_search(self, node, observation):
     path = self.mcts_select(node)
     leaf = path[-1]
@@ -278,7 +290,7 @@ class MCTS_Agent(Agent):
 
     return path, reward
 
-
+  @timeit
   def mcts_choose(self, node):
     ''''Choose the best successor of node. (Choose a move from the root node)'''
 
@@ -290,6 +302,7 @@ class MCTS_Agent(Agent):
 
     return max(self.children[node], key=lambda n: float("-inf") if self.N[n] <= 1 else self.Q[n] / self.N[n])
 
+  @timeit
   def mcts_select(self, node):
     '''Find an unexplored descendent of `node`'''
 
@@ -309,6 +322,7 @@ class MCTS_Agent(Agent):
       
       node = self.uct_select(node)
 
+  @timeit
   def mcts_expand(self, node, observation):
     '''Expand the `node` with all children'''
 
@@ -322,6 +336,7 @@ class MCTS_Agent(Agent):
 
     self.children[node] = [MCTS_Node(node.moves+(move,), self.rules) for move in moves]
 
+  @timeit
   def mcts_simulate(self, node):
     '''Run a simulation from the given node'''
 
@@ -352,14 +367,17 @@ class MCTS_Agent(Agent):
 
     return reward
 
+  @timeit
   def mcts_backpropagate(self, path, reward):
     '''Backpropagate the result of a simulation through the tree'''
 
+    N = self.N
+    Q = self.Q
     for node in reversed(path):
-      self.N[node] += 1
-      self.Q[node] += reward
+      N[node] += 1
+      Q[node] += reward
 
-
+  @timeit
   def uct_select(self, node):
     "Select a child of node, balancing exploration & exploitation"
 
@@ -374,18 +392,33 @@ class MCTS_Agent(Agent):
     
     return selected_child
 
-
+  @timeit
   def reset(self, state):
     '''Reset the agent with a new state'''
 
     self.player_id = state.cur_player()
     self.root_state = state.copy()
     self.root_node = MCTS_Node((), self.rules)
-    self.children = dict()
-    self.Q = defaultdict(int)
-    self.N = defaultdict(int)
+
+    self.children.clear()
+    self.Q.clear()
+    self.N.clear()
+
     self.N[self.root_node] = 0
     self.Q[self.root_node] = 0
+
+  def print_timings(self):
+    """Print the average timings for each function in a nicely formatted manner."""
+
+    print("\nFunction Timing Report:")
+    max_func_name_length = max(len(func_name) for func_name in self.timing_table)
+    header = f"{'Function Name'.ljust(max_func_name_length)}  {'Avg Time (s)'.rjust(15)}  {'Calls'.rjust(10)}"
+    print(header)
+    print('-' * (max_func_name_length + 30))
+    for func_name, timings in self.timing_table.items():
+        mean_time = sum(timings) / len(timings)
+        print(f"{func_name.ljust(max_func_name_length)}  {mean_time:.2e}  {str(len(timings)).rjust(10)}")
+
 
   def _get_tree_string(self):
     '''Get the tree as a string'''

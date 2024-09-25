@@ -54,6 +54,7 @@ class Runner(object):
 
           if isinstance(agent, MCTS_Agent):
             action = agent.act(observation, self.environment.state)
+            agent.print_timings()
           else:
             action = agent.act(observation)
 

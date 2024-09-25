@@ -102,13 +102,11 @@ class MCTSEnv(HanabiEnv):
 
   def valid_hand(self, player, original_hand_size, card_knowledge):
     '''Return a valid hand for a player'''
-
     sampled_hand = self.sampler.sample_hand(player, original_hand_size, 
                                             self.state.player_hands(), 
                                             self.state.discard_pile(), 
                                             self.state.fireworks(), 
                                             card_knowledge)
-
     return sampled_hand
 
   def replace_hand(self, player):
@@ -149,9 +147,13 @@ class MCTSEnv(HanabiEnv):
       if removed_card and card == removed_card:
         additional_cards = [remember_hand[i] for i in range(remember_card_index + 1, len(remember_hand)) if
                             i != removed_card_index]
-        valid_cards = self.sampler.valid_cards(player, card_index, self.state.player_hands()
-                                                    , self.state.discard_pile(), self.state.fireworks(), card_knowledge
-                                                    , additional_cards)
+        valid_cards = self.sampler.valid_cards(player, 
+                                               card_index, 
+                                               self.state.player_hands(),
+                                               self.state.discard_pile(), 
+                                               self.state.fireworks(), 
+                                               card_knowledge, 
+                                               additional_cards)
         
         if not any(c == card for c in valid_cards):
           if len(valid_cards) > 0:
