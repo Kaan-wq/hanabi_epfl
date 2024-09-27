@@ -192,7 +192,6 @@ void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder);
 char* ObservationShape(pyhanabi_observation_encoder_t* encoder);
 char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
                         pyhanabi_observation_t* observation);
-
 } /* extern "C" */
 
 #endif

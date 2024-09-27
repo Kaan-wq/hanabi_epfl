@@ -3,6 +3,7 @@
 from __future__ import print_function
 import sys
 import getopt
+import time
 from rl_env import make
 from agents.rule_based.rule_based_agents import VanDenBerghAgent
 from agents.rule_based.rule_based_agents import OuterAgent
@@ -54,7 +55,6 @@ class Runner(object):
 
           if isinstance(agent, MCTS_Agent):
             action = agent.act(observation, self.environment.state)
-            agent.print_timings()
           else:
             action = agent.act(observation)
 
@@ -94,6 +94,7 @@ class Runner(object):
     self.environment.print_state()
 
 if __name__ == "__main__":
+  start_time = time.time()
   flags = {'players': 3, 'num_episodes': 1
     ,'agent':'VanDenBerghAgent', 'agents':'VanDenBerghAgent'
     , 'mcts_types': '000'}
@@ -127,3 +128,4 @@ if __name__ == "__main__":
   runner = Runner(flags)
   runner.run()
   print("]")
+  print(f",time={time.time() - start_time}")

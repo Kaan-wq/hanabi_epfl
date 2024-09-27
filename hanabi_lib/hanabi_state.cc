@@ -17,7 +17,6 @@
 #include <algorithm>
 #include <cassert>
 #include <numeric>
-
 #include "util.h"
 
 namespace hanabi_learning_env {
@@ -133,13 +132,6 @@ void HanabiState::RemoveKnowledge(int player, int card_index) {
 }
 
 void HanabiState::AdvanceToNextPlayer(bool stayOnPlayer) {
-  // MB: RETURN: Sets to CHANCE
-  // MB: DEAL_SPECIFIC: Needs to allow STAYING on current player. hence the boolean option
-  //std::cout<<"Current player initially: ";
-  //std::cout<<cur_player_;
-  //std::cout<<"Next non chance player initially: ";
-  //std::cout<<next_non_chance_player_;
-  //std::cout<<"\n";
 
   if (!deck_.Empty() && PlayerToDeal() >= 0) {
     cur_player_ = kChancePlayerId;

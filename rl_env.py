@@ -92,9 +92,6 @@ class HanabiEnv(Environment):
     """
     assert isinstance(config, dict), "Expected config to be of type dict."
     self.game = pyhanabi.HanabiGame(config)
-
-    #self.observation_encoder = pyhanabi.ObservationEncoder(
-    #    self.game, pyhanabi.ObservationEncoderType.CANONICAL)
     self.players = self.game.num_players()
     self.record_moves = RecordMoves(self.players)
     self.start_time = time.time()
@@ -115,7 +112,6 @@ class HanabiEnv(Environment):
     Returns:
       A list of integer dimensions describing the observation shape.
     """
-    # MB: Edits made to allow RIS-MCTS broke observation encoding
     # return self.observation_encoder.shape()
 
   def num_moves(self):
@@ -148,7 +144,6 @@ class HanabiEnv(Environment):
     self.state.apply_move(move)
     done = self.state.is_terminal()
 
-    # MB: Deals with standard scenario if player need another card
     while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
       if debug: print("rl_env.step: Dealing random card")
       self.state.deal_random_card()
@@ -156,9 +151,6 @@ class HanabiEnv(Environment):
     observations = self._make_observation_all_players()
 
     self.record_moves.update(move, observations["player_observations"][action_player], action_player, elapsed_time)
-    if debug: self.print_state()
-    if debug: print(f"rl_env.step: Game Stats: {self.record_moves.game_stats}")
-    if debug: print(f"rl_env.step: Player Stats: {self.record_moves.player_stats}")
 
     reward = self.score()
     self.start_time = time.time()
@@ -186,7 +178,7 @@ class HanabiEnv(Environment):
     obs = {}
     player_observations = [self._extract_dict_from_backend(
         player_id, self.state.observation(player_id))
-        for player_id in range(self.players)]  # pylint: disable=bad-continuation
+        for player_id in range(self.players)]
     obs["player_observations"] = player_observations
     obs["current_player"] = self.state.cur_player()
     return obs
@@ -229,7 +221,6 @@ class HanabiEnv(Environment):
     obs_dict["discard_pile"] = [
         card.to_dict() for card in observation.discard_pile()
     ]
-    # Return hints received (MB: Surely this can be improved with previous knowledge?)
     obs_dict["card_knowledge"] = []
     for player_hints in observation.card_knowledge():
       player_hints_as_dicts = []
@@ -242,9 +233,6 @@ class HanabiEnv(Environment):
         hint_d["rank"] = hint.rank()
         player_hints_as_dicts.append(hint_d)
       obs_dict["card_knowledge"].append(player_hints_as_dicts)
-    # ipdb.set_trace()
-    # Edits to framework introducing ReturnCard and DealSpecific broke observation encoding
-    # obs_dict["vectorized"] = self.observation_encoder.encode(observation)
     obs_dict["pyhanabi"] = observation
     return obs_dict
 
@@ -275,42 +263,35 @@ class HanabiEnv(Environment):
       ValueError: Unknown action type.
     """
     assert isinstance(action, dict), "Expected dict, got: {}".format(action)
-    assert "action_type" in action, ("Action should contain `action_type`. "
-                                     "action: {}").format(action)
+    assert "action_type" in action, ("Action should contain `action_type`. action: {}").format(action)
+
     action_type = action["action_type"]
-    assert (action_type in MOVE_TYPES), (
-        "action_type: {} should be one of: {}".format(action_type, MOVE_TYPES))
+    assert (action_type in MOVE_TYPES), ("action_type: {} should be one of: {}".format(action_type, MOVE_TYPES))
+
+    card_index = action.get("card_index", None)
+    target_offset = action.get("target_offset", None)
+
     if action_type == "PLAY":
-      card_index = action["card_index"]
       move = pyhanabi.HanabiMove.get_play_move(card_index=card_index)
     elif action_type == "DISCARD":
-      card_index = action["card_index"]
       move = pyhanabi.HanabiMove.get_discard_move(card_index=card_index)
     elif action_type == "RETURN":
-      card_index = action["card_index"]
       player = action["player"]
       move = pyhanabi.HanabiMove.get_return_move(card_index=card_index, player=player)
     elif action_type == "REVEAL_RANK":
-      target_offset = action["target_offset"]
       rank = action["rank"]
-      move = pyhanabi.HanabiMove.get_reveal_rank_move(
-          target_offset=target_offset, rank=rank)
+      move = pyhanabi.HanabiMove.get_reveal_rank_move(target_offset=target_offset, rank=rank)
     elif action_type == "REVEAL_COLOR":
-      target_offset = action["target_offset"]
-      assert isinstance(action["color"], str)
-      color = color_char_to_idx(action["color"])
-      move = pyhanabi.HanabiMove.get_reveal_color_move(
-          target_offset=target_offset, color=color)
+      action_color = action["color"]
+      assert isinstance(action_color, str)
+      color = color_char_to_idx(action_color)
+      move = pyhanabi.HanabiMove.get_reveal_color_move(target_offset=target_offset, color=color)
     else:
       raise ValueError("Unknown action_type: {}".format(action_type))
 
-    # MB: HAck to skip RETURN move step
     if action_type != "RETURN":
-      legal_moves = self.state.legal_moves()
-      assert (str(move) in map(
-        str,
-        legal_moves)), "Illegal action: {}. Move should be one of : {}".format(
-            move, legal_moves)
+      legal_moves = map(str, self.state.legal_moves())
+      assert str(move) in legal_moves, f"Illegal action: {move}. Move should be one of: {legal_moves}"
     return move
 
   def print_state(self):

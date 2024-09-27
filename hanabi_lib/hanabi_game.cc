@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "hanabi_game.h"
-
 #include "util.h"
 
 namespace hanabi_learning_env {

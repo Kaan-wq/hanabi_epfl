@@ -6,6 +6,8 @@ from pyhanabi import HanabiCard
 class MCTS_Sampler(object):
     """Sampler for re-determinization in MCTS"""
 
+    __slots__ = ["deck"]
+
     def __init__(self):
         self.deck = HanabiDeck()
 
@@ -48,7 +50,6 @@ class MCTS_Sampler(object):
                     sampled_hand.append(sampled_card)
                 else:
                     break
-
         return sampled_hand
 
     def sample_card(
@@ -105,6 +106,8 @@ class MCTS_Sampler(object):
 
 class HanabiDeck(object):
     """Deck of Hanabi cards for sampling hands and cards"""
+
+    __slots__ = ["num_ranks", "num_colors", "num_dict", "card_count", "total_count"]
 
     def __init__(self, card_count=None, total_count=None):
         self.num_ranks = 5

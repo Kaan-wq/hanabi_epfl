@@ -670,11 +670,11 @@ class HanabiState(object):
 
   def legal_moves(self):
     """Returns list of legal moves for currently acting player."""
-    moves = []
     if self.is_terminal():
-      return moves
+      return []
     c_movelist = lib.StateLegalMoves(self._state)
     num_moves = lib.NumMoves(c_movelist)
+    moves = []
     for i in range(num_moves):
       c_move = ffi.new("pyhanabi_move_t*")
       lib.GetMove(c_movelist, i, c_move)
