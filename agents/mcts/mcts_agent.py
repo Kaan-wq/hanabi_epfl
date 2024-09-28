@@ -43,10 +43,10 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_time_limit = 1000  # * 10 # 1 second
-        self.max_rollout_num = 50  # * 10
-        self.max_simulation_steps = 3  # * 10
-        self.max_depth = 100  # * 10
+        self.max_time_limit = 1000
+        self.max_rollout_num = 50
+        self.max_simulation_steps = 3
+        self.max_depth = 100
         self.exploration_weight = 2.5
 
         self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
@@ -82,145 +82,6 @@ class MCTS_Agent(Agent):
         """Interpret the mcts_type character"""
         if mcts_type == "0":  # default
             pass
-        elif mcts_type == "1":  # regret
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "2":  # c_regret
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.playable_now_convention = True
-            self.playable_now_convention_sim = True
-        elif mcts_type == "3":  # detnone
-            self.determine_type = mcts_env.DetermineType.NONE
-        elif mcts_type == "4":  # detnone_rulesnone
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.rules = None
-        elif mcts_type == "5":  # detnone_random_rulesnone
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents = [LegalRandomAgent(config) for _ in range(config["players"])]
-            self.rules = None
-        elif mcts_type == "6":  # detnone_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-        elif mcts_type == "7":  # c
-            self.playable_now_convention
-            self.playable_now_convention_sim
-        elif mcts_type == "8":  # rulesnone
-            self.rules = None
-        elif mcts_type == "9":  # detnone_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "a":  # regret_rulesnone
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.rules = None
-        elif mcts_type == "b":  # detnone_regret_rulesnone
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.rules = None
-        elif mcts_type == "c":  # detnone_c
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.playable_now_convention = True
-            self.playable_now_convention_sim = True
-        elif mcts_type == "d":  # mix_default
-            self.determine_type = mcts_env.DetermineType.NONE
-        elif mcts_type == "e":  # mix_flawed
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = FlawedAgent(config)
-        elif mcts_type == "f":  # mix_flawed_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = FlawedAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "g":  # mix_flawed_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = FlawedAgent(config)
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "h":  # mix_flawed_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = FlawedAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "i":  # mix_mute
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = MuteAgent(config)
-        elif mcts_type == "j":  # mix_mute_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = MuteAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "k":  # mix_mute_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = MuteAgent(config)
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "l":  # mix_mute_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = MuteAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "m":  # mix_inner
-            self.DetermineType = mcts_env.DetermineType.NONE
-            self.agents[0] = InnerAgent(config)
-        elif mcts_type == "n":  # mix_inner_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = InnerAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "o":  # mix_inner_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = InnerAgent(config)
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "p":  # mix_inner_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = InnerAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "q":  # mix_random
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = LegalRandomAgent(config)
-        elif mcts_type == "r":  # mix_random_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = LegalRandomAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "s":  # mix_random_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = LegalRandomAgent(config)
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "t":  # mix_random_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = LegalRandomAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "u":  # mix_vdb
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = VanDenBerghAgent(config)
-        elif mcts_type == "v":  # mix_vdb_regret
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = VanDenBerghAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-        elif mcts_type == "w":  # mix_vdb_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = VanDenBerghAgent(config)
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "x":  # mix_vdb_regret_depth1
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.agents[0] = VanDenBerghAgent(config)
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.max_depth = 1
-            self.max_simulation_steps = config["players"] - 1
-        elif mcts_type == "x":  # fast test
-            self.max_rollout_num = 10
-            self.score_type = mcts_env.ScoreType.REGRET
-            self.determine_type = mcts_env.DetermineType.NONE
-            self.max_depth = 1
-            self.agents[0] = FlawedAgent(config)
-        elif mcts_type == "t":  # test
-            self.max_rollout_num = 25
-            self.score_type = mcts_env.ScoreType.REGRET
         else:
             print(f"'mcts_config_error {mcts_type}',")
 
