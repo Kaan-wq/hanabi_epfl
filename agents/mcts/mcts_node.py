@@ -26,7 +26,7 @@ class MCTS_Node:
         return children
 
     def find_random_child(self):
-        return random.choice(self.children())
+        return random.choice(self.find_children())
 
     def initial_move(self):
         return self.moves[0]

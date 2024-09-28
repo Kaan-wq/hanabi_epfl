@@ -33,26 +33,6 @@ class MCTS_Env(HanabiEnv):
         self.sampler = MCTS_Sampler()
         super().__init__(config)
 
-    def clone(self):
-        """Create a deep copy of the environment."""
-        new_env = MCTS_Env({
-            "colors": self.game.num_colors(),
-            "ranks": self.game.num_ranks(),
-            "players": self.state.num_players(),
-            "mcts_player": self.mcts_player,
-            "determine_type": self.determine_type,
-            "score_type": self.score_type,
-            "max_information_tokens": self.game.max_information_tokens(),
-            "max_life_tokens": self.game.max_life_tokens(),
-            "observation_type": self.game.observation_type(),
-        })
-        new_env.state = self.state.copy()
-        new_env.remember_hand = self.remember_hand
-        new_env.sampler = self.sampler
-        new_env.record_moves = self.record_moves
-
-        return new_env
-
     def reset(self, observations):
         self.record_moves.reset(observations)
 
