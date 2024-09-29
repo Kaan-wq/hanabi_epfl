@@ -55,7 +55,7 @@ class Runner(object):
           observation = observations['player_observations'][agent_id]
 
           if isinstance(agent, MCTS_Agent) or isinstance(agent, MCTS_Agent_Conc):
-            action = agent.act(observation, self.environment.state, self.environment.game)
+            action = agent.act(observation, self.environment.state)
           else:
             action = agent.act(observation)
 

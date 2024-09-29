@@ -286,10 +286,10 @@ class MCTS_Agent_Conc(MCTS_Agent, Agent):
         for worker in self.workers:
             worker.start()
 
-    def act(self, observation, state, game):
+    def act(self, observation, state):
         if observation["current_player_offset"] != 0:
             return None
-
+        
         self.reset(state)
 
         # Use the worker to perform MCTS search

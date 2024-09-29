@@ -375,8 +375,8 @@ class HanabiMove(object):
     lib.DeleteString(json_str)
     return json_result
   
-  @staticmethod
-  def from_json(json_str):
+  @classmethod
+  def from_json(cls, json_str):
     """Deserialize move from JSON."""
     if not isinstance(json_str, str):
       raise TypeError("json_str must be a string.")
@@ -384,7 +384,7 @@ class HanabiMove(object):
     result = lib.MoveFromJson(json_str.encode('ascii'), c_move)
     if not result:
       raise ValueError("Failed to deserialize HanabiMove from JSON")
-    return HanabiMove(c_move)
+    return cls(c_move)
 
   def __hash__(self):
     """hash function for moves."""
@@ -778,11 +778,12 @@ class HanabiGame(object):
   Python wrapper of C++ HanabiGame class.
   """
 
-  def __init__(self, params=None):
+  def __init__(self, params=None, c_game=None):
     """Creates a HanabiGame object.
 
     Args:
       params: is a dictionary of parameters and their values.
+      c_game: a C pointer to a pre-initialized game.
 
     Possible parameters include
     "players": 2 <= number of players <= 5
@@ -795,7 +796,9 @@ class HanabiGame(object):
     "random_start_player": boolean. If true, start with random player, not 0.
     "observation_type": int AgentObservationType.
     """
-    if params is None:
+    if c_game is not None:
+      self._game = c_game
+    elif params is None:
       self._game = ffi.new("pyhanabi_game_t*")
       lib.NewDefaultGame(self._game)
     else:
@@ -878,6 +881,26 @@ class HanabiGame(object):
     move = ffi.new("pyhanabi_move_t*")
     lib.GetMoveByUid(self._game, move_uid, move)
     return HanabiMove(move)
+  
+  def to_json(self):
+    """Serialize the game to a JSON string."""
+    c_string = lib.GameToJSON(self._game)
+    if c_string == ffi.NULL:
+        raise ValueError("Serialization failed: GameToJSON returned NULL.")
+    json_str = encode_ffi_string(c_string)
+    lib.DeleteString(c_string)
+    return json_str
+  
+  @classmethod
+  def from_json(cls, json_str):
+    """Deserialize a JSON string to create a HanabiGame object."""
+    if not isinstance(json_str, str):
+      raise TypeError("json_str must be a string.")
+    c_game = ffi.new("pyhanabi_game_t*")
+    success = lib.GameFromJSON(json_str.encode('ascii'), c_game)
+    if not success:
+      raise ValueError("Failed to deserialize HanabiGame from JSON")
+    return cls(c_game=c_game)
 
 
 class HanabiObservation(object):

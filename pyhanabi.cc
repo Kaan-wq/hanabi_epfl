@@ -903,6 +903,10 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
   
   // Parse the JSON string
   nlohmann::json j = nlohmann::json::parse(json_str);
+
+  if (move->move != nullptr) {
+    delete reinterpret_cast<hanabi_learning_env::HanabiMove*>(move->move);
+  }
   
   // Deserialize the HanabiMove object
   move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::fromJSON(j));
@@ -928,6 +932,10 @@ bool GameFromJSON(const char* json_str, pyhanabi_game_t* game) {
     
   // Parse the JSON string
   nlohmann::json j = nlohmann::json::parse(json_str);
+
+  if (game->game != nullptr) {
+    delete reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
+  }
         
   // Deserialize to HanabiGame object
   game->game = new hanabi_learning_env::HanabiGame(hanabi_learning_env::HanabiGame::fromJSON(j));
