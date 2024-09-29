@@ -14,9 +14,10 @@ from agents.rule_based.rule_based_agents import LegalRandomAgent
 from agents.rule_based.rule_based_agents import FlawedAgent
 from agents.rule_based.rule_based_agents import MuteAgent
 from agents.mcts.mcts_agent import MCTS_Agent
+from agents.mcts.mcts_agent import MCTS_Agent_Conc
 from agents.human_agent import HumanAgent
 
-AGENT_CLASSES = {'VanDenBerghAgent': VanDenBerghAgent,'FlawedAgent':FlawedAgent, 'MCTS_Agent': MCTS_Agent
+AGENT_CLASSES = {'VanDenBerghAgent': VanDenBerghAgent,'FlawedAgent':FlawedAgent, 'MCTS_Agent': MCTS_Agent, 'MCTS_Agent_Conc': MCTS_Agent_Conc
                   , 'OuterAgent':OuterAgent, 'InnerAgent':InnerAgent, 'PiersAgent':PiersAgent, 'IGGIAgent':IGGIAgent
                   , 'LegalRandomAgent':LegalRandomAgent, 'MuteAgent':MuteAgent, 'HumanAgent':HumanAgent}
 
@@ -53,7 +54,7 @@ class Runner(object):
         for agent_id, agent in enumerate(agents):
           observation = observations['player_observations'][agent_id]
 
-          if isinstance(agent, MCTS_Agent):
+          if isinstance(agent, MCTS_Agent) or isinstance(agent, MCTS_Agent_Conc):
             action = agent.act(observation, self.environment.state)
           else:
             action = agent.act(observation)

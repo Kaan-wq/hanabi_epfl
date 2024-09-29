@@ -1,7 +1,8 @@
 import math
 import time
 from collections import defaultdict
-
+from queue import Queue
+import threading
 import pyhanabi
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
@@ -272,3 +273,97 @@ class MCTS_Agent(Agent):
         for node, children in self.children.items():
             tree_string += f"[{node}: {self.N[node]}, {self.Q[node]}] "
         return tree_string
+
+
+class MCTS_Agent_Conc(MCTS_Agent, Agent):
+    def __init__(self, config):
+        super().__init__(config)
+        self.workers = [
+            MCTS_Worker(config, self.max_time_limit, self.max_rollout_num), 
+            MCTS_Worker(config, self.max_time_limit, self.max_rollout_num)
+        ]
+
+        for worker in self.workers:
+            worker.start()
+
+    def act(self, observation, state):
+        if observation["current_player_offset"] != 0:
+            return None
+
+        self.reset(state)
+
+        # Use the worker to perform MCTS search
+        for worker in self.workers:
+            worker.task_queue.put((observation, state))
+
+        for worker in self.workers:
+            worker.task_queue.join()
+
+        # Merge results
+        worker_results = []
+        for worker in self.workers:
+            while not worker.result_queue.empty():
+                worker_results.append(worker.result_queue.get())
+        merge_results(self, worker_results)
+
+
+        self.root_node.focused_state = self.root_state.copy()
+        best_node = self.mcts_choose(self.root_node)
+
+        return best_node.initial_move()
+
+    def __del__(self):
+        if hasattr(self, 'workers'):
+            for worker in self.workers:
+                worker.task_queue.put(None)
+            for worker in self.workers:
+                worker.join()
+
+
+
+class MCTS_Worker(threading.Thread):
+    def __init__(self, config, max_time_limit, max_rollout_num):
+        super().__init__()
+        self.agent = MCTS_Agent(config)
+        self.max_time_limit = max_time_limit
+        self.max_rollout_num = max_rollout_num
+        self.task_queue = Queue()
+        self.result_queue = Queue()
+
+    def run(self):
+        while True:
+            task = self.task_queue.get()
+            if task is None:
+                break
+            observation, state = task
+            self.perform_mcts_search(observation, state)
+            self.task_queue.task_done()
+
+    def perform_mcts_search(self, observation, state):
+        self.agent.reset(state)
+        rollout = 0
+        start_time = time.time()
+        elapsed_time = 0
+
+        while rollout < self.max_rollout_num and elapsed_time < self.max_time_limit:
+            #print(f"{threading.current_thread().getName()} Rollout: {rollout} / {self.max_rollout_num} and Elapsed Time: {elapsed_time} / {self.max_time_limit}")
+            self.agent.environment.state = self.agent.root_state.copy()
+            self.agent.environment.replace_hand(self.agent.player_id)
+
+            self.agent.root_node.focused_state = self.agent.environment.state
+            self.agent.environment.reset(observation)
+
+            path, reward = self.agent.mcts_search(self.agent.root_node, observation)
+            rollout += 1
+            elapsed_time = (time.time() - start_time) * 1000
+
+        self.result_queue.put((self.agent.children, self.agent.Q, self.agent.N))
+
+
+def merge_results(mcts_agent, worker_results):
+    for children, Q, N in worker_results:
+        mcts_agent.children.update(children)
+        for node, q_value in Q.items():
+            mcts_agent.Q[node] += q_value
+        for node, n_value in N.items():
+            mcts_agent.N[node] += n_value
