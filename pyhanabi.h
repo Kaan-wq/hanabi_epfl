@@ -94,7 +94,7 @@ bool GetReturnMove(int card_index, int player, pyhanabi_move_t* move);
 bool GetPlayMove(int card_index, pyhanabi_move_t* move);
 bool GetRevealColorMove(int target_offset, int color, pyhanabi_move_t* move);
 bool GetRevealRankMove(int target_offset, int rank, pyhanabi_move_t* move);
-bool GetDealSpecificMove(int card_index, int player, int color, int rank,pyhanabi_move_t* move);
+bool GetDealSpecificMove(int card_index, int player, int color, int rank, pyhanabi_move_t* move);
 
 /* HistoryItem functions. */
 void DeleteHistoryItem(pyhanabi_history_item_t* item);
@@ -123,8 +123,7 @@ int StateFireworks(pyhanabi_state_t* state, int color);
 int StateDiscardPileSize(pyhanabi_state_t* state);
 void StateGetDiscard(pyhanabi_state_t* state, int index, pyhanabi_card_t* card);
 int StateGetHandSize(pyhanabi_state_t* state, int pid);
-void StateGetHandCard(pyhanabi_state_t* state, int pid, int index,
-                      pyhanabi_card_t* card);
+void StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card);
 int StateEndOfGameStatus(pyhanabi_state_t* state);
 int StateInformationTokens(pyhanabi_state_t* state);
 void* StateLegalMoves(pyhanabi_state_t* state);
@@ -134,11 +133,9 @@ int StateScore(pyhanabi_state_t* state);
 int StateTurnsToPlay(pyhanabi_state_t* state);
 char* StateToString(pyhanabi_state_t* state);
 bool MoveIsLegal(const pyhanabi_state_t* state, const pyhanabi_move_t* move);
-bool CardPlayableOnFireworks(const pyhanabi_state_t* state, int color,
-                             int rank);
+bool CardPlayableOnFireworks(const pyhanabi_state_t* state, int color, int rank);
 int StateLenMoveHistory(pyhanabi_state_t* state);
-void StateGetMoveHistory(pyhanabi_state_t* state, int index,
-                         pyhanabi_history_item_t* item);
+void StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_item_t* item);
 
 /* Game functions. */
 void DeleteGame(pyhanabi_game_t* game);
@@ -158,40 +155,40 @@ void GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move);
 int MaxMoves(pyhanabi_game_t* game);
 
 /* Observation functions. */
-void NewObservation(pyhanabi_state_t* state, int player,
-                    pyhanabi_observation_t* observation);
+void NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation);
 void DeleteObservation(pyhanabi_observation_t* observation);
 char* ObsToString(pyhanabi_observation_t* observation);
 int ObsCurPlayerOffset(pyhanabi_observation_t* observation);
 int ObsNumPlayers(pyhanabi_observation_t* observation);
 int ObsGetHandSize(pyhanabi_observation_t* observation, int pid);
-void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index,
-                    pyhanabi_card_t* card);
-void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid,
-                             int index, pyhanabi_card_knowledge_t* knowledge);
+void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_t* card);
+void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_knowledge_t* knowledge);
 int ObsDiscardPileSize(pyhanabi_observation_t* observation);
-void ObsGetDiscard(pyhanabi_observation_t* observation, int index,
-                   pyhanabi_card_t* card);
+void ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card);
 int ObsFireworks(pyhanabi_observation_t* observation, int color);
 int ObsDeckSize(pyhanabi_observation_t* observation);
 int ObsNumLastMoves(pyhanabi_observation_t* observation);
-void ObsGetLastMove(pyhanabi_observation_t* observation, int index,
-                    pyhanabi_history_item_t* item);
+void ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item);
 int ObsInformationTokens(pyhanabi_observation_t* observation);
 int ObsLifeTokens(pyhanabi_observation_t* observation);
 int ObsNumLegalMoves(pyhanabi_observation_t* observation);
-void ObsGetLegalMove(pyhanabi_observation_t* observation, int index,
-                     pyhanabi_move_t* move);
-bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation,
-                                int color, int rank);
+void ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move);
+bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int color, int rank);
 
 /* ObservationEncoder functions. */
-void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder,
-                           pyhanabi_game_t* game, int type);
+void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game, int type);
 void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder);
 char* ObservationShape(pyhanabi_observation_encoder_t* encoder);
-char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
-                        pyhanabi_observation_t* observation);
+char* EncodeObservation(pyhanabi_observation_encoder_t* encoder, pyhanabi_observation_t* observation);
+
+/* Serialization + Deserialization functions. */
+char* MoveToJson(pyhanabi_move_t* move);
+bool MoveFromJson(const char* json_str, pyhanabi_move_t* move);
+
+char* GameToJSON(pyhanabi_game_t* game);
+bool GameFromJSON(const char* json_str, pyhanabi_game_t* game);
+
+
 } /* extern "C" */
 
 #endif

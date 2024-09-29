@@ -4,6 +4,7 @@ project (hanabi_epfl)
 set(CMAKE_C_FLAGS "-O2 -std=c++11 -fPIC")
 set(CMAKE_CXX_FLAGS "-O2 -std=c++11 -fPIC")
 
+find_package(nlohmann_json 3.2.0 REQUIRED)
 add_subdirectory (hanabi_lib)
 
 add_library (pyhanabi SHARED pyhanabi.cc)

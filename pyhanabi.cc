@@ -883,4 +883,60 @@ char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
   return strdup(obs_str.c_str());
 }
 
+/* ====================== Serialization + Deserialization ====================== */
+
+// HanabiMove
+char* MoveToJson(pyhanabi_move_t* move) {
+  REQUIRE(move != nullptr);
+  REQUIRE(move->move != nullptr);
+  
+  // Serialize the HanabiMove object to a JSON string
+  std::string json_str = reinterpret_cast<hanabi_learning_env::HanabiMove*>(move->move)->toJSON().dump();
+  
+  // Return a C string
+  return strdup(json_str.c_str());
+}
+
+bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
+  REQUIRE(json_str != nullptr);
+  REQUIRE(move != nullptr);
+  
+  // Parse the JSON string
+  nlohmann::json j = nlohmann::json::parse(json_str);
+  
+  // Deserialize the HanabiMove object
+  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::fromJSON(j));
+  
+  return move->move != nullptr;
+}
+
+// HanabiGame
+char* GameToJSON(pyhanabi_game_t* game) {
+  REQUIRE(game != nullptr);
+  REQUIRE(game->game != nullptr);
+    
+  // Serialize the HanabiGame object to a JSON string
+  std::string json_str = reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game)->toJSON().dump();
+
+  // Return a C string
+  return strdup(json_str.c_str());
+}
+
+bool GameFromJSON(const char* json_str, pyhanabi_game_t* game) {
+  REQUIRE(json_str != nullptr);
+  REQUIRE(game != nullptr);
+    
+  // Parse the JSON string
+  nlohmann::json j = nlohmann::json::parse(json_str);
+        
+  // Deserialize to HanabiGame object
+  game->game = new hanabi_learning_env::HanabiGame(hanabi_learning_env::HanabiGame::fromJSON(j));
+        
+  return game->game != nullptr;
+}
+
+/* ============================================================================= */
+
+
+
 } /* extern "C" */

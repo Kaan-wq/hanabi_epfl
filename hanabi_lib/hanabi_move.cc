@@ -13,8 +13,10 @@
 // limitations under the License.
 
 #include "hanabi_move.h"
-
 #include "util.h"
+
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 namespace hanabi_learning_env {
 
@@ -76,5 +78,39 @@ std::string HanabiMove::ToString() const {
       return "(INVALID)";
   }
 }
+
+// =========================== Serialization + Deserialization ===========================
+
+// Serialization
+json HanabiMove::toJSON() const {
+  json j;
+
+  // Serialize enum type
+  j["move_type"] = static_cast<int>(move_type_);
+
+  // Serialize simple types
+  j["card_index"] = card_index_;
+  j["target_offset"] = target_offset_;
+  j["color"] = color_;
+  j["rank"] = rank_;
+  
+  return j;
+}
+
+// Deserialization
+HanabiMove HanabiMove::fromJSON(const json& j) {
+  // Deserialize enum type
+  Type move_type = static_cast<Type>(j["move_type"].get<int>());
+
+  // Deserialize simple types
+  int8_t card_index = j["card_index"];
+  int8_t target_offset = j["target_offset"];
+  int8_t color = j["color"];
+  int8_t rank = j["rank"];
+  
+  return HanabiMove(move_type, card_index, target_offset, color, rank);
+}
+
+// =======================================================================================
 
 }  // namespace hanabi_learning_env

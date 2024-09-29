@@ -19,6 +19,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_move.h"
@@ -38,8 +39,12 @@ class HanabiGame {
   // hints have been given.
   enum AgentObservationType { kMinimal = 0, kCardKnowledge = 1, kSeer = 2 };
 
-  explicit HanabiGame(
-      const std::unordered_map<std::string, std::string>& params);
+  explicit HanabiGame(const std::unordered_map<std::string, std::string>& params);
+  
+  // ========= Serialization + Deserialization =========
+  nlohmann::json toJSON() const;
+  static HanabiGame fromJSON(const nlohmann::json& j);
+  // ===================================================
 
   // Number of different player moves.
   int MaxMoves() const;

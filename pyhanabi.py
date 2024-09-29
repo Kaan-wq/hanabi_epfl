@@ -365,6 +365,26 @@ class HanabiMove(object):
     c_move = ffi.new("pyhanabi_move_t*")
     assert lib.GetRevealRankMove(target_offset, rank, c_move)
     return HanabiMove(c_move)
+  
+  def to_json(self):
+    """Serialize move to JSON."""
+    json_str = lib.MoveToJson(self._move)
+    if json_str == ffi.NULL:
+      raise ValueError("Serialization failed: MoveToJSON returned NULL.")
+    json_result = encode_ffi_string(json_str)
+    lib.DeleteString(json_str)
+    return json_result
+  
+  @staticmethod
+  def from_json(json_str):
+    """Deserialize move from JSON."""
+    if not isinstance(json_str, str):
+      raise TypeError("json_str must be a string.")
+    c_move = ffi.new("pyhanabi_move_t*")
+    result = lib.MoveFromJson(json_str.encode('ascii'), c_move)
+    if not result:
+      raise ValueError("Failed to deserialize HanabiMove from JSON")
+    return HanabiMove(c_move)
 
   def __hash__(self):
     """hash function for moves."""

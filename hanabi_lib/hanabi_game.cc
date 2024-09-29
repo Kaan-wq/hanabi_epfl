@@ -15,6 +15,11 @@
 #include "hanabi_game.h"
 #include "util.h"
 
+#include <sstream>
+#include <random>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
+
 namespace hanabi_learning_env {
 
 namespace {
@@ -192,5 +197,84 @@ HanabiMove HanabiGame::ConstructChanceOutcome(int uid) const {
                     /*color=*/uid / NumRanks() % NumColors(),
                     /*rank=*/uid % NumRanks());
 }
+
+// =========================== Serialization + Deserialization ===========================
+
+// Serialization
+json HanabiGame::toJSON() const {
+    json j;
+    
+    // Serialize simple types
+    j["num_players"] = num_players_;
+    j["num_colors"] = num_colors_;
+    j["num_ranks"] = num_ranks_;
+    j["hand_size"] = hand_size_;
+    j["max_information_tokens"] = max_information_tokens_;
+    j["max_life_tokens"] = max_life_tokens_;
+    j["seed"] = seed_;
+    j["random_start_player"] = random_start_player_;
+    j["observation_type"] = static_cast<int>(observation_type_);
+    j["cards_per_color"] = cards_per_color_;
+    
+    // Serialize params_
+    j["params"] = params_;
+    
+    // Serialize moves_ and chance_outcomes_
+    j["moves"] = json::array();
+    for (const auto& move : moves_) {
+        j["moves"].push_back(move.toJSON());
+    }
+    j["chance_outcomes"] = json::array();
+    for (const auto& outcome : chance_outcomes_) {
+        j["chance_outcomes"].push_back(outcome.toJSON());
+    }
+    
+    // Serialize rng_ state
+    std::stringstream ss;
+    ss << rng_;
+    j["rng_state"] = ss.str();
+    
+    return j;
+}
+
+// Deserialization
+HanabiGame HanabiGame::fromJSON(const nlohmann::json& j) {
+    std::unordered_map<std::string, std::string> params;
+    for (auto it = j["params"].begin(); it != j["params"].end(); ++it) {
+        params[it.key()] = it.value();
+    }
+    
+    HanabiGame game(params);
+    
+    // Deserialize simple types
+    game.num_players_ = j["num_players"];
+    game.num_colors_ = j["num_colors"];
+    game.num_ranks_ = j["num_ranks"];
+    game.hand_size_ = j["hand_size"];
+    game.max_information_tokens_ = j["max_information_tokens"];
+    game.max_life_tokens_ = j["max_life_tokens"];
+    game.seed_ = j["seed"];
+    game.random_start_player_ = j["random_start_player"];
+    game.observation_type_ = static_cast<AgentObservationType>(j["observation_type"]);
+    game.cards_per_color_ = j["cards_per_color"];
+    
+    // Deserialize moves_ and chance_outcomes_
+    game.moves_.clear();
+    for (const auto& move_json : j["moves"]) {
+        game.moves_.push_back(HanabiMove::fromJSON(move_json));
+    }
+    game.chance_outcomes_.clear();
+    for (const auto& outcome_json : j["chance_outcomes"]) {
+        game.chance_outcomes_.push_back(HanabiMove::fromJSON(outcome_json));
+    }
+    
+    // Deserialize rng_ state
+    std::stringstream ss(j["rng_state"].get<std::string>());
+    ss >> game.rng_;
+    
+    return game;
+}
+
+// =======================================================================================
 
 }  // namespace hanabi_learning_env
