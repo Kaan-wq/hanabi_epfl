@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <string>
+#include <nlohmann/json.hpp>
 
 #include "hanabi_move.h"
 
@@ -28,6 +29,11 @@ struct HanabiHistoryItem {
   explicit HanabiHistoryItem(HanabiMove move_made) : move(move_made) {}
   HanabiHistoryItem(const HanabiHistoryItem& past_move) = default;
   std::string ToString() const;
+
+  // ===== Serialization + Deserialization =====
+  nlohmann::json toJSON() const;
+  static HanabiHistoryItem fromJSON(const nlohmann::json& j);
+  // ===========================================
 
   // Move that was made.
   HanabiMove move;

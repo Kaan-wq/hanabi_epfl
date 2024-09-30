@@ -16,6 +16,9 @@
 #include <iostream>
 #include <algorithm>
 #include <cassert>
+#include <sstream>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 #include <numeric>
 #include "util.h"
 
@@ -447,6 +450,116 @@ HanabiState::EndOfGameType HanabiState::EndOfGameStatus() const {
     return kOutOfCards;
   }
   return kNotFinished;
+}
+
+/*=================================================================================
+                 HanabiDeck Serialization + Deserialization
+=================================================================================*/
+
+json HanabiState::HanabiDeck::toJSON() const {
+    json j;
+    j["card_count"] = card_count_;
+    j["total_count"] = total_count_;
+    j["num_ranks"] = num_ranks_;
+    return j;
+}
+
+void HanabiState::HanabiDeck::fromJSON(const json& j) {
+    // Ensure the JSON contains all necessary fields
+    assert(j.contains("card_count"));
+    assert(j.contains("total_count"));
+    assert(j.contains("num_ranks"));
+
+    card_count_ = j.at("card_count").get<std::vector<int>>();
+    total_count_ = j.at("total_count").get<int>();
+    num_ranks_ = j.at("num_ranks").get<int>();
+}
+
+/*=================================================================================
+                 HanabiState Serialization + Deserialization
+=================================================================================*/
+
+json HanabiState::toJSON() const {
+    json j;
+
+    // Serialize deck
+    j["deck"] = deck_.toJSON();
+
+    // Serialize discard_pile_
+    j["discard_pile"] = json::array();
+    for (const auto& card : discard_pile_) {
+        j["discard_pile"].push_back(card.toJSON());
+    }
+
+    // Serialize hands_
+    j["hands"] = json::array();
+    for (const auto& hand : hands_) {
+        j["hands"].push_back(hand.toJSON());
+    }
+
+    // Serialize move_history_
+    j["move_history"] = json::array();
+    for (const auto& history_item : move_history_) {
+        j["move_history"].push_back(history_item.toJSON());
+    }
+
+    // Serialize other member variables
+    j["cur_player"] = cur_player_;
+    j["next_non_chance_player"] = next_non_chance_player_;
+    j["information_tokens"] = information_tokens_;
+    j["life_tokens"] = life_tokens_;
+    j["fireworks"] = fireworks_;
+    j["turns_to_play"] = turns_to_play_;
+
+    return j;
+}
+
+HanabiState HanabiState::fromJSON(const json& j, const HanabiGame* game) {
+    // Validate required fields
+    assert(j.contains("deck"));
+    assert(j.contains("discard_pile"));
+    assert(j.contains("hands"));
+    assert(j.contains("move_history"));
+    assert(j.contains("cur_player"));
+    assert(j.contains("next_non_chance_player"));
+    assert(j.contains("information_tokens"));
+    assert(j.contains("life_tokens"));
+    assert(j.contains("fireworks"));
+    assert(j.contains("turns_to_play"));
+
+    // Initialize a new HanabiState with the parent_game and default start_player
+    HanabiState state(game);
+
+    // Deserialize deck
+    state.deck_.fromJSON(j.at("deck"));
+
+    // Deserialize discard_pile_
+    state.discard_pile_.clear();
+    for (const auto& card_json : j.at("discard_pile")) {
+        state.discard_pile_.push_back(HanabiCard::fromJSON(card_json));
+    }
+
+    // Deserialize hands_
+    state.hands_.clear();
+    for (const auto& hand_json : j.at("hands")) {
+        state.hands_.emplace_back(HanabiHand::fromJSON(hand_json));
+    }
+
+    // Deserialize move_history_
+    state.move_history_.clear();
+    for (const auto& history_json : j.at("move_history")) {
+        state.move_history_.push_back(HanabiHistoryItem::fromJSON(history_json));
+    }
+
+    // Deserialize other member variables
+    state.cur_player_ = j.at("cur_player").get<int>();
+    state.next_non_chance_player_ = j.at("next_non_chance_player").get<int>();
+    state.information_tokens_ = j.at("information_tokens").get<int>();
+    state.life_tokens_ = j.at("life_tokens").get<int>();
+    state.fireworks_ = j.at("fireworks").get<std::vector<int>>();
+    state.turns_to_play_ = j.at("turns_to_play").get<int>();
+
+    return state;
 }
 
 }  // namespace hanabi_learning_env

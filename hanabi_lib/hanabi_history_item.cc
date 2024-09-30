@@ -15,6 +15,8 @@
 #include "hanabi_history_item.h"
 
 #include <cassert>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include "util.h"
 
@@ -69,6 +71,40 @@ void ChangeToObserverRelative(int observer_pid, int player_count,
     assert(item->player >= 0);
     item->player = (item->player - observer_pid + player_count) % player_count;
   }
+}
+
+/*=================================================================================
+               HanabiHistoryItem Serialization + Deserialization
+=================================================================================*/ 
+
+json HanabiHistoryItem::toJSON() const {
+    json j;
+
+    j["move"] = move.toJSON();
+    j["player"] = player;
+    j["scored"] = scored;
+    j["information_token"] = information_token;
+    j["color"] = color;
+    j["rank"] = rank;
+    j["reveal_bitmask"] = reveal_bitmask;
+    j["newly_revealed_bitmask"] = newly_revealed_bitmask;
+    j["deal_to_player"] = deal_to_player;
+    return j;
+}
+
+HanabiHistoryItem HanabiHistoryItem::fromJSON(const json& j) {
+    HanabiHistoryItem item = HanabiHistoryItem(HanabiMove::fromJSON(j.at("move")));
+
+    item.player = j.at("player").get<int8_t>();
+    item.scored = j.at("scored").get<bool>();
+    item.information_token = j.at("information_token").get<bool>();
+    item.color = j.at("color").get<int8_t>();
+    item.rank = j.at("rank").get<int8_t>();
+    item.reveal_bitmask = j.at("reveal_bitmask").get<uint8_t>();
+    item.newly_revealed_bitmask = j.at("newly_revealed_bitmask").get<uint8_t>();
+    item.deal_to_player = j.at("deal_to_player").get<int8_t>();
+
+    return item;
 }
 
 }  // namespace hanabi_learning_env

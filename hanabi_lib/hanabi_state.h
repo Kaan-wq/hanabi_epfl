@@ -18,6 +18,7 @@
 #include <random>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_game.h"
@@ -43,6 +44,11 @@ class HanabiState {
     int CardCount(int color, int rank) const {
       return card_count_[CardToIndex(color, rank)];
     }
+
+    // ===== Serialization + Deserialization =====
+    nlohmann::json toJSON() const;
+    void fromJSON(const nlohmann::json& j);
+    // ===========================================
 
    private:
     int CardToIndex(int color, int rank) const {
@@ -111,6 +117,11 @@ class HanabiState {
   const std::vector<HanabiHistoryItem>& MoveHistory() const {
     return move_history_;
   }
+
+  // ===== Serialization + Deserialization =====
+  nlohmann::json toJSON() const;
+  static HanabiState fromJSON(const nlohmann::json& j, const HanabiGame* game);
+  // ===========================================
 
  private:
   // Add card to table if possible, if not lose a life token.

@@ -16,6 +16,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cassert>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include "util.h"
 
@@ -161,6 +163,83 @@ std::string HanabiHand::ToString() const {
         cards_[i].ToString() + " || " + card_knowledge_[i].ToString() + '\n';
   }
   return result;
+}
+
+/*=================================================================================
+                 ValueKnowledge Serialization + Deserialization
+=================================================================================*/
+
+json HanabiHand::ValueKnowledge::toJSON() const {
+    json j;
+    j["value"] = value_;
+    j["value_plausible"] = value_plausible_;
+    return j;
+}
+
+HanabiHand::ValueKnowledge HanabiHand::ValueKnowledge::fromJSON(const json& j) {
+    ValueKnowledge vk(j.at("value_plausible").size());
+    vk.value_ = j.at("value").get<int>();
+    vk.value_plausible_ = j.at("value_plausible").get<std::vector<bool>>();
+    return vk;
+}
+
+/*=================================================================================
+                 CardKnowledge Serialization + Deserialization
+=================================================================================*/
+
+json HanabiHand::CardKnowledge::toJSON() const {
+    json j;
+    j["color"] = color_.toJSON();
+    j["rank"] = rank_.toJSON();
+    return j;
+}
+
+HanabiHand::CardKnowledge HanabiHand::CardKnowledge::fromJSON(const json& j) {
+    CardKnowledge ck(j.at("color").at("value_plausible").size(),
+                    j.at("rank").at("value_plausible").size());
+    ck.color_ = ValueKnowledge::fromJSON(j.at("color"));
+    ck.rank_ = ValueKnowledge::fromJSON(j.at("rank"));
+    return ck;
+}
+
+/*=================================================================================
+                 HanabiHand Serialization + Deserialization
+=================================================================================*/
+
+json HanabiHand::toJSON() const {
+    json j;
+
+    // Serialize cards
+    j["cards"] = json::array();
+    for (const auto& card : cards_) {
+        j["cards"].push_back(card.toJSON());
+    }
+
+    // Serialize card knowledge
+    j["card_knowledge"] = json::array();
+    for (const auto& ck : card_knowledge_) {
+        j["card_knowledge"].push_back(ck.toJSON());
+    }
+
+    return j;
+}
+
+HanabiHand HanabiHand::fromJSON(const json& j) {
+    HanabiHand hand;
+
+    // Deserialize cards
+    hand.cards_.clear();
+    for (const auto& card_json : j.at("cards")) {
+        hand.cards_.push_back(HanabiCard::fromJSON(card_json));
+    }
+
+    // Deserialize card knowledge
+    hand.card_knowledge_.clear();
+    for (const auto& ck_json : j.at("card_knowledge")) {
+        hand.card_knowledge_.push_back(CardKnowledge::fromJSON(ck_json));
+    }
+
+    return hand;
 }
 
 }  // namespace hanabi_learning_env

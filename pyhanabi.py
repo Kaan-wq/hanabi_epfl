@@ -533,6 +533,26 @@ class HanabiHistoryItem(object):
   def deal_to_player(self):
     """player that card was dealt to for Deal moves."""
     return lib.HistoryItemDealToPlayer(self._item)
+  
+  def to_json(self):
+    """Serialize the HanabiHistoryItem to a JSON string."""
+    json_str = lib.HistoryItemToJson(self._item)
+    if json_str == ffi.NULL:
+        raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")
+    json_result = encode_ffi_string(json_str)
+    lib.DeleteString(json_str)
+    return json_result
+  
+  @classmethod
+  def from_json(cls, json_str):
+    """Deserialize a JSON string to create a HanabiHistoryItem object."""
+    if not isinstance(json_str, str):
+      raise TypeError("json_str must be a string.")
+    c_item = ffi.new("pyhanabi_history_item_t*")
+    success = lib.HistoryItemFromJson(json_str.encode('ascii'), c_item)
+    if not success:
+      raise ValueError("Failed to deserialize HanabiHistoryItem from JSON")
+    return cls(c_item)
 
   def __str__(self):
     c_string = lib.HistoryItemToString(self._item)

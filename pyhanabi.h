@@ -188,6 +188,11 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move);
 char* GameToJSON(pyhanabi_game_t* game);
 bool GameFromJSON(const char* json_str, pyhanabi_game_t* game);
 
+char* HistoryItemToJson(pyhanabi_history_item_t* item);
+bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item);
+
+char* StateToJSON(pyhanabi_state_t* state);
+bool StateFromJSON(const char* json_str, pyhanabi_state_t* state);
 
 } /* extern "C" */
 

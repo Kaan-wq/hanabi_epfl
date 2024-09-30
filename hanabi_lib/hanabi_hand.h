@@ -18,6 +18,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 
@@ -49,6 +50,11 @@ class HanabiHand {
     void ApplyIsValueHint(int value);
     // Record a hint that the variable does not have the given value.
     void ApplyIsNotValueHint(int value);
+
+    // ===== Serialization + Deserialization =====
+    nlohmann::json toJSON() const;
+    static ValueKnowledge fromJSON(const nlohmann::json& j);
+    // ===========================================
 
    private:
     // Value if hint directly provided the value, or -1 with no direct hint.
@@ -83,6 +89,11 @@ class HanabiHand {
     void ApplyIsRankHint(int rank) { rank_.ApplyIsValueHint(rank); }
     void ApplyIsNotRankHint(int rank) { rank_.ApplyIsNotValueHint(rank); }
     std::string ToString() const;
+
+    // ===== Serialization + Deserialization =====
+    nlohmann::json toJSON() const;
+    static CardKnowledge fromJSON(const nlohmann::json& j);
+    // ===========================================
 
    private:
     ValueKnowledge color_;
@@ -120,6 +131,11 @@ class HanabiHand {
   // and was previously unknown.
   uint8_t RevealColor(int color);
   std::string ToString() const;
+
+  // ===== Serialization + Deserialization =====
+  nlohmann::json toJSON() const;
+  static HanabiHand fromJSON(const nlohmann::json& j);
+  // ===========================================
 
  private:
   // A set of cards and knowledge about them.

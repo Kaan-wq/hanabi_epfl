@@ -20,6 +20,8 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include "hanabi_lib/canonical_encoders.h"
 #include "hanabi_lib/hanabi_card.h"
@@ -883,9 +885,12 @@ char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
   return strdup(obs_str.c_str());
 }
 
-/* ====================== Serialization + Deserialization ====================== */
+/*==============================================================================
+ *                  Serialization and Deserialization
+ *============================================================================*/
 
-// HanabiMove
+ /* ============================= HanabiMove ============================= */
+
 char* MoveToJson(pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
   REQUIRE(move->move != nullptr);
@@ -902,7 +907,7 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
   
   // Parse the JSON string
-  nlohmann::json j = nlohmann::json::parse(json_str);
+  json j = json::parse(json_str);
 
   if (move->move != nullptr) {
     delete reinterpret_cast<hanabi_learning_env::HanabiMove*>(move->move);
@@ -914,7 +919,8 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
   return move->move != nullptr;
 }
 
-// HanabiGame
+/* ============================= HanabiGame ============================= */
+
 char* GameToJSON(pyhanabi_game_t* game) {
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
@@ -931,7 +937,7 @@ bool GameFromJSON(const char* json_str, pyhanabi_game_t* game) {
   REQUIRE(game != nullptr);
     
   // Parse the JSON string
-  nlohmann::json j = nlohmann::json::parse(json_str);
+  json j = json::parse(json_str);
 
   if (game->game != nullptr) {
     delete reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
@@ -943,8 +949,36 @@ bool GameFromJSON(const char* json_str, pyhanabi_game_t* game) {
   return game->game != nullptr;
 }
 
-/* ============================================================================= */
+/* ============================= HanabiHistoryItem ============================= */
 
+char* HistoryItemToJson(pyhanabi_history_item_t* item) {
+  REQUIRE(item != nullptr);
+  REQUIRE(item->item != nullptr);
+  
+  // Serialize the HanabiHistoryItem object to a JSON string
+  std::string json_str = reinterpret_cast<hanabi_learning_env::HanabiHistoryItem*>(item->item)->toJSON().dump();
+  
+  // Allocate and copy the JSON string to a C string
+  return strdup(json_str.c_str());
+}
 
+bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item) {
+  REQUIRE(json_str != nullptr);
+  REQUIRE(item != nullptr);
+
+  // Parse the JSON string
+  json j = json::parse(json_str);
+
+  if (item->item != nullptr) {
+    delete reinterpret_cast<hanabi_learning_env::HanabiHistoryItem*>(item->item);
+  }
+
+  // Deserialize to HanabiHistoryItem object
+  item->item = new hanabi_learning_env::HanabiHistoryItem(hanabi_learning_env::HanabiHistoryItem::fromJSON(j));
+    
+  return item->item != nullptr;
+}
+
+/* ============================= HanabiState ============================= */
 
 } /* extern "C" */

@@ -16,6 +16,7 @@
 #define __HANABI_CARD_H__
 
 #include <string>
+#include <nlohmann/json.hpp>
 
 namespace hanabi_learning_env {
 
@@ -28,6 +29,11 @@ class HanabiCard {
   std::string ToString() const;
   int Color() const { return color_; }
   int Rank() const { return rank_; }
+
+  // ===== Serialization + Deserialization =====
+  nlohmann::json toJSON() const;
+  static HanabiCard fromJSON(const nlohmann::json& j);
+  // ===========================================
 
  private:
   int color_ = -1;  // 0 indexed card color.
