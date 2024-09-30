@@ -290,6 +290,9 @@ class MCTS_Agent_Conc(MCTS_Agent, Agent):
         if observation["current_player_offset"] != 0:
             return None
         
+        state_json = state.to_json()
+        state = pyhanabi.HanabiState.from_json(state_json)
+
         self.reset(state)
 
         # Use the worker to perform MCTS search

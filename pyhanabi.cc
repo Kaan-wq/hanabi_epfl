@@ -921,7 +921,7 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
 
 /* ============================= HanabiGame ============================= */
 
-char* GameToJSON(pyhanabi_game_t* game) {
+char* GameToJson(pyhanabi_game_t* game) {
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
     
@@ -932,7 +932,7 @@ char* GameToJSON(pyhanabi_game_t* game) {
   return strdup(json_str.c_str());
 }
 
-bool GameFromJSON(const char* json_str, pyhanabi_game_t* game) {
+bool GameFromJson(const char* json_str, pyhanabi_game_t* game) {
   REQUIRE(json_str != nullptr);
   REQUIRE(game != nullptr);
     
@@ -980,5 +980,46 @@ bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item) {
 }
 
 /* ============================= HanabiState ============================= */
+
+char* StateToJson(pyhanabi_state_t* state) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  
+  // Serialize the HanabiState object to a JSON string
+  std::string json_str = reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->toJSON().dump();
+  
+  // Return a C string
+  return strdup(json_str.c_str());
+}
+
+bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game) {
+  REQUIRE(json_str != nullptr);
+  REQUIRE(state != nullptr);
+  REQUIRE(game != nullptr);
+  REQUIRE(game->game != nullptr);
+
+  try {
+    hanabi_learning_env::HanabiGame* parent_game = 
+      reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
+
+    if (parent_game == nullptr) {
+      return false;
+    }
+
+    // Deserialize the HanabiState from the JSON string using the parent game
+    hanabi_learning_env::HanabiState new_state = 
+      hanabi_learning_env::HanabiState::fromJSON(json::parse(json_str), parent_game);
+
+    if (state->state != nullptr) {
+      delete reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state);
+      state->state = nullptr;
+    }
+
+    state->state = new hanabi_learning_env::HanabiState(new_state);
+    return state->state != nullptr;
+  } catch (const std::exception& e) {
+    return false;
+  }
+}
 
 } /* extern "C" */

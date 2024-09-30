@@ -185,14 +185,14 @@ char* EncodeObservation(pyhanabi_observation_encoder_t* encoder, pyhanabi_observ
 char* MoveToJson(pyhanabi_move_t* move);
 bool MoveFromJson(const char* json_str, pyhanabi_move_t* move);
 
-char* GameToJSON(pyhanabi_game_t* game);
-bool GameFromJSON(const char* json_str, pyhanabi_game_t* game);
+char* GameToJson(pyhanabi_game_t* game);
+bool GameFromJson(const char* json_str, pyhanabi_game_t* game);
 
 char* HistoryItemToJson(pyhanabi_history_item_t* item);
 bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item);
 
-char* StateToJSON(pyhanabi_state_t* state);
-bool StateFromJSON(const char* json_str, pyhanabi_state_t* state);
+char* StateToJson(pyhanabi_state_t* state);
+bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game);
 
 } /* extern "C" */
 

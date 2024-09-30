@@ -18,6 +18,7 @@ import re
 import cffi
 import enum
 import sys
+import json
 
 DEFAULT_CDEF_PREFIXES = (None, ".", os.path.dirname(__file__), "/include")
 DEFAULT_LIB_PREFIXES = (None, ".", os.path.dirname(__file__), "/lib")
@@ -588,7 +589,7 @@ class HanabiState(object):
   Python wrapper of C++ HanabiState class.
   """
 
-  def __init__(self, game, c_state=None):
+  def __init__(self, game, c_state=None, c_game=None):
     """Returns a new state.
 
     Args:
@@ -601,6 +602,9 @@ class HanabiState(object):
     if c_state is None:
       self._game = game.c_game
       lib.NewState(self._game, self._state)
+    elif c_game is not None:
+      self._game = c_game
+      lib.CopyState(c_state, self._state)
     else:
       self._game = lib.StateParentGame(c_state)
       lib.CopyState(c_state, self._state)
@@ -759,6 +763,47 @@ class HanabiState(object):
       lib.StateGetMoveHistory(self._state, i, c_history_item)
       history.append(HanabiHistoryItem(c_history_item))
     return history
+  
+  def to_json(self):
+    """Serialize the HanabiState to a JSON string."""
+    json_state = lib.StateToJson(self._state)
+    if json_state == ffi.NULL:
+        raise ValueError("Serialization failed: StateToJson returned NULL.")
+    json_state_result = encode_ffi_string(json_state)
+    lib.DeleteString(json_state)
+
+    json_game = lib.GameToJson(self._game)
+    if json_game == ffi.NULL:
+        raise ValueError("Serialization failed: GameToJson returned NULL.")
+    json_game_result = encode_ffi_string(json_game)
+    lib.DeleteString(json_game)
+
+    return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})
+  
+  @classmethod
+  def from_json(cls, json_str):
+    """Deserialize a JSON string to create a HanabiState object."""
+    if not isinstance(json_str, str):
+      raise TypeError("json_str must be a string.")
+    
+    combined_json = json.loads(json_str)
+    if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:
+        raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")
+    
+    # Deserialize the HanabiGame
+    game_json_str = combined_json['HanabiGame']
+    c_game = ffi.new("pyhanabi_game_t*")
+    success = lib.GameFromJson(game_json_str.encode('ascii'), c_game)
+    if not success:
+      raise ValueError("Failed to deserialize HanabiGame from JSON")
+
+    # Deserialize the HanabiState
+    state_json_str = combined_json['HanabiState']
+    c_state = ffi.new("pyhanabi_state_t*")
+    success = lib.StateFromJson(state_json_str.encode('ascii'), c_state, c_game)
+    if not success:
+      raise ValueError("Failed to deserialize HanabiState from JSON")
+    return cls(None, c_state, c_game)
 
   def __str__(self):
     c_string = lib.StateToString(self._state)
@@ -904,7 +949,7 @@ class HanabiGame(object):
   
   def to_json(self):
     """Serialize the game to a JSON string."""
-    c_string = lib.GameToJSON(self._game)
+    c_string = lib.GameToJson(self._game)
     if c_string == ffi.NULL:
         raise ValueError("Serialization failed: GameToJSON returned NULL.")
     json_str = encode_ffi_string(c_string)
@@ -917,7 +962,7 @@ class HanabiGame(object):
     if not isinstance(json_str, str):
       raise TypeError("json_str must be a string.")
     c_game = ffi.new("pyhanabi_game_t*")
-    success = lib.GameFromJSON(json_str.encode('ascii'), c_game)
+    success = lib.GameFromJson(json_str.encode('ascii'), c_game)
     if not success:
       raise ValueError("Failed to deserialize HanabiGame from JSON")
     return cls(c_game=c_game)
