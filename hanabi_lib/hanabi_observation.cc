@@ -67,8 +67,7 @@ void ChangeHistoryItemToObserverRelative(int observer_pid, int num_players,
 
 HanabiObservation::HanabiObservation(const HanabiState& state,
                                      int observing_player)
-    : cur_player_offset_(PlayerToOffset(state.CurPlayer(), observing_player,
-                                        state.ParentGame()->NumPlayers())),
+    : cur_player_offset_(PlayerToOffset(state.CurPlayer(), observing_player, state.ParentGame()->NumPlayers())),
       discard_pile_(state.DiscardPile()),
       fireworks_(state.Fireworks()),
       deck_size_(state.Deck().Size()),
@@ -76,14 +75,11 @@ HanabiObservation::HanabiObservation(const HanabiState& state,
       life_tokens_(state.LifeTokens()),
       legal_moves_(state.LegalMoves(observing_player)),
       parent_game_(state.ParentGame()) {
-  REQUIRE(observing_player >= 0 &&
-          observing_player < state.ParentGame()->NumPlayers());
+  REQUIRE(observing_player >= 0 && observing_player < state.ParentGame()->NumPlayers());
   hands_.reserve(state.Hands().size());
-  const bool hide_knowledge =
-      state.ParentGame()->ObservationType() == HanabiGame::kMinimal;
+  const bool hide_knowledge = state.ParentGame()->ObservationType() == HanabiGame::kMinimal;
   const bool show_cards = state.ParentGame()->ObservationType() == HanabiGame::kSeer;
-  hands_.push_back(
-      HanabiHand(state.Hands()[observing_player], !show_cards, hide_knowledge));
+  hands_.push_back(HanabiHand(state.Hands()[observing_player], !show_cards, hide_knowledge));
   for (int offset = 1; offset < state.ParentGame()->NumPlayers(); ++offset) {
     hands_.push_back(HanabiHand(state.Hands()[(observing_player + offset) %
                                               state.ParentGame()->NumPlayers()],

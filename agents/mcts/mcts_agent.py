@@ -290,6 +290,9 @@ class MCTS_Agent_Conc(MCTS_Agent, Agent):
         if observation["current_player_offset"] != 0:
             return None
         
+        print(f"\n\n\n==================== Observation of Agent {observation['current_player']} ====================\n\n{observation['pyhanabi']}\n\n\n")
+        print(f"\n\n\n==================== New Observation of Agent {observation['current_player']} ====================\n\n{state.observation(observation['current_player'])}\n\n\n")
+        
         state_json = state.to_json()
         state = pyhanabi.HanabiState.from_json(state_json)
 
@@ -349,7 +352,6 @@ class MCTS_Worker(threading.Thread):
         elapsed_time = 0
 
         while rollout < self.max_rollout_num and elapsed_time < self.max_time_limit:
-            #print(f"{threading.current_thread().getName()} Rollout: {rollout} / {self.max_rollout_num} and Elapsed Time: {elapsed_time} / {self.max_time_limit}")
             self.agent.environment.state = self.agent.root_state.copy()
             self.agent.environment.replace_hand(self.agent.player_id)
 
