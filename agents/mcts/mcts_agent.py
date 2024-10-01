@@ -1,8 +1,7 @@
 import math
 import time
 from collections import defaultdict
-from queue import Queue
-import threading
+import ray
 import pyhanabi
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
@@ -44,8 +43,8 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_time_limit = 1000
-        self.max_rollout_num = 50
+        self.max_time_limit = 10000
+        self.max_rollout_num = 1000
         self.max_simulation_steps = 3
         self.max_depth = 100
         self.exploration_weight = 2.5
@@ -275,77 +274,70 @@ class MCTS_Agent(Agent):
         return tree_string
 
 
-class MCTS_Agent_Conc(MCTS_Agent, Agent):
+class MCTS_Agent_Conc(MCTS_Agent):
     def __init__(self, config):
         super().__init__(config)
-        self.workers = [
-            MCTS_Worker(config, self.max_time_limit, self.max_rollout_num), 
-            MCTS_Worker(config, self.max_time_limit, self.max_rollout_num)
-        ]
+        if not ray.is_initialized():
+            ray.init()
 
-        for worker in self.workers:
-            worker.start()
+        num_workers = 8
+        worker_max_time_limit = self.max_time_limit // num_workers
+        worker_max_rollout_num = self.max_rollout_num // num_workers
+
+        self.workers = [
+            MCTS_Worker.remote(config, worker_max_time_limit, worker_max_rollout_num) for _ in range(num_workers)
+        ]
 
     def act(self, observation, state):
         if observation["current_player_offset"] != 0:
             return None
-        
-        print(f"\n\n\n==================== Observation of Agent {observation['current_player']} ====================\n\n{observation['pyhanabi']}\n\n\n")
-        print(f"\n\n\n==================== New Observation of Agent {observation['current_player']} ====================\n\n{state.observation(observation['current_player'])}\n\n\n")
-        
-        state_json = state.to_json()
-        state = pyhanabi.HanabiState.from_json(state_json)
+
+        if self.playable_now_convention:
+            action = Ruleset.playable_now_convention(observation)
+            if action is not None:
+                return action
 
         self.reset(state)
 
-        # Use the worker to perform MCTS search
-        for worker in self.workers:
-            worker.task_queue.put((observation, state))
+        # Serialize the state to JSON
+        state_json = state.to_json()
 
-        for worker in self.workers:
-            worker.task_queue.join()
+        # Serialize the observation
+        observation_copy = observation.copy()
+        current_player = observation_copy["current_player"]
+        observation_copy["pyhanabi"] = current_player
+
+        # Use the workers to perform MCTS search
+        worker_futures = [
+            worker.perform_mcts_search.remote(observation_copy, state_json)
+            for worker in self.workers
+        ]
+
+        # Get results from workers
+        worker_results = ray.get(worker_futures)
 
         # Merge results
-        worker_results = []
-        for worker in self.workers:
-            while not worker.result_queue.empty():
-                worker_results.append(worker.result_queue.get())
         merge_results(self, worker_results)
-
 
         self.root_node.focused_state = self.root_state.copy()
         best_node = self.mcts_choose(self.root_node)
 
         return best_node.initial_move()
+    
 
-    def __del__(self):
-        if hasattr(self, 'workers'):
-            for worker in self.workers:
-                worker.task_queue.put(None)
-            for worker in self.workers:
-                worker.join()
-
-
-
-class MCTS_Worker(threading.Thread):
+@ray.remote(num_cpus=1)
+class MCTS_Worker:
     def __init__(self, config, max_time_limit, max_rollout_num):
-        super().__init__()
         self.agent = MCTS_Agent(config)
         self.max_time_limit = max_time_limit
         self.max_rollout_num = max_rollout_num
-        self.task_queue = Queue()
-        self.result_queue = Queue()
 
-    def run(self):
-        while True:
-            task = self.task_queue.get()
-            if task is None:
-                break
-            observation, state = task
-            self.perform_mcts_search(observation, state)
-            self.task_queue.task_done()
+    def perform_mcts_search(self, observation, state_json):
+        # Reconstruct the state and observation
+        state = pyhanabi.HanabiState.from_json(state_json)
+        current_player = observation['pyhanabi']
+        observation['pyhanabi'] = state.observation(current_player)
 
-    def perform_mcts_search(self, observation, state):
         self.agent.reset(state)
         rollout = 0
         start_time = time.time()
@@ -362,13 +354,63 @@ class MCTS_Worker(threading.Thread):
             rollout += 1
             elapsed_time = (time.time() - start_time) * 1000
 
-        self.result_queue.put((self.agent.children, self.agent.Q, self.agent.N))
+        print(f"Worker finished {rollout}/{self.max_rollout_num} rollouts in {elapsed_time:.2f}/{self.max_time_limit} ms")
+
+        # Serialize the nodes before returning
+        serialized_children = self.serialize_children(self.agent.children)
+        serialized_Q = self.serialize_Q_or_N(self.agent.Q)
+        serialized_N = self.serialize_Q_or_N(self.agent.N)
+
+        return (serialized_children, serialized_Q, serialized_N)
+
+    def serialize_children(self, children):
+        serialized = {}
+        for node, child_nodes in children.items():
+            node_json = node.to_json()
+            child_nodes_json = [child_node.to_json() for child_node in child_nodes]
+            serialized[node_json] = child_nodes_json
+        return serialized
+
+    def serialize_Q_or_N(self, Q_or_N):
+        serialized = {}
+        for node, value in Q_or_N.items():
+            node_json = node.to_json()
+            serialized[node_json] = value
+        return serialized
 
 
 def merge_results(mcts_agent, worker_results):
-    for children, Q, N in worker_results:
-        mcts_agent.children.update(children)
-        for node, q_value in Q.items():
+    key_to_node = {}  # To avoid recreating nodes
+    for serialized_children, serialized_Q, serialized_N in worker_results:
+        # Deserialize and merge children
+        for node_json, child_nodes_json in serialized_children.items():
+            node = key_to_node.get(node_json)
+            if node is None:
+                node = MCTS_Node.from_json(node_json)
+                node.rules = mcts_agent.rules
+                key_to_node[node_json] = node
+            if node not in mcts_agent.children:
+                mcts_agent.children[node] = set()
+            for child_json in child_nodes_json:
+                child_node = key_to_node.get(child_json)
+                if child_node is None:
+                    child_node = MCTS_Node.from_json(child_json)
+                    child_node.rules = mcts_agent.rules
+                    key_to_node[child_json] = child_node
+                mcts_agent.children[node].add(child_node)
+        # Deserialize and merge Q
+        for node_json, q_value in serialized_Q.items():
+            node = key_to_node.get(node_json)
+            if node is None:
+                node = MCTS_Node.from_json(node_json)
+                node.rules = mcts_agent.rules
+                key_to_node[node_json] = node
             mcts_agent.Q[node] += q_value
-        for node, n_value in N.items():
+        # Deserialize and merge N
+        for node_json, n_value in serialized_N.items():
+            node = key_to_node.get(node_json)
+            if node is None:
+                node = MCTS_Node.from_json(node_json)
+                node.rules = mcts_agent.rules
+                key_to_node[node_json] = node
             mcts_agent.N[node] += n_value

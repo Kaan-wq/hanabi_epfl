@@ -1,4 +1,6 @@
 import random
+import json
+import pyhanabi
 
 class MCTS_Node:
     """
@@ -41,7 +43,18 @@ class MCTS_Node:
         return f"{self.moves}"
 
     def __hash__(self):
-        return hash(self.moves)
+        return hash(self.to_json())
 
     def __eq__(self, other):
-        return self.moves == other.moves
+        return self.to_json() == other.to_json()
+
+    def to_json(self):
+        ser_moves = [move.to_json() for move in self.moves]
+        return json.dumps({'moves': ser_moves})
+    
+    @classmethod
+    def from_json(cls, json_node_str):
+        json_node = json.loads(json_node_str)
+        ser_moves = json_node['moves']
+        moves = tuple(pyhanabi.HanabiMove.from_json(move_json) for move_json in ser_moves)
+        return cls(moves, rules=None)

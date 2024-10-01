@@ -125,7 +125,6 @@ def get_probability_useless(observation, player_offset=0):
     probability_useless[hand_index] = useless_possibilities / total_possibilities
   return probability_useless
 
-# MB: Added for use in RIS-MCTS discard
 # The probability useless counts cards that are not
 # This one computes probability that it is not a CRITICAL card, where critical means regret when discarding
 def get_probability_notcritical(observation, player_offset=0):
@@ -171,7 +170,6 @@ def get_max_fireworks(observation):
 
 
 class Ruleset():
-  #MB: For RIS-MCTS
   @staticmethod
   def playable_now_convention(observation):
     fireworks = observation["fireworks"]
@@ -184,17 +182,13 @@ class Ruleset():
     history_move = history_moves[0]
     card_info_revealed = history_move.card_info_newly_revealed()
     action = history_move.move().to_dict()
-    #print(f"Ruleset.playable_now_convention: Last move was {action}")
-    #print(f"Ruleset.playable_now_convention: card_info_revealed was {card_info_revealed}")
     if card_info_revealed:
       if action["target_offset"] == 1:
         hand_index = card_info_revealed[0]
         if len(card_info_revealed) == 1:
           # Double check a plausible card is playable
           plausible_cards = get_plausible_cards(observation,0,hand_index)
-          #print(f"Ruleset.playable_now_convention: been told once")
           if any(playable_card(plausible_card,fireworks) for plausible_card in plausible_cards):
-            #print(f"Ruleset.playable_now_convention: triggered!")
             return {'action_type': 'PLAY', 'card_index': hand_index}
     return None
 
@@ -232,7 +226,6 @@ class Ruleset():
       for card in plausible_cards:
         color = colors[card.color()]
         rank = card.rank()
-        # if (rank>=fireworks[color] and rank<max_fireworks[color]):
         if (rank < max_fireworks[color]):
           eventually_playable = True
           break
@@ -337,7 +330,6 @@ class Ruleset():
     return Ruleset.tell_playable_card_outer(observation)
 
   # Note: this follows the version of the rule that's used on VanDenBergh, which does not take into account whether or not they already know that information
-  # MB: Bug fixed immediate return of max affected + allow consideration of hints
   @staticmethod
   def tell_most_information_factory(consider_hints=False):
     def tell_most_information(observation):
@@ -505,7 +497,6 @@ class Ruleset():
       return None
     return discard_probably_useless_treshold
 
-  # MB: Added for RIS branching
   # Tell player who knows something about a playable card the remaining information
   @staticmethod
   def complete_tell_useful(observation):
@@ -523,7 +514,6 @@ class Ruleset():
               return {'action_type': 'REVEAL_RANK', 'rank': card['rank'], 'target_offset': player_offset}
     return None
 
-  # MB: Added for RIS branching
   # Tell player who knows something about a discardabe card the remaining information
   @staticmethod
   def complete_tell_dispensable(observation):
@@ -541,7 +531,6 @@ class Ruleset():
               return {'action_type': 'REVEAL_RANK', 'rank': card['rank'], 'target_offset': player_offset}
     return None
 
-  # MB: Added for RIS branching
   # Tell player who knows something about a not playable, but not discardable card the remaining information
   @staticmethod
   def complete_tell_unplayable(observation):
@@ -559,15 +548,14 @@ class Ruleset():
               return {'action_type': 'REVEAL_RANK', 'rank': card['rank'], 'target_offset': player_offset}
     return None
 
-  # MB: Added for RIS branching
   @staticmethod
   def play_probably_safe_late_factory(treshold=0.4, deck_size=5):
     def play_probably_safe_late(observation):
       if observation["deck_size"] <= deck_size:
         return Ruleset.play_probably_safe_factory(treshold)(observation)
     return play_probably_safe_late
+  
 
-  # MB: Discard a definite safe card. If not discard card most confident is not critical
   @staticmethod
   def discard_most_confident(observation):
     if observation['information_tokens'] == 8:
@@ -578,5 +566,3 @@ class Ruleset():
     if action is None:
       action = Ruleset.discard_oldest_first(observation)  # Shouldn't reach here but just in case
     return action
-
-
