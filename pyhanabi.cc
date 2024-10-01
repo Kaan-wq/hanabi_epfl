@@ -1022,4 +1022,8 @@ bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_
   }
 }
 
+/* ============================= HanabiObservation ============================= */
+
+
+
 } /* extern "C" */

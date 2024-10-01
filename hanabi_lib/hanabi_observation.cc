@@ -13,9 +13,16 @@
 // limitations under the License.
 
 #include "hanabi_observation.h"
+#include "hanabi_card.h"
+#include "hanabi_hand.h"
+#include "hanabi_history_item.h"
+#include "hanabi_move.h"
+#include "hanabi_game.h"
 
 #include <algorithm>
 #include <cassert>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #include "util.h"
 
@@ -134,5 +141,92 @@ bool HanabiObservation::CardPlayableOnFireworks(int color, int rank) const {
   }
   return rank == fireworks_[color];
 }
+
+// =========================== Serialization + Deserialization ===========================
+json HanabiObservation::toJSON() const {
+  json j;
+
+  // Serialize simple types
+  j["cur_player_offset"] = cur_player_offset_;
+  j["deck_size"] = deck_size_;
+  j["information_tokens"] = information_tokens_;
+  j["life_tokens"] = life_tokens_;
+  j["fireworks"] = fireworks_;
+
+  // Serialize hands_
+  j["hands"] = json::array();
+  for (const auto& hand : hands_) {
+    j["hands"].push_back(hand.toJSON());
+  }
+
+  // Serialize discard_pile_
+  j["discard_pile"] = json::array();
+  for (const auto& card : discard_pile_) {
+    j["discard_pile"].push_back(card.toJSON());
+  }
+
+  // Serialize last_moves_
+  j["last_moves"] = json::array();
+  for (const auto& item : last_moves_) {
+    j["last_moves"].push_back(item.toJSON());
+  }
+
+  // Serialize legal_moves_
+  j["legal_moves"] = json::array();
+  for (const auto& move : legal_moves_) {
+    j["legal_moves"].push_back(move.toJSON());
+  }
+
+  // Serialize parent_game_
+  if (parent_game_) {
+    j["parent_game"] = parent_game_->toJSON();
+  } else {
+    j["parent_game"] = nullptr;
+  }
+
+  return j;
+}
+
+HanabiObservation HanabiObservation::fromJSON(const nlohmann::json& j) {
+  HanabiObservation obs;
+
+  // Deserialize simple types
+  obs.cur_player_offset_ = j.at("cur_player_offset");
+  obs.deck_size_ = j.at("deck_size");
+  obs.information_tokens_ = j.at("information_tokens");
+  obs.life_tokens_ = j.at("life_tokens");
+  obs.fireworks_ = j.at("fireworks").get<std::vector<int>>();
+
+  // Deserialize hands_
+  for (const auto& hand_json : j.at("hands")) {
+    obs.hands_.push_back(HanabiHand::fromJSON(hand_json));
+  }
+
+  // Deserialize discard_pile_
+  for (const auto& card_json : j.at("discard_pile")) {
+    obs.discard_pile_.push_back(HanabiCard::fromJSON(card_json));
+  }
+
+  // Deserialize last_moves_
+  for (const auto& item_json : j.at("last_moves")) {
+    obs.last_moves_.push_back(HanabiHistoryItem::fromJSON(item_json));
+  }
+  
+  // Deserialize legal_moves_
+  for (const auto& move_json : j.at("legal_moves")) {
+    obs.legal_moves_.push_back(HanabiMove::fromJSON(move_json));
+  }
+
+  // Deserialize parent_game_
+  if (!j.at("parent_game").is_null()) {
+    obs.parent_game_ = new HanabiGame(HanabiGame::fromJSON(j.at("parent_game")));
+  } else {
+    obs.parent_game_ = nullptr;
+  }
+
+  return obs;
+}
+
+// ========================================================================================
 
 }  // namespace hanabi_learning_env

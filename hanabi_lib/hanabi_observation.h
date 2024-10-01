@@ -17,6 +17,7 @@
 
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_game.h"
@@ -30,9 +31,17 @@ namespace hanabi_learning_env {
 // Agent observation of a HanabiState
 class HanabiObservation {
  public:
+  // Default constructor for serialization
+  HanabiObservation() = default;
+
   HanabiObservation(const HanabiState& state, int observing_player);
 
   std::string ToString() const;
+  
+  // ========= Serialization + Deserialization =========
+  nlohmann::json toJSON() const;
+  static HanabiObservation fromJSON(const nlohmann::json& j);
+  // ===================================================
 
   // offset of current player from observing player.
   int CurPlayerOffset() const { return cur_player_offset_; }
