@@ -184,56 +184,45 @@ class HanabiEnv(Environment):
     return obs
 
   def _extract_dict_from_backend(self, player_id, observation):
-    """Extract a dict of features from an observation from the backend.
+    state = self.state
+    game = self.game
 
-    Args:
-      player_id: Int, player from whose perspective we generate the observation.
-      observation: A `pyhanabi.HanabiObservation` object.
+    legal_moves = list(observation.legal_moves())
+    card_knowledge = list(observation.card_knowledge())
+    observed_hands = list(observation.observed_hands())
+    fireworks = state.fireworks()
 
-    Returns:
-      obs_dict: dict, mapping from HanabiObservation to a dict.
-    """
-    obs_dict = {}
-    obs_dict["current_player"] = self.state.cur_player()
-    obs_dict["current_player_offset"] = observation.cur_player_offset()
-    obs_dict["life_tokens"] = observation.life_tokens()
-    obs_dict["information_tokens"] = observation.information_tokens()
-    obs_dict["num_players"] = observation.num_players()
-    obs_dict["deck_size"] = observation.deck_size()
-    obs_dict["turns_to_play"] = self.state.turns_to_play()
+    obs_dict = {
+      "current_player": state.cur_player(),
+      "current_player_offset": observation.cur_player_offset(),
+      "life_tokens": observation.life_tokens(),
+      "information_tokens": observation.information_tokens(),
+      "num_players": observation.num_players(),
+      "deck_size": observation.deck_size(),
+      "turns_to_play": state.turns_to_play(),
+      "fireworks": {color: firework for color, firework in zip(pyhanabi.COLOR_CHAR, fireworks)},
+      "legal_moves": [move.to_dict() for move in legal_moves],
+      "legal_moves_as_int": [game.get_move_uid(move) for move in legal_moves],
+      "observed_hands": [[card.to_dict() for card in player_hand] for player_hand in observed_hands],
+      "discard_pile": [card.to_dict() for card in observation.discard_pile()],
+      "card_knowledge": [
+        {
+          "color": pyhanabi.color_idx_to_char(hint.color()) if hint.color() is not None else None,
+          "rank": hint.rank()
+        } for player_hints in card_knowledge for hint in player_hints
+      ],
+      "pyhanabi": observation
+    }
 
-    obs_dict["fireworks"] = {}
-    fireworks = self.state.fireworks()
-    for color, firework in zip(pyhanabi.COLOR_CHAR, fireworks):
-      obs_dict["fireworks"][color] = firework
-
-    obs_dict["legal_moves"] = []
-    obs_dict["legal_moves_as_int"] = []
-    for move in observation.legal_moves():
-      obs_dict["legal_moves"].append(move.to_dict())
-      obs_dict["legal_moves_as_int"].append(self.game.get_move_uid(move))
-
-    obs_dict["observed_hands"] = []
-    for player_hand in observation.observed_hands():
-      cards = [card.to_dict() for card in player_hand]
-      obs_dict["observed_hands"].append(cards)
-
-    obs_dict["discard_pile"] = [
-        card.to_dict() for card in observation.discard_pile()
+    obs_dict["card_knowledge"] = [
+      [
+        {
+          "color": pyhanabi.color_idx_to_char(hint.color()) if hint.color() is not None else None,
+          "rank": hint.rank()
+        } for hint in player_hints
+      ] for player_hints in card_knowledge
     ]
-    obs_dict["card_knowledge"] = []
-    for player_hints in observation.card_knowledge():
-      player_hints_as_dicts = []
-      for hint in player_hints:
-        hint_d = {}
-        if hint.color() is not None:
-          hint_d["color"] = pyhanabi.color_idx_to_char(hint.color())
-        else:
-          hint_d["color"] = None
-        hint_d["rank"] = hint.rank()
-        player_hints_as_dicts.append(hint_d)
-      obs_dict["card_knowledge"].append(player_hints_as_dicts)
-    obs_dict["pyhanabi"] = observation
+
     return obs_dict
 
   def _build_move(self, action):

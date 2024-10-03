@@ -54,7 +54,6 @@ std::string HanabiHand::CardKnowledge::ToString() const {
   assert(color_.Range() <= 8);
 
   for (int c = 0; c < color_.Range(); ++c) {
-
     if (color_.IsPlausible(c)) {
       result += ColorIndexToChar(c);
     }
@@ -102,7 +101,7 @@ void HanabiHand::RemoveFromHand(int card_index,
 
 void HanabiHand::InsertCard(HanabiCard card,int card_index) {
   // MB: No reset of card knowledge and insertion of card into hand
-  //MB: The choise of Insert
+  // MB: The choise of Insert
   REQUIRE(card.IsValid());
   cards_.insert(cards_.begin()+card_index,card);
 }

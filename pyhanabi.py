@@ -985,6 +985,12 @@ class HanabiObservation(object):
     self._game = game
     lib.NewObservation(state, player, self._observation)
 
+    self._max_hand_size = 5
+    self._knowledge_pool = [
+      ffi.new("pyhanabi_card_knowledge_t*")
+      for _ in range(self.num_players() * self._max_hand_size)
+    ]
+
   def __str__(self):
     c_string = lib.ObsToString(self._observation)
     string = encode_ffi_string(c_string)
@@ -1035,19 +1041,19 @@ class HanabiObservation(object):
     Each HanabiCardKnowledge for a card gives the knowledge about the cards
     accumulated over all past reveal actions.
     """
+    num_players = self.num_players()
+    return [
+      [
+        HanabiCardKnowledge(self._get_c_knowledge(pid, i))
+        for i in range(lib.ObsGetHandSize(self._observation, pid))
+      ]
+      for pid in range(num_players)
+    ]
 
-    card_knowledge_list = []
-    for pid in range(self.num_players()):
-      player_card_knowledge = []
-      hand_size = lib.ObsGetHandSize(self._observation, pid)
-      for i in range(hand_size):
-        c_knowledge = ffi.new("pyhanabi_card_knowledge_t*")
-        c_card = ffi.new("pyhanabi_card_t*")
-        lib.ObsGetHandCard(self._observation, pid, i, c_card)
-        lib.ObsGetHandCardKnowledge(self._observation, pid, i, c_knowledge)
-        player_card_knowledge.append(HanabiCardKnowledge(c_knowledge))
-      card_knowledge_list.append(player_card_knowledge)
-    return card_knowledge_list
+  def _get_c_knowledge(self, pid, i):
+    c_knowledge = self._knowledge_pool[pid * self._max_hand_size + i]
+    lib.ObsGetHandCardKnowledge(self._observation, pid, i, c_knowledge)
+    return c_knowledge
 
   def discard_pile(self):
     """Returns a list of all discarded cards, in order they were discarded."""
