@@ -42,20 +42,15 @@ class MCTS_Agent(Agent):
         self.root_node = None
         self.root_state = None
         self.player_id = config["player_id"]
+        # effect of rules, effect of van_der_bergh, plot of rolouts vs score, representation for alpha-0, alphaGO-0, read papers, 
 
-        self.max_time_limit = 10000
-        self.max_rollout_num = 1000
-        self.max_simulation_steps = 3
-        self.max_depth = 100
-        self.exploration_weight = 2.5
+        self.max_time_limit = config.get("max_time_limit", 100000)
+        self.max_rollout_num = config.get("max_rollout_num", 50)
+        self.max_simulation_steps = config.get("max_simulation_steps", 3)
+        self.max_depth = config.get("max_depth", 6)
+        self.exploration_weight = config.get("exploration_weight", 2.5)
 
-        self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
-        self.determine_type = mcts_env.DetermineType.RESTORE
-        self.score_type = mcts_env.ScoreType.SCORE
-
-        self.playable_now_convention = False
-        self.playable_now_convention_sim = False
-        self.rules = [
+        self.rules = config.get("rules", [
             Ruleset.tell_most_information_factory(True),
             Ruleset.tell_anyone_useful_card,
             Ruleset.tell_dispensable_factory(8),
@@ -65,9 +60,12 @@ class MCTS_Agent(Agent):
             Ruleset.play_probably_safe_factory(0.7, False),
             Ruleset.play_probably_safe_late_factory(0.4, 5),
             Ruleset.discard_most_confident,
-        ]
+        ])
+
+        self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
+        self.determine_type = mcts_env.DetermineType.RESTORE
+        self.score_type = mcts_env.ScoreType.SCORE
         self.mcts_type = config["mcts_types"][config["player_id"]]
-        self._edit_mcts_config(self.mcts_type, config)
 
         self.environment = mcts_env.make(
             "Hanabi-Full",
@@ -78,21 +76,9 @@ class MCTS_Agent(Agent):
         )
         self.max_information_tokens = config.get("information_tokens", 8)
 
-    def _edit_mcts_config(self, mcts_type, config):
-        """Interpret the mcts_type character"""
-        if mcts_type == "0":  # default
-            pass
-        else:
-            print(f"'mcts_config_error {mcts_type}',")
-
     def act(self, observation, state):
         if observation["current_player_offset"] != 0:
             return None
-
-        if self.playable_now_convention:
-            action = Ruleset.playable_now_convention(observation)
-            if action is not None:
-                return action
 
         self.reset(state)
 
@@ -203,9 +189,7 @@ class MCTS_Agent(Agent):
         environment = self.environment
         environment.state = node.focused_state
         observations = environment._make_observation_all_players()
-
         agents = self.agents
-        playable_now_convention_sim = self.playable_now_convention_sim
 
         done = node.is_terminal()
         reward = environment.reward()
@@ -217,11 +201,6 @@ class MCTS_Agent(Agent):
             observation = player_observations[current_agent]
             agent = agents[observation["current_player"]]
             current_player_action = agent.act(observation)
-
-            if playable_now_convention_sim:
-                playable_now_action = Ruleset.playable_now_convention(observation)
-                if playable_now_action is not None:
-                    current_player_action = playable_now_action
 
             observations, reward, done, _ = environment.step(current_player_action)
             steps += 1
@@ -285,17 +264,13 @@ class MCTS_Agent_Conc(MCTS_Agent):
         worker_max_rollout_num = self.max_rollout_num // num_workers
 
         self.workers = [
-            MCTS_Worker.remote(config, worker_max_time_limit, worker_max_rollout_num) for _ in range(num_workers)
+            MCTS_Worker.remote(config, worker_max_time_limit, worker_max_rollout_num)
+            for _ in range(num_workers)
         ]
 
     def act(self, observation, state):
         if observation["current_player_offset"] != 0:
             return None
-
-        if self.playable_now_convention:
-            action = Ruleset.playable_now_convention(observation)
-            if action is not None:
-                return action
 
         self.reset(state)
 
@@ -323,7 +298,7 @@ class MCTS_Agent_Conc(MCTS_Agent):
         best_node = self.mcts_choose(self.root_node)
 
         return best_node.initial_move()
-    
+
 
 @ray.remote(num_cpus=1)
 class MCTS_Worker:
@@ -354,7 +329,7 @@ class MCTS_Worker:
             rollout += 1
             elapsed_time = (time.time() - start_time) * 1000
 
-        print(f"Worker finished {rollout}/{self.max_rollout_num} rollouts in {elapsed_time:.2f}/{self.max_time_limit} ms")
+        #print(f"Worker finished {rollout}/{self.max_rollout_num} rollouts in {elapsed_time:.2f}/{self.max_time_limit} ms")
 
         # Serialize the nodes before returning
         serialized_children = self.serialize_children(self.agent.children)
@@ -380,37 +355,38 @@ class MCTS_Worker:
 
 
 def merge_results(mcts_agent, worker_results):
-    key_to_node = {}  # To avoid recreating nodes
+    key_to_node = {}
+    all_node_jsons = set()
+
+    # First pass: Collect all unique node_json strings
     for serialized_children, serialized_Q, serialized_N in worker_results:
-        # Deserialize and merge children
+        all_node_jsons.update(serialized_children.keys())
+        for child_nodes_json in serialized_children.values():
+            all_node_jsons.update(child_nodes_json)
+        all_node_jsons.update(serialized_Q.keys())
+        all_node_jsons.update(serialized_N.keys())
+
+    # Deserialize all unique nodes
+    for node_json in all_node_jsons:
+        node = MCTS_Node.from_json(node_json)
+        node.rules = mcts_agent.rules
+        key_to_node[node_json] = node
+
+    # Second pass: Merge the results using the deserialized nodes
+    for serialized_children, serialized_Q, serialized_N in worker_results:
+        # Merge children
         for node_json, child_nodes_json in serialized_children.items():
-            node = key_to_node.get(node_json)
-            if node is None:
-                node = MCTS_Node.from_json(node_json)
-                node.rules = mcts_agent.rules
-                key_to_node[node_json] = node
+            node = key_to_node[node_json]
             if node not in mcts_agent.children:
                 mcts_agent.children[node] = set()
             for child_json in child_nodes_json:
-                child_node = key_to_node.get(child_json)
-                if child_node is None:
-                    child_node = MCTS_Node.from_json(child_json)
-                    child_node.rules = mcts_agent.rules
-                    key_to_node[child_json] = child_node
+                child_node = key_to_node[child_json]
                 mcts_agent.children[node].add(child_node)
-        # Deserialize and merge Q
+        # Merge Q values
         for node_json, q_value in serialized_Q.items():
-            node = key_to_node.get(node_json)
-            if node is None:
-                node = MCTS_Node.from_json(node_json)
-                node.rules = mcts_agent.rules
-                key_to_node[node_json] = node
+            node = key_to_node[node_json]
             mcts_agent.Q[node] += q_value
-        # Deserialize and merge N
+        # Merge N values
         for node_json, n_value in serialized_N.items():
-            node = key_to_node.get(node_json)
-            if node is None:
-                node = MCTS_Node.from_json(node_json)
-                node.rules = mcts_agent.rules
-                key_to_node[node_json] = node
+            node = key_to_node[node_json]
             mcts_agent.N[node] += n_value

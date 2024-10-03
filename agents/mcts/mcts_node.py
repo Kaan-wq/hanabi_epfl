@@ -1,5 +1,5 @@
 import random
-import json
+import ujson as json
 import pyhanabi
 
 class MCTS_Node:
