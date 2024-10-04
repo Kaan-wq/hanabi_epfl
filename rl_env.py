@@ -123,7 +123,6 @@ class HanabiEnv(Environment):
     return self.game.max_moves()
 
   def step(self, action):
-    debug = False
     elapsed_time = int(round((time.time() - self.start_time)*1000))
 
     if isinstance(action, dict):
@@ -140,12 +139,10 @@ class HanabiEnv(Environment):
 
     # Apply the action to the state
     action_player = self.state.cur_player()
-    if debug: print(f"rl_env.step: Player {self.state.cur_player()} applying action {action}")
     self.state.apply_move(move)
     done = self.state.is_terminal()
 
     while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
-      if debug: print("rl_env.step: Dealing random card")
       self.state.deal_random_card()
 
     observations = self._make_observation_all_players()

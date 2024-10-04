@@ -5,6 +5,9 @@ import sys
 import getopt
 import time
 from tqdm import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 from rl_env import make
 from agents.rule_based.rule_based_agents import VanDenBerghAgent
 from agents.rule_based.rule_based_agents import OuterAgent
@@ -88,13 +91,19 @@ class Runner(object):
                 pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score)})
                 pbar.update(1)
 
-        print(f"\nScores: {[g['score'] for g in game_stats]}")
+        scores = [g['score'] for g in game_stats]
+        avg_score = np.mean(scores)
+        std_dev = np.std(scores)
+
+        print(f"\nScores: {scores}")
         print(f"Stats Keys: {list(game_stats[0].keys())}")
         print(f"Game Stats: {self.simplify_stats(game_stats)}")
         print(f"Player Stats: {[self.simplify_stats(p) for p in player_stats]}")
-        avg_score = sum([g["score"] for g in game_stats]) / self.flags['num_episodes']
         print(f"Average Score: {avg_score}")
+        print(f"Standard Deviation: {std_dev}")
         print(f"Errors: {errors}")
+
+        return avg_score, std_dev
 
     def simplify_stats(self, stats):
         """Extract just the numbers from the stats."""
@@ -103,8 +112,58 @@ class Runner(object):
     def print_state(self):
         self.environment.print_state()
 
+
+def run_simulation_and_plot():
+    """Runs multiple simulations and saves the results as a plot."""
+    max_depth_values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    avg_scores = []
+    std_devs = []
+
+    for max_depth in max_depth_values:
+        flags = {
+            'players': 2,
+            'num_episodes': 2,
+            'agent': 'MCTS_Agent_Conc',
+            'agents': 'MCTS_Agent_Conc',
+            'mcts_types': '00',
+            'max_depth': max_depth,
+        }
+        
+        flags['agent_classes'] = [flags['agent']] * flags['players']
+        
+        runner = Runner(flags)
+        avg_score, std_dev = runner.run()
+        avg_scores.append(avg_score)
+        std_devs.append(std_dev)
+
+    # Plotting
+    plt.figure(figsize=(12, 8))
+    sns.set_theme(style="whitegrid")
+    palette = sns.color_palette("deep", 10)
+
+    # Plotting with error bars
+    plt.errorbar(max_depth_values, avg_scores, yerr=std_devs, fmt='o', color=palette[0], ecolor='lightgray', elinewidth=2, capsize=5, label="Avg Score with Std Dev")
+    plt.plot(max_depth_values, avg_scores, marker='o', color=palette[1], markersize=8, linestyle='-', linewidth=2, label="Avg Score")
+    plt.grid(True, which='both', linestyle='--', linewidth=0.7, alpha=0.7)
+    plt.xlabel('Max Depth', fontsize=16, fontweight='bold', labelpad=10)
+    plt.ylabel('Average Score', fontsize=16, fontweight='bold', labelpad=10)
+    plt.title('Effect of Max Depth on Average Score', fontsize=18, fontweight='bold', pad=15)
+    plt.xticks(max_depth_values, fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.legend(loc='upper left', fontsize=12)
+
+    # Save the plot to a file
+    plt.tight_layout()
+    plt.savefig('max_depth.png')
+    print("Plot saved as 'max_depth.png'.")
+    
+
 if __name__ == "__main__":
     start_time = time.time()
+
+    run_simulation_and_plot()
+
+    '''
     flags = {
         'players': 3,
         'num_episodes': 1,
@@ -138,4 +197,5 @@ if __name__ == "__main__":
 
     runner = Runner(flags)
     runner.run()
+    '''
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

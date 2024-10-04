@@ -616,6 +616,8 @@ class HanabiState(object):
       for _ in range(self._num_players * self._max_hand_size)
     ]
 
+    self._discard_pool = ffi.new("pyhanabi_card_t*")
+
   def copy(self):
     """Returns a copy of the state."""
     return HanabiState(None, self._state)
@@ -645,7 +647,7 @@ class HanabiState(object):
   def discard_pile(self):
     """Returns a list of all discarded cards, in order they were discarded."""
     discards = []
-    c_card = ffi.new("pyhanabi_card_t*")
+    c_card = self._discard_pool
     for index in range(lib.StateDiscardPileSize(self._state)):
       lib.StateGetDiscard(self._state, index, c_card)
       discards.append(HanabiCard(c_card.color, c_card.rank))
@@ -1110,11 +1112,11 @@ class HanabiObservation(object):
 
     List is empty if cur_player() != 0 (observer is not currently acting).
     """
-    moves = []
-    for i in range(lib.ObsNumLegalMoves(self._observation)):
-      move = ffi.new("pyhanabi_move_t*")
-      lib.ObsGetLegalMove(self._observation, i, move)
-      moves.append(HanabiMove(move))
+    num_legal_moves = lib.ObsNumLegalMoves(self._observation)
+    moves = [ffi.new("pyhanabi_move_t*") for _ in range(num_legal_moves)]
+    for i in range(num_legal_moves):
+      lib.ObsGetLegalMove(self._observation, i, moves[i])
+      moves[i] = HanabiMove(moves[i])
     return moves
 
   def card_playable_on_fireworks(self, color, rank):
