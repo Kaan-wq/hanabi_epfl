@@ -47,7 +47,7 @@ class MCTS_Agent(Agent):
         self.max_time_limit = config.get("max_time_limit", 100000)
         self.max_rollout_num = config.get("max_rollout_num", 50)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
-        self.max_depth = config.get("max_depth", 6)
+        self.max_depth = config.get("max_depth", 10)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
         self.rules = config.get("rules", [

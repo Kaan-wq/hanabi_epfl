@@ -660,19 +660,11 @@ class HanabiState(object):
     played, this function returns [0, 0, 0, 0, 0]. When only the red 1 has been
     played, this function returns [1, 0, 0, 0, 0].
     """
-    firework_list = []
-    num_colors = 5
-    for c in range(num_colors):
-      firework_list.append(lib.StateFireworks(self._state, c))
-    return firework_list
+    return [lib.StateFireworks(self._state, c) for c in range(5)]
 
   def progress(self):
     """Utility function. Return the combined fireworks score"""
-    score=0
-    fireworks = self.fireworks()
-    for f in fireworks:
-      score += f
-    return score
+    return sum(self.fireworks())
 
   def score(self):
     """Utility function. Return the strict score"""

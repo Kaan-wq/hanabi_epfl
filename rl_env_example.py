@@ -94,6 +94,7 @@ class Runner(object):
         scores = [g['score'] for g in game_stats]
         avg_score = np.mean(scores)
         std_dev = np.std(scores)
+        std_error = std_dev / np.sqrt(len(scores))
 
         print(f"\nScores: {scores}")
         print(f"Stats Keys: {list(game_stats[0].keys())}")
@@ -103,7 +104,7 @@ class Runner(object):
         print(f"Standard Deviation: {std_dev}")
         print(f"Errors: {errors}")
 
-        return avg_score, std_dev
+        return avg_score, std_error
 
     def simplify_stats(self, stats):
         """Extract just the numbers from the stats."""
@@ -115,26 +116,29 @@ class Runner(object):
 
 def run_simulation_and_plot():
     """Runs multiple simulations and saves the results as a plot."""
-    max_depth_values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    max_depth_values = [1, 3, 5, 7, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    max_rollout_values = [10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000]
+    max_simulation_steps = [i for i in range(1, 11)]
     avg_scores = []
-    std_devs = []
+    std_errs = []
 
     for max_depth in max_depth_values:
         flags = {
             'players': 2,
-            'num_episodes': 2,
+            'num_episodes': 1,
             'agent': 'MCTS_Agent_Conc',
             'agents': 'MCTS_Agent_Conc',
             'mcts_types': '00',
             'max_depth': max_depth,
+            'max_rollout_num': 50
         }
         
         flags['agent_classes'] = [flags['agent']] * flags['players']
         
         runner = Runner(flags)
-        avg_score, std_dev = runner.run()
+        avg_score, std_error = runner.run()
         avg_scores.append(avg_score)
-        std_devs.append(std_dev)
+        std_errs.append(std_error)
 
     # Plotting
     plt.figure(figsize=(12, 8))
@@ -142,7 +146,7 @@ def run_simulation_and_plot():
     palette = sns.color_palette("deep", 10)
 
     # Plotting with error bars
-    plt.errorbar(max_depth_values, avg_scores, yerr=std_devs, fmt='o', color=palette[0], ecolor='lightgray', elinewidth=2, capsize=5, label="Avg Score with Std Dev")
+    plt.errorbar(max_depth_values, avg_scores, yerr=std_errs, fmt='o', color=palette[0], ecolor='lightgray', elinewidth=2, capsize=5, label="Std Error")
     plt.plot(max_depth_values, avg_scores, marker='o', color=palette[1], markersize=8, linestyle='-', linewidth=2, label="Avg Score")
     plt.grid(True, which='both', linestyle='--', linewidth=0.7, alpha=0.7)
     plt.xlabel('Max Depth', fontsize=16, fontweight='bold', labelpad=10)
@@ -161,9 +165,8 @@ def run_simulation_and_plot():
 if __name__ == "__main__":
     start_time = time.time()
 
-    run_simulation_and_plot()
+    #run_simulation_and_plot()
 
-    '''
     flags = {
         'players': 3,
         'num_episodes': 1,
@@ -197,5 +200,5 @@ if __name__ == "__main__":
 
     runner = Runner(flags)
     runner.run()
-    '''
+
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     openssh-server \
     gcc \
     cmake \
-    git
+    git \
+    nlohmann-json3-dev
 
 # Create SSH directory and set root password
 RUN mkdir /var/run/sshd
