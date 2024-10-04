@@ -198,7 +198,7 @@ class HanabiCard(object):
     Returns:
       d: dict, containing color and rank of card.
     """
-    return {"color": color_idx_to_char(self.color()), "rank": self.rank()}
+    return {"color": color_idx_to_char(self._color), "rank": self._rank}
 
 
 class HanabiCardKnowledge(object):
@@ -609,6 +609,13 @@ class HanabiState(object):
       self._game = lib.StateParentGame(c_state)
       lib.CopyState(c_state, self._state)
 
+    self._num_players = self.num_players()
+    self._max_hand_size = 5
+    self._card_pool = [
+      ffi.new("pyhanabi_card_t*")
+      for _ in range(self._num_players * self._max_hand_size)
+    ]
+
   def copy(self):
     """Returns a copy of the state."""
     return HanabiState(None, self._state)
@@ -689,11 +696,11 @@ class HanabiState(object):
   def player_hands(self):
     """Returns a list of all hands, with cards ordered oldest to newest."""
     hand_list = []
-    c_card = ffi.new("pyhanabi_card_t*")
-    for pid in range(self.num_players()):
+    for pid in range(self._num_players):
       player_hand = []
       hand_size = lib.StateGetHandSize(self._state, pid)
       for i in range(hand_size):
+        c_card = self._card_pool[pid * self._max_hand_size + i]
         lib.StateGetHandCard(self._state, pid, i, c_card)
         player_hand.append(HanabiCard(c_card.color, c_card.rank))
       hand_list.append(player_hand)
