@@ -54,8 +54,8 @@ class Runner(object):
         for i in range(len(self.agent_classes)):
             self.agent_config.update({'player_id': i})  # Update player_id for each agent
 
-            self.agent_config.update({'max_rollout_num': self.flags['max_rollout_num']}) # Update max_rollout_num for each agent
-            self.agent_config.update({'max_simulation_steps': self.flags['max_simulation_steps']}) # Update max_simulation_steps for each agent
+            #self.agent_config.update({'max_rollout_num': self.flags['max_rollout_num']}) # Update max_rollout_num for each agent
+            #self.agent_config.update({'max_simulation_steps': self.flags['max_simulation_steps']}) # Update max_simulation_steps for each agent
             #self.agent_config.update({'max_depth': self.flags['max_depth']}) # Update max_depth for each agent
 
             agents.append(self.agent_classes[i](self.agent_config))
@@ -172,9 +172,8 @@ def run_simulation_and_plot():
 if __name__ == "__main__":
     start_time = time.time()
 
-    run_simulation_and_plot()
+    #run_simulation_and_plot()
 
-    '''
     flags = {
         'players': 3,
         'num_episodes': 1,
@@ -208,6 +207,5 @@ if __name__ == "__main__":
 
     runner = Runner(flags)
     runner.run()
-    '''
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

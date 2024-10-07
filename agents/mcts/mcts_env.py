@@ -1,14 +1,12 @@
-import enum
+from enum import IntEnum
 import random
-import time
 
-import pyhanabi
-from agents.mcts.mcts_sampler import MCTS_Sampler
-from pyhanabi import HanabiMove
+from agents.mcts.cython.sampler.mcts_sampler import MCTS_Sampler
+from pyhanabi import HanabiMove, HanabiMoveType, AgentObservationType, CHANCE_PLAYER_ID, try_cdef, try_load
 from rl_env import HanabiEnv
 
 
-class DetermineType(enum.IntEnum):
+class DetermineType(IntEnum):
     """Move types, consistent with hanabi_lib/hanabi_move.h."""
 
     RESTORE = 0
@@ -16,7 +14,7 @@ class DetermineType(enum.IntEnum):
     NONE = 2
 
 
-class ScoreType(enum.IntEnum):
+class ScoreType(IntEnum):
     """Move types, consistent with hanabi_lib/hanabi_move.h."""
 
     SCORE = 0
@@ -41,7 +39,7 @@ class MCTS_Env(HanabiEnv):
             move = self._build_move(action)
         elif isinstance(action, int):
             move = self.game.get_move(action)
-        elif isinstance(action, pyhanabi.HanabiMove):
+        elif isinstance(action, HanabiMove):
             move = action
         else:
             raise ValueError("Expected action as dict or int, got: {}".format(action))
@@ -50,8 +48,8 @@ class MCTS_Env(HanabiEnv):
         action_player = self.state.cur_player()
 
         if (
-            move.type() == pyhanabi.HanabiMoveType.DISCARD
-            or move.type() == pyhanabi.HanabiMoveType.PLAY
+            move.type() == HanabiMoveType.DISCARD
+            or move.type() == HanabiMoveType.PLAY
         ):
             actioned_card = self.state.player_hands()[self.state.cur_player()][
                 move.card_index()
@@ -59,7 +57,7 @@ class MCTS_Env(HanabiEnv):
 
         self.state.apply_move(move)
 
-        while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
+        while self.state.cur_player() == CHANCE_PLAYER_ID:
             self.state.deal_random_card()
 
         if (
@@ -233,8 +231,8 @@ def make(
 
     if pyhanabi_path is not None:
         prefixes = (pyhanabi_path,)
-        assert pyhanabi.try_cdef(prefixes=prefixes), "cdef failed to load"
-        assert pyhanabi.try_load(prefixes=prefixes), "library failed to load"
+        assert try_cdef(prefixes=prefixes), "cdef failed to load"
+        assert try_load(prefixes=prefixes), "library failed to load"
 
     if (
         environment_name == "Hanabi-Full"
@@ -250,7 +248,7 @@ def make(
                 "score_type": score_type,
                 "max_information_tokens": 8,
                 "max_life_tokens": 3,
-                "observation_type": pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value,
+                "observation_type": AgentObservationType.CARD_KNOWLEDGE.value,
             }
         )
     else:

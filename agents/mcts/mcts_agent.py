@@ -44,10 +44,10 @@ class MCTS_Agent(Agent):
         self.player_id = config["player_id"]
         # effect of rules, effect of van_der_bergh, plot of rolouts vs score, representation for alpha-0, alphaGO-0, read papers, 
 
-        self.max_time_limit = config.get("max_time_limit", 100000000000000000000000)
+        self.max_time_limit = config.get("max_time_limit", 100)
         self.max_rollout_num = config.get("max_rollout_num", 50)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
-        self.max_depth = config.get("max_depth", 1000)
+        self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
         self.rules = config.get("rules", [
@@ -315,10 +315,10 @@ class MCTS_Worker:
 
         self.agent.reset(state)
         rollout = 0
-        start_time = time.time()
-        elapsed_time = 0
+        #start_time = time.time()
+        #elapsed_time = 0
 
-        while rollout < self.max_rollout_num and elapsed_time < self.max_time_limit:
+        while rollout < self.max_rollout_num:
             self.agent.environment.state = self.agent.root_state.copy()
             self.agent.environment.replace_hand(self.agent.player_id)
 
@@ -327,7 +327,7 @@ class MCTS_Worker:
 
             path, reward = self.agent.mcts_search(self.agent.root_node, observation)
             rollout += 1
-            elapsed_time = (time.time() - start_time) * 1000
+            #elapsed_time = (time.time() - start_time) * 1000
 
         #print(f"Worker finished {rollout}/{self.max_rollout_num} rollouts in {elapsed_time:.2f}/{self.max_time_limit} ms")
 
