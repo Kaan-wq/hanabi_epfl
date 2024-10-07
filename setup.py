@@ -18,6 +18,8 @@ setup(
             "language_level": "3",
             "boundscheck": False,
             "wraparound": False,
+            "cdivision": True,
+            "nonecheck": False,
         },
     ),
     zip_safe=False,

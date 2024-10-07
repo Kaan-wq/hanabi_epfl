@@ -1,15 +1,15 @@
 # RL environment for Hanabi, using an API similar to OpenAI Gym.
 
-from __future__ import absolute_import
-from __future__ import division
-
-import pyhanabi
-from pyhanabi import color_char_to_idx, HanabiMoveType
+from __future__ import absolute_import, division
 
 import time
+
+from pyhanabi import (CHANCE_PLAYER_ID, COLOR_CHAR, AgentObservationType,
+                      HanabiGame, HanabiMove, HanabiMoveType,
+                      color_char_to_idx, color_idx_to_char, try_cdef, try_load)
 from record_moves import RecordMoves
 
-MOVE_TYPES = [_.name for _ in pyhanabi.HanabiMoveType]
+MOVE_TYPES = [_.name for _ in HanabiMoveType]
 
 #-------------------------------------------------------------------------------
 # Environment API
@@ -91,7 +91,7 @@ class HanabiEnv(Environment):
           - random_start_player: bool, Random start player.
     """
     assert isinstance(config, dict), "Expected config to be of type dict."
-    self.game = pyhanabi.HanabiGame(config)
+    self.game = HanabiGame(config)
     self.players = self.game.num_players()
     self.record_moves = RecordMoves(self.players)
     self.start_time = time.time()
@@ -99,7 +99,7 @@ class HanabiEnv(Environment):
   def reset(self):
     """Resets the environment for a new game."""
     self.state = self.game.new_initial_state()
-    while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
+    while self.state.cur_player() == CHANCE_PLAYER_ID:
       self.state.deal_random_card()
     obs = self._make_observation_all_players()
     obs["current_player"] = self.state.cur_player()
@@ -131,7 +131,7 @@ class HanabiEnv(Environment):
     elif isinstance(action, int):
       # Convert int action into a Hanabi move.
       move = self.game.get_move(action)
-    elif isinstance(action, pyhanabi.HanabiMove):
+    elif isinstance(action, HanabiMove):
       move = action
     else:
       raise ValueError("Expected action as dict or int, got: {}".format(
@@ -142,7 +142,7 @@ class HanabiEnv(Environment):
     self.state.apply_move(move)
     done = self.state.is_terminal()
 
-    while self.state.cur_player() == pyhanabi.CHANCE_PLAYER_ID:
+    while self.state.cur_player() == CHANCE_PLAYER_ID:
       self.state.deal_random_card()
 
     observations = self._make_observation_all_players()
@@ -197,14 +197,14 @@ class HanabiEnv(Environment):
       "num_players": observation.num_players(),
       "deck_size": observation.deck_size(),
       "turns_to_play": state.turns_to_play(),
-      "fireworks": {color: firework for color, firework in zip(pyhanabi.COLOR_CHAR, fireworks)},
+      "fireworks": {color: firework for color, firework in zip(COLOR_CHAR, fireworks)},
       "legal_moves": [move.to_dict() for move in legal_moves],
       "legal_moves_as_int": [game.get_move_uid(move) for move in legal_moves],
       "observed_hands": [[card.to_dict() for card in player_hand] for player_hand in observed_hands],
       "discard_pile": [card.to_dict() for card in observation.discard_pile()],
       "card_knowledge": [
         {
-          "color": pyhanabi.color_idx_to_char(hint.color()) if hint.color() is not None else None,
+          "color": color_idx_to_char(hint.color()) if hint.color() is not None else None,
           "rank": hint.rank()
         } for player_hints in card_knowledge for hint in player_hints
       ],
@@ -214,7 +214,7 @@ class HanabiEnv(Environment):
     obs_dict["card_knowledge"] = [
       [
         {
-          "color": pyhanabi.color_idx_to_char(hint.color()) if hint.color() is not None else None,
+          "color": color_idx_to_char(hint.color()) if hint.color() is not None else None,
           "rank": hint.rank()
         } for hint in player_hints
       ] for player_hints in card_knowledge
@@ -258,20 +258,20 @@ class HanabiEnv(Environment):
     target_offset = action.get("target_offset", None)
 
     if action_type == "PLAY":
-      move = pyhanabi.HanabiMove.get_play_move(card_index=card_index)
+      move = HanabiMove.get_play_move(card_index=card_index)
     elif action_type == "DISCARD":
-      move = pyhanabi.HanabiMove.get_discard_move(card_index=card_index)
+      move = HanabiMove.get_discard_move(card_index=card_index)
     elif action_type == "RETURN":
       player = action["player"]
-      move = pyhanabi.HanabiMove.get_return_move(card_index=card_index, player=player)
+      move = HanabiMove.get_return_move(card_index=card_index, player=player)
     elif action_type == "REVEAL_RANK":
       rank = action["rank"]
-      move = pyhanabi.HanabiMove.get_reveal_rank_move(target_offset=target_offset, rank=rank)
+      move = HanabiMove.get_reveal_rank_move(target_offset=target_offset, rank=rank)
     elif action_type == "REVEAL_COLOR":
       action_color = action["color"]
       assert isinstance(action_color, str)
       color = color_char_to_idx(action_color)
-      move = pyhanabi.HanabiMove.get_reveal_color_move(target_offset=target_offset, color=color)
+      move = HanabiMove.get_reveal_color_move(target_offset=target_offset, color=color)
     else:
       raise ValueError("Unknown action_type: {}".format(action_type))
 
@@ -300,8 +300,8 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
 
   if pyhanabi_path is not None:
     prefixes=(pyhanabi_path,)
-    assert pyhanabi.try_cdef(prefixes=prefixes), "cdef failed to load"
-    assert pyhanabi.try_load(prefixes=prefixes), "library failed to load"
+    assert try_cdef(prefixes=prefixes), "cdef failed to load"
+    assert try_load(prefixes=prefixes), "library failed to load"
 
   if (environment_name == "Hanabi-Full" or
       environment_name == "Hanabi-Full-CardKnowledge"):
@@ -318,7 +318,7 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
             "max_life_tokens":
                 3,
             "observation_type":
-                pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value,
+                AgentObservationType.CARD_KNOWLEDGE.value,
             'random_start_player':
                 True
         })
@@ -330,7 +330,7 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
             "players": num_players,
             "max_information_tokens": 8,
             "max_life_tokens": 3,
-            "observation_type": pyhanabi.AgentObservationType.MINIMAL.value
+            "observation_type": AgentObservationType.MINIMAL.value
         })
   elif environment_name == "Hanabi-Small":
     return HanabiEnv(
@@ -348,7 +348,7 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
             "max_life_tokens":
                 1,
             "observation_type":
-                pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value
+                AgentObservationType.CARD_KNOWLEDGE.value
         })
   elif environment_name == "Hanabi-Very-Small":
     return HanabiEnv(
@@ -366,7 +366,7 @@ def make(environment_name="Hanabi-Full", num_players=2, pyhanabi_path=None):
             "max_life_tokens":
                 1,
             "observation_type":
-                pyhanabi.AgentObservationType.CARD_KNOWLEDGE.value
+                AgentObservationType.CARD_KNOWLEDGE.value
         })
   else:
     raise ValueError("Unknown environment {}".format(environment_name))
