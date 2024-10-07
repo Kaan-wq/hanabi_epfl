@@ -7,7 +7,7 @@ from libc.stdlib cimport rand
 cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
 cdef char[5] CHAR_COLOR_STRINGS
 for i in range(5):
-    CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i].decode('utf-8')
+    CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]
 
 cdef inline object color_idx_to_char(int color_idx):
     if color_idx == -1:
