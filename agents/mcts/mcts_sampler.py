@@ -1,6 +1,21 @@
 import random
+import numpy as np
 
 from pyhanabi import HanabiCard
+
+PRECOMPUTED_CARDS = [
+    HanabiCard(color, rank)
+    for color in range(5) 
+    for rank in range(5)
+]
+
+INIT_DECK = [
+    3, 2, 2, 2, 1,
+    3, 2, 2, 2, 1,
+    3, 2, 2, 2, 1,
+    3, 2, 2, 2, 1,
+    3, 2, 2, 2, 1
+]
 
 
 class MCTS_Sampler(object):
@@ -121,23 +136,20 @@ class HanabiDeck(object):
             self.reset_deck()
 
     def get_deck(self):
-        num_ranks = self.num_ranks
-        card_count = self.card_count
-        return [
-            HanabiCard(idx // num_ranks, idx % num_ranks)
-            for idx, count in enumerate(card_count)
-            for _ in range(count)
-        ]
+        card_count = np.array(self.card_count, dtype=int)
+        valid_card_indices = np.nonzero(card_count)[0]
+        deck_list = np.repeat(valid_card_indices, card_count[valid_card_indices])
+        return [PRECOMPUTED_CARDS[idx] for idx in deck_list]
 
     def remove_by_knowledge(self, card_knowledge):
-        remove_all_card = self.remove_all_card
-        num_colors = self.num_colors
         num_ranks = self.num_ranks
-        for color in range(num_colors):
+        for color in range(self.num_colors):
             color_plausible = card_knowledge.color_plausible(color)
             for rank in range(num_ranks):
                 if not (color_plausible and card_knowledge.rank_plausible(rank)):
-                    remove_all_card(color, rank)
+                    card_idx = color * num_ranks + rank
+                    self.total_count -= self.card_count[card_idx]
+                    self.card_count[card_idx] = 0
 
     def remove_by_cards(self, cards):
         remove_card = self.remove_card
@@ -177,22 +189,18 @@ class HanabiDeck(object):
         self.total_count = total_count
 
     def reset_deck(self):
-        self.card_count = [
-            self.num_dict[r]
-            for _ in range(self.num_colors)
-            for r in range(self.num_ranks)
-        ]
-        self.total_count = sum(self.card_count)
+        self.card_count = INIT_DECK.copy()
+        self.total_count = 50
 
     def remove_card(self, color, rank):
-        card_idx = self.card_to_index(color, rank)
+        card_idx = color * self.num_ranks + rank
         if self.card_count[card_idx] == 0:
             return
         self.card_count[card_idx] -= 1
         self.total_count -= 1
 
     def remove_all_card(self, color, rank):
-        card_idx = self.card_to_index(color, rank)
+        card_idx = color * self.num_ranks + rank
         self.total_count -= self.card_count[card_idx]
         self.card_count[card_idx] = 0
 
@@ -223,7 +231,7 @@ class HanabiDeck(object):
             color_char = color_names[color]
             row = f"{color_char}       |"
             for rank in range(self.num_ranks):
-                index = self.card_to_index(color, rank)
+                index = color * self.num_ranks + rank
                 count = self.card_count[index]
                 row += f"   {count:2d}      "
             output.append(row)

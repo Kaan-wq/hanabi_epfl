@@ -1,4 +1,4 @@
-import math
+from math import sqrt, log
 import time
 from collections import defaultdict
 import ray
@@ -44,10 +44,10 @@ class MCTS_Agent(Agent):
         self.player_id = config["player_id"]
         # effect of rules, effect of van_der_bergh, plot of rolouts vs score, representation for alpha-0, alphaGO-0, read papers, 
 
-        self.max_time_limit = config.get("max_time_limit", 100000)
+        self.max_time_limit = config.get("max_time_limit", 100000000000000000000000)
         self.max_rollout_num = config.get("max_rollout_num", 50)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
-        self.max_depth = config.get("max_depth", 10)
+        self.max_depth = config.get("max_depth", 1000)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
         self.rules = config.get("rules", [
@@ -83,10 +83,10 @@ class MCTS_Agent(Agent):
         self.reset(state)
 
         rollout = 0
-        start_time = time.time()
-        elapsed_time = 0
+        #start_time = time.time()
+        #elapsed_time = 0
 
-        while rollout < self.max_rollout_num and elapsed_time < self.max_time_limit:
+        while rollout < self.max_rollout_num:
             self.environment.state = self.root_state.copy()
             self.environment.replace_hand(self.player_id)
 
@@ -95,7 +95,7 @@ class MCTS_Agent(Agent):
 
             path, reward = self.mcts_search(self.root_node, observation)
             rollout += 1
-            elapsed_time = (time.time() - start_time) * 1000
+            #elapsed_time = (time.time() - start_time) * 1000
 
         self.root_node.focused_state = self.root_state.copy()
         best_node = self.mcts_choose(self.root_node)
@@ -219,13 +219,13 @@ class MCTS_Agent(Agent):
     def uct_select(self, node):
         "Select a child of node, balancing exploration & exploitation"
 
-        log_N_node = math.log(self.N[node])
+        log_N_node = log(self.N[node])
         exploration_weight = self.exploration_weight
 
         def uct(child):
             Q_child = self.Q[child]
             N_child = self.N[child]
-            return (Q_child / N_child) + exploration_weight * math.sqrt(
+            return (Q_child / N_child) + exploration_weight * sqrt(
                 log_N_node / N_child
             )
 

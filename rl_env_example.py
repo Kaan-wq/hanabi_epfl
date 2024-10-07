@@ -53,6 +53,11 @@ class Runner(object):
 
         for i in range(len(self.agent_classes)):
             self.agent_config.update({'player_id': i})  # Update player_id for each agent
+
+            self.agent_config.update({'max_rollout_num': self.flags['max_rollout_num']}) # Update max_rollout_num for each agent
+            self.agent_config.update({'max_simulation_steps': self.flags['max_simulation_steps']}) # Update max_simulation_steps for each agent
+            #self.agent_config.update({'max_depth': self.flags['max_depth']}) # Update max_depth for each agent
+
             agents.append(self.agent_classes[i](self.agent_config))
             player_stats.append([])
 
@@ -102,7 +107,8 @@ class Runner(object):
         print(f"Player Stats: {[self.simplify_stats(p) for p in player_stats]}")
         print(f"Average Score: {avg_score}")
         print(f"Standard Deviation: {std_dev}")
-        print(f"Errors: {errors}")
+        print(f"Standard Error: {std_error}")
+        print(f"Errors: {errors}\n")
 
         return avg_score, std_error
 
@@ -116,21 +122,22 @@ class Runner(object):
 
 def run_simulation_and_plot():
     """Runs multiple simulations and saves the results as a plot."""
-    max_depth_values = [1, 3, 5, 7, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    max_rollout_values = [10, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000]
-    max_simulation_steps = [i for i in range(1, 11)]
+    max_depth_values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    max_rollout_values = [100, 1000, 5000, 10000, 50000, 100000]
+    max_simulation_steps = [i for i in range(0, 11)]
     avg_scores = []
     std_errs = []
 
-    for max_depth in max_depth_values:
+    for max_roll_num in max_rollout_values:
         flags = {
             'players': 2,
-            'num_episodes': 1,
+            'num_episodes': 10,
             'agent': 'MCTS_Agent_Conc',
             'agents': 'MCTS_Agent_Conc',
             'mcts_types': '00',
-            'max_depth': max_depth,
-            'max_rollout_num': 50
+            'max_rollout_num': max_roll_num,
+            'max_simulation_steps': 0,
+            #'max_depth': 3
         }
         
         flags['agent_classes'] = [flags['agent']] * flags['players']
@@ -146,27 +153,28 @@ def run_simulation_and_plot():
     palette = sns.color_palette("deep", 10)
 
     # Plotting with error bars
-    plt.errorbar(max_depth_values, avg_scores, yerr=std_errs, fmt='o', color=palette[0], ecolor='lightgray', elinewidth=2, capsize=5, label="Std Error")
-    plt.plot(max_depth_values, avg_scores, marker='o', color=palette[1], markersize=8, linestyle='-', linewidth=2, label="Avg Score")
+    plt.errorbar(max_rollout_values, avg_scores, yerr=std_errs, fmt='o', color=palette[0], ecolor='lightgray', elinewidth=2, capsize=5, label="Std Error")
+    plt.plot(max_rollout_values, avg_scores, marker='o', color=palette[1], markersize=8, linestyle='-', linewidth=2, label="Avg Score")
     plt.grid(True, which='both', linestyle='--', linewidth=0.7, alpha=0.7)
-    plt.xlabel('Max Depth', fontsize=16, fontweight='bold', labelpad=10)
+    plt.xlabel('Max Rollout Number', fontsize=16, fontweight='bold', labelpad=10)
     plt.ylabel('Average Score', fontsize=16, fontweight='bold', labelpad=10)
-    plt.title('Effect of Max Depth on Average Score', fontsize=18, fontweight='bold', pad=15)
-    plt.xticks(max_depth_values, fontsize=12)
+    plt.title('Effect of Max Rollout Number on Average Score', fontsize=18, fontweight='bold', pad=15)
+    plt.xticks(max_rollout_values, fontsize=12)
     plt.yticks(fontsize=12)
     plt.legend(loc='upper left', fontsize=12)
 
     # Save the plot to a file
     plt.tight_layout()
-    plt.savefig('max_depth.png')
-    print("Plot saved as 'max_depth.png'.")
+    plt.savefig('max_roll_num.png')
+    print("Plot saved as 'max_roll_num.png'.")
     
 
 if __name__ == "__main__":
     start_time = time.time()
 
-    #run_simulation_and_plot()
+    run_simulation_and_plot()
 
+    '''
     flags = {
         'players': 3,
         'num_episodes': 1,
@@ -200,5 +208,6 @@ if __name__ == "__main__":
 
     runner = Runner(flags)
     runner.run()
+    '''
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

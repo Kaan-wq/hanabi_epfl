@@ -1,8 +1,8 @@
 cmake_minimum_required (VERSION 2.8.11)
 project (hanabi_epfl)
 
-set(CMAKE_C_FLAGS "-O2 -std=c++11 -fPIC")
-set(CMAKE_CXX_FLAGS "-O2 -std=c++11 -fPIC")
+set(CMAKE_C_FLAGS "-O2 -std=c++11 -march=native -fPIC")
+set(CMAKE_CXX_FLAGS "-O2 -std=c++11 -march=native -fPIC")
 
 find_package(nlohmann_json 3.2.0 REQUIRED)
 add_subdirectory (hanabi_lib)
