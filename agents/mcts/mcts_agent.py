@@ -2,7 +2,7 @@ from math import sqrt, log
 import time
 from collections import defaultdict
 import ray
-import pyhanabi
+from pyhanabi import HanabiState
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
 from agents.rule_based.rule_based_agents import (
@@ -46,7 +46,7 @@ class MCTS_Agent(Agent):
 
         self.max_time_limit = config.get("max_time_limit", 100)
         self.max_rollout_num = config.get("max_rollout_num", 50)
-        self.max_simulation_steps = config.get("max_simulation_steps", 3)
+        self.max_simulation_steps = config.get("max_simulation_steps", 0)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
@@ -309,7 +309,7 @@ class MCTS_Worker:
 
     def perform_mcts_search(self, observation, state_json):
         # Reconstruct the state and observation
-        state = pyhanabi.HanabiState.from_json(state_json)
+        state = HanabiState.from_json(state_json)
         current_player = observation['pyhanabi']
         observation['pyhanabi'] = state.observation(current_player)
 

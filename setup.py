@@ -1,6 +1,6 @@
-from setuptools import setup, Extension
-from Cython.Build import cythonize
 import numpy
+from Cython.Build import cythonize
+from setuptools import Extension, setup
 
 extensions = [
     Extension(
@@ -11,7 +11,14 @@ extensions = [
 ]
 
 setup(
-    name='MCTS Sampler',
-    ext_modules=cythonize(extensions),
+    name="MCTS Sampler",
+    ext_modules=cythonize(
+        extensions,
+        compiler_directives={
+            "language_level": "3",
+            "boundscheck": False,
+            "wraparound": False,
+        },
+    ),
     zip_safe=False,
 )

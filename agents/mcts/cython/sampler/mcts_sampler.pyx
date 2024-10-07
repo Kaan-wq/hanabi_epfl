@@ -2,31 +2,81 @@
 
 import random
 import numpy as np
+cimport numpy as cnp
 from pyhanabi import HanabiCard
 
+# Cython-optimized COLOR_CHAR and color_idx_to_char
+cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
+
+def color_idx_to_char(int color_idx):
+    """Helper function for converting color index to a character."""
+    if color_idx == -1:
+        return None
+    else:
+        return COLOR_CHAR[color_idx].decode('utf-8')
+
+cdef class CythonCard:
+    """Hanabi card, with a color and a rank."""
+    cdef int _color
+    cdef int _rank
+
+    def __cinit__(self, int color, int rank):
+        self._color = color
+        self._rank = rank
+
+    cdef inline int color(self):
+        return self._color
+
+    cdef inline int rank(self):
+        return self._rank
+
+    def __str__(self):
+        if self.valid():
+            return COLOR_CHAR[self._color].decode('utf-8') + str(self._rank + 1)
+        else:
+            return "XX"
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        return self._color == other.color() and self._rank == other.rank()
+
+    cpdef bint valid(self):
+        return self._color >= 0 and self._rank >= 0
+
+    def to_dict(self):
+        return {"color": color_idx_to_char(self._color), "rank": self._rank}
+
 # Precomputed cards and initial deck configuration
-PRECOMPUTED_CARDS = [
-    HanabiCard(color, rank)
+cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([
+    [color, rank]
     for color in range(5)
     for rank in range(5)
-]
+], dtype=np.int8)
 
-INIT_DECK = [
+cdef cnp.int8_t[::1] INIT_DECK = np.array([
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1
+], dtype=np.int8)
+
+PRECOMPUTED_HANABI_CARDS = [
+    HanabiCard(color, rank)
+    for color in range(5) 
+    for rank in range(5)
 ]
 
 cdef class MCTS_Sampler:
     """Sampler for re-determinization in MCTS"""
     cdef HanabiDeck deck
 
-    def __init__(self):
+    def __cinit__(self):
         self.deck = HanabiDeck()
 
-    def sample_hand(
+    cpdef list sample_hand(
         self,
         int player,
         int original_hand_size,
@@ -39,7 +89,10 @@ cdef class MCTS_Sampler:
         if additional_cards is None:
             additional_cards = []
 
-        sampled_hand = []
+        cdef list sampled_hand = []
+        cdef HanabiDeck deck_card
+        cdef list sampled_cards
+        cdef int card_idx
 
         self.deck.reset_deck()
         self.deck.remove_by_cards(discard_pile)
@@ -48,11 +101,11 @@ cdef class MCTS_Sampler:
         self.deck.remove_by_cards(additional_cards)
 
         while len(sampled_hand) < original_hand_size:
-            sampled_hand = []
+            sampled_hand.clear()
             
             for card_idx in range(original_hand_size):
                 deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)
-                deck_card.remove_by_cards(sampled_hand)
+                deck_card.remove_by_cython_cards(sampled_hand)
                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
 
                 if card_knowledge:
@@ -64,10 +117,15 @@ cdef class MCTS_Sampler:
                     sampled_hand.append(random.choice(sampled_cards))
                 else:
                     break
+        
+        cdef CythonCard card
+        for card_idx in range(len(sampled_hand)):
+            card = sampled_hand[card_idx]
+            sampled_hand[card_idx] = HanabiCard(card.color(), card.rank())
 
         return sampled_hand
 
-    def sample_card(
+    cpdef object sample_card(
         self,
         int player,
         int card_index,
@@ -80,7 +138,7 @@ cdef class MCTS_Sampler:
         if additional_cards is None:
             additional_cards = []
 
-        valid_cards = self.valid_cards(
+        cdef list valid_cards = self.valid_cards(
             player,
             card_index,
             player_hands,
@@ -88,13 +146,16 @@ cdef class MCTS_Sampler:
             fireworks,
             card_knowledge,
             additional_cards,
+            return_hanabi_card=False,
         )
+        cdef CythonCard sampled_card
         if valid_cards:
-            return random.choice(valid_cards)
+            sampled_card = random.choice(valid_cards)
+            return HanabiCard(sampled_card.color(), sampled_card.rank())
         else:
             return None
 
-    def valid_cards(
+    cpdef list valid_cards(
         self,
         int player,
         int card_index,
@@ -103,6 +164,7 @@ cdef class MCTS_Sampler:
         list fireworks,
         card_knowledge=None,
         additional_cards=None,
+        return_hanabi_card=True,
     ):
         if additional_cards is None:
             additional_cards = []
@@ -115,31 +177,51 @@ cdef class MCTS_Sampler:
 
         if card_knowledge is not None:
             self.deck.remove_by_knowledge(card_knowledge[card_index])
-
-        return self.deck.get_deck()
+        
+        if return_hanabi_card:
+            return self.deck.get_hanabi_deck()
+        else:
+            return self.deck.get_deck()
 
 cdef class HanabiDeck:
     """Deck of Hanabi cards for sampling hands and cards"""
     cdef int num_ranks, num_colors, total_count
-    cdef object card_count
+    cdef cnp.int8_t[::1] card_count
 
-    def __init__(self, card_count=None, total_count=None):
+    def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):
         self.num_ranks = 5
         self.num_colors = 5
         
-        if card_count is not None and total_count is not None:
+        if card_count is not None and total_count != 0:
             self.card_count = card_count.copy()
             self.total_count = total_count
         else:
             self.reset_deck()
 
-    def get_deck(self):
-        valid_card_indices = np.nonzero(self.card_count)[0]
-        deck_list = np.repeat(valid_card_indices, self.card_count[valid_card_indices])
-        return [PRECOMPUTED_CARDS[idx] for idx in deck_list]
+    cpdef list get_deck(self):
+        cdef list deck_list = []
+        cdef int i, j, count
 
-    def remove_by_knowledge(self, card_knowledge):
-        cdef int color, rank
+        for i in range(self.num_colors * self.num_ranks):
+            count = self.card_count[i]
+            for j in range(count):
+                deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))
+        
+        return deck_list
+
+    cpdef list get_hanabi_deck(self):
+        cdef list deck_list = []
+        cdef int i, j, count
+
+        for i in range(self.num_colors * self.num_ranks):
+            count = self.card_count[i]
+            for j in range(count):
+                deck_list.append(PRECOMPUTED_HANABI_CARDS[i])
+        
+        return deck_list
+
+    cpdef void remove_by_knowledge(self, card_knowledge):
+        cdef int color, rank, card_idx
         for color in range(self.num_colors):
             color_plausible = card_knowledge.color_plausible(color)
             for rank in range(self.num_ranks):
@@ -148,11 +230,16 @@ cdef class HanabiDeck:
                     self.total_count -= self.card_count[card_idx]
                     self.card_count[card_idx] = 0
 
-    def remove_by_cards(self, list cards):
+    cpdef void remove_by_cards(self, list cards):
         for card in cards:
             self.remove_card(card.color(), card.rank())
 
-    def remove_by_hands(self, int player, list hands, int card_index=-1):
+    cpdef void remove_by_cython_cards(self, list cards):
+        cdef CythonCard card
+        for card in cards:
+            self.remove_card(card.color(), card.rank())
+
+    cpdef void remove_by_hands(self, int player, list hands, int card_index=-1):
         cdef int other_player, idx
         for other_player in range(len(hands)):
             if other_player == player and card_index == -1:
@@ -162,14 +249,14 @@ cdef class HanabiDeck:
                     continue
                 self.remove_card(card.color(), card.rank())
 
-    def remove_by_own_hand(self, int player, list hands, int card_index):
+    cpdef void remove_by_own_hand(self, int player, list hands, int card_index):
         cdef int idx
         for idx, card in enumerate(hands[player]):
             if idx == card_index:
                 continue
             self.remove_card(card.color(), card.rank())
 
-    def remove_by_fireworks(self, list fireworks):
+    cpdef void remove_by_fireworks(self, list fireworks):
         cdef int color, firework, idx, start_idx, end_idx
         for color, firework in enumerate(fireworks):
             if firework > 0:
@@ -180,37 +267,39 @@ cdef class HanabiDeck:
                         self.card_count[idx] -= 1
                         self.total_count -= 1
 
-    def reset_deck(self):
-        self.card_count = np.array(INIT_DECK, dtype=np.int32)
+    cpdef void reset_deck(self):
+        self.card_count = np.array(INIT_DECK, dtype=np.int8)
         self.total_count = 50
 
-    def remove_card(self, int color, int rank):
+    cpdef void remove_card(self, int color, int rank):
         cdef int card_idx = color * self.num_ranks + rank
         if self.card_count[card_idx] == 0:
             return
         self.card_count[card_idx] -= 1
         self.total_count -= 1
 
-    def is_empty(self):
+    cpdef bint is_empty(self):
         return self.total_count == 0
 
     def __str__(self):
-        output = []
+        cdef list output = []
         output.append(f"\n{'=' * 30}DECK{'=' * 30}\n")
-        color_names = ["R", "Y", "G", "W", "B"]
+        cdef list color_names = ["R", "Y", "G", "W", "B"]
 
-        header = "          " + "     ".join(
+        cdef str header = "          " + "     ".join(
             f"Rank {rank+1}" for rank in range(self.num_ranks)
         )
         output.append(header)
 
-        max_counts = [3, 2, 2, 2, 1]
-        max_counts_line = "Max Qty:  " + "".join(
+        cdef list max_counts = [3, 2, 2, 2, 1]
+        cdef str max_counts_line = "Max Qty:  " + "".join(
             f"   {count}       " for count in max_counts
         )
         output.append(max_counts_line)
         output.append("          " + "-" * (10 * self.num_ranks))
 
+        cdef int color, rank, index, count
+        cdef str row
         for color in range(self.num_colors):
             color_char = color_names[color]
             row = f"{color_char}       |"
