@@ -93,7 +93,7 @@ class HanabiEnv(Environment):
     assert isinstance(config, dict), "Expected config to be of type dict."
     self.game = HanabiGame(config)
     self.players = self.game.num_players()
-    self.record_moves = RecordMoves(self.players)
+    #self.record_moves = RecordMoves(self.players)
     self.start_time = time.time()
 
   def reset(self):
@@ -103,7 +103,7 @@ class HanabiEnv(Environment):
       self.state.deal_random_card()
     obs = self._make_observation_all_players()
     obs["current_player"] = self.state.cur_player()
-    self.record_moves.reset(obs["player_observations"][obs["current_player"]])
+    #self.record_moves.reset(obs["player_observations"][obs["current_player"]])
     return obs
 
   def vectorized_observation_shape(self):
@@ -147,7 +147,7 @@ class HanabiEnv(Environment):
 
     observations = self._make_observation_all_players()
 
-    self.record_moves.update(move, observations["player_observations"][action_player], action_player, elapsed_time)
+    #self.record_moves.update(move, observations["player_observations"][action_player], action_player, elapsed_time)
 
     reward = self.score()
     self.start_time = time.time()

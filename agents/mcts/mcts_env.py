@@ -2,7 +2,6 @@ from enum import IntEnum
 import random
 
 from agents.mcts.cython.sampler.mcts_sampler import MCTS_Sampler
-#from agents.mcts.mcts_sampler import MCTS_Sampler
 from pyhanabi import HanabiMove, HanabiMoveType, AgentObservationType, CHANCE_PLAYER_ID, try_cdef, try_load
 from rl_env import HanabiEnv
 
@@ -74,9 +73,7 @@ class MCTS_Env(HanabiEnv):
             self.replace_hand(self.state.cur_player())
 
         observations = self._make_observation_all_players()
-        self.record_moves.update(
-            move, observations["player_observations"][action_player], action_player, 0
-        )
+        #self.record_moves.update(move, observations["player_observations"][action_player], action_player, 0)
         reward = self.reward()
         done = self.state.is_terminal()
         info = {}

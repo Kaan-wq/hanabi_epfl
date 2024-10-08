@@ -47,8 +47,7 @@ class Runner(object):
 
     def run(self):
         """Run episodes."""
-        game_stats = []
-        player_stats = []
+        scores = []
         agents = []
 
         for i in range(len(self.agent_classes)):
@@ -59,7 +58,6 @@ class Runner(object):
             #self.agent_config.update({'max_depth': self.flags['max_depth']}) # Update max_depth for each agent
 
             agents.append(self.agent_classes[i](self.agent_config))
-            player_stats.append([])
 
         errors = 0
 
@@ -84,40 +82,26 @@ class Runner(object):
                             assert action is None
 
                     observations, reward, done, unused_info = self.environment.step(current_player_action)
-
-                game_stats.append(self.environment.game_stats())
-
-                for i in range(len(self.agent_classes)):
-                    player_stats[i].append(self.environment.player_stats(i))
+                    
+                scores.append(sum(v for k,v in observation["fireworks"].items()) if observation["life_tokens"] > 0 else 0)
 
                 # Calculate running average score
-                avg_score = sum([g['score'] for g in game_stats]) / (episode + 1)
+                avg_score = sum(scores) / (episode + 1)
                 # Update the progress bar
                 pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score)})
                 pbar.update(1)
 
-        scores = [g['score'] for g in game_stats]
         avg_score = np.mean(scores)
         std_dev = np.std(scores)
         std_error = std_dev / np.sqrt(len(scores))
 
         print(f"\nScores: {scores}")
-        print(f"Stats Keys: {list(game_stats[0].keys())}")
-        print(f"Game Stats: {self.simplify_stats(game_stats)}")
-        print(f"Player Stats: {[self.simplify_stats(p) for p in player_stats]}")
         print(f"Average Score: {avg_score}")
         print(f"Standard Deviation: {std_dev}")
         print(f"Standard Error: {std_error}")
         print(f"Errors: {errors}\n")
 
         return avg_score, std_error
-
-    def simplify_stats(self, stats):
-        """Extract just the numbers from the stats."""
-        return [list(g.values()) for g in stats]
-
-    def print_state(self):
-        self.environment.print_state()
 
 
 def run_simulation_and_plot():

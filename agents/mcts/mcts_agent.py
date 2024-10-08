@@ -2,7 +2,7 @@ from math import sqrt, log
 import time
 from collections import defaultdict
 import ray
-from pyhanabi import HanabiState
+from pyhanabi import HanabiState, HanabiMove
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
 from agents.rule_based.rule_based_agents import (
@@ -42,10 +42,9 @@ class MCTS_Agent(Agent):
         self.root_node = None
         self.root_state = None
         self.player_id = config["player_id"]
-        # effect of rules, effect of van_der_bergh, plot of rolouts vs score, representation for alpha-0, alphaGO-0, read papers, 
 
         self.max_time_limit = config.get("max_time_limit", 100)
-        self.max_rollout_num = config.get("max_rollout_num", 50)
+        self.max_rollout_num = config.get("max_rollout_num", 1000)
         self.max_simulation_steps = config.get("max_simulation_steps", 0)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
@@ -83,19 +82,16 @@ class MCTS_Agent(Agent):
         self.reset(state)
 
         rollout = 0
-        #start_time = time.time()
-        #elapsed_time = 0
 
         while rollout < self.max_rollout_num:
             self.environment.state = self.root_state.copy()
             self.environment.replace_hand(self.player_id)
 
             self.root_node.focused_state = self.environment.state
-            self.environment.reset(observation)
+            #self.environment.reset(observation)
 
             path, reward = self.mcts_search(self.root_node, observation)
             rollout += 1
-            #elapsed_time = (time.time() - start_time) * 1000
 
         self.root_node.focused_state = self.root_state.copy()
         best_node = self.mcts_choose(self.root_node)
@@ -257,7 +253,7 @@ class MCTS_Agent_Conc(MCTS_Agent):
     def __init__(self, config):
         super().__init__(config)
         if not ray.is_initialized():
-            ray.init()
+            ray.init(include_dashboard=False)
 
         num_workers = 8
         worker_max_time_limit = self.max_time_limit // num_workers
@@ -292,12 +288,41 @@ class MCTS_Agent_Conc(MCTS_Agent):
         worker_results = ray.get(worker_futures)
 
         # Merge results
-        merge_results(self, worker_results)
+        merged_root_children_stats = {}
+        for root_children_stats in worker_results:
+            for move_json, stats in root_children_stats.items():
+                if move_json not in merged_root_children_stats:
+                    merged_root_children_stats[move_json] = {'Q': 0, 'N': 0}
+                merged_root_children_stats[move_json]['Q'] += stats['Q']
+                merged_root_children_stats[move_json]['N'] += stats['N']
 
         self.root_node.focused_state = self.root_state.copy()
-        best_node = self.mcts_choose(self.root_node)
+        best_move = self.mcts_choose(self.root_node, merged_root_children_stats)
 
-        return best_node.initial_move()
+        return best_move
+    
+    def mcts_choose(self, node, merged_root_children_stats):
+        """Choose the best successor of the root node. (Redefinition for parallelization)"""
+
+        if node.is_terminal():
+            raise RuntimeError(f"choose called on terminal node {node}")
+        if not merged_root_children_stats:
+            return node.find_random_child()
+
+        best_move_json = None
+        best_value = float('-inf')
+        for move_json, stats in merged_root_children_stats.items():
+            N = stats['N']
+            Q = stats['Q']
+            if N <= 1:
+                value = float('-inf')
+            else:
+                value = Q / N
+            if value > best_value:
+                best_value = value
+                best_move_json = move_json
+
+        return HanabiMove.from_json(best_move_json)
 
 
 @ray.remote(num_cpus=1)
@@ -315,78 +340,23 @@ class MCTS_Worker:
 
         self.agent.reset(state)
         rollout = 0
-        #start_time = time.time()
-        #elapsed_time = 0
 
         while rollout < self.max_rollout_num:
             self.agent.environment.state = self.agent.root_state.copy()
             self.agent.environment.replace_hand(self.agent.player_id)
 
             self.agent.root_node.focused_state = self.agent.environment.state
-            self.agent.environment.reset(observation)
+            #self.agent.environment.reset(observation)
 
             path, reward = self.agent.mcts_search(self.agent.root_node, observation)
             rollout += 1
-            #elapsed_time = (time.time() - start_time) * 1000
 
-        #print(f"Worker finished {rollout}/{self.max_rollout_num} rollouts in {elapsed_time:.2f}/{self.max_time_limit} ms")
+        root_children = self.agent.children[self.agent.root_node]
+        root_children_stats = {}
+        for child in root_children:
+            move_json = child.initial_move().to_json()
+            Q_value = self.agent.Q[child]
+            N_value = self.agent.N[child]
+            root_children_stats[move_json] = {'Q': Q_value, 'N': N_value}
 
-        # Serialize the nodes before returning
-        serialized_children = self.serialize_children(self.agent.children)
-        serialized_Q = self.serialize_Q_or_N(self.agent.Q)
-        serialized_N = self.serialize_Q_or_N(self.agent.N)
-
-        return (serialized_children, serialized_Q, serialized_N)
-
-    def serialize_children(self, children):
-        serialized = {}
-        for node, child_nodes in children.items():
-            node_json = node.to_json()
-            child_nodes_json = [child_node.to_json() for child_node in child_nodes]
-            serialized[node_json] = child_nodes_json
-        return serialized
-
-    def serialize_Q_or_N(self, Q_or_N):
-        serialized = {}
-        for node, value in Q_or_N.items():
-            node_json = node.to_json()
-            serialized[node_json] = value
-        return serialized
-
-
-def merge_results(mcts_agent, worker_results):
-    key_to_node = {}
-    all_node_jsons = set()
-
-    # First pass: Collect all unique node_json strings
-    for serialized_children, serialized_Q, serialized_N in worker_results:
-        all_node_jsons.update(serialized_children.keys())
-        for child_nodes_json in serialized_children.values():
-            all_node_jsons.update(child_nodes_json)
-        all_node_jsons.update(serialized_Q.keys())
-        all_node_jsons.update(serialized_N.keys())
-
-    # Deserialize all unique nodes
-    for node_json in all_node_jsons:
-        node = MCTS_Node.from_json(node_json)
-        node.rules = mcts_agent.rules
-        key_to_node[node_json] = node
-
-    # Second pass: Merge the results using the deserialized nodes
-    for serialized_children, serialized_Q, serialized_N in worker_results:
-        # Merge children
-        for node_json, child_nodes_json in serialized_children.items():
-            node = key_to_node[node_json]
-            if node not in mcts_agent.children:
-                mcts_agent.children[node] = set()
-            for child_json in child_nodes_json:
-                child_node = key_to_node[child_json]
-                mcts_agent.children[node].add(child_node)
-        # Merge Q values
-        for node_json, q_value in serialized_Q.items():
-            node = key_to_node[node_json]
-            mcts_agent.Q[node] += q_value
-        # Merge N values
-        for node_json, n_value in serialized_N.items():
-            node = key_to_node[node_json]
-            mcts_agent.N[node] += n_value
+        return root_children_stats
