@@ -7,10 +7,11 @@ class MCTS_Node:
     Node for MCTS. Represents an information set in the game.
     """
     
-    __slots__ = ['moves', 'focused_state', 'rules']
+    __slots__ = ['moves', '_hash','focused_state', 'rules']
 
     def __init__(self, moves, rules):
         self.moves = moves
+        self._hash = hash(self.moves)
         self.focused_state = None
         self.rules = rules
 
@@ -43,10 +44,12 @@ class MCTS_Node:
         return f"{self.moves}"
 
     def __hash__(self):
-        return hash(self.to_json())
+        return self._hash
 
     def __eq__(self, other):
-        return self.to_json() == other.to_json()
+        if not isinstance(other, MCTS_Node):
+            return NotImplemented
+        return self.moves == other.moves
 
     def to_json(self):
         ser_moves = [move.to_json() for move in self.moves]

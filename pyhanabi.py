@@ -305,29 +305,34 @@ class HanabiMove(object):
   def __init__(self, move):
     assert move is not None
     self._move = move
+    self._type = HanabiMoveType(lib.MoveType(self._move))
+    self._card_index = lib.CardIndex(self._move)
+    self._target_offset = lib.TargetOffset(self._move)
+    self._color = lib.MoveColor(self._move)
+    self._rank = lib.MoveRank(self._move)
 
   @property
   def c_move(self):
     return self._move
 
   def type(self):
-    return HanabiMoveType(lib.MoveType(self._move))
+    return self._type
 
   def card_index(self):
     """Returns 0-based card index for PLAY and DISCARD moves."""
-    return lib.CardIndex(self._move)
+    return self._card_index
 
   def target_offset(self):
     """Returns target player offset for REVEAL_XYZ moves."""
-    return lib.TargetOffset(self._move)
+    return self._target_offset
 
   def color(self):
     """Returns 0-based color index for REVEAL_COLOR and DEAL moves."""
-    return lib.MoveColor(self._move)
+    return self._color
 
   def rank(self):
     """Returns 0-based rank index for REVEAL_RANK and DEAL moves."""
-    return lib.MoveRank(self._move)
+    return self._rank
 
   @staticmethod
   def get_discard_move(card_index):
@@ -388,31 +393,17 @@ class HanabiMove(object):
     return cls(c_move)
 
   def __hash__(self):
-    """hash function for moves."""
-    return hash(self.__str__())
+    """hash function for a move."""
+    return hash((self._type, self._card_index, self._target_offset, self._color, self._rank))
 
   def __eq__(self, other):
-    """check if two moves are equal."""
-    if self.type() != other.type():
-      return False
-    
-    if self.type() == HanabiMoveType.PLAY:
-      return self.card_index() == other.card_index()
-    elif self.type() == HanabiMoveType.DISCARD:
-      return self.card_index() == other.card_index()
-    elif self.type() == HanabiMoveType.RETURN:
-      return self.card_index() == other.card_index()
-    elif self.type() == HanabiMoveType.REVEAL_COLOR:
-      return self.target_offset() == other.target_offset() and self.color() == other.color()
-    elif self.type() == HanabiMoveType.REVEAL_RANK:
-      return self.target_offset() == other.target_offset() and self.rank() == other.rank()
-    elif self.type() == HanabiMoveType.DEAL:
-      return self.color() == other.color() and self.rank() == other.rank()
-    elif self.type() == HanabiMoveType.DEAL_SPECIFIC:
-      return self.color() == other.color() and self.rank() == other.rank()
-    else:
-      print(f"Error: pyhanabi.HanabiMove.__eq__ : failed to recognise move type: {self.type()} {other.type()}")
-      return False
+    if not isinstance(other, HanabiMove):
+      return NotImplemented
+    return (self._type == other._type and
+            self._card_index == other._card_index and
+            self._target_offset == other._target_offset and
+            self._color == other._color and
+            self._rank == other._rank)
 
   def __str__(self):
     c_string = lib.MoveToString(self._move)

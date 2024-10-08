@@ -107,6 +107,7 @@ class MCTS_Env(HanabiEnv):
 
         hand_size = len(self.state.player_hands()[player])
         for card_index in range(hand_size):
+            # Return card in the furthest left position, cards always shift left
             return_move = HanabiMove.get_return_move(card_index=0, player=player)
             self.state.apply_move(return_move)
 
