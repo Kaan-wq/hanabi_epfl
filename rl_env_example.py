@@ -193,3 +193,5 @@ if __name__ == "__main__":
     runner.run()
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")
+
+# Far more efficient, prepare presentation (rules + mcts explanation + very hard Johan), next week start alpha zero
