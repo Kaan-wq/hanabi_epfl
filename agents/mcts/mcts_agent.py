@@ -44,9 +44,9 @@ class MCTS_Agent(Agent):
         self.player_id = config["player_id"]
 
         self.max_time_limit = config.get("max_time_limit", 100)
-        self.max_rollout_num = config.get("max_rollout_num", 100)
+        self.max_rollout_num = config.get("max_rollout_num", 1000)
         self.max_simulation_steps = config.get("max_simulation_steps", 0)
-        self.max_depth = config.get("max_depth", 4)
+        self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
         self.rules = config.get("rules", [
@@ -80,7 +80,6 @@ class MCTS_Agent(Agent):
             return None
 
         self.reset(state)
-
         rollout = 0
 
         while rollout < self.max_rollout_num:
