@@ -701,8 +701,7 @@ class HanabiState(object):
 
   def is_terminal(self):
     """Returns false if game is still active, true otherwise."""
-    return (lib.StateEndOfGameStatus(self._state) !=
-            HanabiEndOfGameType.NOT_FINISHED)
+    return (lib.StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
 
   def legal_moves(self):
     """Returns list of legal moves for currently acting player."""
@@ -1147,7 +1146,7 @@ class ObservationEncoder(object):
 
   def encode(self, observation):
     """Encode the observation as a sequence of bits."""
-    c_encoding_str = lib.EncodeObservation(self._encoder, observation.observation())
+    c_encoding_str = lib.EncodeObservation(self._encoder, observation.observation()) # TODO check this
     encoding_string = encode_ffi_string(c_encoding_str)
     lib.DeleteString(c_encoding_str)
     # Canonical observations are bit strings, so it is ok to encode using a

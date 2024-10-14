@@ -28,7 +28,7 @@ class AlphaZero_Agent(MCTS_Agent):
     def mcts_expand(self, node, observation):
         """Expand the `node` with all possible children with their policy and value."""
 
-        print("\n\n============================================ alpha zero agent ============================================")
+        print("\n\n============================================ AlphaZero Expansion ============================================")
         print("\n\nActions Dimension", self.num_actions)
         print("\nObservation as Int", observation['legal_moves_as_int'])
 
@@ -80,6 +80,8 @@ class AlphaZero_Agent(MCTS_Agent):
             print(action_idx, move)
             child_node.P = policy[0][action_idx]
             self.children[node].add(child_node)
+
+        print("\n\n============================================================================================================\n\n")
 
     def uct_select(self, node):
         """Select a child of node, balancing exploration and exploitation using prior probabilities."""

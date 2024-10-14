@@ -212,7 +212,7 @@ int EncodeDiscards(const HanabiGame& game, const HanabiObservation& obs,
 
 int LastActionSectionLength(const HanabiGame& game) {
   return game.NumPlayers() +  // player id
-         4 +                  // move types (play, dis, rev col, rev rank)
+         7 +                  // move types (play, discard, reveal color, reveal rank, return, deal, deal specific)
          game.NumPlayers() +  // target player id (if hint action)
          game.NumColors() +   // color (if hint action)
          game.NumRanks() +    // rank (if hint action)
@@ -253,7 +253,6 @@ int EncodeLastAction(const HanabiGame& game, const HanabiObservation& obs,
     (*encoding)[offset + last_move->player] = 1;
     offset += num_players;
 
-    // MB: Need to add the other move types in here
     switch (last_move_type) {
       case HanabiMove::Type::kPlay:
         (*encoding)[offset] = 1;
@@ -267,10 +266,19 @@ int EncodeLastAction(const HanabiGame& game, const HanabiObservation& obs,
       case HanabiMove::Type::kRevealRank:
         (*encoding)[offset + 3] = 1;
         break;
+      case HanabiMove::Type::kReturn:
+        (*encoding)[offset + 4] = 1;
+        break;
+      case HanabiMove::Type::kDeal:
+        (*encoding)[offset + 5] = 1;
+        break;
+      case HanabiMove::Type::kDealSpecific:
+        (*encoding)[offset + 6] = 1;
+        break;
       default:
         std::abort();
     }
-    offset += 4;
+    offset += 7;
 
     // target player (if hint action)
     if (last_move_type == HanabiMove::Type::kRevealColor ||

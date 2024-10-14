@@ -44,6 +44,7 @@ class MCTS_Env(HanabiEnv):
         actioned_card = None
         action_player = self.state.cur_player()
 
+        # On play or discard, note the card
         if (
             move.type() == HanabiMoveType.DISCARD
             or move.type() == HanabiMoveType.PLAY
@@ -52,11 +53,14 @@ class MCTS_Env(HanabiEnv):
                 move.card_index()
             ]
 
+        # Apply the move
         self.state.apply_move(move)
 
+        # Deal a new card if a chance node
         while self.state.cur_player() == CHANCE_PLAYER_ID:
             self.state.deal_random_card()
 
+        # Restore hand of other players
         if (
             self.determine_type == DetermineType.RESTORE
             and action_player != self.mcts_player
@@ -64,7 +68,8 @@ class MCTS_Env(HanabiEnv):
             self.restore_hand(
                 action_player, self.remember_hand, actioned_card, move.card_index()
             )
-
+        
+        # Remember and replace hand of other players
         if self.determine_type != DetermineType.NONE and self.state.cur_player() != self.mcts_player:
             self.remember_hand = self.state.player_hands()[self.state.cur_player()]
             self.replace_hand(self.state.cur_player())
