@@ -31,9 +31,6 @@ class MCTS_Env(HanabiEnv):
         self.sampler = MCTS_Sampler()
         super().__init__(config)
 
-    def reset(self, observations):
-        self.record_moves.reset(observations)
-
     def step(self, action):
         if isinstance(action, dict):
             move = self._build_move(action)
@@ -73,21 +70,11 @@ class MCTS_Env(HanabiEnv):
             self.replace_hand(self.state.cur_player())
 
         observations = self._make_observation_all_players()
-        #self.record_moves.update(move, observations["player_observations"][action_player], action_player, 0)
         reward = self.reward()
         done = self.state.is_terminal()
         info = {}
 
         return (observations, reward, done, info)
-
-    def game_stats(self):
-        return self.record_moves.game_stats
-
-    def player_stats(self):
-        return self.record_moves.player_stats
-
-    def regret(self):
-        return self.record_moves.regret()
 
     def reward(self):
         """Custom reward function for use during RIS-MCTS rollouts
@@ -96,8 +83,6 @@ class MCTS_Env(HanabiEnv):
 
         if self.score_type == ScoreType.PROGRESS:
             return self.progress()
-        elif self.score_type == ScoreType.REGRET:
-            return self.progress() - self.regret()
         else:
             return self.score()
 
@@ -106,7 +91,7 @@ class MCTS_Env(HanabiEnv):
         Note: a return move retains card knowledge in each spot"""
 
         hand_size = len(self.state.player_hands()[player])
-        for card_index in range(hand_size):
+        for _ in range(hand_size):
             # Return card in the furthest left position, cards always shift left
             return_move = HanabiMove.get_return_move(card_index=0, player=player)
             self.state.apply_move(return_move)

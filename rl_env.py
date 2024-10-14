@@ -2,8 +2,6 @@
 
 from __future__ import absolute_import, division
 
-import time
-
 from pyhanabi import (CHANCE_PLAYER_ID, COLOR_CHAR, AgentObservationType,
                       HanabiGame, HanabiMove, HanabiMoveType, ObservationEncoder, ObservationEncoderType,
                       color_char_to_idx, color_idx_to_char, try_cdef, try_load)
@@ -95,9 +93,6 @@ class HanabiEnv(Environment):
     self.players = self.game.num_players()
     self.observation_encoder = ObservationEncoder(self.game, ObservationEncoderType.CANONICAL)
 
-    #self.record_moves = RecordMoves(self.players)
-    self.start_time = time.time()
-
   def reset(self):
     """Resets the environment for a new game."""
     self.state = self.game.new_initial_state()
@@ -105,7 +100,6 @@ class HanabiEnv(Environment):
       self.state.deal_random_card()
     obs = self._make_observation_all_players()
     obs["current_player"] = self.state.cur_player()
-    #self.record_moves.reset(obs["player_observations"][obs["current_player"]])
     return obs
 
   def vectorized_observation_shape(self):
@@ -125,10 +119,8 @@ class HanabiEnv(Environment):
     return self.game.max_moves()
 
   def step(self, action):
-    elapsed_time = int(round((time.time() - self.start_time)*1000))
-
     if isinstance(action, dict):
-      # Convert dict action HanabiMove
+      # Convert dict action into a HanabiMove
       move = self._build_move(action)
     elif isinstance(action, int):
       # Convert int action into a Hanabi move.
@@ -136,11 +128,9 @@ class HanabiEnv(Environment):
     elif isinstance(action, HanabiMove):
       move = action
     else:
-      raise ValueError("Expected action as dict or int, got: {}".format(
-          action))
+      raise ValueError("Expected action as dict or int, got: {}".format(action))
 
     # Apply the action to the state
-    action_player = self.state.cur_player()
     self.state.apply_move(move)
     done = self.state.is_terminal()
 
@@ -149,10 +139,7 @@ class HanabiEnv(Environment):
 
     observations = self._make_observation_all_players()
 
-    #self.record_moves.update(move, observations["player_observations"][action_player], action_player, elapsed_time)
-
     reward = self.score()
-    self.start_time = time.time()
     info = {}
     return (observations, reward, done, info)
 
@@ -161,12 +148,6 @@ class HanabiEnv(Environment):
 
   def progress(self):
     return self.state.progress()
-
-  def game_stats(self):
-    return self.record_moves.game_stats
-
-  def player_stats(self,player):
-    return self.record_moves.player_stats[player]
 
   def _make_observation_all_players(self):
     """Make observation for all players.

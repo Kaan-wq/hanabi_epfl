@@ -143,9 +143,9 @@ class MCTS_Agent(Agent):
     def mcts_expand(self, node, observation):
         """Expand the `node` with all children"""
 
-        print("\n============ trying to expand node =============\n")
-        obs_vector = self.environment.vectorized_observation()
-        print("obs vectorized succesfully")
+        #print("\n============ trying to expand node =============\n")
+        #obs_vector = self.environment.vectorized_observation()
+        #print("obs vectorized succesfully")
 
         if node in self.children:
             return
