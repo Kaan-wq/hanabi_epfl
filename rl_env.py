@@ -5,7 +5,7 @@ from __future__ import absolute_import, division
 import time
 
 from pyhanabi import (CHANCE_PLAYER_ID, COLOR_CHAR, AgentObservationType,
-                      HanabiGame, HanabiMove, HanabiMoveType,
+                      HanabiGame, HanabiMove, HanabiMoveType, ObservationEncoder, ObservationEncoderType,
                       color_char_to_idx, color_idx_to_char, try_cdef, try_load)
 from record_moves import RecordMoves
 
@@ -93,6 +93,8 @@ class HanabiEnv(Environment):
     assert isinstance(config, dict), "Expected config to be of type dict."
     self.game = HanabiGame(config)
     self.players = self.game.num_players()
+    self.observation_encoder = ObservationEncoder(self.game, ObservationEncoderType.CANONICAL)
+
     #self.record_moves = RecordMoves(self.players)
     self.start_time = time.time()
 
@@ -112,7 +114,7 @@ class HanabiEnv(Environment):
     Returns:
       A list of integer dimensions describing the observation shape.
     """
-    # return self.observation_encoder.shape()
+    return self.observation_encoder.shape()
 
   def num_moves(self):
     """Returns the total number of moves in this game (legal or not).
@@ -221,6 +223,10 @@ class HanabiEnv(Environment):
     ]
 
     return obs_dict
+  
+  def vectorized_observation(self, observation):
+    """Vecorized Pyhanabi observation."""
+    return self.observation_encoder.encode(observation)
 
   def _build_move(self, action):
     """Build a move from an action dict.

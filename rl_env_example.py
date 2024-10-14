@@ -18,14 +18,16 @@ from agents.rule_based.rule_based_agents import LegalRandomAgent
 from agents.rule_based.rule_based_agents import FlawedAgent
 from agents.rule_based.rule_based_agents import MuteAgent
 from agents.mcts.mcts_agent import MCTS_Agent
-from agents.mcts.mcts_agent import MCTS_Agent_Conc
+from agents.mcts.mcts_agent import PMCTS_Agent
+from agents.αzero.αzero_agent import AlphaZero_Agent
 from agents.human_agent import HumanAgent
 
 AGENT_CLASSES = {
     'VanDenBerghAgent': VanDenBerghAgent,
     'FlawedAgent': FlawedAgent,
     'MCTS_Agent': MCTS_Agent,
-    'MCTS_Agent_Conc': MCTS_Agent_Conc,
+    'PMCTS_Agent': PMCTS_Agent,
+    'AlphaZero_Agent': AlphaZero_Agent,
     'OuterAgent': OuterAgent,
     'InnerAgent': InnerAgent,
     'PiersAgent': PiersAgent,
@@ -70,7 +72,7 @@ class Runner(object):
                     for agent_id, agent in enumerate(agents):
                         observation = observations['player_observations'][agent_id]
 
-                        if isinstance(agent, MCTS_Agent) or isinstance(agent, MCTS_Agent_Conc):
+                        if isinstance(agent, MCTS_Agent) or isinstance(agent, PMCTS_Agent) or isinstance(agent, AlphaZero_Agent):
                             action = agent.act(observation, self.environment.state)
                         else:
                             action = agent.act(observation)
@@ -116,8 +118,8 @@ def run_simulation_and_plot():
         flags = {
             'players': 2,
             'num_episodes': 10,
-            'agent': 'MCTS_Agent_Conc',
-            'agents': 'MCTS_Agent_Conc',
+            'agent': 'PMCTS_Agent',
+            'agents': 'PMCTS_Agent',
             'mcts_types': '00',
             'max_rollout_num': max_roll_num,
             'max_simulation_steps': 0,

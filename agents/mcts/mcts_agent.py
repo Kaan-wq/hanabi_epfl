@@ -1,33 +1,12 @@
 from math import sqrt, log
-import time
 from collections import defaultdict
 import ray
 from pyhanabi import HanabiState, HanabiMove
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
-from agents.rule_based.rule_based_agents import (
-    FlawedAgent,
-    IGGIAgent,
-    InnerAgent,
-    LegalRandomAgent,
-    MuteAgent,
-    OuterAgent,
-    PiersAgent,
-    VanDenBerghAgent,
-)
+from agents.rule_based.rule_based_agents import VanDenBerghAgent
 from agents.rule_based.ruleset import Ruleset
 from rl_env import Agent
-
-AGENT_CLASSES = {
-    "VanDenBerghAgent": VanDenBerghAgent,
-    "FlawedAgent": FlawedAgent,
-    "OuterAgent": OuterAgent,
-    "InnerAgent": InnerAgent,
-    "PiersAgent": PiersAgent,
-    "IGGIAgent": IGGIAgent,
-    "LegalRandomAgent": LegalRandomAgent,
-    "MuteAgent": MuteAgent,
-}
 
 
 class MCTS_Agent(Agent):
@@ -44,7 +23,7 @@ class MCTS_Agent(Agent):
         self.player_id = config["player_id"]
 
         self.max_time_limit = config.get("max_time_limit", 100)
-        self.max_rollout_num = config.get("max_rollout_num", 1000)
+        self.max_rollout_num = config.get("max_rollout_num", 50)
         self.max_simulation_steps = config.get("max_simulation_steps", 0)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
@@ -164,6 +143,10 @@ class MCTS_Agent(Agent):
     def mcts_expand(self, node, observation):
         """Expand the `node` with all children"""
 
+        print("\n============ trying to expand node =============\n")
+        obs_vector = self.environment.vectorized_observation()
+        print("obs vectorized succesfully")
+
         if node in self.children:
             return
 
@@ -248,7 +231,7 @@ class MCTS_Agent(Agent):
         return tree_string
 
 
-class MCTS_Agent_Conc(MCTS_Agent):
+class PMCTS_Agent(MCTS_Agent):
     def __init__(self, config):
         super().__init__(config)
         if not ray.is_initialized():
@@ -336,6 +319,9 @@ class MCTS_Worker:
         state = HanabiState.from_json(state_json)
         current_player = observation['pyhanabi']
         observation['pyhanabi'] = state.observation(current_player)
+
+        #vectorized_obs = self.agent.environment.vectorized_observation(observation['pyhanabi'])
+        #print(f"Vectorized observation: {vectorized_obs}")
 
         self.agent.reset(state)
         rollout = 0
