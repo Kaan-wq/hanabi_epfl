@@ -21,80 +21,74 @@ class AlphaZero_Agent(MCTS_Agent):
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         self.loss_fn = self._create_loss_function()
 
+        self.max_rollout_num = 100
+        self.max_simulation_steps = 0
+        self.max_depth = 60
+        self.exploration_weight = 2.5
+
     def act(self, observation, state):
         """Act method returns the action based on the observation using MCTS."""
         return super().act(observation, state)
     
-    def mcts_expand(self, node, observation):
+    def mcts_expand(self, node, observation, from_rules=True):
         """Expand the `node` with all possible children with their policy and value."""
-
-        print("\n\n============================================ AlphaZero Expansion ============================================")
-        print("\n\nActions Dimension", self.num_actions)
-        print("\nObservation as Int", observation['legal_moves_as_int'])
-
         if node in self.children:
             return
         
         obs_vector = self.environment.vectorized_observation(observation['pyhanabi'])
-        legal_moves = observation['legal_moves_as_int']
 
         policy_logits, value = self.network(tf.expand_dims(obs_vector, axis=0))
         policy = tf.nn.softmax(policy_logits)
-
-        print("\nPolicy", policy)
-        print("\nLength of Policy", len(policy))
-        print("\nValue", value)
-
-        mask_moves = np.full(self.num_actions, 0)
-        if legal_moves:
-            mask_moves[legal_moves] = 1
-
-        policy = policy * mask_moves
-
-        print("\nMasked Policy", policy)
-
-        policy_sum = tf.reduce_sum(policy)
-        if policy_sum > 0:
-            policy /= policy_sum
-        else:
-            policy[legal_moves] = 1 / len(legal_moves)
-
-        print("\nNormalized Policy", policy)
-
         node.value = value.numpy()[0][0]
 
-        moves = self.environment.state.legal_moves()
+        moves = self.environment.state.legal_moves() if not from_rules else node.find_children(observation)
         if moves and isinstance(moves[0], dict):
             build_move = self.environment._build_move
             moves = {build_move(action) for action in moves}
         else:
             moves = set(moves)
-
         moves_uids = [self.environment.game.get_move_uid(move) for move in moves]
-        print("\nMove UIDs", sorted(moves_uids))
+
+        mask_moves = np.full(self.num_actions, 0)
+        if moves_uids:
+            mask_moves[moves_uids] = 1
+
+        policy = policy * mask_moves
+
+        policy_sum = tf.reduce_sum(policy)
+        if policy_sum > 0:
+            policy /= policy_sum
 
         self.children[node] = set()
         for move in moves:
             child_node = AlphaZeroNode(node.moves + (move,), self.rules)
             action_idx = self.environment.game.get_move_uid(move)
-            print(action_idx, move)
             child_node.P = policy[0][action_idx]
             self.children[node].add(child_node)
 
-        print("\n\n============================================================================================================\n\n")
+        #print("\n\n============================================ AlphaZero Expansion ============================================\n\n")
+        #print(f"\nPolicy: {policy}\nValue: {value}")
+        #print("\nMasked Policy", policy)
+        #print("\nNormalized Policy", policy)
+        #print("\nMove UIDs", sorted(moves_uids))
+        #print("\nMove Rules UIDs", sorted(moves_rules_uids))  
+        #for move in moves_rules:
+        #    action_idx = self.environment.game.get_move_uid(move)
+        #    print(f"\nMove: {move}\nAction Index: {action_idx}\nPolicy: {policy[0][action_idx]}") 
+        #print("\n\n=============================================================================================================\n\n")
 
     def uct_select(self, node):
         """Select a child of node, balancing exploration and exploitation using prior probabilities."""
         log_N_node = log(self.N[node] + 1)
 
-        def uct(child):
+        def puct(child):
             Q = self.Q[child] / self.N[child] if self.N[child] > 0 else 0
             P = child.P
             N = self.N[child]
             U = self.exploration_weight * P * sqrt(log_N_node) / (1 + N)
             return Q + U
 
-        return max(self.children[node], key=uct)
+        return max(self.children[node], key=puct)
     
     def mcts_simulate(self, node):
         """Return the value estimate for the given node."""

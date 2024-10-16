@@ -22,7 +22,6 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_time_limit = config.get("max_time_limit", 100)
         self.max_rollout_num = config.get("max_rollout_num", 50)
         self.max_simulation_steps = config.get("max_simulation_steps", 0)
         self.max_depth = config.get("max_depth", 60)
@@ -234,11 +233,10 @@ class PMCTS_Agent(MCTS_Agent):
             ray.init(include_dashboard=False)
 
         num_workers = 8
-        worker_max_time_limit = self.max_time_limit // num_workers
         worker_max_rollout_num = self.max_rollout_num // num_workers
 
         self.workers = [
-            MCTS_Worker.remote(config, worker_max_time_limit, worker_max_rollout_num)
+            MCTS_Worker.remote(config, worker_max_rollout_num)
             for _ in range(num_workers)
         ]
 
@@ -305,9 +303,8 @@ class PMCTS_Agent(MCTS_Agent):
 
 @ray.remote(num_cpus=1)
 class MCTS_Worker:
-    def __init__(self, config, max_time_limit, max_rollout_num):
+    def __init__(self, config, max_rollout_num):
         self.agent = MCTS_Agent(config)
-        self.max_time_limit = max_time_limit
         self.max_rollout_num = max_rollout_num
 
     def perform_mcts_search(self, observation, state_json):
