@@ -24,7 +24,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 100
+        self.max_rollout_num = 1000
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -199,31 +199,31 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         worker_results = ray.get(worker_futures)
 
         # Merge results
-        merged_root_children_stats = defaultdict(int)
+        results = defaultdict(int)
         for root_children_stats in worker_results:
             for move_json, N_value in root_children_stats.items():
-                if move_json not in merged_root_children_stats:
-                    merged_root_children_stats[move_json] = 0
-                merged_root_children_stats[move_json] += N_value
+                if move_json not in results:
+                    results[move_json] = 0
+                results[move_json] += N_value
 
         self.root_node.focused_state = self.root_state.copy()
-        best_move = self.mcts_choose(self.root_node, merged_root_children_stats)
+        best_move = self.mcts_choose(self.root_node, results)
 
         # Collect training data
-        self.record_training_data(observation, None)
+        self.record_training_data(observation, results)
 
         return best_move
     
-    def mcts_choose(self, node, merged_root_children_stats):
+    def mcts_choose(self, node, results):
         """Choose the best successor of the root node. (Redefinition for parallelization)"""
         if node.is_terminal():
             raise RuntimeError(f"choose called on terminal node {node}")
-        if not merged_root_children_stats:
+        if not results:
             return node.find_random_child()
 
         best_move_json = None
         best_value = float('-inf')
-        for move_json, N_value in merged_root_children_stats.items():
+        for move_json, N_value in results.items():
             if N_value <= 0:
                 value = float('-inf')
             else:
@@ -240,10 +240,10 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
 
         # Get visit counts for child nodes
         visit_counts = np.zeros(self.num_actions)
-        for child in self.children[results]:
-            move = child.initial_move()
+        for move_json, N_value in results.items():
+            move = HanabiMove.from_json(move_json)
             action_idx = self.environment.game.get_move_uid(move)
-            visit_counts[action_idx] = self.N[child]
+            visit_counts[action_idx] = N_value
 
         # Normalize visit counts to get policy targets
         sum_counts = np.sum(visit_counts)
