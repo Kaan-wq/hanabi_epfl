@@ -81,20 +81,39 @@ def create_loss_function():
         return policy_loss + value_loss
     return loss_fn
 
-def train_network(network, training_data, optimizer, loss_fn):
+def train_network(network, training_data, optimizer, loss_fn, batch_size=32):
     """Train the neural network using the collected data."""
-    states = tf.convert_to_tensor([data[0] for data in training_data], dtype=tf.float32)
-    policy_targets = tf.convert_to_tensor([data[1] for data in training_data], dtype=tf.float32)
-    value_targets = tf.convert_to_tensor([[data[2]] for data in training_data], dtype=tf.float32)
+    state_vectors = [data[0] for data in training_data]
+    policy_targets = [data[1] for data in training_data]
+    value_targets = [data[2] for data in training_data]
 
-    with tf.GradientTape() as tape:
-        policy_logits, value_predictions = network(states, training=True)
-        loss = loss_fn(policy_targets, value_targets, policy_logits, value_predictions)
+    states_tensor = tf.stack(state_vectors)
+    policy_targets_tensor = tf.stack(policy_targets)
+    value_targets_tensor = tf.expand_dims(tf.stack(value_targets), axis=-1)
 
-    gradients = tape.gradient(loss, network.trainable_variables)
-    optimizer.apply_gradients(zip(gradients, network.trainable_variables))
+    dataset = tf.data.Dataset.from_tensor_slices((states_tensor, policy_targets_tensor, value_targets_tensor))
+    dataset = dataset.shuffle(buffer_size=len(training_data))
+    dataset = dataset.batch(batch_size)
+    
+    total_loss = 0.0
+    num_batches = 0
 
-    return loss
+    for batch in dataset:
+        states, policy_t, value_t = batch
+        
+        with tf.GradientTape() as tape:
+            policy_logits, value_predictions = network(states, training=True)
+            loss = loss_fn(policy_t, value_t, policy_logits, value_predictions)
+        
+        gradients = tape.gradient(loss, network.trainable_variables)
+        optimizer.apply_gradients(zip(gradients, network.trainable_variables))
+        
+        loss_value = loss.numpy()
+        total_loss += loss_value
+        num_batches += 1
+    
+    average_loss = total_loss / num_batches if num_batches > 0 else 0.0
+    return average_loss
 
 
 class ResidualBlock1D(tf.keras.layers.Layer):

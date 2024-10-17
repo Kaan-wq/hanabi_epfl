@@ -100,9 +100,7 @@ class Runner(object):
                 scores.append(final_score)
                 z = 2 * (final_score / 25) - 1
 
-                # Calculate running average score
                 avg_score = sum(scores) / (episode + 1)
-                # Update the progress bar
                 pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score)})
                 pbar.update(1)
 
@@ -111,13 +109,21 @@ class Runner(object):
                         continue
                     for i in range(len(agent.training_data)):
                         state_vector, policy_targets, _ = agent.training_data[i]
-                        agent.training_data[i] = (state_vector, policy_targets, z)
+                        agent.training_data[i] = (tf.cast(tf.expand_dims(state_vector, axis=-1), tf.float32), policy_targets, z)
 
                     self.training_data.extend(agent.training_data)
                     agent.training_data.clear()
                 
-                if self.training_data:
-                    loss = train_network(self.network, self.training_data, self.optimizer, self.loss_fn)
+                if self.training_data:                   
+                    loss = train_network(
+                        network=self.network, 
+                        training_data=self.training_data, 
+                        optimizer=self.optimizer, 
+                        loss_fn=self.loss_fn, 
+                        batch_size=32
+                    )
+                    pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score), 'Avg Loss': '{0:.2f}'.format(loss)})
+                    pbar.update(0)
                     self.training_data.clear()
 
         avg_score = np.mean(scores)
