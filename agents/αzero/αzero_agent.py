@@ -24,7 +24,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 1000
+        self.max_rollout_num = 100
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -72,8 +72,9 @@ class AlphaZero_Agent(MCTS_Agent):
             return
         
         obs_vector = self.environment.vectorized_observation(observation['pyhanabi'])
+        obs_vector = tf.cast(tf.expand_dims(tf.expand_dims(obs_vector, axis=0), axis=-1), tf.float32)
 
-        policy_logits, value = self.network(tf.expand_dims(obs_vector, axis=0))
+        policy_logits, value = self.network(obs_vector)
         policy = tf.nn.softmax(policy_logits)
         node.value = value.numpy()[0][0]
 
