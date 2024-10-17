@@ -19,15 +19,18 @@ from agents.rule_based.rule_based_agents import FlawedAgent
 from agents.rule_based.rule_based_agents import MuteAgent
 from agents.mcts.mcts_agent import MCTS_Agent
 from agents.mcts.mcts_agent import PMCTS_Agent
-from agents.αzero.αzero_agent import AlphaZero_Agent
+from agents.αzero.αzero_agent import AlphaZero_Agent, AlphaZeroP_Agent
 from agents.human_agent import HumanAgent
+from agents.αzero.αzero_network import AlphaZeroNetwork, create_loss_function, train_network
+import tensorflow as tf
 
 AGENT_CLASSES = {
-    'VanDenBerghAgent': VanDenBerghAgent,
-    'FlawedAgent': FlawedAgent,
     'MCTS_Agent': MCTS_Agent,
     'PMCTS_Agent': PMCTS_Agent,
     'AlphaZero_Agent': AlphaZero_Agent,
+    'AlphaZeroP_Agent': AlphaZeroP_Agent,
+    'VanDenBerghAgent': VanDenBerghAgent,
+    'FlawedAgent': FlawedAgent,
     'OuterAgent': OuterAgent,
     'InnerAgent': InnerAgent,
     'PiersAgent': PiersAgent,
@@ -47,17 +50,26 @@ class Runner(object):
         self.environment = make('Hanabi-Full', num_players=flags['players'])
         self.agent_classes = [AGENT_CLASSES[agent_class] for agent_class in flags['agent_classes']]
 
+        self.observation_size = self.environment.vectorized_observation_shape()
+        self.num_actions = self.environment.num_moves()
+        self.network = AlphaZeroNetwork(self.observation_size, self.num_actions)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+        self.loss_fn = create_loss_function()
+        self.training_data = []
+
     def run(self):
         """Run episodes."""
         scores = []
         agents = []
 
         for i in range(len(self.agent_classes)):
-            self.agent_config.update({'player_id': i})  # Update player_id for each agent
-
-            #self.agent_config.update({'max_rollout_num': self.flags['max_rollout_num']}) # Update max_rollout_num for each agent
-            #self.agent_config.update({'max_simulation_steps': self.flags['max_simulation_steps']}) # Update max_simulation_steps for each agent
-            #self.agent_config.update({'max_depth': self.flags['max_depth']}) # Update max_depth for each agent
+            self.agent_config.update({
+                'player_id': i, 
+                'num_actions': self.num_actions, 
+                'network': self.network, 
+                'optimizer': self.optimizer, 
+                'loss_fn': self.loss_fn
+            })
 
             agents.append(self.agent_classes[i](self.agent_config))
 
@@ -85,7 +97,24 @@ class Runner(object):
 
                     observations, reward, done, unused_info = self.environment.step(current_player_action)
                     
-                scores.append(sum(v for k,v in observation["fireworks"].items()) if observation["life_tokens"] > 0 else 0)
+                final_score = sum(v for k,v in observation["fireworks"].items()) if observation["life_tokens"] > 0 else 0
+                scores.append(final_score)
+                z = final_score / 25
+
+                for agent in agents:
+                    if not isinstance(agent, AlphaZero_Agent):
+                        continue
+                    for i in range(len(agent.training_data)):
+                        state_vector, policy_targets, _ = agent.training_data[i]
+                        agent.training_data[i] = (state_vector, policy_targets, z)
+
+                    self.training_data.extend(agent.training_data)
+                    agent.training_data.clear()
+                
+                if self.training_data:
+                    loss = train_network(self.network, self.training_data, self.optimizer, self.loss_fn)
+                    self.training_data.clear()
+                    print(f"Final Score: {final_score}/25\nLoss: {loss}")
 
                 # Calculate running average score
                 avg_score = sum(scores) / (episode + 1)

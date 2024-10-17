@@ -63,9 +63,7 @@ class MCTS_Agent(Agent):
         while rollout < self.max_rollout_num:
             self.environment.state = self.root_state.copy()
             self.environment.replace_hand(self.player_id)
-
             self.root_node.focused_state = self.environment.state
-            #self.environment.reset(observation)
 
             path, reward = self.mcts_search(self.root_node, observation)
             rollout += 1
@@ -141,7 +139,6 @@ class MCTS_Agent(Agent):
 
     def mcts_expand(self, node, observation):
         """Expand the `node` with all children"""
-
         if node in self.children:
             return
 
@@ -158,7 +155,6 @@ class MCTS_Agent(Agent):
 
     def mcts_simulate(self, node):
         """Run a simulation from the given node."""
-
         environment = self.environment
         environment.state = node.focused_state
         observations = environment._make_observation_all_players()
@@ -191,7 +187,6 @@ class MCTS_Agent(Agent):
 
     def uct_select(self, node):
         "Select a child of node, balancing exploration & exploitation"
-
         log_N_node = log(self.N[node])
         exploration_weight = self.exploration_weight
 
@@ -206,7 +201,6 @@ class MCTS_Agent(Agent):
 
     def reset(self, state):
         """Reset the agent with a new state"""
-
         self.player_id = state.cur_player()
         self.root_state = state.copy()
         self.root_node = MCTS_Node((), self.rules)
@@ -313,18 +307,13 @@ class MCTS_Worker:
         current_player = observation['pyhanabi']
         observation['pyhanabi'] = state.observation(current_player)
 
-        #vectorized_obs = self.agent.environment.vectorized_observation(observation['pyhanabi'])
-        #print(f"Vectorized observation: {vectorized_obs}")
-
         self.agent.reset(state)
         rollout = 0
 
         while rollout < self.max_rollout_num:
             self.agent.environment.state = self.agent.root_state.copy()
             self.agent.environment.replace_hand(self.agent.player_id)
-
             self.agent.root_node.focused_state = self.agent.environment.state
-            #self.agent.environment.reset(observation)
 
             path, reward = self.agent.mcts_search(self.agent.root_node, observation)
             rollout += 1

@@ -1,6 +1,8 @@
 import random
-import ujson as json
+
 import pyhanabi
+import ujson as json
+
 
 class AlphaZeroNode:
     """
