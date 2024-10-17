@@ -4,6 +4,7 @@ import numpy as np
 import ray
 import tensorflow as tf
 from agents.αzero.αzero_node import AlphaZeroNode
+from agents.αzero.αzero_network import AlphaZeroNetwork
 from pyhanabi import HanabiState, HanabiMove
 from collections import defaultdict
 
@@ -161,9 +162,16 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
 
         num_workers = 8
         worker_max_rollout_num = self.max_rollout_num // num_workers
+        config['max_rollout_num'] = worker_max_rollout_num
+
+        network_weights = self.network.get_weights()
+        config['network_weights'] = network_weights
+        config['network'] = None
+        config['optimizer'] = None
+        config['loss_fn'] = None
 
         self.workers = [
-            AlphaZero_Worker.remote(config, worker_max_rollout_num)
+            AlphaZero_Worker.remote(config)
             for _ in range(num_workers)
         ]
     
@@ -201,6 +209,9 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         self.root_node.focused_state = self.root_state.copy()
         best_move = self.mcts_choose(self.root_node, merged_root_children_stats)
 
+        # Collect training data
+        self.record_training_data(observation, None)
+
         return best_move
     
     def mcts_choose(self, node, merged_root_children_stats):
@@ -223,13 +234,13 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
 
         return HanabiMove.from_json(best_move_json)
     
-    def record_training_data(self, observation, node):
+    def record_training_data(self, observation, results):
         """Record training data for the current state. (Redefinition for parallelization)"""
         state_vector = self.environment.vectorized_observation(observation['pyhanabi'])
 
         # Get visit counts for child nodes
         visit_counts = np.zeros(self.num_actions)
-        for child in self.children[node]:
+        for child in self.children[results]:
             move = child.initial_move()
             action_idx = self.environment.game.get_move_uid(move)
             visit_counts[action_idx] = self.N[child]
@@ -246,9 +257,10 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
 
 @ray.remote(num_cpus=1)
 class AlphaZero_Worker:
-    def __init__(self, config, max_rollout_num):
+    def __init__(self, config):
         self.agent = AlphaZero_Agent(config)
-        self.max_rollout_num = max_rollout_num
+        self.agent.network = AlphaZeroNetwork(self.agent.num_actions)
+        self.agent.network.set_weights(config['network_weights'])
 
     def perform_mcts_search(self, observation, state_json):
         # Reconstruct the state and observation
@@ -259,7 +271,7 @@ class AlphaZero_Worker:
         self.agent.reset(state)
         rollout = 0
 
-        while rollout < self.max_rollout_num:
+        while rollout < self.agent.max_rollout_num:
             self.agent.environment.state = self.agent.root_state.copy()
             self.agent.environment.replace_hand(self.agent.player_id)
             self.agent.root_node.focused_state = self.agent.environment.state

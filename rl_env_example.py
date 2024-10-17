@@ -50,9 +50,8 @@ class Runner(object):
         self.environment = make('Hanabi-Full', num_players=flags['players'])
         self.agent_classes = [AGENT_CLASSES[agent_class] for agent_class in flags['agent_classes']]
 
-        self.observation_size = self.environment.vectorized_observation_shape()
         self.num_actions = self.environment.num_moves()
-        self.network = AlphaZeroNetwork(self.observation_size, self.num_actions)
+        self.network = AlphaZeroNetwork(self.num_actions)
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
         self.loss_fn = create_loss_function()
         self.training_data = []
