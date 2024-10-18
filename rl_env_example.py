@@ -5,8 +5,6 @@ import sys
 import getopt
 import time
 from tqdm import tqdm
-import matplotlib.pyplot as plt
-import seaborn as sns
 import numpy as np
 from rl_env import make
 from agents.rule_based.rule_based_agents import VanDenBerghAgent
@@ -21,7 +19,7 @@ from agents.mcts.mcts_agent import MCTS_Agent
 from agents.mcts.mcts_agent import PMCTS_Agent
 from agents.αzero.αzero_agent import AlphaZero_Agent, AlphaZeroP_Agent
 from agents.human_agent import HumanAgent
-from agents.αzero.αzero_network import AlphaZeroNetwork, create_loss_function, train_network
+from agents.αzero.αzero_network import AlphaZeroNetwork, prepare_data
 import tensorflow as tf
 
 AGENT_CLASSES = {
@@ -50,11 +48,19 @@ class Runner(object):
         self.environment = make('Hanabi-Full', num_players=flags['players'])
         self.agent_classes = [AGENT_CLASSES[agent_class] for agent_class in flags['agent_classes']]
 
-        self.num_actions = self.environment.num_moves()
-        self.network = AlphaZeroNetwork(self.num_actions)
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
-        self.loss_fn = create_loss_function()
         self.training_data = []
+        self.num_actions = self.environment.num_moves()
+        self.obs_shape = self.environment.vectorized_observation_shape()[0]
+
+        self.network = AlphaZeroNetwork(self.num_actions, self.obs_shape)
+        self.optimizer = tf.keras.optimizers.AdamW(learning_rate=1e-4, weight_decay=1e-4)
+        self.network.compile(
+            optimizer=self.optimizer,
+            loss={
+                'policy_logits': tf.keras.losses.CategoricalCrossentropy(from_logits=True),
+                'value': tf.keras.losses.MeanSquaredError()
+            },
+        )
 
     def run(self):
         """Run episodes."""
@@ -65,16 +71,16 @@ class Runner(object):
             self.agent_config.update({
                 'player_id': i, 
                 'num_actions': self.num_actions, 
-                'network': self.network, 
-                'optimizer': self.optimizer, 
-                'loss_fn': self.loss_fn
+                'obs_shape': self.obs_shape,
+                'network': self.network
             })
 
             agents.append(self.agent_classes[i](self.agent_config))
 
         errors = 0
 
-        with tqdm(total=self.flags['num_episodes'], desc="Running Episodes", unit="episode") as pbar:
+        with tqdm(total=self.flags['num_episodes'], desc="Running Episodes", unit="episode", ncols=200) as pbar:
+            pbar.set_postfix({'Avg Score': 'N/A', 'Score': 'N/A', 'Avg Loss': 'N/A'})
             for episode in range(self.flags['num_episodes']):
                 done = False
                 observations = self.environment.reset()
@@ -101,8 +107,6 @@ class Runner(object):
                 z = 2 * (final_score / 25) - 1
 
                 avg_score = sum(scores) / (episode + 1)
-                pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score)})
-                pbar.update(1)
 
                 for agent in agents:
                     if not isinstance(agent, AlphaZero_Agent):
@@ -114,17 +118,23 @@ class Runner(object):
                     self.training_data.extend(agent.training_data)
                     agent.training_data.clear()
                 
-                if self.training_data:                   
-                    loss = train_network(
-                        network=self.network, 
-                        training_data=self.training_data, 
-                        optimizer=self.optimizer, 
-                        loss_fn=self.loss_fn, 
-                        batch_size=32
+                if self.training_data:
+                    states_tensor, targets = prepare_data(self.training_data)
+
+                    history = self.network.fit(
+                        x=states_tensor,
+                        y=targets,
+                        batch_size=32,
+                        epochs=1,
+                        verbose=1
                     )
-                    pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score), 'Avg Loss': '{0:.2f}'.format(loss)})
-                    pbar.update(0)
+
+                    loss = history.history['loss'][0]
+                    pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score), 'Score': final_score, 'Avg Loss': '{0:.4f}'.format(loss)})
+                    pbar.update(1)
                     self.training_data.clear()
+                else:
+                    pbar.update(1)
 
         avg_score = np.mean(scores)
         std_dev = np.std(scores)
@@ -175,5 +185,8 @@ if __name__ == "__main__":
 
     runner = Runner(flags)
     runner.run()
+
+    # Save the model
+    runner.network.save_weights('alpha_zero_model.weights.h5')
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

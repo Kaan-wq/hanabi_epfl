@@ -1,88 +1,76 @@
 import tensorflow as tf
+import tensorflow_model_optimization as tfmot
 
-class AlphaZeroNetwork(tf.keras.Model):
-    def __init__(self, num_actions, num_filters=64, num_blocks=[3, 4, 6, 3]):
-        super(AlphaZeroNetwork, self).__init__()
-        self.num_actions = num_actions
 
-        # Initial convolutional layer
-        self.conv1 = tf.keras.layers.Conv1D(num_filters, kernel_size=7, strides=2, padding='same', use_bias=False)
-        self.bn1 = tf.keras.layers.BatchNormalization()
-        self.relu = tf.keras.layers.Activation('relu')
-        self.maxpool = tf.keras.layers.MaxPool1D(pool_size=3, strides=2, padding='same')
+def AlphaZeroNetwork(num_actions, obs_shape, num_filters=64, num_blocks=[3, 4, 6, 3]):
+    inputs = tf.keras.layers.Input(shape=(obs_shape, 1))
 
-        # ResNet stages
-        self.layer1 = self._make_layer(num_filters, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(num_filters * 2, num_blocks[1], stride=2)
-        self.layer3 = self._make_layer(num_filters * 4, num_blocks[2], stride=2)
-        self.layer4 = self._make_layer(num_filters * 8, num_blocks[3], stride=2)
+    # Initial convolutional block
+    x = tf.keras.layers.Conv1D(num_filters, kernel_size=7, strides=2, padding='same', use_bias=False, name='conv1')(inputs)
+    x = tf.keras.layers.BatchNormalization(name='bn_conv1')(x)
+    x = tf.keras.layers.Activation('relu')(x)
+    x = tf.keras.layers.MaxPool1D(pool_size=3, strides=2, padding='same', name='maxpool')(x)
 
-        # Global Average Pooling
-        self.global_avg_pool = tf.keras.layers.GlobalAveragePooling1D()
+    # ResNet stages
+    x = _make_layer(x, num_filters, num_blocks[0], stride=1, stage=1)
+    x = _make_layer(x, num_filters * 2, num_blocks[1], stride=2, stage=2)
+    x = _make_layer(x, num_filters * 4, num_blocks[2], stride=2, stage=3)
+    x = _make_layer(x, num_filters * 8, num_blocks[3], stride=2, stage=4)
 
-        # Fully connected layers
-        self.fc1 = tf.keras.layers.Dense(512, activation='relu')
-        self.fc2 = tf.keras.layers.Dense(256, activation='relu')
+    # Global Average Pooling
+    x = tf.keras.layers.GlobalAveragePooling1D(name='avg_pool')(x)
 
-        # Policy and Value heads
-        self.policy_head = tf.keras.layers.Dense(num_actions)
-        self.value_head = tf.keras.layers.Dense(1, activation='tanh')
+    # Fully connected layers
+    x = tf.keras.layers.Dense(512, activation='relu', name='fc1')(x)
+    x = tf.keras.layers.Dense(256, activation='relu', name='fc2')(x)
 
-    def _make_layer(self, filters, blocks, stride):
-        downsample = None
-        layers_list = []
+    # Policy and Value heads
+    policy_logits = tf.keras.layers.Dense(num_actions, name='policy_logits')(x)
+    value = tf.keras.layers.Dense(1, activation='tanh', name='value')(x)
 
-        if stride != 1:
-            downsample = tf.keras.Sequential([
-                tf.keras.layers.Conv1D(filters, kernel_size=1, strides=stride, padding='same', use_bias=False),
-                tf.keras.layers.BatchNormalization()
-            ])
+    # Create model
+    model = tf.keras.Model(inputs=inputs, outputs=[policy_logits, value], name='AlphaZeroNetwork')
 
-        layers_list.append(ResidualBlock1D(filters, stride, downsample))
+    # Apply Quantization Aware Training
+    #quantize_model = tfmot.quantization.keras.quantize_model(model)
 
-        for _ in range(1, blocks):
-            layers_list.append(ResidualBlock1D(filters))
+    return model
 
-        return tf.keras.Sequential(layers_list)
 
-    def call(self, x, training=False):
-        # Initial convolutional block
-        x = self.conv1(x)
-        x = self.bn1(x, training=training)
-        x = self.relu(x)
-        x = self.maxpool(x)
+def _make_layer(input_tensor, filters, blocks, stride=1, stage=1):
+    x = input_tensor
+    for block in range(blocks):
+        block_stride = stride if block == 0 else 1
+        x = residual_block(x, filters, stride=block_stride, block=block, stage=stage)
+    return x
 
-        # ResNet stages
-        x = self.layer1(x, training=training)
-        x = self.layer2(x, training=training)
-        x = self.layer3(x, training=training)
-        x = self.layer4(x, training=training)
 
-        # Global average pooling
-        x = self.global_avg_pool(x)
+def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
+    conv_name_base = f'res{stage}_block{block}_branch'
+    bn_name_base = f'bn{stage}_block{block}_branch'
 
-        # Fully connected layers
-        x = self.fc1(x)
-        x = self.fc2(x)
+    # Main path
+    x = tf.keras.layers.Conv1D(filters, kernel_size=3, strides=stride, padding='same', use_bias=False, name=conv_name_base + '_2a')(input_tensor)
+    x = tf.keras.layers.BatchNormalization(name=bn_name_base + '_2a')(x)
+    x = tf.keras.layers.Activation('relu')(x)
 
-        # Policy and Value heads
-        policy_logits = self.policy_head(x)
-        value = self.value_head(x)
+    x = tf.keras.layers.Conv1D(filters, kernel_size=3, padding='same', use_bias=False, name=conv_name_base + '_2b')(x)
+    x = tf.keras.layers.BatchNormalization(name=bn_name_base + '_2b')(x)
 
-        return policy_logits, value
+    # Shortcut path
+    if stride != 1 or input_tensor.shape[-1] != filters:
+        shortcut = tf.keras.layers.Conv1D(filters, kernel_size=1, strides=stride, padding='same', use_bias=False, name=conv_name_base + '_1')(input_tensor)
+        shortcut = tf.keras.layers.BatchNormalization(name=bn_name_base + '_1')(shortcut)
+    else:
+        shortcut = input_tensor
 
-def create_loss_function():
-    """Create the loss function for training."""
-    def loss_fn(policy_targets, value_targets, policy_predictions, value_predictions):
-        policy_loss = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=policy_targets, logits=policy_predictions)
-        )
-        value_loss = tf.reduce_mean(tf.square(value_targets - value_predictions))
-        return policy_loss + value_loss
-    return loss_fn
+    # Combine paths
+    x = tf.keras.layers.Add(name=f'res{stage}_block{block}_add')([x, shortcut])
+    x = tf.keras.layers.Activation('relu', name=f'res{stage}_block{block}_out')(x)
+    return x
 
-def train_network(network, training_data, optimizer, loss_fn, batch_size=32):
-    """Train the neural network using the collected data."""
+
+def prepare_data(training_data):
     state_vectors = [data[0] for data in training_data]
     policy_targets = [data[1] for data in training_data]
     value_targets = [data[2] for data in training_data]
@@ -91,55 +79,4 @@ def train_network(network, training_data, optimizer, loss_fn, batch_size=32):
     policy_targets_tensor = tf.stack(policy_targets)
     value_targets_tensor = tf.expand_dims(tf.stack(value_targets), axis=-1)
 
-    dataset = tf.data.Dataset.from_tensor_slices((states_tensor, policy_targets_tensor, value_targets_tensor))
-    dataset = dataset.shuffle(buffer_size=len(training_data))
-    dataset = dataset.batch(batch_size)
-    
-    total_loss = 0.0
-    num_batches = 0
-
-    for batch in dataset:
-        states, policy_t, value_t = batch
-        
-        with tf.GradientTape() as tape:
-            policy_logits, value_predictions = network(states, training=True)
-            loss = loss_fn(policy_t, value_t, policy_logits, value_predictions)
-        
-        gradients = tape.gradient(loss, network.trainable_variables)
-        optimizer.apply_gradients(zip(gradients, network.trainable_variables))
-        
-        loss_value = loss.numpy()
-        total_loss += loss_value
-        num_batches += 1
-    
-    average_loss = total_loss / num_batches if num_batches > 0 else 0.0
-    return average_loss
-
-
-class ResidualBlock1D(tf.keras.layers.Layer):
-    def __init__(self, filters, stride=1, downsample=None, **kwargs):
-        super(ResidualBlock1D, self).__init__(**kwargs)
-        self.conv1 = tf.keras.layers.Conv1D(filters, kernel_size=3, strides=stride, padding='same', use_bias=False)
-        self.bn1 = tf.keras.layers.BatchNormalization()
-        self.relu = tf.keras.layers.Activation('relu')
-        self.conv2 = tf.keras.layers.Conv1D(filters, kernel_size=3, strides=1, padding='same', use_bias=False)
-        self.bn2 = tf.keras.layers.BatchNormalization()
-        self.downsample = downsample
-
-    def call(self, x, training=False):
-        identity = x
-
-        out = self.conv1(x)
-        out = self.bn1(out, training=training)
-        out = self.relu(out)
-
-        out = self.conv2(out)
-        out = self.bn2(out, training=training)
-
-        if self.downsample is not None:
-            identity = self.downsample(x, training=training)
-
-        out += identity
-        out = self.relu(out)
-
-        return out
+    return states_tensor, {'policy_logits': policy_targets_tensor, 'value': value_targets_tensor}

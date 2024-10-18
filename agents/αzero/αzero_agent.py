@@ -18,13 +18,12 @@ class AlphaZero_Agent(MCTS_Agent):
         super().__init__(config)
 
         self.num_actions = config['num_actions']
+        self.obs_shape = config['obs_shape']
         self.network = config['network']
-        self.optimizer = config['optimizer']
-        self.loss_fn = config['loss_fn']
 
         self.training_data = []
 
-        self.max_rollout_num = 100
+        self.max_rollout_num = 10
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -133,6 +132,9 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.N[self.root_node] = 0
         self.Q[self.root_node] = 0
+
+    def update_network(self, new_network):
+        self.network = new_network
     
     def record_training_data(self, observation, node):
         """Record training data for the current state."""
@@ -161,15 +163,13 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         if not ray.is_initialized():
             ray.init(include_dashboard=False)
 
-        num_workers = 8
+        num_workers = 4
         worker_max_rollout_num = self.max_rollout_num // num_workers
         config['max_rollout_num'] = worker_max_rollout_num
 
         network_weights = self.network.get_weights()
         config['network_weights'] = network_weights
         config['network'] = None
-        config['optimizer'] = None
-        config['loss_fn'] = None
 
         self.workers = [
             AlphaZero_Worker.remote(config)
@@ -256,15 +256,14 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         self.training_data.append((state_vector, policy_targets, None))
 
 
-@ray.remote(num_cpus=1)
+@ray.remote(num_cpus=2)
 class AlphaZero_Worker:
     def __init__(self, config):
         self.agent = AlphaZero_Agent(config)
-        self.agent.network = AlphaZeroNetwork(self.agent.num_actions)
+        self.agent.network = AlphaZeroNetwork(self.agent.num_actions, self.agent.obs_shape)
         self.agent.network.set_weights(config['network_weights'])
 
     def perform_mcts_search(self, observation, state_json):
-        # Reconstruct the state and observation
         state = HanabiState.from_json(state_json)
         current_player = observation['pyhanabi']
         observation['pyhanabi'] = state.observation(current_player)
