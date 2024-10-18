@@ -3,8 +3,8 @@ from math import log, sqrt
 import numpy as np
 import ray
 import tensorflow as tf
-from agents.αzero.αzero_node import AlphaZeroNode
-from agents.αzero.αzero_network import AlphaZeroNetwork
+from agents.alphazero.alphazero_node import AlphaZeroNode
+from agents.alphazero.alphazero_network import AlphaZeroNetwork
 from pyhanabi import HanabiState, HanabiMove
 from collections import defaultdict
 
@@ -23,7 +23,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 10
+        self.max_rollout_num = 200
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5

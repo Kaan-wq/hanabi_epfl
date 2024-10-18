@@ -17,9 +17,9 @@ from agents.rule_based.rule_based_agents import FlawedAgent
 from agents.rule_based.rule_based_agents import MuteAgent
 from agents.mcts.mcts_agent import MCTS_Agent
 from agents.mcts.mcts_agent import PMCTS_Agent
-from agents.αzero.αzero_agent import AlphaZero_Agent, AlphaZeroP_Agent
+from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
 from agents.human_agent import HumanAgent
-from agents.αzero.αzero_network import AlphaZeroNetwork, prepare_data
+from agents.alphazero.alphazero_network import AlphaZeroNetwork, prepare_data
 import tensorflow as tf
 
 AGENT_CLASSES = {
