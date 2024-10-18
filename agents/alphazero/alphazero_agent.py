@@ -132,9 +132,6 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.N[self.root_node] = 0
         self.Q[self.root_node] = 0
-
-    def update_network(self, new_network):
-        self.network = new_network
     
     def record_training_data(self, observation, node):
         """Record training data for the current state."""
@@ -256,7 +253,7 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         self.training_data.append((state_vector, policy_targets, None))
 
 
-@ray.remote(num_cpus=2.66)
+@ray.remote(num_cpus=2)
 class AlphaZero_Worker:
     def __init__(self, config):
         self.agent = AlphaZero_Agent(config)
