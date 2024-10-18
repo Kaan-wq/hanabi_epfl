@@ -1146,7 +1146,7 @@ class ObservationEncoder(object):
 
   def encode(self, observation):
     """Encode the observation as a sequence of bits."""
-    c_encoding_str = lib.EncodeObservation(self._encoder, observation.observation()) # TODO check this
+    c_encoding_str = lib.EncodeObservation(self._encoder, observation.observation())
     encoding_string = encode_ffi_string(c_encoding_str)
     lib.DeleteString(c_encoding_str)
     # Canonical observations are bit strings, so it is ok to encode using a

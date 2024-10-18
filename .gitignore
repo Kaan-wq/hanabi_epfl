@@ -19,3 +19,5 @@ times.txt
 test_perf.txt
 true_perf.txt
 conc_perf.txt
+zprof.txt
+zzprof.txt
