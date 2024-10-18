@@ -187,6 +187,6 @@ if __name__ == "__main__":
     runner.run()
 
     # Save the model
-    runner.network.save_weights('alpha_zero_model.weights.h5')
+    runner.network.save('saved_models/alphazero_resnet34.keras')
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

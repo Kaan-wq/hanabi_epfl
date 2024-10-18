@@ -1,12 +1,12 @@
+from collections import defaultdict
 from math import log, sqrt
 
 import numpy as np
 import ray
 import tensorflow as tf
-from agents.alphazero.alphazero_node import AlphaZeroNode
 from agents.alphazero.alphazero_network import AlphaZeroNetwork
-from pyhanabi import HanabiState, HanabiMove
-from collections import defaultdict
+from agents.alphazero.alphazero_node import AlphaZeroNode
+from pyhanabi import HanabiMove, HanabiState
 
 from ..mcts.mcts_agent import MCTS_Agent
 
@@ -23,7 +23,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 200
+        self.max_rollout_num = 1000
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -71,7 +71,7 @@ class AlphaZero_Agent(MCTS_Agent):
             return
         
         obs_vector = self.environment.vectorized_observation(observation['pyhanabi'])
-        obs_vector = tf.cast(tf.expand_dims(tf.expand_dims(obs_vector, axis=0), axis=-1), tf.float32)
+        obs_vector = tf.cast(tf.reshape(obs_vector, [1, 1, -1, 1]), tf.float32)
 
         policy_logits, value = self.network(obs_vector)
         policy = tf.nn.softmax(policy_logits)
@@ -163,7 +163,7 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         if not ray.is_initialized():
             ray.init(include_dashboard=False)
 
-        num_workers = 4
+        num_workers = 3
         worker_max_rollout_num = self.max_rollout_num // num_workers
         config['max_rollout_num'] = worker_max_rollout_num
 
@@ -256,7 +256,7 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         self.training_data.append((state_vector, policy_targets, None))
 
 
-@ray.remote(num_cpus=2)
+@ray.remote(num_cpus=2.66)
 class AlphaZero_Worker:
     def __init__(self, config):
         self.agent = AlphaZero_Agent(config)
