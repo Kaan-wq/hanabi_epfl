@@ -2,40 +2,55 @@ import tensorflow as tf
 import numpy as np
 
 
-def AlphaZeroNetwork(num_actions, obs_shape, num_filters=64, num_blocks=[2, 2, 2, 2]):
+def AlphaZeroNetwork(num_actions, obs_shape, num_filters=256, num_blocks=[2, 2, 2, 2]):
     inputs = tf.keras.layers.Input(shape=(1, obs_shape, 1))
 
     # Initial convolutional block
     x = tf.keras.layers.Conv2D(
         filters=num_filters,
-        kernel_size=(1, 7),
-        strides=(1, 2),
+        kernel_size=(3, 1),
+        strides=(1, 1),
         padding="same",
         use_bias=False,
         name="conv1",
     )(inputs)
     x = tf.keras.layers.BatchNormalization(name="bn_conv1")(x)
     x = tf.keras.layers.Activation("relu")(x)
-    x = tf.keras.layers.MaxPool2D(
-        pool_size=(1, 3), strides=(1, 2), padding="same", name="maxpool"
-    )(x)
 
     # ResNet stages
     x = _make_layer(x, num_filters, num_blocks[0], stride=1, stage=1)
-    x = _make_layer(x, num_filters * 2, num_blocks[1], stride=2, stage=2)
-    x = _make_layer(x, num_filters * 4, num_blocks[2], stride=2, stage=3)
-    x = _make_layer(x, num_filters * 8, num_blocks[3], stride=2, stage=4)
+    x = _make_layer(x, num_filters, num_blocks[1], stride=1, stage=2)
+    x = _make_layer(x, num_filters, num_blocks[2], stride=1, stage=3)
+    x = _make_layer(x, num_filters, num_blocks[3], stride=1, stage=4)
 
-    # Global Average Pooling
-    x = tf.keras.layers.GlobalAveragePooling2D(name="avg_pool")(x)
+    # Policy head
+    y = tf.keras.layers.Conv2D(
+        filters=2,
+        kernel_size=(1, 1),
+        strides=(1, 1),
+        padding="same",
+        use_bias=False,
+        name="policy_conv"
+    )(x)
+    y = tf.keras.layers.BatchNormalization(name="policy_bn")(y)
+    y = tf.keras.layers.Activation("relu")(y)
+    y = tf.keras.layers.Flatten(name="policy_flatten")(y)
+    policy_logits = tf.keras.layers.Dense(num_actions, name="policy_logits")(y)
 
-    # Fully connected layers
-    x = tf.keras.layers.Dense(512, activation="relu", name="fc1")(x)
-    x = tf.keras.layers.Dense(256, activation="relu", name="fc2")(x)
-
-    # Policy and Value heads
-    policy_logits = tf.keras.layers.Dense(num_actions, name="policy_logits")(x)
-    value = tf.keras.layers.Dense(1, activation="tanh", name="value")(x)
+    # Value head
+    z = tf.keras.layers.Conv2D(
+        filters=1,
+        kernel_size=(1, 1),
+        strides=(1, 1),
+        padding="same",
+        use_bias=False,
+        name="value_conv"
+    )(x)
+    z = tf.keras.layers.BatchNormalization(name="value_bn")(z)
+    z = tf.keras.layers.Activation("relu")(z)
+    z = tf.keras.layers.Flatten(name="value_flatten")(z)
+    z = tf.keras.layers.Dense(256, activation="relu", name="value_fc1")(z)
+    value = tf.keras.layers.Dense(1, activation="tanh", name="value")(z)
 
     # Create model
     model = tf.keras.Model(
@@ -60,8 +75,8 @@ def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
     # Main path
     x = tf.keras.layers.Conv2D(
         filters,
-        kernel_size=(1, 3),
-        strides=(1, stride),
+        kernel_size=(3, 1),
+        strides=(stride, 1),
         padding="same",
         use_bias=False,
         name=conv_name_base + "_2a",
@@ -71,7 +86,7 @@ def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
 
     x = tf.keras.layers.Conv2D(
         filters,
-        kernel_size=(1, 3),
+        kernel_size=(3, 1),
         padding="same",
         use_bias=False,
         name=conv_name_base + "_2b",
@@ -83,7 +98,7 @@ def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
         shortcut = tf.keras.layers.Conv2D(
             filters,
             kernel_size=(1, 1),
-            strides=(1, stride),
+            strides=(stride, 1),
             padding="same",
             use_bias=False,
             name=conv_name_base + "_1",
