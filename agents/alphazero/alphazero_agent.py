@@ -187,12 +187,11 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         worker_max_rollout_num = self.max_rollout_num // num_workers
         config['max_rollout_num'] = worker_max_rollout_num
 
-        network_weights = self.network.get_weights()
-        config['network_weights'] = network_weights
+        network_weights_id = ray.put(self.network.get_weights())
         config['network'] = None
 
         self.workers = [
-            AlphaZero_Worker.remote(config)
+            AlphaZero_Worker.remote(config, network_weights_id)
             for _ in range(num_workers)
         ]
     
@@ -278,10 +277,10 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
 
 @ray.remote(num_cpus=1)
 class AlphaZero_Worker:
-    def __init__(self, config):
+    def __init__(self, config, network_weights_id):
         self.agent = AlphaZero_Agent(config)
         self.agent.network = AlphaZeroNetwork(self.agent.num_actions, self.agent.obs_shape)
-        self.agent.network.set_weights(config['network_weights'])
+        self.agent.network.set_weights(network_weights_id)
 
     def perform_mcts_search(self, observation, state_json):
         state = HanabiState.from_json(state_json)
