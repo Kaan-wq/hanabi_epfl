@@ -23,10 +23,14 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 100
+        self.max_rollout_num = 10
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
+
+        # Dirichlet noise parameters
+        self.dirichlet_epsilon = 0.25
+        self.dirichlet_alpha = 0.03
 
     def act(self, observation, state):
         """Act method returns the action based on the observation using AlphaZero."""
@@ -95,6 +99,25 @@ class AlphaZero_Agent(MCTS_Agent):
         if policy_sum > 0:
             policy /= policy_sum
 
+        # Add Dirichlet noise to the prior probabilities at the root node
+        if node == self.root_node:
+            epsilon = self.dirichlet_epsilon
+            alpha = self.dirichlet_alpha
+            legal_moves = np.flatnonzero(mask_moves)
+            dirichlet_noise = np.random.dirichlet([alpha] * len(legal_moves))
+            
+            # Adjust the policy
+            policy_values = policy.numpy()[0][legal_moves]
+            policy_values = (1 - epsilon) * policy_values + epsilon * dirichlet_noise
+            
+            # Normalize the adjusted policy
+            policy_values /= np.sum(policy_values)
+            
+            # Assign back to policy
+            policy_numpy = policy.numpy()[0]
+            policy_numpy[legal_moves] = policy_values
+            policy = tf.convert_to_tensor([policy_numpy], dtype=tf.float32)
+
         self.children[node] = set()
         for move in moves:
             child_node = AlphaZeroNode(node.moves + (move,), self.rules)
@@ -160,7 +183,7 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         if not ray.is_initialized():
             ray.init(include_dashboard=False)
 
-        num_workers = 3
+        num_workers = 8
         worker_max_rollout_num = self.max_rollout_num // num_workers
         config['max_rollout_num'] = worker_max_rollout_num
 
@@ -253,7 +276,7 @@ class AlphaZeroP_Agent(AlphaZero_Agent):
         self.training_data.append((state_vector, policy_targets, None))
 
 
-@ray.remote(num_cpus=2)
+@ray.remote(num_cpus=1)
 class AlphaZero_Worker:
     def __init__(self, config):
         self.agent = AlphaZero_Agent(config)

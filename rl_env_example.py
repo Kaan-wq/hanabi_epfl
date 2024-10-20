@@ -119,14 +119,14 @@ class Runner(object):
                     agent.training_data.clear()
                 
                 if self.training_data:
-                    states_tensor, targets = prepare_data(self.training_data)
+                    batch_size = 20
+                    steps = len(self.training_data) // batch_size
 
                     history = self.network.fit(
-                        x=states_tensor,
-                        y=targets,
-                        batch_size=32,
+                        x=prepare_data(self.training_data, batch_size),
+                        steps_per_epoch=steps,
                         epochs=1,
-                        verbose=1
+                        verbose=1,
                     )
 
                     loss = history.history['loss'][0]
@@ -187,6 +187,6 @@ if __name__ == "__main__":
     runner.run()
 
     # Save the model
-    runner.network.save('saved_models/alphazero_resnet34.keras')
+    runner.network.save('saved_models/alphazero_resnet18.keras')
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")

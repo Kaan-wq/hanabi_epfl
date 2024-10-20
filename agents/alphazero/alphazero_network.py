@@ -1,7 +1,8 @@
 import tensorflow as tf
+import numpy as np
 
 
-def AlphaZeroNetwork(num_actions, obs_shape, num_filters=64, num_blocks=[3, 4, 6, 3]):
+def AlphaZeroNetwork(num_actions, obs_shape, num_filters=64, num_blocks=[2, 2, 2, 2]):
     inputs = tf.keras.layers.Input(shape=(1, obs_shape, 1))
 
     # Initial convolutional block
@@ -99,18 +100,22 @@ def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
     return x
 
 
-def prepare_data(training_data):
-    state_vectors = [data[0] for data in training_data]
-    policy_targets = [data[1] for data in training_data]
-    value_targets = [data[2] for data in training_data]
+def prepare_data(training_data, batch_size=16):
+    while True:
+        np.random.shuffle(training_data)
+        for i in range(0, len(training_data), batch_size):
+            batch_data = training_data[i:i + batch_size]
+            state_vectors = [data[0] for data in batch_data]
+            policy_targets = [data[1] for data in batch_data]
+            value_targets = [data[2] for data in batch_data]
 
-    states_tensor = tf.stack(state_vectors)
-    states_tensor = tf.reshape(states_tensor, [-1, 1, states_tensor.shape[1], 1])
+            states_tensor = tf.stack(state_vectors)
+            states_tensor = tf.reshape(states_tensor, [-1, 1, states_tensor.shape[1], 1])
 
-    policy_targets_tensor = tf.stack(policy_targets)
-    value_targets_tensor = tf.expand_dims(tf.stack(value_targets), axis=-1)
+            policy_targets_tensor = tf.stack(policy_targets)
+            value_targets_tensor = tf.expand_dims(tf.stack(value_targets), axis=-1)
 
-    return states_tensor, {
-        "policy_logits": policy_targets_tensor,
-        "value": value_targets_tensor,
-    }
+            yield states_tensor, {
+                "policy_logits": policy_targets_tensor,
+                "value": value_targets_tensor,
+            }
