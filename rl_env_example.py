@@ -133,6 +133,7 @@ class Runner(object):
                     pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score), 'Score': final_score, 'Avg Loss': '{0:.4f}'.format(loss)})
                     pbar.update(1)
                     self.training_data.clear()
+                    self.network.save('saved_models/resnet18-1600-100.keras')
                 else:
                     pbar.update(1)
 
