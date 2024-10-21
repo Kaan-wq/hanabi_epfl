@@ -53,6 +53,7 @@ class Runner(object):
         self.obs_shape = self.environment.vectorized_observation_shape()[0]
 
         self.network = AlphaZeroNetwork(self.num_actions, self.obs_shape)
+        self.network.load_weights('saved_models/paper-350.keras')
         self.optimizer = tf.keras.optimizers.AdamW(learning_rate=1e-4, weight_decay=1e-4)
         self.network.compile(
             optimizer=self.optimizer,
@@ -133,7 +134,7 @@ class Runner(object):
                     pbar.set_postfix({'Avg Score': '{0:.2f}'.format(avg_score), 'Score': final_score, 'Avg Loss': '{0:.4f}'.format(loss)})
                     pbar.update(1)
                     self.training_data.clear()
-                    self.network.save('saved_models/resnet18-1600-100.keras')
+                    self.network.save('saved_models/paper-350.keras')
                 else:
                     pbar.update(1)
 
@@ -188,6 +189,6 @@ if __name__ == "__main__":
     runner.run()
 
     # Save the model
-    runner.network.save('saved_models/alphazero_resnet18.keras')
+    #runner.network.save('saved_models/alphazero_resnet18.keras')
 
     print(f"Total Time: {time.time() - start_time:.2f} seconds")
