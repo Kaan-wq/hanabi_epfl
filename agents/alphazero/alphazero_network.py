@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 
-def AlphaZeroNetwork(num_actions, obs_shape, num_filters=256, num_blocks=[2, 2, 2, 2]):
+def AlphaZeroNetwork(num_actions, obs_shape, num_filters=256, num_blocks=[19, 2, 2, 2]):
     inputs = tf.keras.layers.Input(shape=(1, obs_shape, 1))
 
     # Initial convolutional block
@@ -17,11 +17,11 @@ def AlphaZeroNetwork(num_actions, obs_shape, num_filters=256, num_blocks=[2, 2, 
     x = tf.keras.layers.BatchNormalization(name="bn_conv1")(x)
     x = tf.keras.layers.Activation("relu")(x)
 
-    # ResNet stages
+    # ResNet tower
     x = _make_layer(x, num_filters, num_blocks[0], stride=1, stage=1)
-    x = _make_layer(x, num_filters, num_blocks[1], stride=1, stage=2)
-    x = _make_layer(x, num_filters, num_blocks[2], stride=1, stage=3)
-    x = _make_layer(x, num_filters, num_blocks[3], stride=1, stage=4)
+    #x = _make_layer(x, num_filters, num_blocks[1], stride=1, stage=2)
+    #x = _make_layer(x, num_filters, num_blocks[2], stride=1, stage=3)
+    #x = _make_layer(x, num_filters, num_blocks[3], stride=1, stage=4)
 
     # Policy head
     y = tf.keras.layers.Conv2D(
