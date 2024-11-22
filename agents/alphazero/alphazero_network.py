@@ -1,136 +1,119 @@
-import tensorflow as tf
-import numpy as np
+import copy
+
+import torch
+import torch.nn as nn
+from torch.utils.data import DataLoader, Dataset
 
 
-def AlphaZeroNetwork(num_actions, obs_shape, num_filters=256, num_blocks=[19, 2, 2, 2]):
-    inputs = tf.keras.layers.Input(shape=(1, obs_shape, 1))
+class SimpleNetwork(nn.Module):
+    def __init__(self, num_actions, obs_shape, hidden_size=256):
+        super(SimpleNetwork, self).__init__()
 
-    # Initial convolutional block
-    x = tf.keras.layers.Conv2D(
-        filters=num_filters,
-        kernel_size=(3, 1),
-        strides=(1, 1),
-        padding="same",
-        use_bias=False,
-        name="conv1",
-    )(inputs)
-    x = tf.keras.layers.BatchNormalization(name="bn_conv1")(x)
-    x = tf.keras.layers.Activation("relu")(x)
-
-    # ResNet tower
-    x = _make_layer(x, num_filters, num_blocks[0], stride=1, stage=1)
-    #x = _make_layer(x, num_filters, num_blocks[1], stride=1, stage=2)
-    #x = _make_layer(x, num_filters, num_blocks[2], stride=1, stage=3)
-    #x = _make_layer(x, num_filters, num_blocks[3], stride=1, stage=4)
-
-    # Policy head
-    y = tf.keras.layers.Conv2D(
-        filters=2,
-        kernel_size=(1, 1),
-        strides=(1, 1),
-        padding="same",
-        use_bias=False,
-        name="policy_conv"
-    )(x)
-    y = tf.keras.layers.BatchNormalization(name="policy_bn")(y)
-    y = tf.keras.layers.Activation("relu")(y)
-    y = tf.keras.layers.Flatten(name="policy_flatten")(y)
-    policy_logits = tf.keras.layers.Dense(num_actions, name="policy_logits")(y)
-
-    # Value head
-    z = tf.keras.layers.Conv2D(
-        filters=1,
-        kernel_size=(1, 1),
-        strides=(1, 1),
-        padding="same",
-        use_bias=False,
-        name="value_conv"
-    )(x)
-    z = tf.keras.layers.BatchNormalization(name="value_bn")(z)
-    z = tf.keras.layers.Activation("relu")(z)
-    z = tf.keras.layers.Flatten(name="value_flatten")(z)
-    z = tf.keras.layers.Dense(256, activation="relu", name="value_fc1")(z)
-    value = tf.keras.layers.Dense(1, activation="tanh", name="value")(z)
-
-    # Create model
-    model = tf.keras.Model(
-        inputs=inputs, outputs=[policy_logits, value], name="AlphaZeroNetwork"
-    )
-
-    return model
-
-
-def _make_layer(input_tensor, filters, blocks, stride=1, stage=1):
-    x = input_tensor
-    for block in range(blocks):
-        block_stride = stride if block == 0 else 1
-        x = residual_block(x, filters, stride=block_stride, block=block, stage=stage)
-    return x
-
-
-def residual_block(input_tensor, filters, stride=1, block=0, stage=1):
-    conv_name_base = f"res{stage}_block{block}_branch"
-    bn_name_base = f"bn{stage}_block{block}_branch"
-
-    # Main path
-    x = tf.keras.layers.Conv2D(
-        filters,
-        kernel_size=(3, 1),
-        strides=(stride, 1),
-        padding="same",
-        use_bias=False,
-        name=conv_name_base + "_2a",
-    )(input_tensor)
-    x = tf.keras.layers.BatchNormalization(name=bn_name_base + "_2a")(x)
-    x = tf.keras.layers.Activation("relu")(x)
-
-    x = tf.keras.layers.Conv2D(
-        filters,
-        kernel_size=(3, 1),
-        padding="same",
-        use_bias=False,
-        name=conv_name_base + "_2b",
-    )(x)
-    x = tf.keras.layers.BatchNormalization(name=bn_name_base + "_2b")(x)
-
-    # Shortcut path
-    if stride != 1 or input_tensor.shape[-1] != filters:
-        shortcut = tf.keras.layers.Conv2D(
-            filters,
-            kernel_size=(1, 1),
-            strides=(stride, 1),
-            padding="same",
-            use_bias=False,
-            name=conv_name_base + "_1",
-        )(input_tensor)
-        shortcut = tf.keras.layers.BatchNormalization(name=bn_name_base + "_1")(
-            shortcut
+        # Shared layers
+        self.fc_shared = nn.Sequential(
+            nn.Linear(obs_shape, hidden_size),
+            nn.ReLU(),
         )
-    else:
-        shortcut = input_tensor
 
-    # Combine paths
-    x = tf.keras.layers.Add(name=f"res{stage}_block{block}_add")([x, shortcut])
-    x = tf.keras.layers.Activation("relu", name=f"res{stage}_block{block}_out")(x)
-    return x
+        # Policy head
+        self.policy_head = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, num_actions),
+        )
+
+        # Value head
+        self.value_head = nn.Sequential(
+            nn.Linear(hidden_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 1),
+            nn.Tanh(),
+        )
+
+    def forward(self, x):
+        # Flatten input
+        x = x.view(x.size(0), -1)
+
+        # Shared layers
+        x = self.fc_shared(x)
+
+        # Policy head
+        policy_logits = self.policy_head(x)
+
+        # Value head
+        value = self.value_head(x)
+
+        return policy_logits, value
+
+
+class AlphaZeroDataset(Dataset):
+    def __init__(self, training_data):
+        self.state_vectors = [data[0] for data in training_data]
+        self.policy_targets = [data[1] for data in training_data]
+        self.value_targets = [data[2] for data in training_data]
+
+    def __len__(self):
+        return len(self.state_vectors)
+
+    def __getitem__(self, idx):
+        state = torch.as_tensor(self.state_vectors[idx], dtype=torch.float32)
+        policy_target = torch.as_tensor(self.policy_targets[idx], dtype=torch.float32)
+        value_target = torch.as_tensor(self.value_targets[idx], dtype=torch.float32)
+        return state, policy_target, value_target
 
 
 def prepare_data(training_data, batch_size=16):
-    while True:
-        np.random.shuffle(training_data)
-        for i in range(0, len(training_data), batch_size):
-            batch_data = training_data[i:i + batch_size]
-            state_vectors = [data[0] for data in batch_data]
-            policy_targets = [data[1] for data in batch_data]
-            value_targets = [data[2] for data in batch_data]
+    dataset = AlphaZeroDataset(training_data)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    return dataloader
 
-            states_tensor = tf.stack(state_vectors)
-            states_tensor = tf.reshape(states_tensor, [-1, 1, states_tensor.shape[1], 1])
 
-            policy_targets_tensor = tf.stack(policy_targets)
-            value_targets_tensor = tf.expand_dims(tf.stack(value_targets), axis=-1)
+def extract_tensors(model):
+    """
+    Remove the tensors from a PyTorch model, convert them to NumPy
+    arrays, and return the stripped model and tensors.
+    """
+    tensors = []
+    for _, module in model.named_modules():
+        # Store the tensors in Python dictionaries
+        params = {
+            name: torch.clone(param).detach().numpy()
+            for name, param in module.named_parameters(recurse=False)
+        }
+        buffers = {
+            name: torch.clone(buf).detach().numpy()
+            for name, buf in module.named_buffers(recurse=False)
+        }
+        tensors.append({"params": params, "buffers": buffers})
 
-            yield states_tensor, {
-                "policy_logits": policy_targets_tensor,
-                "value": value_targets_tensor,
-            }
+    # Make a copy of the original model and strip all tensors and
+    # buffers out of the copy.
+    m_copy = copy.deepcopy(model)
+    for _, module in m_copy.named_modules():
+        for name in [name for name, _ in module.named_parameters(recurse=False)] + [
+            name for name, _ in module.named_buffers(recurse=False)
+        ]:
+            setattr(module, name, None)
+
+    # Make sure the copy is configured for inference.
+    m_copy.train(False)
+    return m_copy, tensors
+
+
+def replace_tensors(model, tensors):
+    """
+    Restore the tensors that extract_tensors() stripped out of a
+    PyTorch model.
+    """
+    modules = [module for _, module in model.named_modules()]
+    for module, tensor_dict in zip(modules, tensors):
+        # There are separate APIs to set parameters and buffers.
+        for name, array in tensor_dict["params"].items():
+            module.register_parameter(name, torch.nn.Parameter(torch.as_tensor(array)))
+        for name, array in tensor_dict["buffers"].items():
+            module.register_buffer(name, torch.as_tensor(array))
+
+
+### Need memeory buffer (batch-size of 128) only after say 4 episodes to fill the buffer
+### Forget value-head and only pure MCTS for uct formula
+### Try pretraining

@@ -23,7 +23,7 @@ class MCTS_Agent(Agent):
         self.player_id = config["player_id"]
 
         self.max_rollout_num = config.get("max_rollout_num", 50)
-        self.max_simulation_steps = config.get("max_simulation_steps", 0)
+        self.max_simulation_steps = config.get("max_simulation_steps", 3)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
 
@@ -38,6 +38,8 @@ class MCTS_Agent(Agent):
             Ruleset.play_probably_safe_late_factory(0.4, 5),
             Ruleset.discard_most_confident,
         ])
+
+        self.rules = None
 
         self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
         self.determine_type = mcts_env.DetermineType.RESTORE
@@ -295,7 +297,7 @@ class PMCTS_Agent(MCTS_Agent):
         return HanabiMove.from_json(best_move_json)
 
 
-@ray.remote(num_cpus=1)
+@ray.remote(num_cpus=0.5)
 class MCTS_Worker:
     def __init__(self, config, max_rollout_num):
         self.agent = MCTS_Agent(config)
