@@ -12,6 +12,10 @@ class SimpleNetwork(nn.Module):
         # Shared layers
         self.fc_shared = nn.Sequential(
             nn.Linear(obs_shape, hidden_size),
+            nn.LayerNorm(hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size),
+            nn.LayerNorm(hidden_size),
             nn.ReLU(),
         )
 
@@ -31,9 +35,6 @@ class SimpleNetwork(nn.Module):
         )
 
     def forward(self, x):
-        # Flatten input
-        x = x.view(x.size(0), -1)
-
         # Shared layers
         x = self.fc_shared(x)
 
@@ -41,9 +42,9 @@ class SimpleNetwork(nn.Module):
         policy_logits = self.policy_head(x)
 
         # Value head
-        value = self.value_head(x)
+        #value = self.value_head(x)
 
-        return policy_logits, value
+        return policy_logits #, value
 
 
 class AlphaZeroDataset(Dataset):

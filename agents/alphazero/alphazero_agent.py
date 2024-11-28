@@ -26,7 +26,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 100
+        self.max_rollout_num = 400
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -97,8 +97,9 @@ class AlphaZero_Agent(MCTS_Agent):
         self.mcts_backpropagate(path, reward)
 
         return path, reward
-
-    def mcts_choose(self, node):
+    
+    #TODO: Replace name to mcts_choose if does not work
+    def alpha_choose(self, node):
         """Choose the best successor of the root node."""
         if node.is_terminal():
             raise RuntimeError(f"choose called on terminal node {node}")
@@ -136,9 +137,10 @@ class AlphaZero_Agent(MCTS_Agent):
         obs_vector = torch.tensor(obs_vector, dtype=torch.float32).unsqueeze(0).to(self.device)
 
         with torch.no_grad():
-            policy_logits, value = self.network(obs_vector)
+            #TODO: add value head
+            policy_logits = self.network(obs_vector)
             policy = F.softmax(policy_logits, dim=1)
-            node.value = value.item()
+            #node.value = value.item()
 
         moves = (
             self.environment.state.legal_moves()
@@ -205,8 +207,9 @@ class AlphaZero_Agent(MCTS_Agent):
         selected_child = max(self.children[node], key=lambda c: puct_values[c])
 
         return selected_child
-
-    def mcts_simulate(self, node):
+    
+    #TODO: Replace name to mcts_simulate if does not work
+    def alpha_simulate(self, node):
         """Return the value estimate for the given node."""
         return node.value
 

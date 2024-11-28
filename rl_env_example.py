@@ -48,6 +48,7 @@ class Runner(object):
             "mcts_types": flags["mcts_types"],
         }
         self.environment = make("Hanabi-Full", num_players=flags["players"])
+
         self.agent_classes = [
             AGENT_CLASSES[agent_class] for agent_class in flags["agent_classes"]
         ]
@@ -65,7 +66,7 @@ class Runner(object):
         self.network.to(self.device)
 
         # Load model weights if available
-        # self.network.load_state_dict(torch.load('saved_models/paper-350.pth', map_location=self.device))
+        self.network.load_state_dict(torch.load('saved_models/policy.pth', map_location=self.device))
 
         # Optimizer and loss functions
         self.optimizer = optim.AdamW(
@@ -76,6 +77,7 @@ class Runner(object):
     def run(self):
         """Run episodes."""
         scores = []
+        losses = []
         agents = []
         names = ["agent_one", "agent_two", "agent_three", "agent_four", "agent_five"]
 
@@ -98,9 +100,9 @@ class Runner(object):
             total=self.flags["num_episodes"],
             desc="Running Episodes",
             unit="episode",
-            ncols=200,
+            ncols=190,
         ) as pbar:
-            pbar.set_postfix({"Avg Score": "N/A", "Score": "N/A", "Avg Loss": "N/A"})
+            pbar.set_postfix({"Avg Score": "N/A", "Score": "N/A", "Avg Loss": "N/A", "Loss": "N/A"})
             for episode in range(self.flags["num_episodes"]):
                 done = False
                 observations = self.environment.reset()
@@ -152,7 +154,8 @@ class Runner(object):
                     agent.training_data.clear()
 
                     
-                batch_size = 64
+                batch_size = 128
+                latest_loss = "N/A"
                 if len(self.replay_buffer) >= batch_size:
                     batch_data = self.replay_buffer.sample(batch_size)
                     dataloader = prepare_data(batch_data, batch_size)
@@ -169,7 +172,8 @@ class Runner(object):
 
                         self.optimizer.zero_grad()
 
-                        policy_logits, value = self.network(states)
+                        #TODO: Add value head
+                        policy_logits = self.network(states)
 
                         # Compute policy loss with soft labels
                         policy_log_probs = nn.functional.log_softmax(
@@ -180,18 +184,20 @@ class Runner(object):
                         )
 
                         # Compute value loss
-                        value_loss = self.criterion_value(
-                            value.squeeze(-1), value_targets
-                        )
+                        #value_loss = self.criterion_value(
+                        #    value.squeeze(-1), value_targets
+                        #)
 
                         # Total loss
-                        loss = policy_loss + value_loss
+                        loss = policy_loss #+ value_loss
 
                         # Backpropagation
                         loss.backward()
                         self.optimizer.step()
 
                         total_loss += loss.item()
+                        latest_loss = loss.item()
+                        losses.append(latest_loss)
                         steps += 1
 
                     avg_loss = total_loss / steps if steps > 0 else 0.0
@@ -200,14 +206,15 @@ class Runner(object):
                         {
                             "Avg Score": "{0:.2f}".format(avg_score),
                             "Score": final_score,
-                            "Avg Loss": "{0:.4f}".format(avg_loss),
+                            "Avg Loss": "{0:.2f}".format(avg_loss),
+                            "Loss": "{0:.2f}".format(latest_loss),
                         }
                     )
                     pbar.update(1)
                     self.training_data.clear()
 
                     # Save the model
-                    # torch.save(self.network.state_dict(), 'saved_models/paper-350.pth')
+                    torch.save(self.network.state_dict(), 'saved_models/policy.pth')
                 else:
                     pbar.update(1)
 
@@ -215,13 +222,14 @@ class Runner(object):
         std_dev = np.std(scores)
         std_error = std_dev / np.sqrt(len(scores))
 
+        print("\nLosses: ", [f"{loss:.2f}" for loss in losses])
+        print("Average Loss: ", np.mean(losses) if losses else "N/A")
+
         print(f"\nScores: {scores}")
         print(f"Average Score: {avg_score}")
         print(f"Standard Deviation: {std_dev}")
         print(f"Standard Error: {std_error}")
         print(f"Errors: {errors}\n")
-
-        return avg_score, std_error
 
 
 if __name__ == "__main__":

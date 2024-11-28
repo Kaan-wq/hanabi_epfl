@@ -351,14 +351,14 @@ int CardKnowledgeSectionLength(const HanabiGame& game) {
 // R    Y    G    W    B
 // 0000000000111110000000000   Only green cards are possible.
 // 0    0    1    0    0       Card was revealed to be green.
-// 00000                       Card rank was not revealed.
+// 0    0    0    0    0       Card rank was not revealed.
 //
 // Similarly, if the player revealed that one of your other cards was green, you
 // would know that this card could not be green, resulting in:
 // R    Y    G    W    B
 // 1111111111000001111111111   Any card that is not green is possible.
 // 0    0    0    0    0       Card color was not revealed.
-// 00000                       Card rank was not revealed.
+// 0    0    0    0    0       Card rank was not revealed.
 // Uses <num_players> * <hand_size> *
 // (<num_colors> * <num_ranks> + <num_colors> + <num_ranks>) bits.
 // Returns the number of entries written to the encoding.
