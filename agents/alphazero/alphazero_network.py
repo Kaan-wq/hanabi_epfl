@@ -1,7 +1,8 @@
-import copy
-
 import torch
 import torch.nn as nn
+from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
+from agents.alphazero.alphazero_buffer import ReplayBuffer
+from torch import optim
 from torch.utils.data import DataLoader, Dataset
 
 
@@ -42,9 +43,9 @@ class SimpleNetwork(nn.Module):
         policy_logits = self.policy_head(x)
 
         # Value head
-        #value = self.value_head(x)
+        # value = self.value_head(x)
 
-        return policy_logits #, value
+        return policy_logits  # , value
 
 
 class AlphaZeroDataset(Dataset):
@@ -69,51 +70,107 @@ def prepare_data(training_data, batch_size=16):
     return dataloader
 
 
-def extract_tensors(model):
-    """
-    Remove the tensors from a PyTorch model, convert them to NumPy
-    arrays, and return the stripped model and tensors.
-    """
-    tensors = []
-    for _, module in model.named_modules():
-        # Store the tensors in Python dictionaries
-        params = {
-            name: torch.clone(param).detach().numpy()
-            for name, param in module.named_parameters(recurse=False)
-        }
-        buffers = {
-            name: torch.clone(buf).detach().numpy()
-            for name, buf in module.named_buffers(recurse=False)
-        }
-        tensors.append({"params": params, "buffers": buffers})
+def train_network(replay_buffer, network, optimizer, device, batch_size=128):
+    """Train the network using data from the replay buffer."""
 
-    # Make a copy of the original model and strip all tensors and
-    # buffers out of the copy.
-    m_copy = copy.deepcopy(model)
-    for _, module in m_copy.named_modules():
-        for name in [name for name, _ in module.named_parameters(recurse=False)] + [
-            name for name, _ in module.named_buffers(recurse=False)
-        ]:
-            setattr(module, name, None)
+    batch_size = batch_size
+    if len(replay_buffer) < batch_size:
+        return None
 
-    # Make sure the copy is configured for inference.
-    m_copy.train(False)
-    return m_copy, tensors
+    batch_data = replay_buffer.sample(batch_size)
+    dataloader = prepare_data(batch_data, batch_size)
+
+    network.train()
+    total_loss = 0.0
+    steps = 0
+
+    for states, policy_targets, value_targets in dataloader:
+        states = states.to(device)
+        policy_targets = policy_targets.to(device)
+        value_targets = value_targets.to(device)
+
+        optimizer.zero_grad()
+
+        policy_logits = network(states)
+
+        # Policy loss
+        policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
+        policy_loss = -torch.mean(torch.sum(policy_targets * policy_log_probs, dim=1))
+
+        # Value loss (if value head is added)
+        # value_loss = self.criterion_value(value.squeeze(-1), value_targets)
+
+        # Total loss
+        loss = policy_loss  # + value_loss
+
+        loss.backward()
+        optimizer.step()
+
+        total_loss += loss.item()
+        steps += 1
+
+    avg_loss = total_loss / steps if steps > 0 else 0.0
+    return avg_loss
 
 
-def replace_tensors(model, tensors):
-    """
-    Restore the tensors that extract_tensors() stripped out of a
-    PyTorch model.
-    """
-    modules = [module for _, module in model.named_modules()]
-    for module, tensor_dict in zip(modules, tensors):
-        # There are separate APIs to set parameters and buffers.
-        for name, array in tensor_dict["params"].items():
-            module.register_parameter(name, torch.nn.Parameter(torch.as_tensor(array)))
-        for name, array in tensor_dict["buffers"].items():
-            module.register_buffer(name, torch.as_tensor(array))
+# ========================= Helper Functions =========================
+def requires_training(agent_classes):
+    """Check if any agent requires training."""
+    training_agents = (AlphaZero_Agent, AlphaZeroP_Agent)
+    return any(
+        issubclass(agent_class, training_agents) for agent_class in agent_classes
+    )
 
+
+def initialize_training_components(
+    env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4
+):
+    """Initialize network, optimizer, and replay buffer for training."""
+    replay_buffer = ReplayBuffer(capacity=10000)
+
+    num_actions = env.num_moves()
+    obs_shape = env.vectorized_observation_shape()[0]
+    network = SimpleNetwork(num_actions, obs_shape)
+    network.to(device)
+
+    if from_pretrained is not None:
+        network.load_state_dict(torch.load(from_pretrained, map_location=device))
+
+    optimizer = optim.AdamW(network.parameters(), lr=lr, weight_decay=weight_decay)
+    criterion_value = nn.MSELoss()
+
+    return network, optimizer, criterion_value, num_actions, replay_buffer
+
+
+def collect_training_data(agents, replay_buffer, final_score):
+    """Collect training data from agents that require training."""
+    z = 2 * (final_score / 25) - 1  # Value target
+
+    for agent in agents:
+        if not hasattr(agent, "training_data"):
+            continue
+
+        for i, data in enumerate(agent.training_data):
+            (
+                state_vector,
+                policy_targets,
+                _,
+                root_policy,
+            ) = data
+            state_vector = torch.tensor(state_vector, dtype=torch.float32)
+            policy_targets = torch.tensor(policy_targets, dtype=torch.float32)
+            value_target = torch.tensor(z, dtype=torch.float32)
+            root_policy = torch.tensor(root_policy, dtype=torch.float32)
+            agent.training_data[i] = (
+                state_vector,
+                policy_targets,
+                value_target,
+                root_policy,
+            )
+
+        replay_buffer.add(agent.training_data)
+        agent.training_data.clear()
+# ======================================================================
 
 ### Need memeory buffer (batch-size of 128) only after say 4 episodes to fill the buffer
 ### Forget value-head and only pure MCTS for uct formula

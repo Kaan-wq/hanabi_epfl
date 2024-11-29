@@ -5,7 +5,7 @@ import numpy as np
 import ray
 import torch
 import torch.nn.functional as F
-from agents.alphazero.alphazero_network import SimpleNetwork, extract_tensors, replace_tensors
+from agents.alphazero.alphazero_utils import extract_tensors, replace_tensors
 from agents.alphazero.alphazero_node import AlphaZeroNode
 from pyhanabi import HanabiMove, HanabiState
 
@@ -17,10 +17,8 @@ class AlphaZero_Agent(MCTS_Agent):
 
     def __init__(self, config):
         super().__init__(config)
-        self.agent_name = config['agent_name']
 
         self.num_actions = config['num_actions']
-        self.obs_shape = config['obs_shape']
         self.network = config['network']
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -30,10 +28,6 @@ class AlphaZero_Agent(MCTS_Agent):
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
-
-        # Dirichlet noise parameters
-        self.dirichlet_epsilon = 0.25
-        self.dirichlet_alpha = 0.03
 
     def act(self, observation, state):
         """Act method returns the action based on the observation using AlphaZero."""
@@ -129,66 +123,60 @@ class AlphaZero_Agent(MCTS_Agent):
             node = self.uct_select(node)
 
     def mcts_expand(self, node, observation, from_rules=True):
-        """Expand the `node` with all possible children with their policy and value."""
+        """Expand the `node` with all possible children, assigning their policy and value."""
         if node in self.children:
             return
 
         obs_vector = self.environment.vectorized_observation(observation['pyhanabi'])
-        obs_vector = torch.tensor(obs_vector, dtype=torch.float32).unsqueeze(0).to(self.device)
+        obs_tensor = torch.tensor(obs_vector, dtype=torch.float32, device=self.device).unsqueeze(0)
 
         with torch.no_grad():
-            #TODO: add value head
-            policy_logits = self.network(obs_vector)
-            policy = F.softmax(policy_logits, dim=1)
-            #node.value = value.item()
+            # TODO: add value head
+            policy_logits = self.network(obs_tensor)
+            policy = F.softmax(policy_logits, dim=1).squeeze(0)
 
-        moves = (
-            self.environment.state.legal_moves()
-            if not from_rules else node.find_children(observation)
-        )
-        if moves and isinstance(moves[0], dict):
+        if node == self.root_node:
+            self.root_policy = policy
+
+        # Determine legal moves
+        moves = node.find_children(observation) if from_rules else self.environment.state.legal_moves()
+        if not moves:
+            return  # No moves to expand
+
+        # Convert moves if they are in dictionary format
+        if isinstance(next(iter(moves)), dict):
             build_move = self.environment._build_move
             moves = {build_move(action) for action in moves}
-        else:
-            moves = set(moves)
+
+        # Map moves to their unique IDs
         moves_uids = [self.environment.game.get_move_uid(move) for move in moves]
 
-        mask_moves = np.zeros(self.num_actions)
-        if moves_uids:
-            mask_moves[moves_uids] = 1
+        # Create a mask for valid moves directly on the device
+        mask = torch.zeros(self.num_actions, dtype=torch.float32, device=self.device)
+        mask[moves_uids] = 1.0
 
-        mask_tensor = torch.tensor(mask_moves, dtype=torch.float32).to(self.device)
-        policy = policy * mask_tensor
-
-        policy_sum = torch.sum(policy)
+        # Apply the mask to the policy and normalize
+        policy *= mask
+        policy_sum = policy.sum()
         if policy_sum > 0:
             policy /= policy_sum
+        else:
+            # Assign uniform probabilities if policy sums to zero
+            num_legal_moves = mask.sum()
+            if num_legal_moves > 0:
+                policy = mask / num_legal_moves
+            else:
+                return  # No legal moves available
 
-        # Add Dirichlet noise to the prior probabilities at the root node
-        if node == self.root_node:
-            epsilon = self.dirichlet_epsilon
-            alpha = self.dirichlet_alpha
-            legal_moves = np.flatnonzero(mask_moves)
-            dirichlet_noise = np.random.dirichlet([alpha] * len(legal_moves))
-
-            # Adjust the policy
-            policy_values = policy[0, legal_moves].cpu().numpy()
-            policy_values = (1 - epsilon) * policy_values + epsilon * dirichlet_noise
-
-            # Normalize the adjusted policy
-            policy_values /= np.sum(policy_values)
-
-            # Assign back to policy
-            policy_numpy = policy.cpu().numpy()[0]
-            policy_numpy[legal_moves] = policy_values
-            policy = torch.tensor(policy_numpy, dtype=torch.float32).unsqueeze(0).to(self.device)
-
+        # Expand the node by adding all valid child nodes
         self.children[node] = set()
         for move in moves:
-            child_node = AlphaZeroNode(node.moves + (move,), self.rules)
             action_idx = self.environment.game.get_move_uid(move)
-            child_node.P = policy[0, action_idx].item()
-            self.children[node].add(child_node)
+            prior_prob = policy[action_idx].item()
+            if prior_prob > 0:
+                child_node = AlphaZeroNode(node.moves + (move,), self.rules)
+                child_node.P = prior_prob
+                self.children[node].add(child_node)
 
     def uct_select(self, node):
         """Select a child of node, balancing exploration and exploitation using prior probabilities."""
@@ -250,7 +238,7 @@ class AlphaZero_Agent(MCTS_Agent):
         else:
             policy_targets = np.ones_like(visit_counts) / len(visit_counts)
 
-        self.training_data.append((state_vector, policy_targets, None))
+        self.training_data.append((state_vector, policy_targets, None, self.root_policy))
 
 
 class AlphaZeroP_Agent(AlphaZero_Agent):
