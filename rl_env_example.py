@@ -167,6 +167,8 @@ class Runner(object):
                         self.device, 
                         batch_size=128
                     )
+                    # Save the model
+                    torch.save(self.network.state_dict(), "saved_models/policy_model.pth")
 
                 if latest_loss is not None:
                     losses.append(latest_loss)
