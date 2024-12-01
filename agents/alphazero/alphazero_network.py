@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
+from agents.mcts.mcts_agent import MCTS_Agent, PMCTS_Agent
 from agents.alphazero.alphazero_buffer import ReplayBuffer
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
@@ -114,6 +115,13 @@ def train_network(replay_buffer, network, optimizer, device, batch_size=128):
 
 
 # ========================= Helper Functions =========================
+def requires_data_collection(agent_classes):
+    """Check if any agent requires data collection."""
+    data_collection_agents = (MCTS_Agent, PMCTS_Agent)
+    return any(
+        issubclass(agent_class, data_collection_agents) for agent_class in agent_classes
+    )
+
 def requires_training(agent_classes):
     """Check if any agent requires training."""
     training_agents = (AlphaZero_Agent, AlphaZeroP_Agent)
@@ -123,10 +131,10 @@ def requires_training(agent_classes):
 
 
 def initialize_training_components(
-    env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4
+    env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4, save_data=False
 ):
     """Initialize network, optimizer, and replay buffer for training."""
-    replay_buffer = ReplayBuffer(capacity=10000)
+    replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/alphazero/alphazero_data.txt" if save_data else None)
 
     num_actions = env.num_moves()
     obs_shape = env.vectorized_observation_shape()[0]
@@ -142,8 +150,9 @@ def initialize_training_components(
     return network, optimizer, criterion_value, num_actions, replay_buffer
 
 
-def collect_training_data(agents, replay_buffer, final_score):
+def collect_alphazero_data(agents, replay_buffer, final_score):
     """Collect training data from agents that require training."""
+
     z = 2 * (final_score / 25) - 1  # Value target
 
     for agent in agents:
@@ -161,11 +170,42 @@ def collect_training_data(agents, replay_buffer, final_score):
             policy_targets = torch.tensor(policy_targets, dtype=torch.float32)
             value_target = torch.tensor(z, dtype=torch.float32)
             root_policy = torch.tensor(root_policy, dtype=torch.float32)
+
             agent.training_data[i] = (
                 state_vector,
                 policy_targets,
                 value_target,
                 root_policy,
+            )
+
+        replay_buffer.add(agent.training_data)
+        agent.training_data.clear()
+
+def collect_mcts_data(agents, replay_buffer, final_score):
+    """Collect training data from agents."""
+
+    z = 2 * (final_score / 25) - 1  # Value target
+
+    for agent in agents:
+        if not hasattr(agent, "training_data"):
+            continue
+
+        for i, data in enumerate(agent.training_data):
+            (
+                state_vector,
+                policy_targets,
+                value_targets
+            ) = data
+            state_vector = torch.tensor(state_vector, dtype=torch.float32)
+            policy_targets = torch.tensor(policy_targets, dtype=torch.float32)
+            value_targets = torch.tensor(value_targets, dtype=torch.float32)
+            value = torch.tensor(z, dtype=torch.float32)
+
+            agent.training_data[i] = (
+                state_vector,
+                policy_targets,
+                value_targets, 
+                value
             )
 
         replay_buffer.add(agent.training_data)

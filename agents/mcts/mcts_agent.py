@@ -7,6 +7,7 @@ from agents.mcts.mcts_node import MCTS_Node
 from agents.rule_based.rule_based_agents import VanDenBerghAgent
 from agents.rule_based.ruleset import Ruleset
 from rl_env import Agent
+import numpy as np
 
 
 class MCTS_Agent(Agent):
@@ -22,7 +23,7 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_rollout_num = config.get("max_rollout_num", 1000)
+        self.max_rollout_num = config.get("max_rollout_num", 100)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
@@ -54,6 +55,8 @@ class MCTS_Agent(Agent):
             score_type=self.score_type,
         )
         self.max_information_tokens = config.get("information_tokens", 8)
+        self.num_actions = config['num_actions']
+        self.training_data = []
 
     def act(self, observation, state):
         if observation["current_player_offset"] != 0:
@@ -72,6 +75,9 @@ class MCTS_Agent(Agent):
 
         self.root_node.focused_state = self.root_state.copy()
         best_node = self.mcts_choose(self.root_node)
+
+        # Collect training data
+        self.record_training_data(observation, self.root_node)
 
         return best_node.initial_move()
 
@@ -214,12 +220,36 @@ class MCTS_Agent(Agent):
         self.N[self.root_node] = 0
         self.Q[self.root_node] = 0
 
-    def _get_tree_string(self):
-        """Get the tree as a string."""
-        tree_string = ""
-        for node, children in self.children.items():
-            tree_string += f"[{node}: {self.N[node]}, {self.Q[node]}] "
-        return tree_string
+    def record_training_data(self, observation, node):
+        """Record training data for the current state."""
+        state_vector = self.environment.vectorized_observation(observation['pyhanabi'])
+
+        # Get visit counts for child nodes
+        visit_counts = np.zeros(self.num_actions)
+
+        value_counts = np.zeros(self.num_actions)
+
+        for child in self.children[node]:
+            move = child.initial_move()
+            action_idx = self.environment.game.get_move_uid(move)
+            visit_counts[action_idx] = self.N[child]
+            value_counts[action_idx] = self.Q[child] / self.N[child] if self.N[child] > 0 else 0
+
+        # Normalize visit counts to get policy targets
+        sum_counts = np.sum(visit_counts)
+        if sum_counts > 0:
+            policy_targets = visit_counts / sum_counts
+        else:
+            policy_targets = np.ones_like(visit_counts) / len(visit_counts)
+
+        # Normalize value counts to get value target
+        sum_values = np.sum(value_counts)
+        if sum_values > 0:
+            value_targets = value_counts / sum_values
+        else:
+            value_targets = np.ones_like(value_counts) / len(value_counts)
+
+        self.training_data.append((state_vector, policy_targets, value_targets))
 
 
 class PMCTS_Agent(MCTS_Agent):
