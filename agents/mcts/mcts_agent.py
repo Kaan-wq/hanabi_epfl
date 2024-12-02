@@ -23,7 +23,7 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_rollout_num = config.get("max_rollout_num", 100)
+        self.max_rollout_num = config.get("max_rollout_num", 1000)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
@@ -40,7 +40,7 @@ class MCTS_Agent(Agent):
             Ruleset.discard_most_confident,
         ])
 
-        #self.rules = None
+        self.rules = None
 
         self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
         self.determine_type = mcts_env.DetermineType.RESTORE
@@ -301,6 +301,9 @@ class PMCTS_Agent(MCTS_Agent):
         self.root_node.focused_state = self.root_state.copy()
         best_move = self.mcts_choose(self.root_node, merged_root_children_stats)
 
+        # Record training data
+        self.record_training_data(observation, merged_root_children_stats)
+
         return best_move
     
     def mcts_choose(self, node, merged_root_children_stats):
@@ -325,6 +328,42 @@ class PMCTS_Agent(MCTS_Agent):
                 best_move_json = move_json
 
         return HanabiMove.from_json(best_move_json)
+    
+    def record_training_data(self, observation, merged_root_children_stats):
+        """Record training data for the current state."""
+        state_vector = self.environment.vectorized_observation(observation['pyhanabi'])
+
+        visit_counts = np.zeros(self.num_actions, dtype=np.float64)
+        value_counts = np.zeros(self.num_actions, dtype=np.float64)
+
+        move_jsons = list(merged_root_children_stats.keys())
+        Ns = np.array([merged_root_children_stats[move_json]['N'] for move_json in move_jsons], dtype=np.float64)
+        Qs = np.array([merged_root_children_stats[move_json]['Q'] for move_json in move_jsons], dtype=np.float64)
+
+        moves = [HanabiMove.from_json(move_json) for move_json in move_jsons]
+        action_indices = [self.environment.game.get_move_uid(move) for move in moves]
+        visit_counts[action_indices] = Ns
+
+        with np.errstate(divide='ignore', invalid='ignore'):
+            value_counts[action_indices] = np.divide(Qs, Ns, where=Ns != 0)
+
+        # Normalize visit counts to get policy targets
+        sum_counts = np.sum(visit_counts)
+        if sum_counts > 0:
+            policy_targets = visit_counts / sum_counts
+        else:
+            policy_targets = np.ones_like(visit_counts) / len(visit_counts)
+
+        # Normalize value counts to get value target
+        sum_values = np.sum(value_counts)
+        if sum_values > 0:
+            value_targets = value_counts / sum_values
+        else:
+            value_targets = np.ones_like(value_counts) / len(value_counts)
+
+        # Record the training data
+        self.training_data.append((state_vector, policy_targets, value_targets))
+
 
 
 @ray.remote(num_cpus=0.5)

@@ -58,7 +58,6 @@ class Runner(object):
 
         # Initialize data collection components if required
         self.requires_data_collection = requires_data_collection(self.agent_classes)
-        self.requires_data_collection = False
         if self.requires_data_collection:
             self.replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/mcts/mcts_data.txt")
             self.num_actions = self.environment.num_moves()
@@ -73,8 +72,8 @@ class Runner(object):
                 self.criterion_value,
                 self.num_actions,
                 self.replay_buffer,
-            ) = initialize_training_components(self.environment, self.device, save_data=True)
-            #from_pretrained="saved_models/policy_model_400.pth",
+            ) = initialize_training_components(self.environment, self.device, save_data=False, from_pretrained="saved_models/policy_model_200.pth")
+            # ,from_pretrained="saved_models/policy_model_200.pth"
 
     def run(self):
         """Run episodes."""
@@ -85,18 +84,16 @@ class Runner(object):
         for i, agent_class in enumerate(self.agent_classes):
             self.agent_config.update({"player_id": i})
 
-            if self.requires_data_collection and issubclass(
-                agent_class, (MCTS_Agent, PMCTS_Agent)
-            ):
-                self.agent_config["num_actions"] = self.num_actions
-            else:
-                self.agent_config.pop("num_actions", None)
-
             if self.requires_training and issubclass(
                 agent_class, (AlphaZero_Agent, AlphaZeroP_Agent)
             ):
                 self.agent_config["network"] = self.network
                 self.agent_config["num_actions"] = self.num_actions
+            elif self.requires_data_collection and issubclass(
+                agent_class, (MCTS_Agent, PMCTS_Agent)
+            ) and not issubclass(agent_class, (AlphaZero_Agent, AlphaZeroP_Agent)):
+                self.agent_config["num_actions"] = self.num_actions
+                self.agent_config.pop("network", None)
             else:
                 self.agent_config.pop("network", None)
                 self.agent_config.pop("num_actions", None)
