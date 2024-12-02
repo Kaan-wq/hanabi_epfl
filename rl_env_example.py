@@ -12,7 +12,7 @@ from agents.alphazero.alphazero_network import (collect_alphazero_data,
                                                 collect_mcts_data,
                                                 initialize_training_components,
                                                 requires_training,
-                                                requires_data_collection,
+                                                requires_mcts_data,
                                                 train_network)
 from agents.human_agent import HumanAgent
 from agents.mcts.mcts_agent import MCTS_Agent, PMCTS_Agent
@@ -57,8 +57,8 @@ class Runner(object):
         ]
 
         # Initialize data collection components if required
-        self.requires_data_collection = requires_data_collection(self.agent_classes)
-        if self.requires_data_collection:
+        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=False)
+        if self.mcts_data:
             self.replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/mcts/mcts_data.txt")
             self.num_actions = self.environment.num_moves()
 
@@ -89,14 +89,16 @@ class Runner(object):
             ):
                 self.agent_config["network"] = self.network
                 self.agent_config["num_actions"] = self.num_actions
-            elif self.requires_data_collection and issubclass(
+            elif self.mcts_data and issubclass(
                 agent_class, (MCTS_Agent, PMCTS_Agent)
             ) and not issubclass(agent_class, (AlphaZero_Agent, AlphaZeroP_Agent)):
                 self.agent_config["num_actions"] = self.num_actions
+                self.agent_config["collect_data"] = True
                 self.agent_config.pop("network", None)
             else:
                 self.agent_config.pop("network", None)
                 self.agent_config.pop("num_actions", None)
+                self.agent_config.pop("collect_data", None)
 
             agents.append(agent_class(self.agent_config))
 
@@ -153,7 +155,7 @@ class Runner(object):
 
                 latest_loss = None
 
-                if self.requires_data_collection:
+                if self.mcts_data:
                     collect_mcts_data(agents, self.replay_buffer, final_score)
 
                 if self.requires_training:

@@ -55,8 +55,10 @@ class MCTS_Agent(Agent):
             score_type=self.score_type,
         )
         self.max_information_tokens = config.get("information_tokens", 8)
+
         self.num_actions = config['num_actions']
         self.training_data = []
+        self.collect_data = config.get('collect_data', False)
 
     def act(self, observation, state):
         if observation["current_player_offset"] != 0:
@@ -77,7 +79,8 @@ class MCTS_Agent(Agent):
         best_node = self.mcts_choose(self.root_node)
 
         # Collect training data
-        self.record_training_data(observation, self.root_node)
+        if self.collect_data:
+            self.record_training_data(observation, self.root_node)
 
         return best_node.initial_move()
 
@@ -301,8 +304,9 @@ class PMCTS_Agent(MCTS_Agent):
         self.root_node.focused_state = self.root_state.copy()
         best_move = self.mcts_choose(self.root_node, merged_root_children_stats)
 
-        # Record training data
-        self.record_training_data(observation, merged_root_children_stats)
+        # Collect training data
+        if self.collect_data:
+            self.record_training_data(observation, merged_root_children_stats)
 
         return best_move
     

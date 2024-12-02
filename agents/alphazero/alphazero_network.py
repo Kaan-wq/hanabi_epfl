@@ -115,12 +115,12 @@ def train_network(replay_buffer, network, optimizer, device, batch_size=128):
 
 
 # ========================= Helper Functions =========================
-def requires_data_collection(agent_classes):
+def requires_mcts_data(agent_classes, record_data=False):
     """Check if any agent requires data collection."""
     data_collection_agents = (MCTS_Agent, PMCTS_Agent)
     return any(
         issubclass(agent_class, data_collection_agents) for agent_class in agent_classes
-    )
+    ) and record_data
 
 def requires_training(agent_classes):
     """Check if any agent requires training."""
