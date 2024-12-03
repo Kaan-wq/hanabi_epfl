@@ -23,7 +23,7 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_rollout_num = config.get("max_rollout_num", 1000)
+        self.max_rollout_num = config.get("max_rollout_num", 100)
         self.max_simulation_steps = config.get("max_simulation_steps", 3)
         self.max_depth = config.get("max_depth", 60)
         self.exploration_weight = config.get("exploration_weight", 2.5)
@@ -56,7 +56,7 @@ class MCTS_Agent(Agent):
         )
         self.max_information_tokens = config.get("information_tokens", 8)
 
-        self.num_actions = config['num_actions']
+        self.num_actions = config.get("num_actions", None)
         self.training_data = []
         self.collect_data = config.get('collect_data', False)
 

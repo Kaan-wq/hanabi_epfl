@@ -57,7 +57,7 @@ class Runner(object):
         ]
 
         # Initialize data collection components if required
-        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=False)
+        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=True)
         if self.mcts_data:
             self.replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/mcts/mcts_data.txt")
             self.num_actions = self.environment.num_moves()
