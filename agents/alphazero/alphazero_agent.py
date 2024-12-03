@@ -24,7 +24,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 200
+        self.max_rollout_num = 50
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
@@ -68,7 +68,7 @@ class AlphaZero_Agent(MCTS_Agent):
         for move in leaf.moves:
             legal_moves = state.legal_moves()
             if move not in legal_moves:
-                reward = self.environment.reward() # TODO: Check if this is correct
+                reward = self.environment.reward()
                 self.mcts_backpropagate(path, reward)
                 return path, reward
 
