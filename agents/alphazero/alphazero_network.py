@@ -131,10 +131,10 @@ def requires_training(agent_classes):
 
 
 def initialize_training_components(
-    env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4, save_data=False
+    env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4
 ):
     """Initialize network, optimizer, and replay buffer for training."""
-    replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/alphazero/alphazero_data.txt" if save_data else None)
+    replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/alphazero/alphazero_data.txt")
 
     num_actions = env.num_moves()
     obs_shape = env.vectorized_observation_shape()[0]

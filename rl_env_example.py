@@ -72,7 +72,7 @@ class Runner(object):
                 self.criterion_value,
                 self.num_actions,
                 self.replay_buffer,
-            ) = initialize_training_components(self.environment, self.device, save_data=False, from_pretrained="saved_models/policy_model_200.pth")
+            ) = initialize_training_components(self.environment, self.device, from_pretrained="saved_models/policy_model_200.pth")
             # ,from_pretrained="saved_models/policy_model_200.pth"
 
     def run(self):
