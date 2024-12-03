@@ -2,13 +2,14 @@ import json
 import logging
 import os
 import random
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Tuple
 
+import numpy as np
 import torch
 
 
-class ReplayBuffer:
-    """Replay buffer with flexible storage modes (memory, file, hybrid) and data persistence."""
+class PrioritizedReplayBuffer:
+    """Prioritized Experience Replay buffer with flexible storage. (memory, file, or hybrid)"""
 
     def __init__(
         self,
@@ -16,15 +17,22 @@ class ReplayBuffer:
         storage_mode: str = "hybrid",
         file_path: Optional[str] = None,
         load_existing: bool = False,
+        alpha: float = 0.6,  # Priority exponent
+        beta: float = 0.4,  # Importance sampling
         log_level: int = logging.INFO,
     ):
         """Initialize buffer with specified capacity and storage configuration."""
         self.capacity = capacity
         self.storage_mode = storage_mode
+        self.alpha = alpha
+        self.beta = beta
         self.logger = logging.getLogger(self.__class__.__name__)
         self.logger.setLevel(log_level)
 
         self.buffer: List[Any] = []
+        self.priorities = np.zeros(capacity, dtype=np.float32)
+        self.pos = 0
+
         self.file_path = file_path or os.path.join("saved_data", "replay_buffer.jsonl")
         os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
 
@@ -42,11 +50,17 @@ class ReplayBuffer:
             self.logger.error(f"Failed to prepare file storage: {e}")
 
     def add(self, data: List[Any]) -> None:
-        """Add new experiences to buffer while maintaining capacity limit."""
-        self.buffer.extend(data)
+        """Add new experiences to the buffer."""
+        for item in data:
+            if len(self.buffer) < self.capacity:
+                self.buffer.append(item)
+            else:
+                self.buffer[self.pos] = item
 
-        if len(self.buffer) > self.capacity:
-            self.buffer = self.buffer[-self.capacity :]
+            self.priorities[self.pos] = (
+                self.priorities.max() if len(self.buffer) > 1 else 1.0
+            )
+            self.pos = (self.pos + 1) % self.capacity
 
         if self.storage_mode in ["file", "hybrid"]:
             self._save_to_file(data)
@@ -55,10 +69,8 @@ class ReplayBuffer:
         """Save data to file with JSON serialization."""
         try:
             with open(self.file_path, "a") as f:
-                for item in data:
-                    serializable_item = self._make_serializable(item)
-                    json.dump(serializable_item, f)
-                    f.write("\n")
+                json.dump([self._make_serializable(item) for item in data], f)
+                f.write("\n")
         except Exception as e:
             self.logger.error(f"Error saving to file: {e}")
 
@@ -79,14 +91,29 @@ class ReplayBuffer:
             self.logger.warning(f"File {self.file_path} not found")
             return []
 
-    def sample(self, batch_size: int) -> List[Any]:
-        """Sample random batch of experiences."""
+    def sample(self, batch_size: int) -> Tuple[List[Any], np.ndarray, np.ndarray]:
+        """Sample batch with priorities and importance sampling weights."""
         if len(self.buffer) < batch_size:
-            self.logger.warning(
-                f"Requested batch size {batch_size} exceeds buffer size"
-            )
-            return self.buffer
-        return random.sample(self.buffer, batch_size)
+            return self.buffer, None, None
+
+        # Compute sampling probabilities
+        probs = self.priorities[: len(self.buffer)] ** self.alpha
+        probs /= probs.sum()
+
+        # Sample indices based on priorities
+        indices = np.random.choice(len(self.buffer), batch_size, p=probs)
+
+        # Compute importance sampling weights
+        weights = (len(self.buffer) * probs[indices]) ** -self.beta
+        weights /= weights.max()
+
+        samples = [self.buffer[idx] for idx in indices]
+        return samples, indices, weights
+
+    def update_priorities(self, indices: np.ndarray, errors: np.ndarray) -> None:
+        """Update priorities based on TD errors."""
+        self.priorities[indices] = (np.abs(errors) + 1e-6) ** self.alpha
+        self.beta = min(1.0, self.beta + 1e-4)
 
     def __len__(self) -> int:
         """Return current buffer size."""
@@ -104,11 +131,15 @@ def configure_replay_buffer(
     storage_mode: str = "hybrid",
     file_path: str = "saved_data/replay_buffer.jsonl",
     load_existing: bool = False,
-) -> ReplayBuffer:
-    """Create a configured replay buffer instance."""
-    return ReplayBuffer(
+    alpha: float = 0.6,
+    beta: float = 0.4,
+) -> PrioritizedReplayBuffer:
+    """Create a configured prioritized replay buffer instance."""
+    return PrioritizedReplayBuffer(
         capacity=capacity,
         storage_mode=storage_mode,
         file_path=file_path,
         load_existing=load_existing,
+        alpha=alpha,
+        beta=beta,
     )

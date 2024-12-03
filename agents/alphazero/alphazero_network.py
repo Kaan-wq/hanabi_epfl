@@ -4,6 +4,7 @@ from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
 from agents.mcts.mcts_agent import MCTS_Agent, PMCTS_Agent
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
+from agents.alphazero.alphazero_buffer import ReplayBuffer
 
 
 class SimpleNetwork(nn.Module):
@@ -49,10 +50,11 @@ class SimpleNetwork(nn.Module):
 
 
 class AlphaZeroDataset(Dataset):
-    def __init__(self, training_data):
+    def __init__(self, training_data, weights=None):
         self.state_vectors = [data[0] for data in training_data]
         self.policy_targets = [data[1] for data in training_data]
         self.value_targets = [data[2] for data in training_data]
+        self.weights = weights if weights is not None else torch.ones(len(training_data))
 
     def __len__(self):
         return len(self.state_vectors)
@@ -61,41 +63,42 @@ class AlphaZeroDataset(Dataset):
         state = torch.as_tensor(self.state_vectors[idx], dtype=torch.float32)
         policy_target = torch.as_tensor(self.policy_targets[idx], dtype=torch.float32)
         value_target = torch.as_tensor(self.value_targets[idx], dtype=torch.float32)
-        return state, policy_target, value_target
+        weight = torch.as_tensor(self.weights[idx], dtype=torch.float32)
+        return state, policy_target, value_target, weight
 
 
-def prepare_data(training_data, batch_size=16):
-    dataset = AlphaZeroDataset(training_data)
+def prepare_data(training_data, batch_size=16, weights=None):
+    dataset = AlphaZeroDataset(training_data, weights)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
     return dataloader
 
 
-def train_network(replay_buffer, network, optimizer, device, batch_size=128):
+def train_network(replay_buffer: ReplayBuffer, network: SimpleNetwork, optimizer, device, batch_size=128):
     """Train the network using data from the replay buffer."""
 
     batch_size = batch_size
     if len(replay_buffer) < batch_size:
         return None
 
-    batch_data = replay_buffer.sample(batch_size)
-    dataloader = prepare_data(batch_data, batch_size)
+    batch_data, indices, weights = replay_buffer.sample(batch_size)
+    dataloader = prepare_data(batch_data, batch_size, weights)
 
     network.train()
     total_loss = 0.0
     steps = 0
 
-    for states, policy_targets, value_targets in dataloader:
+    for states, policy_targets, value_targets, batch_weights in dataloader:
         states = states.to(device)
         policy_targets = policy_targets.to(device)
         value_targets = value_targets.to(device)
+        batch_weights = batch_weights.to(device)
 
         optimizer.zero_grad()
-
         policy_logits = network(states)
-
-        # Policy loss
         policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
-        policy_loss = -torch.mean(torch.sum(policy_targets * policy_log_probs, dim=1))
+        
+        policy_losses = -torch.sum(policy_targets * policy_log_probs, dim=1)
+        policy_loss = torch.mean(policy_losses * batch_weights)
 
         # Value loss (if value head is added)
         # value_loss = self.criterion_value(value.squeeze(-1), value_targets)
@@ -105,6 +108,9 @@ def train_network(replay_buffer, network, optimizer, device, batch_size=128):
 
         loss.backward()
         optimizer.step()
+
+        # Update priorities with policy losses
+        replay_buffer.update_priorities(indices, policy_losses.detach().cpu().numpy())
 
         total_loss += loss.item()
         steps += 1
