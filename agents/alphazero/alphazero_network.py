@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
 from agents.mcts.mcts_agent import MCTS_Agent, PMCTS_Agent
-from agents.alphazero.alphazero_buffer import ReplayBuffer
 from torch import optim
 from torch.utils.data import DataLoader, Dataset
 
@@ -133,8 +132,7 @@ def requires_training(agent_classes):
 def initialize_training_components(
     env, device, from_pretrained=None, lr=1e-4, weight_decay=1e-4
 ):
-    """Initialize network, optimizer, and replay buffer for training."""
-    replay_buffer = ReplayBuffer(capacity=10000, file_path="agents/alphazero/alphazero_data.txt")
+    """Initialize network and optimizer for training."""
 
     num_actions = env.num_moves()
     obs_shape = env.vectorized_observation_shape()[0]
@@ -147,7 +145,7 @@ def initialize_training_components(
     optimizer = optim.AdamW(network.parameters(), lr=lr, weight_decay=weight_decay)
     criterion_value = nn.MSELoss()
 
-    return network, optimizer, criterion_value, num_actions, replay_buffer
+    return network, optimizer, criterion_value, num_actions
 
 
 def collect_alphazero_data(agents, replay_buffer, final_score):
