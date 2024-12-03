@@ -1,0 +1,3922 @@
+============================================================================
+Game State 1
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 7.0
+Life Tokens: 3.0
+Fireworks: R0 Y0 G0 W0 B0
+Deck size: 40.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYGWB2345
+XX || RYGWB2345
+X1 || RYGWB1
+XX || RYGWB2345
+X1 || RYGWB1
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.1111       0.1636
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+*^PLAY card at index 2                                   0.5354       0.3531
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.1818       0.2399
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.1717       0.2434
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 2
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 6.0
+Life Tokens: 3.0
+Fireworks: R0 Y1 G0 W0 B0
+Deck size: 39.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYWB2345
+XX || RYWB2345
+XX || RYWB2345
+G1 || G1
+XX || RYWB12345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.1919       0.2997
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.5758       0.3811
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.2323       0.3192
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 3
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 5.0
+Life Tokens: 3.0
+Fireworks: R0 Y1 G1 W0 B0
+Deck size: 38.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYWB2345
+XX || RYWB2345
+XX || RYWB2345
+X1 || RYWB1
+XX || RYGWB2345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.1212       0.2941
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.7475       0.4063
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.1313       0.2996
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 4
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 4.0
+Life Tokens: 3.0
+Fireworks: R1 Y1 G1 W0 B0
+Deck size: 37.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYWB345
+XX || RYWB345
+XX || RYWB345
+X2 || RYGWB2
+XX || RYGWB1345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4444       0.4926
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+*^REVEAL_COLOR W to player 1                             0.5556       0.5074
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 5
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 3.0
+Fireworks: R1 Y1 G1 W0 B0
+Deck size: 37.0
+Discards:
+None
+
+Hands:
+Your hand:
+YX || Y345
+XX || RWB345
+XX || RWB345
+Y2 || Y2
+XX || RGWB1345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.2525       0.3287
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.5455       0.3561
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.2020       0.3152
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 6
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y2 G1 W0 B0
+Deck size: 36.0
+Discards:
+None
+
+Hands:
+Your hand:
+Y3 || Y3
+XX || RWB45
+XX || RWB45
+XX || RGWB145
+XX || RYGWB1245
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.2424       0.3257
+  DISCARD card at index 4                                0.0000       0.0000
+*^PLAY card at index 0                                   0.5152       0.3487
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.2424       0.3257
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 7
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G1 W0 B0
+Deck size: 35.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RWB45
+XX || RWB45
+XX || RGWB145
+X2 || RYGWB2
+XX || RYGWB1345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+*^DISCARD card at index 2                                1.0000       1.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 8
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G1 W0 B0
+Deck size: 34.0
+Discards:
+R4
+
+Hands:
+Your hand:
+XX || RWB45
+XX || RWB45
+G2 || G2
+XX || RYWB1345
+XX || RYWB12345
+
+Other player's hand:
+W3 R3 W2 W4 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.2929       0.4846
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+*^PLAY card at index 2                                   0.7071       0.5154
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 9
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 32.0
+Discards:
+R3 R4
+
+Hands:
+Your hand:
+XX || RWB45
+XX || RWB45
+XX || RYWB1345
+XX || RYWB12345
+XX || RYGWB12345
+
+Other player's hand:
+W3 W2 W4 Y1 G4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.3232       0.3328
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 3 to player 1                              0.3636       0.3357
+  REVEAL_RANK 4 to player 1                              0.3131       0.3315
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 10
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 31.0
+Discards:
+R3 R4 Y1
+
+Hands:
+Your hand:
+XX || RWB45
+XX || RWB45
+XX || RYWB1345
+XX || RYWB12345
+XX || RYGWB12345
+
+Other player's hand:
+W3 W2 W4 G4 B3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.3030       0.3301
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.3030       0.3336
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 4 to player 1                              0.3939       0.3363
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 11
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 30.0
+Discards:
+R3 R4 Y1 B3
+
+Hands:
+Your hand:
+XX || RWB45
+XX || RWB45
+XX || RYWB1345
+XX || RYWB12345
+XX || RYGWB12345
+
+Other player's hand:
+W3 W2 W4 G4 R2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.6061       0.5065
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.3939       0.4935
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 12
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 29.0
+Discards:
+R3 R4 Y1 G2 B3
+
+Hands:
+Your hand:
+BX || B45
+XX || RW45
+XX || RYW1345
+BX || B12345
+XX || RYGW12345
+
+Other player's hand:
+W3 W2 W4 G4 R2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.6970       0.5139
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.3030       0.4861
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 13
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 28.0
+Discards:
+R3 R4 Y1 G2 G3 B3
+
+Hands:
+Your hand:
+BX || B45
+XX || RW45
+XX || RYW345
+B1 || B1
+XX || RYGWB2345
+
+Other player's hand:
+W3 W2 W4 G4 R2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.2626       0.3311
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.5152       0.3438
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.2222       0.3251
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 14
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R1 Y3 G2 W0 B1
+Deck size: 26.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3
+
+Hands:
+Your hand:
+BX || B45
+XX || RW45
+XX || RYW345
+XX || RYGWB2345
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 R2 B1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.1313       0.3176
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.1616       0.3253
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 2 to player 1                              0.7071       0.3571
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 15
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 25.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3
+
+Hands:
+Your hand:
+BX || B45
+XX || RW45
+XX || RYW345
+XX || RYGWB2345
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 B1 G4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 16
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 24.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3 B3
+
+Hands:
+Your hand:
+B5 || B5
+XX || RW4
+X5 || RYW5
+XX || RYGWB234
+XX || RYGWB1234
+
+Other player's hand:
+W3 W4 G4 B1 G4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+*^DISCARD card at index 0                                1.0000       1.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 17
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 23.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3 B3 B5
+
+Hands:
+Your hand:
+WX || W4
+W5 || W5
+WX || W234
+WX || W1234
+XX || RYGB12345
+
+Other player's hand:
+W3 W4 G4 B1 G4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 18
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 22.0
+Discards:
+R3 R4 Y1 G1 G2 G3 W2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+WX || W23
+WX || W123
+XX || RYGWB1235
+
+Other player's hand:
+W3 W4 G4 B1 G4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 19
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 20.0
+Discards:
+R3 R4 Y1 G1 G2 G3 W1 W2 B1 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+WX || W23
+WX || W123
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 G4 G1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.6162       0.5057
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.3838       0.4943
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 20
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 19.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 W1 W2 B1 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+WX || W13
+X2 || RYGWB2
+
+Other player's hand:
+W3 W4 G4 G4 G1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.3838       0.4941
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+*^REVEAL_COLOR G to player 1                             0.6162       0.5059
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 21
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 19.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 W1 W2 B1 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+WX || W13
+B2 || B2
+
+Other player's hand:
+W3 W4 G4 G4 G1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.7071       0.5132
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.2929       0.4868
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 22
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 17.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+WX || W13
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 G1 Y2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.6364       0.5086
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.3636       0.4914
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 23
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 16.0
+Discards:
+R2 R3 R4 Y1 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB1245
+
+Other player's hand:
+W3 W4 G4 G1 Y2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4646       0.4986
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+*^REVEAL_RANK 1 to player 1                              0.5354       0.5014
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 24
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 16.0
+Discards:
+R2 R3 R4 Y1 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+RX || R1245
+
+Other player's hand:
+W3 W4 G4 G1 Y2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 25
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 14.0
+Discards:
+R1 R2 R3 R4 Y1 Y1 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 Y2 Y4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.6768       0.5089
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.3232       0.4911
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 26
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 4.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 12.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y4 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 Y2 Y5
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4646       0.4972
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+*^REVEAL_COLOR Y to player 1                             0.5354       0.5028
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 27
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 4.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 11.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+W3 W4 G4 Y5 G5
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4949       0.4989
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 5 to player 1                              0.5051       0.5011
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 28
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 4.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 10.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+W4 G4 Y5 G5 R3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.2121       0.3281
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.2121       0.3262
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 3 to player 1                              0.5758       0.3457
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 29
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 10.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+X4 || RYGWB4
+
+Other player's hand:
+W4 G4 Y5 G5 R3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.3131       0.3392
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+*^REVEAL_COLOR R to player 1                             0.5657       0.3477
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.1212       0.3131
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 30
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G2 W0 B1
+Deck size: 9.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+X4 || RYGWB4
+
+Other player's hand:
+W4 G4 Y5 G5 G3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0505       0.3024
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+*^REVEAL_COLOR G to player 1                             0.8990       0.3886
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0505       0.3090
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 31
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G2 W0 B1
+Deck size: 8.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+X4 || RYGWB4
+
+Other player's hand:
+G4 Y5 G5 G3 W1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0505       0.4245
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 3 to player 1                              0.9495       0.5755
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 32
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G3 W0 B1
+Deck size: 7.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+X4 || RYGWB4
+
+Other player's hand:
+G4 Y5 G5 W1 Y4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 33
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G4 W0 B1
+Deck size: 5.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+Y5 G5 W1 Y4 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0404       0.2990
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+*^REVEAL_COLOR Y to player 1                             0.6970       0.3647
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.2626       0.3363
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 34
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G5 W0 B1
+Deck size: 4.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+Y5 W1 Y4 B4 W1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0808       0.2471
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+*^REVEAL_COLOR W to player 1                             0.7879       0.2724
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0404       0.2317
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0909       0.2488
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 35
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G5 W1 B1
+Deck size: 3.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W2 || W2
+W3 || W3
+XX || RYGWB12345
+
+Other player's hand:
+Y5 Y4 B4 W1 R4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0606       0.4706
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+*^PLAY card at index 2                                   0.9394       0.5294
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 36
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y4 G5 W2 B1
+Deck size: 1.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+W3 || W3
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+Y5 B4 W1 R4 R5
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0909       0.4789
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+*^PLAY card at index 2                                   0.9091       0.5211
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 37
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y5 G5 W3 B1
+Deck size: 0.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+W4 || W4
+W5 || W5
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+B4 W1 R4 R5 XX (missing cards)
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.1111       0.2464
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+*^PLAY card at index 0                                   0.6667       0.2609
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.1111       0.2464
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.1111       0.2464
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 38
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 8.0
+Life Tokens: 3.0
+Fireworks: R0 Y0 G0 W0 B0
+Deck size: 40.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+Y3 B5 Y1 W4 G1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.2727       0.4633
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+*^REVEAL_RANK 1 to player 1                              0.7273       0.5367
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 39
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 7.0
+Life Tokens: 3.0
+Fireworks: R0 Y1 G0 W0 B0
+Deck size: 39.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+Y3 B5 W4 G1 R1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.2121       0.3063
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+*^REVEAL_COLOR G to player 1                             0.5152       0.3674
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.2727       0.3263
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 40
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 6.0
+Life Tokens: 3.0
+Fireworks: R0 Y1 G1 W0 B0
+Deck size: 38.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+Y3 B5 W4 R1 Y2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.3434       0.3438
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.1515       0.2913
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+*^REVEAL_RANK 1 to player 1                              0.5051       0.3649
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 41
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 5.0
+Life Tokens: 3.0
+Fireworks: R1 Y1 G1 W0 B0
+Deck size: 37.0
+Discards:
+None
+
+Hands:
+Your hand:
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+Y3 B5 W4 Y2 R4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.1313       0.2990
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.2323       0.3307
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 2 to player 1                              0.6364       0.3702
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 42
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 3.0
+Fireworks: R1 Y1 G1 W0 B0
+Deck size: 37.0
+Discards:
+None
+
+Hands:
+Your hand:
+WX || W12345
+XX || RYGB12345
+WX || W12345
+WX || W12345
+XX || RYGB12345
+
+Other player's hand:
+Y3 B5 W4 Y2 R4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.2020       0.4612
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+*^REVEAL_COLOR Y to player 1                             0.7980       0.5388
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 43
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 3.0
+Fireworks: R1 Y2 G1 W0 B0
+Deck size: 36.0
+Discards:
+None
+
+Hands:
+Your hand:
+WX || W12345
+XX || RYGB12345
+WX || W12345
+WX || W12345
+XX || RYGB12345
+
+Other player's hand:
+Y3 B5 W4 R4 G2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.1919       0.3259
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 3 to player 1                              0.6768       0.3687
+  REVEAL_RANK 4 to player 1                              0.1313       0.3055
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 44
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G1 W0 B0
+Deck size: 35.0
+Discards:
+None
+
+Hands:
+Your hand:
+WX || W12345
+XX || RYGB12345
+WX || W12345
+WX || W12345
+XX || RYGB12345
+
+Other player's hand:
+B5 W4 R4 G2 W5
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.3030       0.3370
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 2 to player 1                              0.5556       0.3523
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.1414       0.3107
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 45
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G1 W0 B0
+Deck size: 34.0
+Discards:
+R4
+
+Hands:
+Your hand:
+WX || W12345
+XX || RYGB12345
+WX || W12345
+WX || W12345
+XX || RYGB12345
+
+Other player's hand:
+B5 W4 G2 W5 B1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.2828       0.3313
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+*^REVEAL_COLOR G to player 1                             0.4949       0.3437
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.2222       0.3250
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 46
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 33.0
+Discards:
+R4
+
+Hands:
+Your hand:
+WX || W12345
+XX || RYGB12345
+WX || W12345
+WX || W12345
+XX || RYGB12345
+
+Other player's hand:
+B5 W4 W5 B1 G2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+*^DISCARD card at index 1                                1.0000       1.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 47
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 32.0
+Discards:
+R3 R4
+
+Hands:
+Your hand:
+W3 || W3
+WX || W1245
+WX || W1245
+XX || RYGB1245
+XX || RYGWB1245
+
+Other player's hand:
+B5 W4 W5 B1 G2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+*^DISCARD card at index 3                                1.0000       1.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 48
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 31.0
+Discards:
+R3 R4 Y1
+
+Hands:
+Your hand:
+W3 || W3
+WX || W125
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB1235
+
+Other player's hand:
+B5 W4 W5 B1 G2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                1.0000       1.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 49
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 29.0
+Discards:
+R3 R4 Y1 G2 B3
+
+Hands:
+Your hand:
+W3 || W3
+WX || W125
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB12345
+
+Other player's hand:
+B5 W4 W5 B1 G3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.3434       0.3347
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+*^REVEAL_COLOR B to player 1                             0.4444       0.3430
+  REVEAL_RANK 1 to player 1                              0.2121       0.3223
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 50
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 2.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B0
+Deck size: 28.0
+Discards:
+R3 R4 Y1 G2 G3 B3
+
+Hands:
+Your hand:
+W3 || W3
+WX || W125
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB12345
+
+Other player's hand:
+B5 W4 W5 B1 W2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.1010       0.1923
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.3333       0.2145
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0909       0.1889
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+*^REVEAL_RANK 1 to player 1                              0.3737       0.2147
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.1010       0.1895
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 51
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 3.0
+Fireworks: R1 Y3 G2 W0 B1
+Deck size: 27.0
+Discards:
+R3 R4 Y1 G2 G3 B3
+
+Hands:
+Your hand:
+W3 || W3
+WX || W125
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB12345
+
+Other player's hand:
+B5 W4 W5 W2 B3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.1616       0.2473
+  PLAY card at index 0                                   0.0000       0.0000
+*^PLAY card at index 1                                   0.5253       0.2649
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.1313       0.2407
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.1818       0.2471
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 52
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R1 Y3 G2 W0 B1
+Deck size: 26.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+X2 || RYGWB2
+XX || RYGWB1345
+
+Other player's hand:
+B5 W4 W5 W2 B3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4444       0.4965
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.5556       0.5035
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 53
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 24.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3 B3
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB1345
+XX || RYGWB12345
+
+Other player's hand:
+B5 W4 W5 W2 W3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.2929       0.3310
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.3232       0.3330
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 5 to player 1                              0.3838       0.3361
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 54
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 23.0
+Discards:
+R3 R4 Y1 G2 G3 W2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB1345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 G1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.1818       0.4784
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+*^REVEAL_COLOR W to player 1                             0.8182       0.5216
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 55
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 22.0
+Discards:
+R3 R4 Y1 G1 G2 G3 W2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB1345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 W1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0606       0.2310
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.2323       0.2637
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0606       0.2310
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 4 to player 1                              0.6465       0.2743
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 56
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 21.0
+Discards:
+R3 R4 Y1 G1 G2 G3 W1 W2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB1345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 R2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+*^DISCARD card at index 3                                0.5960       0.5047
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.4040       0.4953
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 57
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 19.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 W1 W2 B1 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+X4 || RYGWB4
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 B2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.2626       0.4865
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 2 to player 1                              0.7374       0.5135
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 58
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 19.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 W1 W2 B1 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+GX || G12345
+GX || G12345
+
+Other player's hand:
+W4 W5 W2 W3 B2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.1111       0.3233
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+*^REVEAL_COLOR B to player 1                             0.8081       0.3640
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0808       0.3127
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 59
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 18.0
+Discards:
+R2 R3 R4 Y1 G1 G2 G3 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+GX || G12345
+GX || G12345
+
+Other player's hand:
+W4 W5 W2 W3 Y1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+*^DISCARD card at index 3                                0.6061       0.5047
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.3939       0.4953
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 60
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 16.0
+Discards:
+R2 R3 R4 Y1 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+GX || G12345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 R1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4646       0.4985
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 3 to player 1                              0.5354       0.5015
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 61
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 16.0
+Discards:
+R2 R3 R4 Y1 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+G1 || G1
+XX || RYGWB2345
+
+Other player's hand:
+W4 W5 W2 W3 R1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.4444       0.4971
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+*^REVEAL_COLOR R to player 1                             0.5556       0.5029
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 62
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 15.0
+Discards:
+R1 R2 R3 R4 Y1 Y1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+G1 || G1
+XX || RYGWB2345
+
+Other player's hand:
+W4 W5 W2 W3 R1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+*^DISCARD card at index 3                                0.5455       0.5023
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.4545       0.4977
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 63
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 13.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+XX || RYGWB2345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+*^DISCARD card at index 4                                0.5556       0.5014
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.4444       0.4986
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 64
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 12.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y4 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+YX || Y2345
+YX || Y12345
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+*^DISCARD card at index 3                                0.5758       0.5028
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.4242       0.4972
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 65
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 11.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W3 || W3
+W4 || W4
+G4 || G4
+Y5 || Y5
+X5 || RYGWB5
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+*^DISCARD card at index 0                                0.5859       0.5038
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.4141       0.4962
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 66
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 3.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 10.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+G4 || G4
+Y5 || Y5
+X5 || RYGWB5
+X3 || RYGWB3
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.4141       0.4957
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+*^REVEAL_RANK 4 to player 1                              0.5859       0.5043
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 67
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R2 Y3 G2 W0 B1
+Deck size: 10.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+G4 || G4
+Y5 || Y5
+X5 || YGWB5
+R3 || R3
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.3838       0.3374
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+*^PLAY card at index 4                                   0.4444       0.3397
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.1717       0.3229
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 68
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G2 W0 B1
+Deck size: 9.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+W4 || W4
+G4 || G4
+Y5 || Y5
+G5 || G5
+GX || G12345
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+*^DISCARD card at index 0                                1.0000       1.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 69
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G2 W0 B1
+Deck size: 8.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B5
+
+Hands:
+Your hand:
+G4 || G4
+Y5 || Y5
+G5 || G5
+G3 || G3
+XX || RYGWB1245
+
+Other player's hand:
+W4 W5 W2 W3 B4
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0505       0.4554
+  PLAY card at index 0                                   0.0000       0.0000
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+*^PLAY card at index 3                                   0.9495       0.5446
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 70
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 1.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G3 W0 B1
+Deck size: 6.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+G4 || G4
+Y5 || Y5
+G5 || G5
+XX || RYGWB1245
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 Y3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.1010       0.3225
+  DISCARD card at index 4                                0.0000       0.0000
+*^PLAY card at index 0                                   0.7576       0.3488
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.1414       0.3288
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 71
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G4 W0 B1
+Deck size: 5.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+Y5 || Y5
+G5 || G5
+XX || RGWB1245
+YX || Y12345
+XX || RGWB12345
+
+Other player's hand:
+W4 W5 W2 W3 Y3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0707       0.4716
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+*^PLAY card at index 1                                   0.9293       0.5284
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 72
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G5 W0 B1
+Deck size: 4.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+Y5 || Y5
+WX || W1245
+YX || Y12345
+XX || RGB12345
+WX || W12345
+
+Other player's hand:
+W4 W5 W2 W3 Y3
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0303       0.4521
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+*^PLAY card at index 1                                   0.9697       0.5479
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 73
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y3 G5 W2 B1
+Deck size: 2.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+Y5 || Y5
+YX || Y12345
+XX || RGB12345
+WX || W12345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 W3 Y3 B2
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.0000       0.0000
+  DISCARD card at index 3                                0.0909       0.4810
+  DISCARD card at index 4                                0.0000       0.0000
+  PLAY card at index 0                                   0.0000       0.0000
+*^PLAY card at index 1                                   0.9091       0.5190
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
+============================================================================
+Game State 74
+============================================================================
+
+Game State Details:
+----------------------------------------------------------------------------
+Information Tokens: 0.0
+Life Tokens: 2.0
+Fireworks: R3 Y4 G5 W3 B1
+Deck size: 0.0
+Discards:
+R1 R1 R2 R3 R4 Y1 Y1 Y2 Y4 G1 G1 G2 G3 G4 W1 W2 W3 W4 B1 B2 B3 B3 B4 B5
+
+Hands:
+Your hand:
+Y5 || Y5
+XX || RGB12345
+WX || W12345
+XX || RYGWB12345
+XX || RYGWB12345
+
+Other player's hand:
+W4 W5 Y3 B2 B1
+
+Moves and Policy Probabilities:
+----------------------------------------------------------------------------
+Move Description                                       Policy A     Policy B
+----------------------------------------------------------------------------
+  DISCARD card at index 0                                0.0000       0.0000
+  DISCARD card at index 1                                0.0000       0.0000
+  DISCARD card at index 2                                0.1212       0.4855
+  DISCARD card at index 3                                0.0000       0.0000
+  DISCARD card at index 4                                0.0000       0.0000
+*^PLAY card at index 0                                   0.8788       0.5145
+  PLAY card at index 1                                   0.0000       0.0000
+  PLAY card at index 2                                   0.0000       0.0000
+  PLAY card at index 3                                   0.0000       0.0000
+  PLAY card at index 4                                   0.0000       0.0000
+  REVEAL_COLOR R to player 1                             0.0000       0.0000
+  REVEAL_COLOR Y to player 1                             0.0000       0.0000
+  REVEAL_COLOR G to player 1                             0.0000       0.0000
+  REVEAL_COLOR W to player 1                             0.0000       0.0000
+  REVEAL_COLOR B to player 1                             0.0000       0.0000
+  REVEAL_RANK 1 to player 1                              0.0000       0.0000
+  REVEAL_RANK 2 to player 1                              0.0000       0.0000
+  REVEAL_RANK 3 to player 1                              0.0000       0.0000
+  REVEAL_RANK 4 to player 1                              0.0000       0.0000
+  REVEAL_RANK 5 to player 1                              0.0000       0.0000
+
+Value Outcome: 0.3600
+============================================================================
+
+
