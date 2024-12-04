@@ -2,26 +2,29 @@ import numpy as np
 cimport numpy as cnp
 from pyhanabi import HanabiCard
 from libc.stdlib cimport rand
-
+from cython import boundscheck, wraparound
 
 cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
 cdef char[5] CHAR_COLOR_STRINGS
 for i in range(5):
     CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]
 
+@boundscheck(False)
+@wraparound(False)
 cdef inline object color_idx_to_char(int color_idx):
     if color_idx == -1:
         return None
     else:
         return CHAR_COLOR_STRINGS[color_idx]
 
-cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([
+# Updated memoryview declarations
+cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([
     [color, rank]
     for color in range(5)
     for rank in range(5)
 ], dtype=np.int8)
 
-cdef cnp.int8_t[::1] INIT_DECK = np.array([
+cdef cnp.int8_t[:] INIT_DECK = np.array([
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1,
     3, 2, 2, 2, 1,
@@ -31,10 +34,9 @@ cdef cnp.int8_t[::1] INIT_DECK = np.array([
 
 PRECOMPUTED_HANABI_CARDS = [
     HanabiCard(color, rank)
-    for color in range(5) 
+    for color in range(5)
     for rank in range(5)
 ]
-
 
 cdef class MCTS_Sampler:
     """Sampler for re-determinization in MCTS"""
@@ -43,6 +45,8 @@ cdef class MCTS_Sampler:
     def __cinit__(self):
         self.deck = HanabiDeck()
 
+    @boundscheck(False)
+    @wraparound(False)
     cpdef list sample_hand(
         self,
         int player,
@@ -69,7 +73,7 @@ cdef class MCTS_Sampler:
 
         while len(sampled_hand) < original_hand_size:
             sampled_hand.clear()
-            
+
             for card_idx in range(original_hand_size):
                 deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)
                 deck_card.remove_by_cython_cards(sampled_hand)
@@ -79,12 +83,12 @@ cdef class MCTS_Sampler:
                     deck_card.remove_by_knowledge(card_knowledge[card_idx])
 
                 sampled_cards = deck_card.get_deck()
-                
+
                 if sampled_cards:
                     sampled_hand.append(sampled_cards[rand() % len(sampled_cards)])
                 else:
                     break
-        
+
         cdef CythonCard card
         for card_idx in range(len(sampled_hand)):
             card = sampled_hand[card_idx]
@@ -92,6 +96,8 @@ cdef class MCTS_Sampler:
 
         return sampled_hand
 
+    @boundscheck(False)
+    @wraparound(False)
     cpdef object sample_card(
         self,
         int player,
@@ -115,13 +121,15 @@ cdef class MCTS_Sampler:
             additional_cards,
             return_hanabi_card=False,
         )
-        cdef CythonCard sampled_card
+        cdef object sampled_card
         if valid_cards:
             sampled_card = valid_cards[rand() % len(valid_cards)]
             return HanabiCard(sampled_card.color(), sampled_card.rank())
         else:
             return None
 
+    @boundscheck(False)
+    @wraparound(False)
     cpdef list valid_cards(
         self,
         int player,
@@ -131,7 +139,7 @@ cdef class MCTS_Sampler:
         list fireworks,
         card_knowledge=None,
         additional_cards=None,
-        return_hanabi_card=True,
+        bint return_hanabi_card=True,
     ):
         if additional_cards is None:
             additional_cards = []
@@ -144,7 +152,7 @@ cdef class MCTS_Sampler:
 
         if card_knowledge is not None:
             self.deck.remove_by_knowledge(card_knowledge[card_index])
-        
+
         if return_hanabi_card:
             return self.deck.get_hanabi_deck()
         else:
@@ -153,19 +161,22 @@ cdef class MCTS_Sampler:
 
 cdef class HanabiDeck:
     """Deck of Hanabi cards for sampling hands and cards"""
-    cdef int num_ranks, num_colors, total_count
-    cdef cnp.int8_t[::1] card_count
+    cdef readonly int num_ranks, num_colors
+    cdef int total_count
+    cdef cnp.int8_t[:] card_count
 
-    def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):
+    def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):
         self.num_ranks = 5
         self.num_colors = 5
-        
+
         if card_count is not None and total_count != 0:
             self.card_count = card_count.copy()
             self.total_count = total_count
         else:
             self.reset_deck()
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef list get_deck(self):
         cdef list deck_list = []
         cdef int i, j, count
@@ -174,9 +185,11 @@ cdef class HanabiDeck:
             count = self.card_count[i]
             for j in range(count):
                 deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))
-        
+
         return deck_list
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef list get_hanabi_deck(self):
         cdef list deck_list = []
         cdef int i, j, count
@@ -185,30 +198,42 @@ cdef class HanabiDeck:
             count = self.card_count[i]
             for j in range(count):
                 deck_list.append(PRECOMPUTED_HANABI_CARDS[i])
-        
+
         return deck_list
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_knowledge(self, card_knowledge):
         cdef int color, rank, card_idx
+        cdef bint color_plausible, rank_plausible
         for color in range(self.num_colors):
             color_plausible = card_knowledge.color_plausible(color)
             for rank in range(self.num_ranks):
-                if not (color_plausible and card_knowledge.rank_plausible(rank)):
+                rank_plausible = card_knowledge.rank_plausible(rank)
+                if not (color_plausible and rank_plausible):
                     card_idx = color * self.num_ranks + rank
                     self.total_count -= self.card_count[card_idx]
                     self.card_count[card_idx] = 0
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_cards(self, list cards):
+        cdef object card
         for card in cards:
             self.remove_card(card.color(), card.rank())
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_cython_cards(self, list cards):
-        cdef CythonCard card
+        cdef object card
         for card in cards:
             self.remove_card(card.color(), card.rank())
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):
         cdef int other_player, idx
+        cdef object card
         for other_player in range(len(hands)):
             if other_player == player and card_index == -1:
                 continue
@@ -217,13 +242,18 @@ cdef class HanabiDeck:
                     continue
                 self.remove_card(card.color(), card.rank())
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
         cdef int idx
+        cdef object card
         for idx, card in enumerate(hands[player]):
             if idx == card_index:
                 continue
             self.remove_card(card.color(), card.rank())
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void remove_by_fireworks(self, list fireworks):
         cdef int color, firework, idx, start_idx, end_idx
         cdef int fireworks_len = len(fireworks)
@@ -237,10 +267,14 @@ cdef class HanabiDeck:
                         self.card_count[idx] -= 1
                         self.total_count -= 1
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef void reset_deck(self):
-        self.card_count = np.array(INIT_DECK, dtype=np.int8)
+        self.card_count = INIT_DECK.copy()
         self.total_count = 50
 
+    @boundscheck(False)
+    @wraparound(False)
     cdef inline void remove_card(self, int color, int rank):
         cdef int card_idx = color * self.num_ranks + rank
         if self.card_count[card_idx] == 0:
@@ -251,8 +285,8 @@ cdef class HanabiDeck:
 
 cdef class CythonCard:
     """Hanabi card, with a color and a rank."""
-    cdef int _color
-    cdef int _rank
+    cdef readonly int _color
+    cdef readonly int _rank
 
     def __cinit__(self, int color, int rank):
         self._color = color

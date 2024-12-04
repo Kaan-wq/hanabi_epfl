@@ -10,6 +10,12 @@
             "/Users/kaanucar/anaconda3/envs/hanabi/lib/python3.11/site-packages/numpy/core/include/numpy/ndarraytypes.h",
             "/Users/kaanucar/anaconda3/envs/hanabi/lib/python3.11/site-packages/numpy/core/include/numpy/ufuncobject.h"
         ],
+        "extra_compile_args": [
+            "-O3",
+            "-march=native",
+            "-ffast-math",
+            "-funroll-loops"
+        ],
         "include_dirs": [
             "/Users/kaanucar/anaconda3/envs/hanabi/lib/python3.11/site-packages/numpy/core/include"
         ],
@@ -1918,9 +1924,9 @@ struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampl
 struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards;
 struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands;
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -1931,9 +1937,9 @@ struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampl
   PyObject *additional_cards;
 };
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -1944,9 +1950,9 @@ struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampl
   PyObject *additional_cards;
 };
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -1955,23 +1961,23 @@ struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampl
   int __pyx_n;
   PyObject *card_knowledge;
   PyObject *additional_cards;
-  PyObject *return_hanabi_card;
+  int return_hanabi_card;
 };
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":210
- *             self.remove_card(card.color(), card.rank())
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":234
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):             # <<<<<<<<<<<<<<
  *         cdef int other_player, idx
- *         for other_player in range(len(hands)):
+ *         cdef object card
  */
 struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands {
   int __pyx_n;
   int card_index;
 };
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":39
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":41
+ * ]
  * 
  * cdef class MCTS_Sampler:             # <<<<<<<<<<<<<<
  *     """Sampler for re-determinization in MCTS"""
@@ -1984,12 +1990,12 @@ struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler {
 };
 
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":154
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":162
  * 
  * 
  * cdef class HanabiDeck:             # <<<<<<<<<<<<<<
  *     """Deck of Hanabi cards for sampling hands and cards"""
- *     cdef int num_ranks, num_colors, total_count
+ *     cdef readonly int num_ranks, num_colors
  */
 struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck {
   PyObject_HEAD
@@ -2001,12 +2007,12 @@ struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck {
 };
 
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":252
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":286
  * 
  * 
  * cdef class CythonCard:             # <<<<<<<<<<<<<<
  *     """Hanabi card, with a color and a rank."""
- *     cdef int _color
+ *     cdef readonly int _color
  */
 struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard {
   PyObject_HEAD
@@ -2093,8 +2099,8 @@ struct __pyx_memoryviewslice_obj {
 
 
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":39
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":41
+ * ]
  * 
  * cdef class MCTS_Sampler:             # <<<<<<<<<<<<<<
  *     """Sampler for re-determinization in MCTS"""
@@ -2109,12 +2115,12 @@ struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampl
 static struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler;
 
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":154
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":162
  * 
  * 
  * cdef class HanabiDeck:             # <<<<<<<<<<<<<<
  *     """Deck of Hanabi cards for sampling hands and cards"""
- *     cdef int num_ranks, num_colors, total_count
+ *     cdef readonly int num_ranks, num_colors
  */
 
 struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck {
@@ -2133,12 +2139,12 @@ static struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_Han
 static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *, int, int);
 
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":252
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":286
  * 
  * 
  * cdef class CythonCard:             # <<<<<<<<<<<<<<
  *     """Hanabi card, with a color and a rank."""
- *     cdef int _color
+ *     cdef readonly int _color
  */
 
 struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard {
@@ -3130,10 +3136,10 @@ static int __Pyx_ValidateAndInit_memviewslice(
                 PyObject *original_obj);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_int8_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_int8_t(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
-static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(PyObject *, int writable_flag);
+static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int8_t(PyObject *, int writable_flag);
 
 /* MemviewDtypeToObject.proto */
 static CYTHON_INLINE PyObject *__pyx_memview_get_nn___pyx_t_5numpy_int8_t(const char *itemp);
@@ -3653,13 +3659,17 @@ static PyObject *__pyx_pf_15View_dot_MemoryView___pyx_unpickle_Enum(CYTHON_UNUSE
 static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler___cinit__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_2sample_hand(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_original_hand_size, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_4sample_card(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards); /* proto */
-static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_6valid_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards, PyObject *__pyx_v_return_hanabi_card); /* proto */
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_6valid_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards, int __pyx_v_return_hanabi_card); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck___cinit__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, __Pyx_memviewslice __pyx_v_card_count, int __pyx_v_total_count); /* proto */
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard___cinit__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self, int __pyx_v_color, int __pyx_v_rank); /* proto */
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_2__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_4__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -19660,9 +19670,9 @@ static CYTHON_INLINE NPY_DATETIMEUNIT __pyx_f_5numpy_get_datetime64_unit(PyObjec
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":12
- *     CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":14
+ * @boundscheck(False)
+ * @wraparound(False)
  * cdef inline object color_idx_to_char(int color_idx):             # <<<<<<<<<<<<<<
  *     if color_idx == -1:
  *         return None
@@ -19678,8 +19688,8 @@ static CYTHON_INLINE PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sam
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color_idx_to_char", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":13
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":15
+ * @wraparound(False)
  * cdef inline object color_idx_to_char(int color_idx):
  *     if color_idx == -1:             # <<<<<<<<<<<<<<
  *         return None
@@ -19688,7 +19698,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sam
   __pyx_t_1 = (__pyx_v_color_idx == -1L);
   if (__pyx_t_1) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":14
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":16
  * cdef inline object color_idx_to_char(int color_idx):
  *     if color_idx == -1:
  *         return None             # <<<<<<<<<<<<<<
@@ -19699,8 +19709,8 @@ static CYTHON_INLINE PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sam
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":13
- * 
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":15
+ * @wraparound(False)
  * cdef inline object color_idx_to_char(int color_idx):
  *     if color_idx == -1:             # <<<<<<<<<<<<<<
  *         return None
@@ -19708,25 +19718,25 @@ static CYTHON_INLINE PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sam
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":16
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":18
  *         return None
  *     else:
  *         return CHAR_COLOR_STRINGS[color_idx]             # <<<<<<<<<<<<<<
  * 
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([
+ * # Updated memoryview declarations
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_From_char((__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_CHAR_COLOR_STRINGS[__pyx_v_color_idx])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_char((__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_CHAR_COLOR_STRINGS[__pyx_v_color_idx])); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":12
- *     CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":14
+ * @boundscheck(False)
+ * @wraparound(False)
  * cdef inline object color_idx_to_char(int color_idx):             # <<<<<<<<<<<<<<
  *     if color_idx == -1:
  *         return None
@@ -19743,7 +19753,7 @@ static CYTHON_INLINE PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sam
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":43
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":45
  *     cdef HanabiDeck deck
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -19784,14 +19794,14 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":44
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
  * 
  *     def __cinit__(self):
  *         self.deck = HanabiDeck()             # <<<<<<<<<<<<<<
  * 
- *     cpdef list sample_hand(
+ *     @boundscheck(False)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF((PyObject *)__pyx_v_self->deck);
@@ -19799,7 +19809,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler
   __pyx_v_self->deck = ((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":43
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":45
  *     cdef HanabiDeck deck
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -19819,9 +19829,9 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -19836,7 +19846,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_hand(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_original_hand_size, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, int __pyx_skip_dispatch, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_hand *__pyx_optional_args) {
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":53
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":57
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
@@ -19845,7 +19855,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   PyObject *__pyx_v_card_knowledge = ((PyObject *)Py_None);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":54
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":58
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
@@ -19889,9 +19899,9 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   }
   __Pyx_INCREF(__pyx_v_additional_cards);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -19905,13 +19915,13 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sample_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sample_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_3sample_hand)) {
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_original_hand_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 46, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_original_hand_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 50, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -19934,11 +19944,11 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 46, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 50, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -19957,7 +19967,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     #endif
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":56
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":60
  *         additional_cards=None,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
@@ -19967,19 +19977,19 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __pyx_t_8 = (__pyx_v_additional_cards == Py_None);
   if (__pyx_t_8) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":57
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":61
  *     ):
  *         if additional_cards is None:
  *             additional_cards = []             # <<<<<<<<<<<<<<
  * 
  *         cdef list sampled_hand = []
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_additional_cards, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":56
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":60
  *         additional_cards=None,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
@@ -19988,37 +19998,37 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":59
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":63
  *             additional_cards = []
  * 
  *         cdef list sampled_hand = []             # <<<<<<<<<<<<<<
  *         cdef HanabiDeck deck_card
  *         cdef list sampled_cards
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_sampled_hand = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":64
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":68
  *         cdef int card_idx
  * 
  *         self.deck.reset_deck()             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, -1)
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->reset_deck(__pyx_v_self->deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->reset_deck(__pyx_v_self->deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":65
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":69
  * 
  *         self.deck.reset_deck()
  *         self.deck.remove_by_cards(discard_pile)             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_hands(player, player_hands, -1)
  *         self.deck.remove_by_fireworks(fireworks)
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, __pyx_v_discard_pile); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, __pyx_v_discard_pile); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":66
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":70
  *         self.deck.reset_deck()
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, -1)             # <<<<<<<<<<<<<<
@@ -20027,28 +20037,28 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   __pyx_t_9.__pyx_n = 1;
   __pyx_t_9.card_index = -1;
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_hands(__pyx_v_self->deck, __pyx_v_player, __pyx_v_player_hands, &__pyx_t_9); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_hands(__pyx_v_self->deck, __pyx_v_player, __pyx_v_player_hands, &__pyx_t_9); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":67
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":71
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, -1)
  *         self.deck.remove_by_fireworks(fireworks)             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_cards(additional_cards)
  * 
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_fireworks(__pyx_v_self->deck, __pyx_v_fireworks); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_fireworks(__pyx_v_self->deck, __pyx_v_fireworks); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 71, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":68
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":72
  *         self.deck.remove_by_hands(player, player_hands, -1)
  *         self.deck.remove_by_fireworks(fireworks)
  *         self.deck.remove_by_cards(additional_cards)             # <<<<<<<<<<<<<<
  * 
  *         while len(sampled_hand) < original_hand_size:
  */
-  if (!(likely(PyList_CheckExact(__pyx_v_additional_cards))||((__pyx_v_additional_cards) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_v_additional_cards))) __PYX_ERR(0, 68, __pyx_L1_error)
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, ((PyObject*)__pyx_v_additional_cards)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_v_additional_cards))||((__pyx_v_additional_cards) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_v_additional_cards))) __PYX_ERR(0, 72, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, ((PyObject*)__pyx_v_additional_cards)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":70
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":74
  *         self.deck.remove_by_cards(additional_cards)
  * 
  *         while len(sampled_hand) < original_hand_size:             # <<<<<<<<<<<<<<
@@ -20056,22 +20066,22 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  * 
  */
   while (1) {
-    __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_hand); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 70, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_hand); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 74, __pyx_L1_error)
     __pyx_t_8 = (__pyx_t_10 < __pyx_v_original_hand_size);
     if (!__pyx_t_8) break;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":71
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":75
  * 
  *         while len(sampled_hand) < original_hand_size:
  *             sampled_hand.clear()             # <<<<<<<<<<<<<<
  * 
  *             for card_idx in range(original_hand_size):
  */
-    __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyList_Type_clear, __pyx_v_sampled_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_CallUnboundCMethod0(&__pyx_umethod_PyList_Type_clear, __pyx_v_sampled_hand); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":73
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":77
  *             sampled_hand.clear()
  * 
  *             for card_idx in range(original_hand_size):             # <<<<<<<<<<<<<<
@@ -20083,73 +20093,73 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
       __pyx_v_card_idx = __pyx_t_13;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":74
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":78
  * 
  *             for card_idx in range(original_hand_size):
  *                 deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)             # <<<<<<<<<<<<<<
  *                 deck_card.remove_by_cython_cards(sampled_hand)
  *                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
  */
-      if (unlikely(!__pyx_v_self->deck->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 74, __pyx_L1_error)}
-      __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->deck->card_count, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_int8_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_int8_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+      if (unlikely(!__pyx_v_self->deck->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 78, __pyx_L1_error)}
+      __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->deck->card_count, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_int8_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_int8_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->deck->total_count); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->deck->total_count); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_1);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error);
       __Pyx_GIVEREF(__pyx_t_2);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 1, __pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error);
       __pyx_t_1 = 0;
       __pyx_t_2 = 0;
-      __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck), __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck), __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_XDECREF_SET(__pyx_v_deck_card, ((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":75
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":79
  *             for card_idx in range(original_hand_size):
  *                 deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)
  *                 deck_card.remove_by_cython_cards(sampled_hand)             # <<<<<<<<<<<<<<
  *                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
  * 
  */
-      ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_cython_cards(__pyx_v_deck_card, __pyx_v_sampled_hand); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_cython_cards(__pyx_v_deck_card, __pyx_v_sampled_hand); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":76
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":80
  *                 deck_card = HanabiDeck(self.deck.card_count, self.deck.total_count)
  *                 deck_card.remove_by_cython_cards(sampled_hand)
  *                 deck_card.remove_by_own_hand(player, player_hands, card_idx)             # <<<<<<<<<<<<<<
  * 
  *                 if card_knowledge:
  */
-      ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_own_hand(__pyx_v_deck_card, __pyx_v_player, __pyx_v_player_hands, __pyx_v_card_idx); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_own_hand(__pyx_v_deck_card, __pyx_v_player, __pyx_v_player_hands, __pyx_v_card_idx); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":78
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":82
  *                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
  * 
  *                 if card_knowledge:             # <<<<<<<<<<<<<<
  *                     deck_card.remove_by_knowledge(card_knowledge[card_idx])
  * 
  */
-      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_card_knowledge); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 78, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_card_knowledge); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 82, __pyx_L1_error)
       if (__pyx_t_8) {
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":79
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":83
  * 
  *                 if card_knowledge:
  *                     deck_card.remove_by_knowledge(card_knowledge[card_idx])             # <<<<<<<<<<<<<<
  * 
  *                 sampled_cards = deck_card.get_deck()
  */
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_card_knowledge, __pyx_v_card_idx, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_card_knowledge, __pyx_v_card_idx, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_knowledge(__pyx_v_deck_card, __pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
+        ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->remove_by_knowledge(__pyx_v_deck_card, __pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":78
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":82
  *                 deck_card.remove_by_own_hand(player, player_hands, card_idx)
  * 
  *                 if card_knowledge:             # <<<<<<<<<<<<<<
@@ -20158,19 +20168,19 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
       }
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":81
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":85
  *                     deck_card.remove_by_knowledge(card_knowledge[card_idx])
  * 
  *                 sampled_cards = deck_card.get_deck()             # <<<<<<<<<<<<<<
  * 
  *                 if sampled_cards:
  */
-      __pyx_t_2 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->get_deck(__pyx_v_deck_card); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_deck_card->__pyx_vtab)->get_deck(__pyx_v_deck_card); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_XDECREF_SET(__pyx_v_sampled_cards, ((PyObject*)__pyx_t_2));
       __pyx_t_2 = 0;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":83
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":87
  *                 sampled_cards = deck_card.get_deck()
  * 
  *                 if sampled_cards:             # <<<<<<<<<<<<<<
@@ -20180,7 +20190,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
       __pyx_t_8 = (__pyx_v_sampled_cards != Py_None)&&(PyList_GET_SIZE(__pyx_v_sampled_cards) != 0);
       if (__pyx_t_8) {
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":84
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":88
  * 
  *                 if sampled_cards:
  *                     sampled_hand.append(sampled_cards[rand() % len(sampled_cards)])             # <<<<<<<<<<<<<<
@@ -20189,20 +20199,20 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
         if (unlikely(__pyx_v_sampled_cards == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-          __PYX_ERR(0, 84, __pyx_L1_error)
+          __PYX_ERR(0, 88, __pyx_L1_error)
         }
         if (unlikely(__pyx_v_sampled_cards == Py_None)) {
           PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-          __PYX_ERR(0, 84, __pyx_L1_error)
+          __PYX_ERR(0, 88, __pyx_L1_error)
         }
-        __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_cards); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
+        __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_cards); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 88, __pyx_L1_error)
         __pyx_t_14 = (rand() % __pyx_t_10);
         __pyx_t_2 = PyList_GET_ITEM(__pyx_v_sampled_cards, __pyx_t_14);
         __Pyx_INCREF(__pyx_t_2);
-        __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_sampled_hand, __pyx_t_2); if (unlikely(__pyx_t_15 == ((int)-1))) __PYX_ERR(0, 84, __pyx_L1_error)
+        __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_sampled_hand, __pyx_t_2); if (unlikely(__pyx_t_15 == ((int)-1))) __PYX_ERR(0, 88, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":83
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":87
  *                 sampled_cards = deck_card.get_deck()
  * 
  *                 if sampled_cards:             # <<<<<<<<<<<<<<
@@ -20212,7 +20222,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
         goto __pyx_L9;
       }
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":86
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":90
  *                     sampled_hand.append(sampled_cards[rand() % len(sampled_cards)])
  *                 else:
  *                     break             # <<<<<<<<<<<<<<
@@ -20227,45 +20237,45 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     __pyx_L7_break:;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":89
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":93
  * 
  *         cdef CythonCard card
  *         for card_idx in range(len(sampled_hand)):             # <<<<<<<<<<<<<<
  *             card = sampled_hand[card_idx]
  *             sampled_hand[card_idx] = HanabiCard(card.color(), card.rank())
  */
-  __pyx_t_14 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_hand); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyList_GET_SIZE(__pyx_v_sampled_hand); if (unlikely(__pyx_t_14 == ((Py_ssize_t)-1))) __PYX_ERR(0, 93, __pyx_L1_error)
   __pyx_t_10 = __pyx_t_14;
   for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
     __pyx_v_card_idx = __pyx_t_11;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":90
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":94
  *         cdef CythonCard card
  *         for card_idx in range(len(sampled_hand)):
  *             card = sampled_hand[card_idx]             # <<<<<<<<<<<<<<
  *             sampled_hand[card_idx] = HanabiCard(card.color(), card.rank())
  * 
  */
-    if (!(likely(((PyList_GET_ITEM(__pyx_v_sampled_hand, __pyx_v_card_idx)) == Py_None) || likely(__Pyx_TypeTest(PyList_GET_ITEM(__pyx_v_sampled_hand, __pyx_v_card_idx), __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard))))) __PYX_ERR(0, 90, __pyx_L1_error)
+    if (!(likely(((PyList_GET_ITEM(__pyx_v_sampled_hand, __pyx_v_card_idx)) == Py_None) || likely(__Pyx_TypeTest(PyList_GET_ITEM(__pyx_v_sampled_hand, __pyx_v_card_idx), __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard))))) __PYX_ERR(0, 94, __pyx_L1_error)
     __pyx_t_2 = PyList_GET_ITEM(__pyx_v_sampled_hand, __pyx_v_card_idx);
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_XDECREF_SET(__pyx_v_card, ((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":91
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
  *         for card_idx in range(len(sampled_hand)):
  *             card = sampled_hand[card_idx]
  *             sampled_hand[card_idx] = HanabiCard(card.color(), card.rank())             # <<<<<<<<<<<<<<
  * 
  *         return sampled_hand
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_3 = NULL;
     __pyx_t_7 = 0;
@@ -20287,29 +20297,29 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+      if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
-    if (unlikely((__Pyx_SetItemInt(__pyx_v_sampled_hand, __pyx_v_card_idx, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 1, 0, 0) < 0))) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (unlikely((__Pyx_SetItemInt(__pyx_v_sampled_hand, __pyx_v_card_idx, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 1, 0, 0) < 0))) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":93
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":97
  *             sampled_hand[card_idx] = HanabiCard(card.color(), card.rank())
  * 
  *         return sampled_hand             # <<<<<<<<<<<<<<
  * 
- *     cpdef object sample_card(
+ *     @boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_sampled_hand);
   __pyx_r = __pyx_v_sampled_hand;
   goto __pyx_L0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -20381,7 +20391,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject **__pyx_pyargnames[] = {&__pyx_n_s_player,&__pyx_n_s_original_hand_size,&__pyx_n_s_player_hands,&__pyx_n_s_discard_pile,&__pyx_n_s_fireworks,&__pyx_n_s_card_knowledge,&__pyx_n_s_additional_cards,0};
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":53
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":57
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
@@ -20390,7 +20400,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
  */
     values[5] = __Pyx_Arg_NewRef_FASTCALL(((PyObject *)Py_None));
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":54
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":58
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
@@ -20425,7 +20435,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -20433,9 +20443,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 1); __PYX_ERR(0, 46, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 1); __PYX_ERR(0, 50, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -20443,9 +20453,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 2); __PYX_ERR(0, 46, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 2); __PYX_ERR(0, 50, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -20453,9 +20463,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 3); __PYX_ERR(0, 46, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 3); __PYX_ERR(0, 50, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -20463,28 +20473,28 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 4); __PYX_ERR(0, 46, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, 4); __PYX_ERR(0, 50, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_card_knowledge);
           if (value) { values[5] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_additional_cards);
           if (value) { values[6] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "sample_hand") < 0)) __PYX_ERR(0, 46, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "sample_hand") < 0)) __PYX_ERR(0, 50, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -20501,8 +20511,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 48, __pyx_L3_error)
-    __pyx_v_original_hand_size = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_original_hand_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L3_error)
+    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L3_error)
+    __pyx_v_original_hand_size = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_original_hand_size == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 53, __pyx_L3_error)
     __pyx_v_player_hands = ((PyObject*)values[2]);
     __pyx_v_discard_pile = ((PyObject*)values[3]);
     __pyx_v_fireworks = ((PyObject*)values[4]);
@@ -20511,7 +20521,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, __pyx_nargs); __PYX_ERR(0, 46, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sample_hand", 0, 5, 7, __pyx_nargs); __PYX_ERR(0, 50, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -20525,14 +20535,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 50, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 51, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 54, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 55, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 56, __pyx_L1_error)
   __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_2sample_hand(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *)__pyx_v_self), __pyx_v_player, __pyx_v_original_hand_size, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, __pyx_v_card_knowledge, __pyx_v_additional_cards);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -20566,7 +20576,7 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.card_knowledge = __pyx_v_card_knowledge;
   __pyx_t_2.additional_cards = __pyx_v_additional_cards;
-  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->sample_hand(__pyx_v_self, __pyx_v_player, __pyx_v_original_hand_size, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->sample_hand(__pyx_v_self, __pyx_v_player, __pyx_v_original_hand_size, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -20583,9 +20593,9 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -20600,7 +20610,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_card(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, int __pyx_skip_dispatch, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_card *__pyx_optional_args) {
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":102
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":108
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
@@ -20609,7 +20619,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   PyObject *__pyx_v_card_knowledge = ((PyObject *)Py_None);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":103
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":109
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
@@ -20618,7 +20628,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   PyObject *__pyx_v_additional_cards = ((PyObject *)Py_None);
   PyObject *__pyx_v_valid_cards = 0;
-  struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_sampled_card = 0;
+  PyObject *__pyx_v_sampled_card = 0;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -20632,7 +20642,6 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards __pyx_t_9;
   Py_ssize_t __pyx_t_10;
   Py_ssize_t __pyx_t_11;
-  int __pyx_t_12;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -20647,9 +20656,9 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   }
   __Pyx_INCREF(__pyx_v_additional_cards);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -20663,13 +20672,13 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sample_card); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_sample_card); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_5sample_card)) {
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_card_index); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_card_index); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_t_1);
         __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -20692,7 +20701,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
           __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -20714,7 +20723,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     #endif
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":105
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":111
  *         additional_cards=None,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
@@ -20724,19 +20733,19 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __pyx_t_8 = (__pyx_v_additional_cards == Py_None);
   if (__pyx_t_8) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":106
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":112
  *     ):
  *         if additional_cards is None:
  *             additional_cards = []             # <<<<<<<<<<<<<<
  * 
  *         cdef list valid_cards = self.valid_cards(
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_additional_cards, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":105
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":111
  *         additional_cards=None,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
@@ -20745,7 +20754,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":108
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":114
  *             additional_cards = []
  * 
  *         cdef list valid_cards = self.valid_cards(             # <<<<<<<<<<<<<<
@@ -20755,15 +20764,15 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __pyx_t_9.__pyx_n = 3;
   __pyx_t_9.card_knowledge = __pyx_v_card_knowledge;
   __pyx_t_9.additional_cards = __pyx_v_additional_cards;
-  __pyx_t_9.return_hanabi_card = Py_False;
-  __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *)__pyx_v_self->__pyx_vtab)->valid_cards(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 0, &__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_9.return_hanabi_card = 0;
+  __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *)__pyx_v_self->__pyx_vtab)->valid_cards(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 0, &__pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_valid_cards = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":119
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
  *         )
- *         cdef CythonCard sampled_card
+ *         cdef object sampled_card
  *         if valid_cards:             # <<<<<<<<<<<<<<
  *             sampled_card = valid_cards[rand() % len(valid_cards)]
  *             return HanabiCard(sampled_card.color(), sampled_card.rank())
@@ -20771,8 +20780,8 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __pyx_t_8 = (__pyx_v_valid_cards != Py_None)&&(PyList_GET_SIZE(__pyx_v_valid_cards) != 0);
   if (__pyx_t_8) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":120
- *         cdef CythonCard sampled_card
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":126
+ *         cdef object sampled_card
  *         if valid_cards:
  *             sampled_card = valid_cards[rand() % len(valid_cards)]             # <<<<<<<<<<<<<<
  *             return HanabiCard(sampled_card.color(), sampled_card.rank())
@@ -20780,21 +20789,20 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
     if (unlikely(__pyx_v_valid_cards == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 120, __pyx_L1_error)
+      __PYX_ERR(0, 126, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_valid_cards == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 120, __pyx_L1_error)
+      __PYX_ERR(0, 126, __pyx_L1_error)
     }
-    __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_valid_cards); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 120, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_GET_SIZE(__pyx_v_valid_cards); if (unlikely(__pyx_t_10 == ((Py_ssize_t)-1))) __PYX_ERR(0, 126, __pyx_L1_error)
     __pyx_t_11 = (rand() % __pyx_t_10);
-    if (!(likely(((PyList_GET_ITEM(__pyx_v_valid_cards, __pyx_t_11)) == Py_None) || likely(__Pyx_TypeTest(PyList_GET_ITEM(__pyx_v_valid_cards, __pyx_t_11), __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard))))) __PYX_ERR(0, 120, __pyx_L1_error)
     __pyx_t_1 = PyList_GET_ITEM(__pyx_v_valid_cards, __pyx_t_11);
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_v_sampled_card = ((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *)__pyx_t_1);
+    __pyx_v_sampled_card = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":121
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":127
  *         if valid_cards:
  *             sampled_card = valid_cards[rand() % len(valid_cards)]
  *             return HanabiCard(sampled_card.color(), sampled_card.rank())             # <<<<<<<<<<<<<<
@@ -20802,14 +20810,56 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color(__pyx_v_sampled_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 121, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_12 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank(__pyx_v_sampled_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 121, __pyx_L1_error)
-    __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_sampled_card, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = NULL;
+    __pyx_t_7 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
+      __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_7, 0+__pyx_t_7);
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_sampled_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_3))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_3, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_6, NULL};
+      __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_7, 0+__pyx_t_7);
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    }
     __pyx_t_3 = NULL;
     __pyx_t_7 = 0;
     #if CYTHON_UNPACK_METHODS
@@ -20830,7 +20880,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
@@ -20838,21 +20888,21 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":119
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
  *         )
- *         cdef CythonCard sampled_card
+ *         cdef object sampled_card
  *         if valid_cards:             # <<<<<<<<<<<<<<
  *             sampled_card = valid_cards[rand() % len(valid_cards)]
  *             return HanabiCard(sampled_card.color(), sampled_card.rank())
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":123
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":129
  *             return HanabiCard(sampled_card.color(), sampled_card.rank())
  *         else:
  *             return None             # <<<<<<<<<<<<<<
  * 
- *     cpdef list valid_cards(
+ *     @boundscheck(False)
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
@@ -20860,9 +20910,9 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     goto __pyx_L0;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -20880,7 +20930,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_valid_cards);
-  __Pyx_XDECREF((PyObject *)__pyx_v_sampled_card);
+  __Pyx_XDECREF(__pyx_v_sampled_card);
   __Pyx_XDECREF(__pyx_v_additional_cards);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -20932,7 +20982,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject **__pyx_pyargnames[] = {&__pyx_n_s_player,&__pyx_n_s_card_index,&__pyx_n_s_player_hands,&__pyx_n_s_discard_pile,&__pyx_n_s_fireworks,&__pyx_n_s_card_knowledge,&__pyx_n_s_additional_cards,0};
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":102
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":108
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
@@ -20941,7 +20991,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
  */
     values[5] = __Pyx_Arg_NewRef_FASTCALL(((PyObject *)Py_None));
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":103
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":109
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
@@ -20976,7 +21026,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -20984,9 +21034,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 1); __PYX_ERR(0, 95, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 1); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -20994,9 +21044,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 2); __PYX_ERR(0, 95, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 2); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -21004,9 +21054,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 3); __PYX_ERR(0, 95, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 3); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -21014,28 +21064,28 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 4); __PYX_ERR(0, 95, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, 4); __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_card_knowledge);
           if (value) { values[5] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_additional_cards);
           if (value) { values[6] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "sample_card") < 0)) __PYX_ERR(0, 95, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "sample_card") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -21052,8 +21102,8 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
+    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L3_error)
     __pyx_v_player_hands = ((PyObject*)values[2]);
     __pyx_v_discard_pile = ((PyObject*)values[3]);
     __pyx_v_fireworks = ((PyObject*)values[4]);
@@ -21062,7 +21112,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, __pyx_nargs); __PYX_ERR(0, 95, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("sample_card", 0, 5, 7, __pyx_nargs); __PYX_ERR(0, 101, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21076,14 +21126,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 99, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 100, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 106, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 107, __pyx_L1_error)
   __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_4sample_card(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *)__pyx_v_self), __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, __pyx_v_card_knowledge, __pyx_v_additional_cards);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -21117,7 +21167,7 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   __pyx_t_2.__pyx_n = 2;
   __pyx_t_2.card_knowledge = __pyx_v_card_knowledge;
   __pyx_t_2.additional_cards = __pyx_v_additional_cards;
-  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->sample_card(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->sample_card(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -21134,9 +21184,9 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -21151,32 +21201,32 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 ); /*proto*/
 static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, int __pyx_skip_dispatch, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards *__pyx_optional_args) {
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":132
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":140
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
  *         additional_cards=None,
- *         return_hanabi_card=True,
+ *         bint return_hanabi_card=True,
  */
   PyObject *__pyx_v_card_knowledge = ((PyObject *)Py_None);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":141
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
- *         return_hanabi_card=True,
+ *         bint return_hanabi_card=True,
  *     ):
  */
   PyObject *__pyx_v_additional_cards = ((PyObject *)Py_None);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":134
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":142
  *         card_knowledge=None,
  *         additional_cards=None,
- *         return_hanabi_card=True,             # <<<<<<<<<<<<<<
+ *         bint return_hanabi_card=True,             # <<<<<<<<<<<<<<
  *     ):
  *         if additional_cards is None:
  */
-  PyObject *__pyx_v_return_hanabi_card = ((PyObject *)Py_True);
+  int __pyx_v_return_hanabi_card = ((int)1);
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21185,9 +21235,10 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
-  unsigned int __pyx_t_7;
-  int __pyx_t_8;
-  struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands __pyx_t_9;
+  PyObject *__pyx_t_7 = NULL;
+  unsigned int __pyx_t_8;
+  int __pyx_t_9;
+  struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands __pyx_t_10;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -21205,9 +21256,9 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   }
   __Pyx_INCREF(__pyx_v_additional_cards);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -21221,40 +21272,43 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_typedict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_valid_cards); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_valid_cards); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!__Pyx_IsSameCFunction(__pyx_t_1, (void*) __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_7valid_cards)) {
         __Pyx_XDECREF(__pyx_r);
-        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_player); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_card_index); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_card_index); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
+        __pyx_t_5 = __Pyx_PyBool_FromLong(__pyx_v_return_hanabi_card); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 133, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_t_1);
-        __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
-        __pyx_t_7 = 0;
+        __pyx_t_6 = __pyx_t_1; __pyx_t_7 = NULL;
+        __pyx_t_8 = 0;
         #if CYTHON_UNPACK_METHODS
-        if (unlikely(PyMethod_Check(__pyx_t_5))) {
-          __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-          if (likely(__pyx_t_6)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-            __Pyx_INCREF(__pyx_t_6);
+        if (unlikely(PyMethod_Check(__pyx_t_6))) {
+          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
+          if (likely(__pyx_t_7)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+            __Pyx_INCREF(__pyx_t_7);
             __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_5, function);
-            __pyx_t_7 = 1;
+            __Pyx_DECREF_SET(__pyx_t_6, function);
+            __pyx_t_8 = 1;
           }
         }
         #endif
         {
-          PyObject *__pyx_callargs[9] = {__pyx_t_6, __pyx_t_3, __pyx_t_4, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, __pyx_v_card_knowledge, __pyx_v_additional_cards, __pyx_v_return_hanabi_card};
-          __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 8+__pyx_t_7);
-          __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+          PyObject *__pyx_callargs[9] = {__pyx_t_7, __pyx_t_3, __pyx_t_4, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, __pyx_v_card_knowledge, __pyx_v_additional_cards, __pyx_t_5};
+          __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_6, __pyx_callargs+1-__pyx_t_8, 8+__pyx_t_8);
+          __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
           __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
           __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+          if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 133, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         }
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 125, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_t_2))) __PYX_ERR(0, 133, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -21273,30 +21327,30 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
     #endif
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":136
- *         return_hanabi_card=True,
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":144
+ *         bint return_hanabi_card=True,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
  *             additional_cards = []
  * 
  */
-  __pyx_t_8 = (__pyx_v_additional_cards == Py_None);
-  if (__pyx_t_8) {
+  __pyx_t_9 = (__pyx_v_additional_cards == Py_None);
+  if (__pyx_t_9) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":137
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":145
  *     ):
  *         if additional_cards is None:
  *             additional_cards = []             # <<<<<<<<<<<<<<
  * 
  *         self.deck.reset_deck()
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_additional_cards, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":136
- *         return_hanabi_card=True,
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":144
+ *         bint return_hanabi_card=True,
  *     ):
  *         if additional_cards is None:             # <<<<<<<<<<<<<<
  *             additional_cards = []
@@ -21304,77 +21358,77 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":139
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":147
  *             additional_cards = []
  * 
  *         self.deck.reset_deck()             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, card_index)
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->reset_deck(__pyx_v_self->deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 139, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->reset_deck(__pyx_v_self->deck); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":140
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":148
  * 
  *         self.deck.reset_deck()
  *         self.deck.remove_by_cards(discard_pile)             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_hands(player, player_hands, card_index)
  *         self.deck.remove_by_fireworks(fireworks)
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, __pyx_v_discard_pile); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, __pyx_v_discard_pile); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":141
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":149
  *         self.deck.reset_deck()
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, card_index)             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_fireworks(fireworks)
  *         self.deck.remove_by_cards(additional_cards)
  */
-  __pyx_t_9.__pyx_n = 1;
-  __pyx_t_9.card_index = __pyx_v_card_index;
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_hands(__pyx_v_self->deck, __pyx_v_player, __pyx_v_player_hands, &__pyx_t_9); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_10.__pyx_n = 1;
+  __pyx_t_10.card_index = __pyx_v_card_index;
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_hands(__pyx_v_self->deck, __pyx_v_player, __pyx_v_player_hands, &__pyx_t_10); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":142
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":150
  *         self.deck.remove_by_cards(discard_pile)
  *         self.deck.remove_by_hands(player, player_hands, card_index)
  *         self.deck.remove_by_fireworks(fireworks)             # <<<<<<<<<<<<<<
  *         self.deck.remove_by_cards(additional_cards)
  * 
  */
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_fireworks(__pyx_v_self->deck, __pyx_v_fireworks); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_fireworks(__pyx_v_self->deck, __pyx_v_fireworks); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":143
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":151
  *         self.deck.remove_by_hands(player, player_hands, card_index)
  *         self.deck.remove_by_fireworks(fireworks)
  *         self.deck.remove_by_cards(additional_cards)             # <<<<<<<<<<<<<<
  * 
  *         if card_knowledge is not None:
  */
-  if (!(likely(PyList_CheckExact(__pyx_v_additional_cards))||((__pyx_v_additional_cards) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_v_additional_cards))) __PYX_ERR(0, 143, __pyx_L1_error)
-  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, ((PyObject*)__pyx_v_additional_cards)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_v_additional_cards))||((__pyx_v_additional_cards) == Py_None) || __Pyx_RaiseUnexpectedTypeError("list", __pyx_v_additional_cards))) __PYX_ERR(0, 151, __pyx_L1_error)
+  ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_cards(__pyx_v_self->deck, ((PyObject*)__pyx_v_additional_cards)); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":145
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":153
  *         self.deck.remove_by_cards(additional_cards)
  * 
  *         if card_knowledge is not None:             # <<<<<<<<<<<<<<
  *             self.deck.remove_by_knowledge(card_knowledge[card_index])
  * 
  */
-  __pyx_t_8 = (__pyx_v_card_knowledge != Py_None);
-  if (__pyx_t_8) {
+  __pyx_t_9 = (__pyx_v_card_knowledge != Py_None);
+  if (__pyx_t_9) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":146
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":154
  * 
  *         if card_knowledge is not None:
  *             self.deck.remove_by_knowledge(card_knowledge[card_index])             # <<<<<<<<<<<<<<
  * 
  *         if return_hanabi_card:
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_card_knowledge, __pyx_v_card_index, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_card_knowledge, __pyx_v_card_index, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_knowledge(__pyx_v_self->deck, __pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->remove_by_knowledge(__pyx_v_self->deck, __pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":145
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":153
  *         self.deck.remove_by_cards(additional_cards)
  * 
  *         if card_knowledge is not None:             # <<<<<<<<<<<<<<
@@ -21383,17 +21437,16 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":148
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":156
  *             self.deck.remove_by_knowledge(card_knowledge[card_index])
  * 
  *         if return_hanabi_card:             # <<<<<<<<<<<<<<
  *             return self.deck.get_hanabi_deck()
  *         else:
  */
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_return_hanabi_card); if (unlikely((__pyx_t_8 < 0))) __PYX_ERR(0, 148, __pyx_L1_error)
-  if (__pyx_t_8) {
+  if (__pyx_v_return_hanabi_card) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":149
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":157
  * 
  *         if return_hanabi_card:
  *             return self.deck.get_hanabi_deck()             # <<<<<<<<<<<<<<
@@ -21401,13 +21454,13 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  *             return self.deck.get_deck()
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->get_hanabi_deck(__pyx_v_self->deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->get_hanabi_deck(__pyx_v_self->deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":148
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":156
  *             self.deck.remove_by_knowledge(card_knowledge[card_index])
  * 
  *         if return_hanabi_card:             # <<<<<<<<<<<<<<
@@ -21416,7 +21469,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":151
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":159
  *             return self.deck.get_hanabi_deck()
  *         else:
  *             return self.deck.get_deck()             # <<<<<<<<<<<<<<
@@ -21425,16 +21478,16 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->get_deck(__pyx_v_self->deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->deck->__pyx_vtab)->get_deck(__pyx_v_self->deck); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = ((PyObject*)__pyx_t_1);
     __pyx_t_1 = 0;
     goto __pyx_L0;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -21448,6 +21501,7 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sa
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.MCTS_Sampler.valid_cards", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -21480,7 +21534,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   PyObject *__pyx_v_fireworks = 0;
   PyObject *__pyx_v_card_knowledge = 0;
   PyObject *__pyx_v_additional_cards = 0;
-  PyObject *__pyx_v_return_hanabi_card = 0;
+  int __pyx_v_return_hanabi_card;
   #if !CYTHON_METH_FASTCALL
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   #endif
@@ -21503,32 +21557,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   {
     PyObject **__pyx_pyargnames[] = {&__pyx_n_s_player,&__pyx_n_s_card_index,&__pyx_n_s_player_hands,&__pyx_n_s_discard_pile,&__pyx_n_s_fireworks,&__pyx_n_s_card_knowledge,&__pyx_n_s_additional_cards,&__pyx_n_s_return_hanabi_card,0};
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":132
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":140
  *         list discard_pile,
  *         list fireworks,
  *         card_knowledge=None,             # <<<<<<<<<<<<<<
  *         additional_cards=None,
- *         return_hanabi_card=True,
+ *         bint return_hanabi_card=True,
  */
     values[5] = __Pyx_Arg_NewRef_FASTCALL(((PyObject *)Py_None));
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":141
  *         list fireworks,
  *         card_knowledge=None,
  *         additional_cards=None,             # <<<<<<<<<<<<<<
- *         return_hanabi_card=True,
+ *         bint return_hanabi_card=True,
  *     ):
  */
     values[6] = __Pyx_Arg_NewRef_FASTCALL(((PyObject *)Py_None));
-
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":134
- *         card_knowledge=None,
- *         additional_cards=None,
- *         return_hanabi_card=True,             # <<<<<<<<<<<<<<
- *     ):
- *         if additional_cards is None:
- */
-    values[7] = __Pyx_Arg_NewRef_FASTCALL(((PyObject *)Py_True));
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
       switch (__pyx_nargs) {
@@ -21558,7 +21603,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -21566,9 +21611,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 1); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 1); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -21576,9 +21621,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 2); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 2); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -21586,9 +21631,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 3); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 3); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -21596,35 +21641,35 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[4]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 4); __PYX_ERR(0, 125, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, 4); __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_card_knowledge);
           if (value) { values[5] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_additional_cards);
           if (value) { values[6] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  7:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_return_hanabi_card);
           if (value) { values[7] = __Pyx_Arg_NewRef_FASTCALL(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "valid_cards") < 0)) __PYX_ERR(0, 125, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "valid_cards") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -21643,18 +21688,30 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L3_error)
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L3_error)
+    __pyx_v_player = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 135, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L3_error)
     __pyx_v_player_hands = ((PyObject*)values[2]);
     __pyx_v_discard_pile = ((PyObject*)values[3]);
     __pyx_v_fireworks = ((PyObject*)values[4]);
     __pyx_v_card_knowledge = values[5];
     __pyx_v_additional_cards = values[6];
-    __pyx_v_return_hanabi_card = values[7];
+    if (values[7]) {
+      __pyx_v_return_hanabi_card = __Pyx_PyObject_IsTrue(values[7]); if (unlikely((__pyx_v_return_hanabi_card == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L3_error)
+    } else {
+
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":142
+ *         card_knowledge=None,
+ *         additional_cards=None,
+ *         bint return_hanabi_card=True,             # <<<<<<<<<<<<<<
+ *     ):
+ *         if additional_cards is None:
+ */
+      __pyx_v_return_hanabi_card = ((int)1);
+    }
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, __pyx_nargs); __PYX_ERR(0, 125, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("valid_cards", 0, 5, 8, __pyx_nargs); __PYX_ERR(0, 133, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -21668,14 +21725,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 129, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 130, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 131, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_player_hands), (&PyList_Type), 1, "player_hands", 1))) __PYX_ERR(0, 137, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_discard_pile), (&PyList_Type), 1, "discard_pile", 1))) __PYX_ERR(0, 138, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_fireworks), (&PyList_Type), 1, "fireworks", 1))) __PYX_ERR(0, 139, __pyx_L1_error)
   __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_6valid_cards(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *)__pyx_v_self), __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, __pyx_v_card_knowledge, __pyx_v_additional_cards, __pyx_v_return_hanabi_card);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
@@ -21696,7 +21753,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_6valid_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards, PyObject *__pyx_v_return_hanabi_card) {
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_6valid_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *__pyx_v_self, int __pyx_v_player, int __pyx_v_card_index, PyObject *__pyx_v_player_hands, PyObject *__pyx_v_discard_pile, PyObject *__pyx_v_fireworks, PyObject *__pyx_v_card_knowledge, PyObject *__pyx_v_additional_cards, int __pyx_v_return_hanabi_card) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -21710,7 +21767,7 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   __pyx_t_2.card_knowledge = __pyx_v_card_knowledge;
   __pyx_t_2.additional_cards = __pyx_v_additional_cards;
   __pyx_t_2.return_hanabi_card = __pyx_v_return_hanabi_card;
-  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->valid_cards(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_1 = __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->valid_cards(__pyx_v_self, __pyx_v_player, __pyx_v_card_index, __pyx_v_player_hands, __pyx_v_discard_pile, __pyx_v_fireworks, 1, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -21941,10 +21998,10 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_S
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":159
- *     cdef cnp.int8_t[::1] card_count
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":168
+ *     cdef cnp.int8_t[:] card_count
  * 
- *     def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
  *         self.num_ranks = 5
  *         self.num_colors = 5
  */
@@ -21987,19 +22044,19 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_1
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_card_count);
           if (value) { values[0] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_total_count);
           if (value) { values[1] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 159, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 168, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -22012,20 +22069,20 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_1
       }
     }
     if (values[0]) {
-      __pyx_v_card_count = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_card_count.memview)) __PYX_ERR(0, 159, __pyx_L3_error)
+      __pyx_v_card_count = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int8_t(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_card_count.memview)) __PYX_ERR(0, 168, __pyx_L3_error)
     } else {
       __pyx_v_card_count = __pyx_k__11;
       __PYX_INC_MEMVIEW(&__pyx_v_card_count, 1);
     }
     if (values[1]) {
-      __pyx_v_total_count = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_total_count == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L3_error)
+      __pyx_v_total_count = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_total_count == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 168, __pyx_L3_error)
     } else {
       __pyx_v_total_count = ((int)0);
     }
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, __pyx_nargs); __PYX_ERR(0, 159, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 2, __pyx_nargs); __PYX_ERR(0, 168, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -22063,17 +22120,17 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":160
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":169
  * 
- *     def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):
+ *     def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):
  *         self.num_ranks = 5             # <<<<<<<<<<<<<<
  *         self.num_colors = 5
  * 
  */
   __pyx_v_self->num_ranks = 5;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":161
- *     def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":170
+ *     def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):
  *         self.num_ranks = 5
  *         self.num_colors = 5             # <<<<<<<<<<<<<<
  * 
@@ -22081,7 +22138,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
  */
   __pyx_v_self->num_colors = 5;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":163
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":172
  *         self.num_colors = 5
  * 
  *         if card_count is not None and total_count != 0:             # <<<<<<<<<<<<<<
@@ -22099,20 +22156,20 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":164
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":173
  * 
  *         if card_count is not None and total_count != 0:
  *             self.card_count = card_count.copy()             # <<<<<<<<<<<<<<
  *             self.total_count = total_count
  *         else:
  */
-    __pyx_t_3 = __pyx_memoryview_copy_slice_dc_nn___pyx_t_5numpy_int8_t_c(__pyx_v_card_count); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_3 = __pyx_memoryview_copy_slice_dc_nn___pyx_t_5numpy_int8_t_c(__pyx_v_card_count); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 173, __pyx_L1_error)
     __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->card_count, 0);
     __pyx_v_self->card_count = __pyx_t_3;
     __pyx_t_3.memview = NULL;
     __pyx_t_3.data = NULL;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":165
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":174
  *         if card_count is not None and total_count != 0:
  *             self.card_count = card_count.copy()
  *             self.total_count = total_count             # <<<<<<<<<<<<<<
@@ -22121,7 +22178,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
  */
     __pyx_v_self->total_count = __pyx_v_total_count;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":163
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":172
  *         self.num_colors = 5
  * 
  *         if card_count is not None and total_count != 0:             # <<<<<<<<<<<<<<
@@ -22131,22 +22188,22 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
     goto __pyx_L3;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":167
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":176
  *             self.total_count = total_count
  *         else:
  *             self.reset_deck()             # <<<<<<<<<<<<<<
  * 
- *     cdef list get_deck(self):
+ *     @boundscheck(False)
  */
   /*else*/ {
-    ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->__pyx_vtab)->reset_deck(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self->__pyx_vtab)->reset_deck(__pyx_v_self); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":159
- *     cdef cnp.int8_t[::1] card_count
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":168
+ *     cdef cnp.int8_t[:] card_count
  * 
- *     def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
  *         self.num_ranks = 5
  *         self.num_colors = 5
  */
@@ -22162,9 +22219,9 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck__
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":169
- *             self.reset_deck()
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":180
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list get_deck(self):             # <<<<<<<<<<<<<<
  *         cdef list deck_list = []
  *         cdef int i, j, count
@@ -22194,19 +22251,19 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_deck", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":170
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":181
+ *     @wraparound(False)
  *     cdef list get_deck(self):
  *         cdef list deck_list = []             # <<<<<<<<<<<<<<
  *         cdef int i, j, count
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_deck_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":173
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":184
  *         cdef int i, j, count
  * 
  *         for i in range(self.num_colors * self.num_ranks):             # <<<<<<<<<<<<<<
@@ -22218,18 +22275,18 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":174
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":185
  * 
  *         for i in range(self.num_colors * self.num_ranks):
  *             count = self.card_count[i]             # <<<<<<<<<<<<<<
  *             for j in range(count):
  *                 deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))
  */
-    if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 174, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 185, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_v_count = (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_5)) )));
+    __pyx_v_count = (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_5 * __pyx_v_self->card_count.strides[0]) )));
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":175
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":186
  *         for i in range(self.num_colors * self.num_ranks):
  *             count = self.card_count[i]
  *             for j in range(count):             # <<<<<<<<<<<<<<
@@ -22241,54 +22298,54 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_j = __pyx_t_8;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":176
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":187
  *             count = self.card_count[i]
  *             for j in range(count):
  *                 deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))             # <<<<<<<<<<<<<<
  * 
  *         return deck_list
  */
-      if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.memview)) { __Pyx_RaiseUnboundLocalError("PRECOMPUTED_CARDS"); __PYX_ERR(0, 176, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.memview)) { __Pyx_RaiseUnboundLocalError("PRECOMPUTED_CARDS"); __PYX_ERR(0, 187, __pyx_L1_error) }
       __pyx_t_5 = __pyx_v_i;
       __pyx_t_9 = 0;
-      __pyx_t_1 = __Pyx_PyInt_From_npy_int8((*((__pyx_t_5numpy_int8_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.data + __pyx_t_5 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[0]) )) + __pyx_t_9)) )))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_npy_int8((*((__pyx_t_5numpy_int8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.data + __pyx_t_5 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[0]) ) + __pyx_t_9 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[1]) )))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.memview)) { __Pyx_RaiseUnboundLocalError("PRECOMPUTED_CARDS"); __PYX_ERR(0, 176, __pyx_L1_error) }
+      if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.memview)) { __Pyx_RaiseUnboundLocalError("PRECOMPUTED_CARDS"); __PYX_ERR(0, 187, __pyx_L1_error) }
       __pyx_t_9 = __pyx_v_i;
       __pyx_t_5 = 1;
-      __pyx_t_10 = __Pyx_PyInt_From_npy_int8((*((__pyx_t_5numpy_int8_t *) ( /* dim=1 */ ((char *) (((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.data + __pyx_t_9 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[0]) )) + __pyx_t_5)) )))); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyInt_From_npy_int8((*((__pyx_t_5numpy_int8_t *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.data + __pyx_t_9 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[0]) ) + __pyx_t_5 * __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS.strides[1]) )))); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_GIVEREF(__pyx_t_1);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1)) __PYX_ERR(0, 176, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error);
       __Pyx_GIVEREF(__pyx_t_10);
-      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_10)) __PYX_ERR(0, 176, __pyx_L1_error);
+      if (__Pyx_PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_10)) __PYX_ERR(0, 187, __pyx_L1_error);
       __pyx_t_1 = 0;
       __pyx_t_10 = 0;
-      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard), __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyObject_Call(((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard), __pyx_t_11, NULL); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_deck_list, __pyx_t_10); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 176, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyList_Append(__pyx_v_deck_list, __pyx_t_10); if (unlikely(__pyx_t_12 == ((int)-1))) __PYX_ERR(0, 187, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     }
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":178
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":189
  *                 deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))
  * 
  *         return deck_list             # <<<<<<<<<<<<<<
  * 
- *     cdef list get_hanabi_deck(self):
+ *     @boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_deck_list);
   __pyx_r = __pyx_v_deck_list;
   goto __pyx_L0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":169
- *             self.reset_deck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":180
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list get_deck(self):             # <<<<<<<<<<<<<<
  *         cdef list deck_list = []
  *         cdef int i, j, count
@@ -22308,9 +22365,9 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":180
- *         return deck_list
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":193
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list get_hanabi_deck(self):             # <<<<<<<<<<<<<<
  *         cdef list deck_list = []
  *         cdef int i, j, count
@@ -22338,19 +22395,19 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_hanabi_deck", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":181
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":194
+ *     @wraparound(False)
  *     cdef list get_hanabi_deck(self):
  *         cdef list deck_list = []             # <<<<<<<<<<<<<<
  *         cdef int i, j, count
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 181, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_deck_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":184
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":197
  *         cdef int i, j, count
  * 
  *         for i in range(self.num_colors * self.num_ranks):             # <<<<<<<<<<<<<<
@@ -22362,18 +22419,18 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":185
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":198
  * 
  *         for i in range(self.num_colors * self.num_ranks):
  *             count = self.card_count[i]             # <<<<<<<<<<<<<<
  *             for j in range(count):
  *                 deck_list.append(PRECOMPUTED_HANABI_CARDS[i])
  */
-    if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 185, __pyx_L1_error)}
+    if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 198, __pyx_L1_error)}
     __pyx_t_5 = __pyx_v_i;
-    __pyx_v_count = (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_5)) )));
+    __pyx_v_count = (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_5 * __pyx_v_self->card_count.strides[0]) )));
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":186
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":199
  *         for i in range(self.num_colors * self.num_ranks):
  *             count = self.card_count[i]
  *             for j in range(count):             # <<<<<<<<<<<<<<
@@ -22385,38 +22442,38 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
     for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_j = __pyx_t_8;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":187
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":200
  *             count = self.card_count[i]
  *             for j in range(count):
  *                 deck_list.append(PRECOMPUTED_HANABI_CARDS[i])             # <<<<<<<<<<<<<<
  * 
  *         return deck_list
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_PRECOMPUTED_HANABI_CARDS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_PRECOMPUTED_HANABI_CARDS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 187, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_GetItemInt(__pyx_t_1, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 0, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_deck_list, __pyx_t_9); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 187, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_deck_list, __pyx_t_9); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 200, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     }
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":189
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":202
  *                 deck_list.append(PRECOMPUTED_HANABI_CARDS[i])
  * 
  *         return deck_list             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_knowledge(self, card_knowledge):
+ *     @boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_deck_list);
   __pyx_r = __pyx_v_deck_list;
   goto __pyx_L0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":180
- *         return deck_list
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":193
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef list get_hanabi_deck(self):             # <<<<<<<<<<<<<<
  *         cdef list deck_list = []
  *         cdef int i, j, count
@@ -22435,19 +22492,20 @@ static PyObject *__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiD
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":191
- *         return deck_list
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":206
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_knowledge(self, card_knowledge):             # <<<<<<<<<<<<<<
  *         cdef int color, rank, card_idx
- *         for color in range(self.num_colors):
+ *         cdef bint color_plausible, rank_plausible
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_knowledge(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, PyObject *__pyx_v_card_knowledge) {
   int __pyx_v_color;
   int __pyx_v_rank;
   int __pyx_v_card_idx;
-  PyObject *__pyx_v_color_plausible = NULL;
+  int __pyx_v_color_plausible;
+  int __pyx_v_rank_plausible;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   int __pyx_t_2;
@@ -22468,9 +22526,9 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_by_knowledge", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":193
- *     cdef void remove_by_knowledge(self, card_knowledge):
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":209
  *         cdef int color, rank, card_idx
+ *         cdef bint color_plausible, rank_plausible
  *         for color in range(self.num_colors):             # <<<<<<<<<<<<<<
  *             color_plausible = card_knowledge.color_plausible(color)
  *             for rank in range(self.num_ranks):
@@ -22480,16 +22538,16 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_color = __pyx_t_3;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":194
- *         cdef int color, rank, card_idx
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":210
+ *         cdef bint color_plausible, rank_plausible
  *         for color in range(self.num_colors):
  *             color_plausible = card_knowledge.color_plausible(color)             # <<<<<<<<<<<<<<
  *             for rank in range(self.num_ranks):
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)
  */
-    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card_knowledge, __pyx_n_s_color_plausible); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card_knowledge, __pyx_n_s_color_plausible); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 194, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_7 = NULL;
     __pyx_t_8 = 0;
@@ -22510,41 +22568,36 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_8, 1+__pyx_t_8);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 210, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
-    __Pyx_XDECREF_SET(__pyx_v_color_plausible, __pyx_t_4);
-    __pyx_t_4 = 0;
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_v_color_plausible = __pyx_t_9;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":195
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":211
  *         for color in range(self.num_colors):
  *             color_plausible = card_knowledge.color_plausible(color)
  *             for rank in range(self.num_ranks):             # <<<<<<<<<<<<<<
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):
- *                     card_idx = color * self.num_ranks + rank
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)
+ *                 if not (color_plausible and rank_plausible):
  */
-    __pyx_t_9 = __pyx_v_self->num_ranks;
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_rank = __pyx_t_11;
+    __pyx_t_10 = __pyx_v_self->num_ranks;
+    __pyx_t_11 = __pyx_t_10;
+    for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+      __pyx_v_rank = __pyx_t_12;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":196
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":212
  *             color_plausible = card_knowledge.color_plausible(color)
  *             for rank in range(self.num_ranks):
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):             # <<<<<<<<<<<<<<
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)             # <<<<<<<<<<<<<<
+ *                 if not (color_plausible and rank_plausible):
  *                     card_idx = color * self.num_ranks + rank
- *                     self.total_count -= self.card_count[card_idx]
  */
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_v_color_plausible); if (unlikely((__pyx_t_13 < 0))) __PYX_ERR(0, 196, __pyx_L1_error)
-      if (__pyx_t_13) {
-      } else {
-        __pyx_t_12 = __pyx_t_13;
-        goto __pyx_L8_bool_binop_done;
-      }
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card_knowledge, __pyx_n_s_rank_plausible); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_card_knowledge, __pyx_n_s_rank_plausible); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_rank); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 196, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_rank); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __pyx_t_7 = NULL;
       __pyx_t_8 = 0;
@@ -22565,52 +22618,66 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         __pyx_t_4 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_8, 1+__pyx_t_8);
         __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
+        if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
-      __pyx_t_13 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_13 < 0))) __PYX_ERR(0, 196, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_12 = __pyx_t_13;
+      __pyx_v_rank_plausible = __pyx_t_9;
+
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":213
+ *             for rank in range(self.num_ranks):
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)
+ *                 if not (color_plausible and rank_plausible):             # <<<<<<<<<<<<<<
+ *                     card_idx = color * self.num_ranks + rank
+ *                     self.total_count -= self.card_count[card_idx]
+ */
+      if (__pyx_v_color_plausible) {
+      } else {
+        __pyx_t_9 = __pyx_v_color_plausible;
+        goto __pyx_L8_bool_binop_done;
+      }
+      __pyx_t_9 = __pyx_v_rank_plausible;
       __pyx_L8_bool_binop_done:;
-      __pyx_t_13 = (!__pyx_t_12);
+      __pyx_t_13 = (!__pyx_t_9);
       if (__pyx_t_13) {
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":197
- *             for rank in range(self.num_ranks):
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":214
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)
+ *                 if not (color_plausible and rank_plausible):
  *                     card_idx = color * self.num_ranks + rank             # <<<<<<<<<<<<<<
  *                     self.total_count -= self.card_count[card_idx]
  *                     self.card_count[card_idx] = 0
  */
         __pyx_v_card_idx = ((__pyx_v_color * __pyx_v_self->num_ranks) + __pyx_v_rank);
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":198
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":215
+ *                 if not (color_plausible and rank_plausible):
  *                     card_idx = color * self.num_ranks + rank
  *                     self.total_count -= self.card_count[card_idx]             # <<<<<<<<<<<<<<
  *                     self.card_count[card_idx] = 0
  * 
  */
-        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 198, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 215, __pyx_L1_error)}
         __pyx_t_14 = __pyx_v_card_idx;
-        __pyx_v_self->total_count = (__pyx_v_self->total_count - (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_14)) ))));
+        __pyx_v_self->total_count = (__pyx_v_self->total_count - (*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_14 * __pyx_v_self->card_count.strides[0]) ))));
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":199
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":216
  *                     card_idx = color * self.num_ranks + rank
  *                     self.total_count -= self.card_count[card_idx]
  *                     self.card_count[card_idx] = 0             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_cards(self, list cards):
+ *     @boundscheck(False)
  */
-        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 199, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 216, __pyx_L1_error)}
         __pyx_t_14 = __pyx_v_card_idx;
-        *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_14)) )) = 0;
+        *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_14 * __pyx_v_self->card_count.strides[0]) )) = 0;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":196
- *             color_plausible = card_knowledge.color_plausible(color)
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":213
  *             for rank in range(self.num_ranks):
- *                 if not (color_plausible and card_knowledge.rank_plausible(rank)):             # <<<<<<<<<<<<<<
+ *                 rank_plausible = card_knowledge.rank_plausible(rank)
+ *                 if not (color_plausible and rank_plausible):             # <<<<<<<<<<<<<<
  *                     card_idx = color * self.num_ranks + rank
  *                     self.total_count -= self.card_count[card_idx]
  */
@@ -22618,12 +22685,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     }
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":191
- *         return deck_list
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":206
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_knowledge(self, card_knowledge):             # <<<<<<<<<<<<<<
  *         cdef int color, rank, card_idx
- *         for color in range(self.num_colors):
+ *         cdef bint color_plausible, rank_plausible
  */
 
   /* function exit code */
@@ -22635,20 +22702,19 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.remove_by_knowledge", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_color_plausible);
   __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":201
- *                     self.card_count[card_idx] = 0
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":220
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_cards(self, list cards):             # <<<<<<<<<<<<<<
+ *         cdef object card
  *         for card in cards:
- *             self.remove_card(card.color(), card.rank())
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, PyObject *__pyx_v_cards) {
-  PyObject *__pyx_v_card = NULL;
+  PyObject *__pyx_v_card = 0;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   Py_ssize_t __pyx_t_2;
@@ -22663,16 +22729,16 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_by_cards", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":202
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":222
  *     cdef void remove_by_cards(self, list cards):
+ *         cdef object card
  *         for card in cards:             # <<<<<<<<<<<<<<
  *             self.remove_card(card.color(), card.rank())
  * 
  */
   if (unlikely(__pyx_v_cards == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 202, __pyx_L1_error)
+    __PYX_ERR(0, 222, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_cards; __Pyx_INCREF(__pyx_t_1);
   __pyx_t_2 = 0;
@@ -22680,27 +22746,27 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     {
       Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
       #if !CYTHON_ASSUME_SAFE_MACROS
-      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 202, __pyx_L1_error)
+      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
       #endif
       if (__pyx_t_2 >= __pyx_temp) break;
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
     #else
-    __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 202, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 222, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_card, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":203
- *     cdef void remove_by_cards(self, list cards):
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":223
+ *         cdef object card
  *         for card in cards:
  *             self.remove_card(card.color(), card.rank())             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_cython_cards(self, list cards):
+ *     @boundscheck(False)
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -22720,13 +22786,13 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 203, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
-    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     __pyx_t_6 = 0;
@@ -22746,17 +22812,17 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 203, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 223, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
-    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 223, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_7, __pyx_t_8); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 203, __pyx_L1_error)
+    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_7, __pyx_t_8); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 223, __pyx_L1_error)
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":202
- * 
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":222
  *     cdef void remove_by_cards(self, list cards):
+ *         cdef object card
  *         for card in cards:             # <<<<<<<<<<<<<<
  *             self.remove_card(card.color(), card.rank())
  * 
@@ -22764,12 +22830,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":201
- *                     self.card_count[card_idx] = 0
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":220
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_cards(self, list cards):             # <<<<<<<<<<<<<<
+ *         cdef object card
  *         for card in cards:
- *             self.remove_card(card.color(), card.rank())
  */
 
   /* function exit code */
@@ -22785,37 +22851,40 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":205
- *             self.remove_card(card.color(), card.rank())
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":227
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_cython_cards(self, list cards):             # <<<<<<<<<<<<<<
- *         cdef CythonCard card
+ *         cdef object card
  *         for card in cards:
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_cython_cards(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, PyObject *__pyx_v_cards) {
-  struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_card = 0;
+  PyObject *__pyx_v_card = 0;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   Py_ssize_t __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
-  int __pyx_t_4;
-  int __pyx_t_5;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  unsigned int __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_by_cython_cards", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":207
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":229
  *     cdef void remove_by_cython_cards(self, list cards):
- *         cdef CythonCard card
+ *         cdef object card
  *         for card in cards:             # <<<<<<<<<<<<<<
  *             self.remove_card(card.color(), card.rank())
  * 
  */
   if (unlikely(__pyx_v_cards == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 207, __pyx_L1_error)
+    __PYX_ERR(0, 229, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_cards; __Pyx_INCREF(__pyx_t_1);
   __pyx_t_2 = 0;
@@ -22823,34 +22892,83 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     {
       Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_1);
       #if !CYTHON_ASSUME_SAFE_MACROS
-      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 207, __pyx_L1_error)
+      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 229, __pyx_L1_error)
       #endif
       if (__pyx_t_2 >= __pyx_temp) break;
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 207, __pyx_L1_error)
+    __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_3); __pyx_t_2++; if (unlikely((0 < 0))) __PYX_ERR(0, 229, __pyx_L1_error)
     #else
-    __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard))))) __PYX_ERR(0, 207, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_card, ((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *)__pyx_t_3));
+    __Pyx_XDECREF_SET(__pyx_v_card, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":208
- *         cdef CythonCard card
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":230
+ *         cdef object card
  *         for card in cards:
  *             self.remove_card(card.color(), card.rank())             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):
+ *     @boundscheck(False)
  */
-    __pyx_t_4 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
-    __pyx_t_5 = __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank(__pyx_v_card); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
-    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_4, __pyx_t_5); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = NULL;
+    __pyx_t_6 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
+      __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = NULL;
+    __pyx_t_6 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_4))) {
+      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+      if (likely(__pyx_t_5)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+        __Pyx_INCREF(__pyx_t_5);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_4, function);
+        __pyx_t_6 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
+      __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    }
+    __pyx_t_8 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_8 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_7, __pyx_t_8); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 230, __pyx_L1_error)
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":207
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":229
  *     cdef void remove_by_cython_cards(self, list cards):
- *         cdef CythonCard card
+ *         cdef object card
  *         for card in cards:             # <<<<<<<<<<<<<<
  *             self.remove_card(card.color(), card.rank())
  * 
@@ -22858,11 +22976,11 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":205
- *             self.remove_card(card.color(), card.rank())
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":227
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_cython_cards(self, list cards):             # <<<<<<<<<<<<<<
- *         cdef CythonCard card
+ *         cdef object card
  *         for card in cards:
  */
 
@@ -22871,25 +22989,27 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.remove_by_cython_cards", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
-  __Pyx_XDECREF((PyObject *)__pyx_v_card);
+  __Pyx_XDECREF(__pyx_v_card);
   __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":210
- *             self.remove_card(card.color(), card.rank())
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":234
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):             # <<<<<<<<<<<<<<
  *         cdef int other_player, idx
- *         for other_player in range(len(hands)):
+ *         cdef object card
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, int __pyx_v_player, PyObject *__pyx_v_hands, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_hands *__pyx_optional_args) {
   int __pyx_v_card_index = ((int)-1);
   int __pyx_v_other_player;
   int __pyx_v_idx;
-  PyObject *__pyx_v_card = NULL;
+  PyObject *__pyx_v_card = 0;
   __Pyx_RefNannyDeclarations
   Py_ssize_t __pyx_t_1;
   Py_ssize_t __pyx_t_2;
@@ -22916,24 +23036,24 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     }
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":212
- *     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":237
  *         cdef int other_player, idx
+ *         cdef object card
  *         for other_player in range(len(hands)):             # <<<<<<<<<<<<<<
  *             if other_player == player and card_index == -1:
  *                 continue
  */
   if (unlikely(__pyx_v_hands == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 212, __pyx_L1_error)
+    __PYX_ERR(0, 237, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_GET_SIZE(__pyx_v_hands); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyList_GET_SIZE(__pyx_v_hands); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 237, __pyx_L1_error)
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_other_player = __pyx_t_3;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":213
- *         cdef int other_player, idx
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":238
+ *         cdef object card
  *         for other_player in range(len(hands)):
  *             if other_player == player and card_index == -1:             # <<<<<<<<<<<<<<
  *                 continue
@@ -22950,7 +23070,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_4) {
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":214
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":239
  *         for other_player in range(len(hands)):
  *             if other_player == player and card_index == -1:
  *                 continue             # <<<<<<<<<<<<<<
@@ -22959,8 +23079,8 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
       goto __pyx_L3_continue;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":213
- *         cdef int other_player, idx
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":238
+ *         cdef object card
  *         for other_player in range(len(hands)):
  *             if other_player == player and card_index == -1:             # <<<<<<<<<<<<<<
  *                 continue
@@ -22968,7 +23088,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
     }
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":215
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":240
  *             if other_player == player and card_index == -1:
  *                 continue
  *             for idx, card in enumerate(hands[other_player]):             # <<<<<<<<<<<<<<
@@ -22978,16 +23098,16 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_t_6 = 0;
     if (unlikely(__pyx_v_hands == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 215, __pyx_L1_error)
+      __PYX_ERR(0, 240, __pyx_L1_error)
     }
     if (likely(PyList_CheckExact(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_other_player))) || PyTuple_CheckExact(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_other_player))) {
       __pyx_t_7 = PyList_GET_ITEM(__pyx_v_hands, __pyx_v_other_player); __Pyx_INCREF(__pyx_t_7);
       __pyx_t_8 = 0;
       __pyx_t_9 = NULL;
     } else {
-      __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_other_player)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 215, __pyx_L1_error)
+      __pyx_t_8 = -1; __pyx_t_7 = PyObject_GetIter(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_other_player)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 240, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_9 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 215, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_7); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 240, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_9)) {
@@ -22995,28 +23115,28 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
           {
             Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_7);
             #if !CYTHON_ASSUME_SAFE_MACROS
-            if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 215, __pyx_L1_error)
+            if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
             #endif
             if (__pyx_t_8 >= __pyx_temp) break;
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_10 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely((0 < 0))) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_10 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely((0 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
           #else
-          __pyx_t_10 = __Pyx_PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_10 = __Pyx_PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_10);
           #endif
         } else {
           {
             Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_7);
             #if !CYTHON_ASSUME_SAFE_MACROS
-            if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 215, __pyx_L1_error)
+            if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
             #endif
             if (__pyx_t_8 >= __pyx_temp) break;
           }
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_10 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely((0 < 0))) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_10 = PyTuple_GET_ITEM(__pyx_t_7, __pyx_t_8); __Pyx_INCREF(__pyx_t_10); __pyx_t_8++; if (unlikely((0 < 0))) __PYX_ERR(0, 240, __pyx_L1_error)
           #else
-          __pyx_t_10 = __Pyx_PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 215, __pyx_L1_error)
+          __pyx_t_10 = __Pyx_PySequence_ITEM(__pyx_t_7, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 240, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_10);
           #endif
         }
@@ -23026,7 +23146,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 215, __pyx_L1_error)
+            else __PYX_ERR(0, 240, __pyx_L1_error)
           }
           break;
         }
@@ -23037,7 +23157,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       __pyx_v_idx = __pyx_t_6;
       __pyx_t_6 = (__pyx_t_6 + 1);
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":216
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":241
  *                 continue
  *             for idx, card in enumerate(hands[other_player]):
  *                 if other_player == player and idx == card_index:             # <<<<<<<<<<<<<<
@@ -23055,7 +23175,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       __pyx_L11_bool_binop_done:;
       if (__pyx_t_4) {
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":217
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":242
  *             for idx, card in enumerate(hands[other_player]):
  *                 if other_player == player and idx == card_index:
  *                     continue             # <<<<<<<<<<<<<<
@@ -23064,7 +23184,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
         goto __pyx_L8_continue;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":216
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":241
  *                 continue
  *             for idx, card in enumerate(hands[other_player]):
  *                 if other_player == player and idx == card_index:             # <<<<<<<<<<<<<<
@@ -23073,14 +23193,14 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
       }
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":218
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":243
  *                 if other_player == player and idx == card_index:
  *                     continue
  *                 self.remove_card(card.color(), card.rank())             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
+ *     @boundscheck(False)
  */
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_12 = NULL;
       __pyx_t_13 = 0;
@@ -23100,13 +23220,13 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         PyObject *__pyx_callargs[2] = {__pyx_t_12, NULL};
         __pyx_t_10 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 218, __pyx_L1_error)
+        if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       }
-      __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_10); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyInt_As_int(__pyx_t_10); if (unlikely((__pyx_t_14 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_12 = NULL;
       __pyx_t_13 = 0;
@@ -23126,15 +23246,15 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         PyObject *__pyx_callargs[2] = {__pyx_t_12, NULL};
         __pyx_t_10 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_13, 0+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 218, __pyx_L1_error)
+        if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 243, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_10);
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       }
-      __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_10); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyInt_As_int(__pyx_t_10); if (unlikely((__pyx_t_15 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_14, __pyx_t_15); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_14, __pyx_t_15); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L1_error)
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":215
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":240
  *             if other_player == player and card_index == -1:
  *                 continue
  *             for idx, card in enumerate(hands[other_player]):             # <<<<<<<<<<<<<<
@@ -23147,12 +23267,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_L3_continue:;
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":210
- *             self.remove_card(card.color(), card.rank())
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":234
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):             # <<<<<<<<<<<<<<
  *         cdef int other_player, idx
- *         for other_player in range(len(hands)):
+ *         cdef object card
  */
 
   /* function exit code */
@@ -23168,17 +23288,17 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":220
- *                 self.remove_card(card.color(), card.rank())
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":247
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_own_hand(self, int player, list hands, int card_index):             # <<<<<<<<<<<<<<
  *         cdef int idx
- *         for idx, card in enumerate(hands[player]):
+ *         cdef object card
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_by_own_hand(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self, int __pyx_v_player, PyObject *__pyx_v_hands, int __pyx_v_card_index) {
   int __pyx_v_idx;
-  PyObject *__pyx_v_card = NULL;
+  PyObject *__pyx_v_card = 0;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
@@ -23196,9 +23316,9 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_by_own_hand", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":222
- *     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":250
  *         cdef int idx
+ *         cdef object card
  *         for idx, card in enumerate(hands[player]):             # <<<<<<<<<<<<<<
  *             if idx == card_index:
  *                 continue
@@ -23206,16 +23326,16 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __pyx_t_1 = 0;
   if (unlikely(__pyx_v_hands == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 222, __pyx_L1_error)
+    __PYX_ERR(0, 250, __pyx_L1_error)
   }
   if (likely(PyList_CheckExact(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_player))) || PyTuple_CheckExact(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_player))) {
     __pyx_t_2 = PyList_GET_ITEM(__pyx_v_hands, __pyx_v_player); __Pyx_INCREF(__pyx_t_2);
     __pyx_t_3 = 0;
     __pyx_t_4 = NULL;
   } else {
-    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_player)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(PyList_GET_ITEM(__pyx_v_hands, __pyx_v_player)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 222, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 250, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_4)) {
@@ -23223,28 +23343,28 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         {
           Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 250, __pyx_L1_error)
           #endif
           if (__pyx_t_3 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 250, __pyx_L1_error)
         #else
-        __pyx_t_5 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 250, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       } else {
         {
           Py_ssize_t __pyx_temp = __Pyx_PyTuple_GET_SIZE(__pyx_t_2);
           #if !CYTHON_ASSUME_SAFE_MACROS
-          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
+          if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 250, __pyx_L1_error)
           #endif
           if (__pyx_t_3 >= __pyx_temp) break;
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 250, __pyx_L1_error)
         #else
-        __pyx_t_5 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 222, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 250, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         #endif
       }
@@ -23254,7 +23374,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 222, __pyx_L1_error)
+          else __PYX_ERR(0, 250, __pyx_L1_error)
         }
         break;
       }
@@ -23265,8 +23385,8 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_v_idx = __pyx_t_1;
     __pyx_t_1 = (__pyx_t_1 + 1);
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":223
- *         cdef int idx
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":251
+ *         cdef object card
  *         for idx, card in enumerate(hands[player]):
  *             if idx == card_index:             # <<<<<<<<<<<<<<
  *                 continue
@@ -23275,7 +23395,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_t_6 = (__pyx_v_idx == __pyx_v_card_index);
     if (__pyx_t_6) {
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":224
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":252
  *         for idx, card in enumerate(hands[player]):
  *             if idx == card_index:
  *                 continue             # <<<<<<<<<<<<<<
@@ -23284,8 +23404,8 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
       goto __pyx_L3_continue;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":223
- *         cdef int idx
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":251
+ *         cdef object card
  *         for idx, card in enumerate(hands[player]):
  *             if idx == card_index:             # <<<<<<<<<<<<<<
  *                 continue
@@ -23293,14 +23413,14 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
     }
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":225
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":253
  *             if idx == card_index:
  *                 continue
  *             self.remove_card(card.color(), card.rank())             # <<<<<<<<<<<<<<
  * 
- *     cdef void remove_by_fireworks(self, list fireworks):
+ *     @boundscheck(False)
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 253, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_9 = 0;
@@ -23320,13 +23440,13 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
       __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_card, __pyx_n_s_rank); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 253, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_9 = 0;
@@ -23346,17 +23466,17 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
       __pyx_t_5 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_9, 0+__pyx_t_9);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 225, __pyx_L1_error)
+      if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 253, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_t_11 = __Pyx_PyInt_As_int(__pyx_t_5); if (unlikely((__pyx_t_11 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_10, __pyx_t_11); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 225, __pyx_L1_error)
+    __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card(__pyx_v_self, __pyx_t_10, __pyx_t_11); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 253, __pyx_L1_error)
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":222
- *     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":250
  *         cdef int idx
+ *         cdef object card
  *         for idx, card in enumerate(hands[player]):             # <<<<<<<<<<<<<<
  *             if idx == card_index:
  *                 continue
@@ -23365,12 +23485,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":220
- *                 self.remove_card(card.color(), card.rank())
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":247
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_own_hand(self, int player, list hands, int card_index):             # <<<<<<<<<<<<<<
  *         cdef int idx
- *         for idx, card in enumerate(hands[player]):
+ *         cdef object card
  */
 
   /* function exit code */
@@ -23386,9 +23506,9 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":227
- *             self.remove_card(card.color(), card.rank())
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":257
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_fireworks(self, list fireworks):             # <<<<<<<<<<<<<<
  *         cdef int color, firework, idx, start_idx, end_idx
  *         cdef int fireworks_len = len(fireworks)
@@ -23414,7 +23534,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":229
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":259
  *     cdef void remove_by_fireworks(self, list fireworks):
  *         cdef int color, firework, idx, start_idx, end_idx
  *         cdef int fireworks_len = len(fireworks)             # <<<<<<<<<<<<<<
@@ -23423,12 +23543,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
   if (unlikely(__pyx_v_fireworks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 229, __pyx_L1_error)
+    __PYX_ERR(0, 259, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyList_GET_SIZE(__pyx_v_fireworks); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyList_GET_SIZE(__pyx_v_fireworks); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 259, __pyx_L1_error)
   __pyx_v_fireworks_len = __pyx_t_1;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":230
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":260
  *         cdef int color, firework, idx, start_idx, end_idx
  *         cdef int fireworks_len = len(fireworks)
  *         for color in range(fireworks_len):             # <<<<<<<<<<<<<<
@@ -23440,7 +23560,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_color = __pyx_t_4;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":231
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":261
  *         cdef int fireworks_len = len(fireworks)
  *         for color in range(fireworks_len):
  *             firework = <int>fireworks[color]             # <<<<<<<<<<<<<<
@@ -23449,12 +23569,12 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
     if (unlikely(__pyx_v_fireworks == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 231, __pyx_L1_error)
+      __PYX_ERR(0, 261, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_PyInt_As_int(PyList_GET_ITEM(__pyx_v_fireworks, __pyx_v_color)); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 231, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(PyList_GET_ITEM(__pyx_v_fireworks, __pyx_v_color)); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 261, __pyx_L1_error)
     __pyx_v_firework = ((int)__pyx_t_5);
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":232
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":262
  *         for color in range(fireworks_len):
  *             firework = <int>fireworks[color]
  *             if firework > 0:             # <<<<<<<<<<<<<<
@@ -23464,7 +23584,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     __pyx_t_6 = (__pyx_v_firework > 0);
     if (__pyx_t_6) {
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":233
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":263
  *             firework = <int>fireworks[color]
  *             if firework > 0:
  *                 start_idx = color * self.num_ranks             # <<<<<<<<<<<<<<
@@ -23473,7 +23593,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
       __pyx_v_start_idx = (__pyx_v_color * __pyx_v_self->num_ranks);
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":234
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":264
  *             if firework > 0:
  *                 start_idx = color * self.num_ranks
  *                 end_idx = start_idx + firework             # <<<<<<<<<<<<<<
@@ -23482,7 +23602,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
  */
       __pyx_v_end_idx = (__pyx_v_start_idx + __pyx_v_firework);
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":235
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":265
  *                 start_idx = color * self.num_ranks
  *                 end_idx = start_idx + firework
  *                 for idx in range(start_idx, end_idx):             # <<<<<<<<<<<<<<
@@ -23494,39 +23614,39 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
       for (__pyx_t_8 = __pyx_v_start_idx; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
         __pyx_v_idx = __pyx_t_8;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":236
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":266
  *                 end_idx = start_idx + firework
  *                 for idx in range(start_idx, end_idx):
  *                     if self.card_count[idx] > 0:             # <<<<<<<<<<<<<<
  *                         self.card_count[idx] -= 1
  *                         self.total_count -= 1
  */
-        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 236, __pyx_L1_error)}
+        if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 266, __pyx_L1_error)}
         __pyx_t_9 = __pyx_v_idx;
-        __pyx_t_6 = ((*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_9)) ))) > 0);
+        __pyx_t_6 = ((*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_9 * __pyx_v_self->card_count.strides[0]) ))) > 0);
         if (__pyx_t_6) {
 
-          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":237
+          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":267
  *                 for idx in range(start_idx, end_idx):
  *                     if self.card_count[idx] > 0:
  *                         self.card_count[idx] -= 1             # <<<<<<<<<<<<<<
  *                         self.total_count -= 1
  * 
  */
-          if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 237, __pyx_L1_error)}
+          if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 267, __pyx_L1_error)}
           __pyx_t_9 = __pyx_v_idx;
-          *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_9)) )) -= 1;
+          *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_9 * __pyx_v_self->card_count.strides[0]) )) -= 1;
 
-          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":238
+          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":268
  *                     if self.card_count[idx] > 0:
  *                         self.card_count[idx] -= 1
  *                         self.total_count -= 1             # <<<<<<<<<<<<<<
  * 
- *     cdef void reset_deck(self):
+ *     @boundscheck(False)
  */
           __pyx_v_self->total_count = (__pyx_v_self->total_count - 1);
 
-          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":236
+          /* "agents/mcts/cython/sampler/mcts_sampler.pyx":266
  *                 end_idx = start_idx + firework
  *                 for idx in range(start_idx, end_idx):
  *                     if self.card_count[idx] > 0:             # <<<<<<<<<<<<<<
@@ -23536,7 +23656,7 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
         }
       }
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":232
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":262
  *         for color in range(fireworks_len):
  *             firework = <int>fireworks[color]
  *             if firework > 0:             # <<<<<<<<<<<<<<
@@ -23546,9 +23666,9 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
     }
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":227
- *             self.remove_card(card.color(), card.rank())
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":257
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void remove_by_fireworks(self, list fireworks):             # <<<<<<<<<<<<<<
  *         cdef int color, firework, idx, start_idx, end_idx
  *         cdef int fireworks_len = len(fireworks)
@@ -23561,102 +23681,62 @@ static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_r
   __pyx_L0:;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":240
- *                         self.total_count -= 1
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":272
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void reset_deck(self):             # <<<<<<<<<<<<<<
- *         self.card_count = np.array(INIT_DECK, dtype=np.int8)
+ *         self.card_count = INIT_DECK.copy()
  *         self.total_count = 50
  */
 
 static void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_reset_deck(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self) {
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("reset_deck", 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":241
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":273
+ *     @wraparound(False)
  *     cdef void reset_deck(self):
- *         self.card_count = np.array(INIT_DECK, dtype=np.int8)             # <<<<<<<<<<<<<<
+ *         self.card_count = INIT_DECK.copy()             # <<<<<<<<<<<<<<
  *         self.total_count = 50
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_array); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK.memview)) { __Pyx_RaiseUnboundLocalError("INIT_DECK"); __PYX_ERR(0, 241, __pyx_L1_error) }
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn___pyx_t_5numpy_int8_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn___pyx_t_5numpy_int8_t, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_1);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error);
-  __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_int8); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(__pyx_t_5, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 241, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (unlikely(!__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK.memview)) { __Pyx_RaiseUnboundLocalError("INIT_DECK"); __PYX_ERR(0, 273, __pyx_L1_error) }
+  __pyx_t_1 = __pyx_memoryview_copy_slice_dc_nn___pyx_t_5numpy_int8_t_c(__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 273, __pyx_L1_error)
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_self->card_count, 0);
-  __pyx_v_self->card_count = __pyx_t_6;
-  __pyx_t_6.memview = NULL;
-  __pyx_t_6.data = NULL;
+  __pyx_v_self->card_count = __pyx_t_1;
+  __pyx_t_1.memview = NULL;
+  __pyx_t_1.data = NULL;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":242
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":274
  *     cdef void reset_deck(self):
- *         self.card_count = np.array(INIT_DECK, dtype=np.int8)
+ *         self.card_count = INIT_DECK.copy()
  *         self.total_count = 50             # <<<<<<<<<<<<<<
  * 
- *     cdef inline void remove_card(self, int color, int rank):
+ *     @boundscheck(False)
  */
   __pyx_v_self->total_count = 50;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":240
- *                         self.total_count -= 1
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":272
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef void reset_deck(self):             # <<<<<<<<<<<<<<
- *         self.card_count = np.array(INIT_DECK, dtype=np.int8)
+ *         self.card_count = INIT_DECK.copy()
  *         self.total_count = 50
  */
 
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XCLEAR_MEMVIEW(&__pyx_t_6, 1);
+  __PYX_XCLEAR_MEMVIEW(&__pyx_t_1, 1);
   __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.reset_deck", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":244
- *         self.total_count = 50
- * 
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":278
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef inline void remove_card(self, int color, int rank):             # <<<<<<<<<<<<<<
  *         cdef int card_idx = color * self.num_ranks + rank
  *         if self.card_count[card_idx] == 0:
@@ -23670,8 +23750,8 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":245
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":279
+ *     @wraparound(False)
  *     cdef inline void remove_card(self, int color, int rank):
  *         cdef int card_idx = color * self.num_ranks + rank             # <<<<<<<<<<<<<<
  *         if self.card_count[card_idx] == 0:
@@ -23679,19 +23759,19 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
  */
   __pyx_v_card_idx = ((__pyx_v_color * __pyx_v_self->num_ranks) + __pyx_v_rank);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":246
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":280
  *     cdef inline void remove_card(self, int color, int rank):
  *         cdef int card_idx = color * self.num_ranks + rank
  *         if self.card_count[card_idx] == 0:             # <<<<<<<<<<<<<<
  *             return
  *         self.card_count[card_idx] -= 1
  */
-  if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 246, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 280, __pyx_L1_error)}
   __pyx_t_1 = __pyx_v_card_idx;
-  __pyx_t_2 = ((*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_1)) ))) == 0);
+  __pyx_t_2 = ((*((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_1 * __pyx_v_self->card_count.strides[0]) ))) == 0);
   if (__pyx_t_2) {
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":247
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":281
  *         cdef int card_idx = color * self.num_ranks + rank
  *         if self.card_count[card_idx] == 0:
  *             return             # <<<<<<<<<<<<<<
@@ -23700,7 +23780,7 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
  */
     goto __pyx_L0;
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":246
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":280
  *     cdef inline void remove_card(self, int color, int rank):
  *         cdef int card_idx = color * self.num_ranks + rank
  *         if self.card_count[card_idx] == 0:             # <<<<<<<<<<<<<<
@@ -23709,18 +23789,18 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
  */
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":248
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":282
  *         if self.card_count[card_idx] == 0:
  *             return
  *         self.card_count[card_idx] -= 1             # <<<<<<<<<<<<<<
  *         self.total_count -= 1
  * 
  */
-  if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 248, __pyx_L1_error)}
+  if (unlikely(!__pyx_v_self->card_count.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 282, __pyx_L1_error)}
   __pyx_t_1 = __pyx_v_card_idx;
-  *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ ((char *) (((__pyx_t_5numpy_int8_t *) __pyx_v_self->card_count.data) + __pyx_t_1)) )) -= 1;
+  *((__pyx_t_5numpy_int8_t *) ( /* dim=0 */ (__pyx_v_self->card_count.data + __pyx_t_1 * __pyx_v_self->card_count.strides[0]) )) -= 1;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":249
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":283
  *             return
  *         self.card_count[card_idx] -= 1
  *         self.total_count -= 1             # <<<<<<<<<<<<<<
@@ -23729,9 +23809,9 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
  */
   __pyx_v_self->total_count = (__pyx_v_self->total_count - 1);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":244
- *         self.total_count = 50
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":278
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cdef inline void remove_card(self, int color, int rank):             # <<<<<<<<<<<<<<
  *         cdef int card_idx = color * self.num_ranks + rank
  *         if self.card_count[card_idx] == 0:
@@ -23742,6 +23822,96 @@ static CYTHON_INLINE void __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_
   __pyx_L1_error:;
   __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.remove_card", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
+}
+
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":164
+ * cdef class HanabiDeck:
+ *     """Deck of Hanabi cards for sampling hands and cards"""
+ *     cdef readonly int num_ranks, num_colors             # <<<<<<<<<<<<<<
+ *     cdef int total_count
+ *     cdef cnp.int8_t[:] card_count
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks_1__get__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks___get__(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 1);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->num_ranks); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.num_ranks.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors_1__get__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors___get__(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 1);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->num_colors); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.HanabiDeck.num_colors.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
 }
 
 /* "(tree fragment)":1
@@ -23958,8 +24128,8 @@ static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10Hanabi
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":257
- *     cdef int _rank
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":291
+ *     cdef readonly int _rank
  * 
  *     def __cinit__(self, int color, int rank):             # <<<<<<<<<<<<<<
  *         self._color = color
@@ -24005,7 +24175,7 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_1
           (void)__Pyx_Arg_NewRef_VARARGS(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -24013,14 +24183,14 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_1
           (void)__Pyx_Arg_NewRef_VARARGS(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(0, 257, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, 1); __PYX_ERR(0, 291, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 257, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__cinit__") < 0)) __PYX_ERR(0, 291, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -24028,12 +24198,12 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_1
       values[0] = __Pyx_Arg_VARARGS(__pyx_args, 0);
       values[1] = __Pyx_Arg_VARARGS(__pyx_args, 1);
     }
-    __pyx_v_color = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
-    __pyx_v_rank = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 257, __pyx_L3_error)
+    __pyx_v_color = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
+    __pyx_v_rank = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 291, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 257, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 291, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -24063,7 +24233,7 @@ static int __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_1
 static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard___cinit__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self, int __pyx_v_color, int __pyx_v_rank) {
   int __pyx_r;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":258
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":292
  * 
  *     def __cinit__(self, int color, int rank):
  *         self._color = color             # <<<<<<<<<<<<<<
@@ -24072,7 +24242,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__
  */
   __pyx_v_self->_color = __pyx_v_color;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":259
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":293
  *     def __cinit__(self, int color, int rank):
  *         self._color = color
  *         self._rank = rank             # <<<<<<<<<<<<<<
@@ -24081,8 +24251,8 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__
  */
   __pyx_v_self->_rank = __pyx_v_rank;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":257
- *     cdef int _rank
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":291
+ *     cdef readonly int _rank
  * 
  *     def __cinit__(self, int color, int rank):             # <<<<<<<<<<<<<<
  *         self._color = color
@@ -24094,7 +24264,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":261
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":295
  *         self._rank = rank
  * 
  *     cdef inline int color(self):             # <<<<<<<<<<<<<<
@@ -24105,7 +24275,7 @@ static int __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__
 static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self) {
   int __pyx_r;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":262
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":296
  * 
  *     cdef inline int color(self):
  *         return self._color             # <<<<<<<<<<<<<<
@@ -24115,7 +24285,7 @@ static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_1
   __pyx_r = __pyx_v_self->_color;
   goto __pyx_L0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":261
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":295
  *         self._rank = rank
  * 
  *     cdef inline int color(self):             # <<<<<<<<<<<<<<
@@ -24128,7 +24298,7 @@ static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_1
   return __pyx_r;
 }
 
-/* "agents/mcts/cython/sampler/mcts_sampler.pyx":264
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":298
  *         return self._color
  * 
  *     cdef inline int rank(self):             # <<<<<<<<<<<<<<
@@ -24138,7 +24308,7 @@ static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_1
 static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self) {
   int __pyx_r;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":265
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":299
  * 
  *     cdef inline int rank(self):
  *         return self._rank             # <<<<<<<<<<<<<<
@@ -24146,7 +24316,7 @@ static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_1
   __pyx_r = __pyx_v_self->_rank;
   goto __pyx_L0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":264
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":298
  *         return self._color
  * 
  *     cdef inline int rank(self):             # <<<<<<<<<<<<<<
@@ -24155,6 +24325,104 @@ static CYTHON_INLINE int __pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_1
 
   /* function exit code */
   __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":288
+ * cdef class CythonCard:
+ *     """Hanabi card, with a color and a rank."""
+ *     cdef readonly int _color             # <<<<<<<<<<<<<<
+ *     cdef readonly int _rank
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color_1__get__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color___get__(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 1);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 288, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.CythonCard._color.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "agents/mcts/cython/sampler/mcts_sampler.pyx":289
+ *     """Hanabi card, with a color and a rank."""
+ *     cdef readonly int _color
+ *     cdef readonly int _rank             # <<<<<<<<<<<<<<
+ * 
+ *     def __cinit__(self, int color, int rank):
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank_1__get__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_r = __pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank___get__(((struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank___get__(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 1);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 289, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("agents.mcts.cython.sampler.mcts_sampler.CythonCard._rank.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
@@ -24592,16 +24860,31 @@ static void __pyx_tp_dealloc_6agents_4mcts_6cython_7sampler_12mcts_sampler_Hanab
   #endif
 }
 
+static PyObject *__pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_num_ranks(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_9num_ranks_1__get__(o);
+}
+
+static PyObject *__pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_num_colors(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_10num_colors_1__get__(o);
+}
+
 static PyMethodDef __pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck[] = {
   {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_3__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_5__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck[] = {
+  {(char *)"num_ranks", __pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_num_ranks, 0, (char *)0, 0},
+  {(char *)"num_colors", __pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_num_colors, 0, (char *)0, 0},
+  {0, 0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
 static PyType_Slot __pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck_slots[] = {
   {Py_tp_dealloc, (void *)__pyx_tp_dealloc_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck},
   {Py_tp_doc, (void *)PyDoc_STR("Deck of Hanabi cards for sampling hands and cards")},
   {Py_tp_methods, (void *)__pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck},
+  {Py_tp_getset, (void *)__pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck},
   {Py_tp_new, (void *)__pyx_tp_new_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck},
   {0, 0},
 };
@@ -24654,7 +24937,7 @@ static PyTypeObject __pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_Han
   0, /*tp_iternext*/
   __pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck, /*tp_methods*/
   0, /*tp_members*/
-  0, /*tp_getset*/
+  __pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
@@ -24741,16 +25024,31 @@ static void __pyx_tp_dealloc_6agents_4mcts_6cython_7sampler_12mcts_sampler_Cytho
   #endif
 }
 
+static PyObject *__pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__color(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_6_color_1__get__(o);
+}
+
+static PyObject *__pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__rank(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5_rank_1__get__(o);
+}
+
 static PyMethodDef __pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard[] = {
   {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_3__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_5__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
+};
+
+static struct PyGetSetDef __pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard[] = {
+  {(char *)"_color", __pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__color, 0, (char *)0, 0},
+  {(char *)"_rank", __pyx_getprop_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard__rank, 0, (char *)0, 0},
+  {0, 0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
 static PyType_Slot __pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard_slots[] = {
   {Py_tp_dealloc, (void *)__pyx_tp_dealloc_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard},
   {Py_tp_doc, (void *)PyDoc_STR("Hanabi card, with a color and a rank.")},
   {Py_tp_methods, (void *)__pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard},
+  {Py_tp_getset, (void *)__pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard},
   {Py_tp_new, (void *)__pyx_tp_new_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard},
   {0, 0},
 };
@@ -24803,7 +25101,7 @@ static PyTypeObject __pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_Cyt
   0, /*tp_iternext*/
   __pyx_methods_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard, /*tp_methods*/
   0, /*tp_members*/
-  0, /*tp_getset*/
+  __pyx_getsets_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
@@ -25993,7 +26291,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 9, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 215, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 240, __pyx_L1_error)
   __pyx_builtin___import__ = __Pyx_GetBuiltinName(__pyx_n_s_import); if (!__pyx_builtin___import__) __PYX_ERR(1, 100, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 141, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 156, __pyx_L1_error)
@@ -26171,45 +26469,45 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__21);
   __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Enum, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(1, 1, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_tuple__23 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_original_hand_size, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_original_hand_size, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_sample_hand, 46, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 46, __pyx_L1_error)
-  __pyx_tuple__25 = PyTuple_Pack(2, Py_None, Py_None); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_sample_hand, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(2, Py_None, Py_None); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_tuple__26 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_tuple__26 = PyTuple_Pack(8, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__26);
   __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_sample_card, 95, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(8, 0, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_sample_card, 101, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 101, __pyx_L1_error)
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_tuple__28 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards, __pyx_n_s_return_hanabi_card); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_tuple__28 = PyTuple_Pack(9, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index, __pyx_n_s_player_hands, __pyx_n_s_discard_pile, __pyx_n_s_fireworks, __pyx_n_s_card_knowledge, __pyx_n_s_additional_cards, __pyx_n_s_return_hanabi_card); if (unlikely(!__pyx_tuple__28)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__28);
   __Pyx_GIVEREF(__pyx_tuple__28);
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(9, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_valid_cards, 125, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 125, __pyx_L1_error)
-  __pyx_tuple__30 = PyTuple_Pack(3, Py_None, Py_None, Py_True); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(9, 0, 0, 9, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__28, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_agents_mcts_cython_sampler_mcts, __pyx_n_s_valid_cards, 133, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_tuple__30 = PyTuple_Pack(3, Py_None, Py_None, Py_True); if (unlikely(!__pyx_tuple__30)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
 
@@ -26375,15 +26673,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler.sample_card = (PyObject *(*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *, int, int, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_card *__pyx_optional_args))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_sample_card;
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler.valid_cards = (PyObject *(*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler *, int, int, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards *__pyx_optional_args))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_valid_cards;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler)) __PYX_ERR(0, 39, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler)) __PYX_ERR(0, 41, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #else
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler = &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->tp_print = 0;
@@ -26393,13 +26691,13 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MCTS_Sampler, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_MCTS_Sampler, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler) < 0) __PYX_ERR(0, 41, __pyx_L1_error)
   #endif
   __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck = &__pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck;
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck.get_deck = (PyObject *(*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_get_deck;
@@ -26413,15 +26711,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck.reset_deck = (void (*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_reset_deck;
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck.remove_card = (void (*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck *, int, int))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10HanabiDeck_remove_card;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck)) __PYX_ERR(0, 154, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck)) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #else
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck = &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck->tp_print = 0;
@@ -26431,27 +26729,27 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiDeck, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiDeck, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 154, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_HanabiDeck) < 0) __PYX_ERR(0, 162, __pyx_L1_error)
   #endif
   __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard = &__pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard;
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard.color = (int (*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_color;
   __pyx_vtable_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard.rank = (int (*)(struct __pyx_obj_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard *))__pyx_f_6agents_4mcts_6cython_7sampler_12mcts_sampler_10CythonCard_rank;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard)) __PYX_ERR(0, 252, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard_spec, NULL); if (unlikely(!__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard)) __PYX_ERR(0, 286, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard_spec, __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #else
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard = &__pyx_type_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard->tp_print = 0;
@@ -26461,13 +26759,13 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard, __pyx_vtabptr_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CythonCard, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_CythonCard, (PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 252, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_CythonCard) < 0) __PYX_ERR(0, 286, __pyx_L1_error)
   #endif
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -27501,7 +27799,7 @@ if (!__Pyx_RefNanny) {
  * cimport numpy as cnp
  * from pyhanabi import HanabiCard             # <<<<<<<<<<<<<<
  * from libc.stdlib cimport rand
- * 
+ * from cython import boundscheck, wraparound
  */
   __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -27518,7 +27816,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
   /* "agents/mcts/cython/sampler/mcts_sampler.pyx":7
- * 
+ * from cython import boundscheck, wraparound
  * 
  * cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']             # <<<<<<<<<<<<<<
  * cdef char[5] CHAR_COLOR_STRINGS
@@ -27549,7 +27847,7 @@ if (!__Pyx_RefNanny) {
  * for i in range(5):
  *     CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]             # <<<<<<<<<<<<<<
  * 
- * cdef inline object color_idx_to_char(int color_idx):
+ * @boundscheck(False)
  */
     __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_i); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 10, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -27562,38 +27860,38 @@ if (!__Pyx_RefNanny) {
     (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_CHAR_COLOR_STRINGS[__pyx_t_12]) = (__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_COLOR_CHAR[__pyx_t_11]);
   }
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":18
- *         return CHAR_COLOR_STRINGS[color_idx]
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":21
  * 
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
+ * # Updated memoryview declarations
+ * cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
  *     [color, rank]
  *     for color in range(5)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_array); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_array); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   { /* enter inner scope */
-    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L34_error)
+    __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 21, __pyx_L34_error)
     __Pyx_GOTREF(__pyx_t_4);
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":20
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":23
+ * cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([
  *     [color, rank]
  *     for color in range(5)             # <<<<<<<<<<<<<<
  *     for rank in range(5)
  * ], dtype=np.int8)
  */
     for (__pyx_t_10 = 0; __pyx_t_10 < 5; __pyx_t_10+=1) {
-      __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 20, __pyx_L34_error)
+      __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_10); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 23, __pyx_L34_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_XGOTREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color);
       __Pyx_DECREF_SET(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color, __pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_5);
       __pyx_t_5 = 0;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":21
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":24
  *     [color, rank]
  *     for color in range(5)
  *     for rank in range(5)             # <<<<<<<<<<<<<<
@@ -27601,29 +27899,29 @@ if (!__Pyx_RefNanny) {
  * 
  */
       for (__pyx_t_13 = 0; __pyx_t_13 < 5; __pyx_t_13+=1) {
-        __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_13); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 21, __pyx_L34_error)
+        __pyx_t_5 = __Pyx_PyInt_From_long(__pyx_t_13); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L34_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_XGOTREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank);
         __Pyx_DECREF_SET(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank, __pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_5);
         __pyx_t_5 = 0;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":19
- * 
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":22
+ * # Updated memoryview declarations
+ * cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([
  *     [color, rank]             # <<<<<<<<<<<<<<
  *     for color in range(5)
  *     for rank in range(5)
  */
-        __pyx_t_5 = PyList_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 19, __pyx_L34_error)
+        __pyx_t_5 = PyList_New(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 22, __pyx_L34_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_INCREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color);
         __Pyx_GIVEREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color);
-        if (__Pyx_PyList_SET_ITEM(__pyx_t_5, 0, __pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color)) __PYX_ERR(0, 19, __pyx_L34_error);
+        if (__Pyx_PyList_SET_ITEM(__pyx_t_5, 0, __pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color)) __PYX_ERR(0, 22, __pyx_L34_error);
         __Pyx_INCREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank);
         __Pyx_GIVEREF(__pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank);
-        if (__Pyx_PyList_SET_ITEM(__pyx_t_5, 1, __pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank)) __PYX_ERR(0, 19, __pyx_L34_error);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 18, __pyx_L34_error)
+        if (__Pyx_PyList_SET_ITEM(__pyx_t_5, 1, __pyx_7genexpr__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank)) __PYX_ERR(0, 22, __pyx_L34_error);
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 21, __pyx_L34_error)
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
@@ -27641,187 +27939,187 @@ if (!__Pyx_RefNanny) {
     __pyx_L39_exit_scope:;
   } /* exit inner scope */
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":18
- *         return CHAR_COLOR_STRINGS[color_idx]
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":21
  * 
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
+ * # Updated memoryview declarations
+ * cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
  *     [color, rank]
  *     for color in range(5)
  */
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4)) __PYX_ERR(0, 21, __pyx_L1_error);
   __pyx_t_4 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":22
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":25
  *     for color in range(5)
  *     for rank in range(5)
  * ], dtype=np.int8)             # <<<<<<<<<<<<<<
  * 
- * cdef cnp.int8_t[::1] INIT_DECK = np.array([
+ * cdef cnp.int8_t[:] INIT_DECK = np.array([
  */
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_int8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_int8); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_15) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_dtype, __pyx_t_15) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":18
- *         return CHAR_COLOR_STRINGS[color_idx]
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":21
  * 
- * cdef cnp.int8_t[:, ::1] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
+ * # Updated memoryview declarations
+ * cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([             # <<<<<<<<<<<<<<
  *     [color, rank]
  *     for color in range(5)
  */
-  __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_int8_t(__pyx_t_15, PyBUF_WRITABLE); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_int8_t(__pyx_t_15, PyBUF_WRITABLE); if (unlikely(!__pyx_t_16.memview)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS, 1);
   __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_PRECOMPUTED_CARDS = __pyx_t_16;
   __pyx_t_16.memview = NULL;
   __pyx_t_16.data = NULL;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":24
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":27
  * ], dtype=np.int8)
  * 
- * cdef cnp.int8_t[::1] INIT_DECK = np.array([             # <<<<<<<<<<<<<<
+ * cdef cnp.int8_t[:] INIT_DECK = np.array([             # <<<<<<<<<<<<<<
  *     3, 2, 2, 2, 1,
  *     3, 2, 2, 2, 1,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_np); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_np); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_array); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-  __pyx_t_15 = PyList_New(25); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_15 = PyList_New(25); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
   __Pyx_INCREF(__pyx_int_3);
   __Pyx_GIVEREF(__pyx_int_3);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 0, __pyx_int_3)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 0, __pyx_int_3)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 1, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 1, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 2, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 2, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 3, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 3, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 4, __pyx_int_1)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 4, __pyx_int_1)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_3);
   __Pyx_GIVEREF(__pyx_int_3);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 5, __pyx_int_3)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 5, __pyx_int_3)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 6, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 6, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 7, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 7, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 8, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 8, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 9, __pyx_int_1)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 9, __pyx_int_1)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_3);
   __Pyx_GIVEREF(__pyx_int_3);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 10, __pyx_int_3)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 10, __pyx_int_3)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 11, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 11, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 12, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 12, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 13, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 13, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 14, __pyx_int_1)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 14, __pyx_int_1)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_3);
   __Pyx_GIVEREF(__pyx_int_3);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 15, __pyx_int_3)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 15, __pyx_int_3)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 16, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 16, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 17, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 17, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 18, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 18, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 19, __pyx_int_1)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 19, __pyx_int_1)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_3);
   __Pyx_GIVEREF(__pyx_int_3);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 20, __pyx_int_3)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 20, __pyx_int_3)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 21, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 21, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 22, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 22, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 23, __pyx_int_2)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 23, __pyx_int_2)) __PYX_ERR(0, 27, __pyx_L1_error);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 24, __pyx_int_1)) __PYX_ERR(0, 24, __pyx_L1_error);
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 24, __pyx_L1_error)
+  if (__Pyx_PyList_SET_ITEM(__pyx_t_15, 24, __pyx_int_1)) __PYX_ERR(0, 27, __pyx_L1_error);
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_15);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_15)) __PYX_ERR(0, 24, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_15)) __PYX_ERR(0, 27, __pyx_L1_error);
   __pyx_t_15 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":30
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":33
  *     3, 2, 2, 2, 1,
  *     3, 2, 2, 2, 1
  * ], dtype=np.int8)             # <<<<<<<<<<<<<<
  * 
  * PRECOMPUTED_HANABI_CARDS = [
  */
-  __pyx_t_15 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_int8); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_int8); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_dtype, __pyx_t_14) < 0) __PYX_ERR(0, 30, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_15, __pyx_n_s_dtype, __pyx_t_14) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":24
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":27
  * ], dtype=np.int8)
  * 
- * cdef cnp.int8_t[::1] INIT_DECK = np.array([             # <<<<<<<<<<<<<<
+ * cdef cnp.int8_t[:] INIT_DECK = np.array([             # <<<<<<<<<<<<<<
  *     3, 2, 2, 2, 1,
  *     3, 2, 2, 2, 1,
  */
-  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_17.memview)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int8_t(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_17.memview)) __PYX_ERR(0, 27, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __PYX_XCLEAR_MEMVIEW(&__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK, 1);
   __pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_INIT_DECK = __pyx_t_17;
   __pyx_t_17.memview = NULL;
   __pyx_t_17.data = NULL;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":32
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":35
  * ], dtype=np.int8)
  * 
  * PRECOMPUTED_HANABI_CARDS = [             # <<<<<<<<<<<<<<
@@ -27829,10 +28127,10 @@ if (!__Pyx_RefNanny) {
  *     for color in range(5)
  */
   { /* enter inner scope */
-    __pyx_t_14 = PyList_New(0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 32, __pyx_L42_error)
+    __pyx_t_14 = PyList_New(0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 35, __pyx_L42_error)
     __Pyx_GOTREF(__pyx_t_14);
 
-    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":34
+    /* "agents/mcts/cython/sampler/mcts_sampler.pyx":37
  * PRECOMPUTED_HANABI_CARDS = [
  *     HanabiCard(color, rank)
  *     for color in range(5)             # <<<<<<<<<<<<<<
@@ -27840,14 +28138,14 @@ if (!__Pyx_RefNanny) {
  * ]
  */
     for (__pyx_t_10 = 0; __pyx_t_10 < 5; __pyx_t_10+=1) {
-      __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_t_10); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 34, __pyx_L42_error)
+      __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_t_10); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 37, __pyx_L42_error)
       __Pyx_GOTREF(__pyx_t_15);
       __Pyx_XGOTREF(__pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color);
       __Pyx_DECREF_SET(__pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color, __pyx_t_15);
       __Pyx_GIVEREF(__pyx_t_15);
       __pyx_t_15 = 0;
 
-      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":35
+      /* "agents/mcts/cython/sampler/mcts_sampler.pyx":38
  *     HanabiCard(color, rank)
  *     for color in range(5)
  *     for rank in range(5)             # <<<<<<<<<<<<<<
@@ -27855,21 +28153,21 @@ if (!__Pyx_RefNanny) {
  * 
  */
       for (__pyx_t_13 = 0; __pyx_t_13 < 5; __pyx_t_13+=1) {
-        __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_t_13); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 35, __pyx_L42_error)
+        __pyx_t_15 = __Pyx_PyInt_From_long(__pyx_t_13); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 38, __pyx_L42_error)
         __Pyx_GOTREF(__pyx_t_15);
         __Pyx_XGOTREF(__pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank);
         __Pyx_DECREF_SET(__pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank, __pyx_t_15);
         __Pyx_GIVEREF(__pyx_t_15);
         __pyx_t_15 = 0;
 
-        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":33
+        /* "agents/mcts/cython/sampler/mcts_sampler.pyx":36
  * 
  * PRECOMPUTED_HANABI_CARDS = [
  *     HanabiCard(color, rank)             # <<<<<<<<<<<<<<
  *     for color in range(5)
  *     for rank in range(5)
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 33, __pyx_L42_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 36, __pyx_L42_error)
         __Pyx_GOTREF(__pyx_t_5);
         __pyx_t_4 = NULL;
         __pyx_t_18 = 0;
@@ -27889,11 +28187,11 @@ if (!__Pyx_RefNanny) {
           PyObject *__pyx_callargs[3] = {__pyx_t_4, __pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_color, __pyx_8genexpr1__pyx_v_6agents_4mcts_6cython_7sampler_12mcts_sampler_rank};
           __pyx_t_15 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_18, 2+__pyx_t_18);
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 33, __pyx_L42_error)
+          if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 36, __pyx_L42_error)
           __Pyx_GOTREF(__pyx_t_15);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_14, (PyObject*)__pyx_t_15))) __PYX_ERR(0, 32, __pyx_L42_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_14, (PyObject*)__pyx_t_15))) __PYX_ERR(0, 35, __pyx_L42_error)
         __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
       }
     }
@@ -27910,48 +28208,48 @@ if (!__Pyx_RefNanny) {
     goto __pyx_L1_error;
     __pyx_L47_exit_scope:;
   } /* exit inner scope */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PRECOMPUTED_HANABI_CARDS, __pyx_t_14) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_PRECOMPUTED_HANABI_CARDS, __pyx_t_14) < 0) __PYX_ERR(0, 35, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":46
- *         self.deck = HanabiDeck()
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":50
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list sample_hand(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_3sample_hand, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_sample_hand, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_3sample_hand, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_sample_hand, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_14, __pyx_tuple__25);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_sample_hand, __pyx_t_14) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_sample_hand, __pyx_t_14) < 0) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   PyType_Modified(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":95
- *         return sampled_hand
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":101
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef object sample_card(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_5sample_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_sample_card, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_5sample_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_sample_card, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_14, __pyx_tuple__25);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_sample_card, __pyx_t_14) < 0) __PYX_ERR(0, 95, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_sample_card, __pyx_t_14) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   PyType_Modified(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler);
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":125
- *             return None
- * 
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":133
+ *     @boundscheck(False)
+ *     @wraparound(False)
  *     cpdef list valid_cards(             # <<<<<<<<<<<<<<
  *         self,
  *         int player,
  */
-  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_7valid_cards, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_valid_cards, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_CyFunction_New(&__pyx_mdef_6agents_4mcts_6cython_7sampler_12mcts_sampler_12MCTS_Sampler_7valid_cards, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_MCTS_Sampler_valid_cards, NULL, __pyx_n_s_agents_mcts_cython_sampler_mcts_2, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_14, __pyx_tuple__30);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_valid_cards, __pyx_t_14) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler, __pyx_n_s_valid_cards, __pyx_t_14) < 0) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   PyType_Modified(__pyx_ptype_6agents_4mcts_6cython_7sampler_12mcts_sampler_MCTS_Sampler);
 
@@ -27976,14 +28274,14 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_14) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":159
- *     cdef cnp.int8_t[::1] card_count
+  /* "agents/mcts/cython/sampler/mcts_sampler.pyx":168
+ *     cdef cnp.int8_t[:] card_count
  * 
- *     def __cinit__(self, cnp.int8_t[::1] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, cnp.int8_t[:] card_count=None, int total_count=0):             # <<<<<<<<<<<<<<
  *         self.num_ranks = 5
  *         self.num_colors = 5
  */
-  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(Py_None, PyBUF_WRITABLE); if (unlikely(!__pyx_t_17.memview)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int8_t(Py_None, PyBUF_WRITABLE); if (unlikely(!__pyx_t_17.memview)) __PYX_ERR(0, 168, __pyx_L1_error)
   __pyx_k__11 = __pyx_t_17;
   __pyx_t_17.memview = NULL;
   __pyx_t_17.data = NULL;
@@ -33633,17 +33931,17 @@ no_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_d_dc_nn___pyx_t_5numpy_int8_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsds_nn___pyx_t_5numpy_int8_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_FOLLOW), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED), (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
     int retcode;
     if (obj == Py_None) {
         result.memview = (struct __pyx_memoryview_obj *) Py_None;
         return result;
     }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
-                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 2,
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                 PyBUF_RECORDS_RO | writable_flag, 2,
                                                  &__Pyx_TypeInfo_nn___pyx_t_5numpy_int8_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))
@@ -33656,17 +33954,17 @@ __pyx_fail:
 }
 
 /* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dc_nn___pyx_t_5numpy_int8_t(PyObject *obj, int writable_flag) {
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_nn___pyx_t_5numpy_int8_t(PyObject *obj, int writable_flag) {
     __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
     __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_CONTIG) };
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
     int retcode;
     if (obj == Py_None) {
         result.memview = (struct __pyx_memoryview_obj *) Py_None;
         return result;
     }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, __Pyx_IS_C_CONTIG,
-                                                 (PyBUF_C_CONTIGUOUS | PyBUF_FORMAT) | writable_flag, 1,
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                 PyBUF_RECORDS_RO | writable_flag, 1,
                                                  &__Pyx_TypeInfo_nn___pyx_t_5numpy_int8_t, stack,
                                                  &result, obj);
     if (unlikely(retcode == -1))

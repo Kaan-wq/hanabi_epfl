@@ -7,13 +7,13 @@ extensions = [
         "agents.mcts.cython.sampler.mcts_sampler",
         ["agents/mcts/cython/sampler/mcts_sampler.pyx"],
         include_dirs=[numpy.get_include()],
-        extra_compile_args=["-O2", "-march=native"],
+        extra_compile_args=["-O3", "-march=native", "-ffast-math", "-funroll-loops"],
     ), 
     Extension(
         "agents.mcts.cython.node.mcts_node",
         ["agents/mcts/cython/node/mcts_node.pyx"],
         include_dirs=[numpy.get_include()],
-        extra_compile_args=["-O2", "-march=native"],
+        extra_compile_args=["-O3", "-march=native", "-ffast-math", "-funroll-loops"],
     ),
 ]
 
