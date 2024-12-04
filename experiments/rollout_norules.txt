@@ -144,7 +144,7 @@ Basic Rules : No
 
 =============================== Rollout Number: 20000 ===========================
 
-Running Episodes: 
+Running Episodes:  32%|██████████████████████▋                                                | 32/100 [9:16:50<19:43:17, 1044.08s/episode, Avg Score=15.50, Score=19, Avg Loss=N/A, Loss=N/A] 
 Scores: []
 Average Score: 15.50 on 32 episodes
 Standard Deviation: 
