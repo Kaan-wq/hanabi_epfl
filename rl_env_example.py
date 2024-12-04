@@ -102,8 +102,6 @@ class Runner(object):
 
             agents.append(agent_class(self.agent_config))
 
-        errors = 0
-
         with tqdm(
             total=self.flags["num_episodes"],
             desc="Running Episodes",
@@ -198,7 +196,6 @@ class Runner(object):
         print(f"Average Score: {avg_score}")
         print(f"Standard Deviation: {std_dev}")
         print(f"Standard Error: {std_error}")
-        print(f"Errors: {errors}\n")
 
 
 if __name__ == "__main__":
