@@ -10,7 +10,11 @@ from libcpp.random cimport mt19937
 # Forward declare nlohmann::json
 cdef extern from "nlohmann/json.hpp" namespace "nlohmann":
     cppclass json:
-        pass
+        string dump() const
+        @staticmethod
+        json parse(const string& s)
+        T get[T]() const
+        json operator[](const string&) const
 
 # Declare C++ enums 
 cdef extern from "hanabi_lib/hanabi_game.h" namespace "hanabi_learning_env":

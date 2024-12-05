@@ -230,13 +230,45 @@ cdef class PyHanabiMove:
         return PyHanabiMove(PyHanabiMoveType.DEAL_SPECIFIC, card_index=card_index,
                            target_offset=player, color=color, rank=rank)
 
+    def to_json(self):
+        """Serialize move to JSON."""
+        cdef string json_str = deref(self.c_move).toJSON().dump()
+        return json_str.decode('utf-8')
+    
+    @classmethod
+    def from_json(cls, str json_str):
+        """Deserialize move from JSON."""
+        if not isinstance(json_str, str):
+            raise TypeError("json_str must be a string")
+            
+        # Parse JSON string to create HanabiMove
+        cdef string encoded_str = json_str.encode('utf-8')
+        cdef json j = json.parse(encoded_str)
+        
+        # Extract values from JSON to create a new move
+        cdef string move_type_key = b"move_type"
+        cdef string card_index_key = b"card_index"
+        cdef string target_offset_key = b"target_offset"
+        cdef string color_key = b"color"
+        cdef string rank_key = b"rank"
+        
+        cdef int move_type = j[move_type_key].get[int]()
+        cdef int8_t card_index = j[card_index_key].get[int8_t]()
+        cdef int8_t target_offset = j[target_offset_key].get[int8_t]()
+        cdef int8_t color = j[color_key].get[int8_t]()
+        cdef int8_t rank = j[rank_key].get[int8_t]()
+        
+        # Create new move with extracted values
+        cdef PyHanabiMove instance = cls(move_type, card_index, target_offset, color, rank)
+        return instance
+
 
 # Python wrapper for HanabiHistoryItem
 cdef class PyHanabiHistoryItem:
     cdef HanabiHistoryItem* c_item
 
     def __cinit__(self, PyHanabiMove move):
-        self.c_item = HanabiHistoryItem(move.c_move)
+        self.c_item = new HanabiHistoryItem(deref(move.c_move))
 
     def __dealloc__(self):
         if self.c_item != NULL:
@@ -244,8 +276,13 @@ cdef class PyHanabiHistoryItem:
 
     @property
     def move(self):
-        cdef PyHanabiMove py_move = PyHanabiMove(HanabiMoveType.kInvalid)
-        py_move.c_move = self.c_item.move
+        cdef PyHanabiMove py_move = PyHanabiMove(
+            <int>self.c_item.move.MoveType(),
+            self.c_item.move.CardIndex(),
+            self.c_item.move.TargetOffset(),
+            self.c_item.move.Color(),
+            self.c_item.move.Rank()
+        )
         return py_move
 
     @property
@@ -287,6 +324,52 @@ cdef class PyHanabiHistoryItem:
     @property
     def deal_to_player(self):
         return self.c_item.deal_to_player
+
+    def to_json(self):
+        """Serialize the HanabiHistoryItem to a JSON string."""
+        if self.c_item == NULL:
+            raise ValueError("Invalid HanabiHistoryItem")
+        cdef string json_str = self.c_item.toJSON().dump()
+        return json_str.decode('utf-8')
+
+    @classmethod
+    def from_json(cls, str json_str):
+        """Deserialize a JSON string to create a HanabiHistoryItem object."""
+        if not isinstance(json_str, str):
+            raise TypeError("json_str must be a string")
+        
+        # Parse JSON
+        cdef string encoded_str = json_str.encode('utf-8')
+        cdef json j = json.parse(encoded_str)
+        
+        # Define string keys
+        cdef string move_key = b"move"
+        cdef string player_key = b"player"
+        cdef string scored_key = b"scored"
+        cdef string info_token_key = b"information_token"
+        cdef string color_key = b"color"
+        cdef string rank_key = b"rank"
+        cdef string reveal_mask_key = b"reveal_bitmask"
+        cdef string new_reveal_mask_key = b"newly_revealed_bitmask"
+        cdef string deal_player_key = b"deal_to_player"
+        
+        # First create the move from the move part of the JSON
+        cdef PyHanabiMove py_move = PyHanabiMove.from_json(j[move_key].dump().decode('utf-8'))
+        
+        # Create the history item with the move
+        cdef PyHanabiHistoryItem instance = cls(py_move)
+        
+        # Update all the fields
+        instance.c_item.player = j[player_key].get[int8_t]()
+        instance.c_item.scored = j[scored_key].get[bool]()
+        instance.c_item.information_token = j[info_token_key].get[bool]()
+        instance.c_item.color = j[color_key].get[int8_t]()
+        instance.c_item.rank = j[rank_key].get[int8_t]()
+        instance.c_item.reveal_bitmask = j[reveal_mask_key].get[uint8_t]()
+        instance.c_item.newly_revealed_bitmask = j[new_reveal_mask_key].get[uint8_t]()
+        instance.c_item.deal_to_player = j[deal_player_key].get[int8_t]()
+        
+        return instance
 
     def __str__(self):
         return self.c_item.ToString().decode('utf-8')
