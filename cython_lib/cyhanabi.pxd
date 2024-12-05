@@ -59,3 +59,7 @@ cdef extern from "pyhanabi.h":
     cdef bool GetRevealColorMove(int target_offset, int color, pyhanabi_move_t* move)
     cdef bool GetRevealRankMove(int target_offset, int rank, pyhanabi_move_t* move)
     cdef bool GetDealSpecificMove(int card_index, int player, int color, int rank, pyhanabi_move_t* move)
+
+    # Serialization + Deserialization functions
+    cdef char* MoveToJson(pyhanabi_move_t* move)
+    cdef bool MoveFromJson(const char* json_str, pyhanabi_move_t* move)

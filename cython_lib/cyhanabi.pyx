@@ -188,4 +188,123 @@ cdef class HanabiMove(object):
     def rank(self):
         return self._rank
 
-    
+    @staticmethod
+    def get_discard_move(int card_index):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetDiscardMove(card_index, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    @staticmethod
+    def get_return_move(int card_index, int player):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetReturnMove(card_index, player, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    @staticmethod
+    def get_play_move(int card_index):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetPlayMove(card_index, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    @staticmethod
+    def get_reveal_color_move(int target_offset, int color):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetRevealColorMove(target_offset, color, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    @staticmethod
+    def get_reveal_rank_move(int target_offset, int rank):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetRevealRankMove(target_offset, rank, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    @staticmethod
+    def get_deal_specific_move(int card_index, int player, int color, int rank):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        if not GetDealSpecificMove(card_index, player, color, rank, c_move):
+            free(c_move)
+            return None
+        return HanabiMove.from_ptr(c_move)
+
+    def to_json(self):
+        """Serialize move to JSON."""
+        cdef char* json_str = MoveToJson(self._move)
+        if json_str == NULL:
+            raise ValueError("Serialization failed: MoveToJSON returned NULL.")
+        py_json = json_str.decode('utf-8')
+        DeleteString(json_str)
+        return py_json
+
+    @classmethod
+    def from_json(cls, str json_str):
+        """Deserialize move from JSON."""
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+        if not MoveFromJson(json_str.encode('ascii'), c_move):
+            free(c_move)
+            raise ValueError("Failed to deserialize HanabiMove from JSON")
+        return HanabiMove.from_ptr(c_move)
+
+    def __hash__(self):
+        """Hash function for a move."""
+        return hash((self._type, self._card_index, self._target_offset, self._color, self._rank))
+
+    def __eq__(self, other):
+        if not isinstance(other, HanabiMove):
+            return NotImplemented
+        return (self._type == other._type and
+                self._card_index == other._card_index and
+                self._target_offset == other._target_offset and
+                self._color == other._color and
+                self._rank == other._rank)
+
+    def __str__(self):
+        cdef char* c_string = MoveToString(self._move)
+        if c_string == NULL:
+            return ""
+        string = c_string.decode('utf-8')
+        DeleteString(c_string)
+        return string
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __dealloc__(self):
+        if self._move != NULL:
+            DeleteMove(self._move)
+            self._move = NULL
+
+    def to_dict(self):
+        move_type = self.type()
+        move_dict = {}
+        move_dict["action_type"] = move_type.name
+
+        if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):
+            move_dict["card_index"] = self.card_index()
+        elif move_type == HanabiMoveType.REVEAL_COLOR:
+            move_dict["target_offset"] = self.target_offset()
+            move_dict["color"] = color_idx_to_char(self.color())
+        elif move_type == HanabiMoveType.REVEAL_RANK:
+            move_dict["target_offset"] = self.target_offset()
+            move_dict["rank"] = self.rank()
+        elif move_type == HanabiMoveType.DEAL:
+            move_dict["color"] = color_idx_to_char(self.color())
+            move_dict["rank"] = self.rank()
+        elif move_type == HanabiMoveType.DEAL_SPECIFIC:
+            move_dict["color"] = color_idx_to_char(self.color())
+            move_dict["rank"] = self.rank()
+        elif move_type == HanabiMoveType.RETURN:
+            move_dict["card_index"] = self.card_index()
+        else:
+            raise ValueError(f"Unsupported move: {self}")
+        return move_dict
+                
