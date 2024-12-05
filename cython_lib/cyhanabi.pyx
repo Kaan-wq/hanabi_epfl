@@ -1,12 +1,15 @@
 import json
 import enum
 from cpython.bool cimport bool
+from libc.stdlib cimport malloc, free
 from cyhanabi cimport DeleteString
+from cyhanabi cimport pyhanabi_card_t, CardValid
 from cyhanabi cimport pyhanabi_card_knowledge_t, CardKnowledgeToString, ColorWasHinted, KnownColor, ColorIsPlausible, RankWasHinted, KnownRank, RankIsPlausible
 from cyhanabi cimport pyhanabi_move_t, DeleteMoveList, NumMoves, GetMove, DeleteMove, MoveToString, MoveType, CardIndex, TargetOffset, MoveColor, MoveRank, GetDiscardMove, GetReturnMove, GetPlayMove, GetRevealColorMove, GetRevealRankMove, GetDealSpecificMove
 from cyhanabi cimport pyhanabi_history_item_t, DeleteHistoryItem, HistoryItemToString, HistoryItemMove, HistoryItemPlayer, HistoryItemScored, HistoryItemInformationToken, HistoryItemColor, HistoryItemRank, HistoryItemRevealBitmask, HistoryItemNewlyRevealedBitmask, HistoryItemDealToPlayer
+from cyhanabi cimport pyhanabi_state_t, NewState, CopyState, DeleteState, StateParentGame, StateApplyMove, StateRemoveKnowledge, StateCurPlayer, StateDealCard, StateDeckSize, StateFireworks, StateDiscardPileSize, StateGetDiscard, StateGetHandSize, StateGetHandCard, StateEndOfGameStatus, StateInformationTokens, StateLegalMoves, StateLifeTokens, StateNumPlayers, StateScore, StateTurnsToPlay, StateToString, MoveIsLegal, CardPlayableOnFireworks, StateLenMoveHistory, StateGetMoveHistory
+from cyhanabi cimport pyhanabi_game_t, DeleteGame, NewDefaultGame, NewGame, GameParamString, NumPlayers, NumColors, NumRanks, HandSize, MaxInformationTokens, MaxLifeTokens, ObservationType, NumCards, GetMoveUid, GetMoveByUid, MaxMoves
 from cyhanabi cimport MoveToJson, MoveFromJson, GameToJson, GameFromJson, HistoryItemFromJson, HistoryItemToJson, StateToJson, StateFromJson
-from libc.stdlib cimport malloc, free
 
 cdef char[5] COLOR_CHAR = [b"R", b"Y", b"G", b"W", b"B"]
 cdef int CHANCE_PLAYER_ID = -1
@@ -60,6 +63,19 @@ class HanabiMoveType(enum.IntEnum):
     DEAL = 5
     RETURN = 6
     DEAL_SPECIFIC = 7
+
+
+class AgentObservationType(enum.IntEnum):
+    MINIMAL = 0
+    CARD_KNOWLEDGE = 1
+    SEER = 2
+
+
+class HanabiEndOfGameType(enum.IntEnum):
+    NOT_FINISHED = 0
+    OUT_OF_LIFE_TOKENS = 1
+    OUT_OF_CARDS = 2
+    COMPLETED_FIREWORKS = 3
 
 
 class HanabiCard(object):
@@ -401,3 +417,9 @@ cdef class HanabiHistoryItem(object):
             DeleteHistoryItem(self._item)
             self._item = NULL
         
+
+cdef class HanabiState(object):
+    cdef pyhanabi_game_t* _game
+    cdef pyhanabi_card_knowledge_t* _knowledge
+    cdef int _current_player
+    cdef int _current_player_offset
