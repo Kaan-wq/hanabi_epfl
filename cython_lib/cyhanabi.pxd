@@ -60,6 +60,25 @@ cdef extern from "pyhanabi.h":
     cdef bool GetRevealRankMove(int target_offset, int rank, pyhanabi_move_t* move)
     cdef bool GetDealSpecificMove(int card_index, int player, int color, int rank, pyhanabi_move_t* move)
 
+    # HistoryItem functions
+    cdef void DeleteHistoryItem(pyhanabi_history_item_t* item)
+    cdef char* HistoryItemToString(pyhanabi_history_item_t* item)
+    cdef void HistoryItemMove(pyhanabi_history_item_t* item, pyhanabi_move_t* move)
+    cdef int HistoryItemPlayer(pyhanabi_history_item_t* item)
+    cdef int HistoryItemScored(pyhanabi_history_item_t* item)
+    cdef int HistoryItemInformationToken(pyhanabi_history_item_t* item)
+    cdef int HistoryItemColor(pyhanabi_history_item_t* item)
+    cdef int HistoryItemRank(pyhanabi_history_item_t* item)
+    cdef int HistoryItemRevealBitmask(pyhanabi_history_item_t* item)
+    cdef int HistoryItemNewlyRevealedBitmask(pyhanabi_history_item_t* item)
+    cdef int HistoryItemDealToPlayer(pyhanabi_history_item_t* item)
+
     # Serialization + Deserialization functions
     cdef char* MoveToJson(pyhanabi_move_t* move)
     cdef bool MoveFromJson(const char* json_str, pyhanabi_move_t* move)
+    cdef char* GameToJson(pyhanabi_game_t* game)
+    cdef bool GameFromJson(const char* json_str, pyhanabi_game_t* game)
+    cdef char* HistoryItemToJson(pyhanabi_history_item_t* item)
+    cdef bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item)
+    cdef char* StateToJson(pyhanabi_state_t* state)
+    cdef bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game)

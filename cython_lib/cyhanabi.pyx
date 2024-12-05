@@ -1,8 +1,11 @@
 import json
 import enum
+from cpython.bool cimport bool
 from cyhanabi cimport DeleteString
 from cyhanabi cimport pyhanabi_card_knowledge_t, CardKnowledgeToString, ColorWasHinted, KnownColor, ColorIsPlausible, RankWasHinted, KnownRank, RankIsPlausible
 from cyhanabi cimport pyhanabi_move_t, DeleteMoveList, NumMoves, GetMove, DeleteMove, MoveToString, MoveType, CardIndex, TargetOffset, MoveColor, MoveRank, GetDiscardMove, GetReturnMove, GetPlayMove, GetRevealColorMove, GetRevealRankMove, GetDealSpecificMove
+from cyhanabi cimport pyhanabi_history_item_t, DeleteHistoryItem, HistoryItemToString, HistoryItemMove, HistoryItemPlayer, HistoryItemScored, HistoryItemInformationToken, HistoryItemColor, HistoryItemRank, HistoryItemRevealBitmask, HistoryItemNewlyRevealedBitmask, HistoryItemDealToPlayer
+from cyhanabi cimport MoveToJson, MoveFromJson, GameToJson, GameFromJson, HistoryItemFromJson, HistoryItemToJson, StateToJson, StateFromJson
 from libc.stdlib cimport malloc, free
 
 cdef char[5] COLOR_CHAR = [b"R", b"Y", b"G", b"W", b"B"]
@@ -308,3 +311,93 @@ cdef class HanabiMove(object):
             raise ValueError(f"Unsupported move: {self}")
         return move_dict
                 
+
+cdef class HanabiHistoryItem(object):
+    cdef pyhanabi_history_item_t* _item
+
+    def __cinit__(self):
+        self._item = NULL
+
+    @staticmethod
+    cdef from_ptr(pyhanabi_history_item_t* item):
+        cdef HanabiHistoryItem instance = HanabiHistoryItem()
+        instance._item = item
+        return instance
+    
+    def move(self):
+        cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
+        HistoryItemMove(self._item, c_move)
+        return HanabiMove.from_ptr(c_move)
+
+    def player(self):
+        return HistoryItemPlayer(self._item)
+
+    def scored(self):
+        """Play move succeeded in placing card on fireworks."""
+        return <bint>HistoryItemScored(self._item)
+
+    def information_token(self):
+        """Play/Discard move increased the number of information tokens."""
+        return <bint>HistoryItemInformationToken(self._item)
+
+    def color(self):
+        """Color index of card that was Played/Discarded."""
+        return HistoryItemColor(self._item)
+
+    def rank(self):
+        """Rank index of card that was Played/Discarded."""
+        return HistoryItemRank(self._item)
+
+    def card_info_revealed(self):
+        cdef int bitmask = HistoryItemRevealBitmask(self._item)
+        revealed = []
+        for i in range(8):
+            if bitmask & (1 << i):
+                revealed.append(i)
+        return revealed
+
+    def card_info_newly_revealed(self):
+        cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)
+        revealed = []
+        for i in range(8):
+            if bitmask & (1 << i):
+                revealed.append(i)
+        return revealed
+
+    def deal_to_player(self):
+        return HistoryItemDealToPlayer(self._item)
+    
+    def to_json(self):
+        """Serialize history item to JSON."""
+        cdef char* json_str = HistoryItemToJson(self._item)
+        if json_str == NULL:
+            raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")
+        py_json = json_str.decode('utf-8')
+        DeleteString(json_str)
+        return py_json
+    
+    @classmethod
+    def from_json(cls, str json_str):
+        """Deserialize history item from JSON."""
+        cdef pyhanabi_history_item_t* c_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
+        if not HistoryItemFromJson(json_str.encode('ascii'), c_item):
+            free(c_item)
+            raise ValueError("Failed to deserialize HanabiHistoryItem from JSON")
+        return HanabiHistoryItem.from_ptr(c_item)
+
+    def __str__(self):
+        cdef char* c_string = HistoryItemToString(self._item)
+        if c_string == NULL:
+            return ""
+        string = c_string.decode('utf-8')
+        DeleteString(c_string)
+        return string
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __dealloc__(self):
+        if self._item != NULL:
+            DeleteHistoryItem(self._item)
+            self._item = NULL
+        
