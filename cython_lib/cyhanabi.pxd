@@ -118,6 +118,33 @@ cdef extern from "pyhanabi.h":
     cdef void GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move)
     cdef int MaxMoves(pyhanabi_game_t* game)
 
+    # Observation functions
+    cdef void NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation)
+    cdef void DeleteObservation(pyhanabi_observation_t* observation)
+    cdef char* ObsToString(pyhanabi_observation_t* observation)
+    cdef int ObsCurPlayerOffset(pyhanabi_observation_t* observation)
+    cdef int ObsNumPlayers(pyhanabi_observation_t* observation)
+    cdef int ObsGetHandSize(pyhanabi_observation_t* observation, int pid)
+    cdef void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_t* card)
+    cdef void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_knowledge_t* knowledge)
+    cdef int ObsDiscardPileSize(pyhanabi_observation_t* observation)
+    cdef void ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card)
+    cdef int ObsFireworks(pyhanabi_observation_t* observation, int color)
+    cdef int ObsDeckSize(pyhanabi_observation_t* observation)
+    cdef int ObsNumLastMoves(pyhanabi_observation_t* observation)
+    cdef void ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item)
+    cdef int ObsInformationTokens(pyhanabi_observation_t* observation)
+    cdef int ObsLifeTokens(pyhanabi_observation_t* observation)
+    cdef int ObsNumLegalMoves(pyhanabi_observation_t* observation)
+    cdef void ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move)
+    cdef bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int color, int rank)
+
+    # Observation encoder functions
+    cdef void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game, int type)
+    cdef void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder)
+    cdef char* ObservationShape(pyhanabi_observation_encoder_t* encoder)
+    cdef char* EncodeObservation(pyhanabi_observation_encoder_t* encoder, pyhanabi_observation_t* observation)
+
     # Serialization + Deserialization functions
     cdef char* MoveToJson(pyhanabi_move_t* move)
     cdef bool MoveFromJson(const char* json_str, pyhanabi_move_t* move)
