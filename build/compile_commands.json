@@ -1,0 +1,62 @@
+[
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++ -Dpyhanabi_EXPORTS -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -fPIC -o CMakeFiles/pyhanabi.dir/pyhanabi.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/pyhanabi.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/pyhanabi.cc",
+  "output": "CMakeFiles/pyhanabi.dir/pyhanabi.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_card.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_card.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_card.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_card.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_game.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_game.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_game.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_game.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_hand.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_hand.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_hand.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_hand.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_history_item.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_history_item.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_history_item.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_history_item.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_move.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_move.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_move.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_move.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_observation.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_observation.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_observation.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_observation.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/hanabi_state.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_state.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/hanabi_state.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/hanabi_state.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/util.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/util.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/util.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/util.cc.o"
+},
+{
+  "directory": "/Users/kaanucar/Desktop/hanabi_epfl/build/hanabi_lib",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib -isystem /usr/local/include -O2 -std=c++11 -march=native -fPIC -g -std=gnu++11 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.1.sdk -O2 -march=native -o CMakeFiles/hanabi.dir/canonical_encoders.cc.o -c /Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/canonical_encoders.cc",
+  "file": "/Users/kaanucar/Desktop/hanabi_epfl/hanabi_lib/canonical_encoders.cc",
+  "output": "hanabi_lib/CMakeFiles/hanabi.dir/canonical_encoders.cc.o"
+}
+]
