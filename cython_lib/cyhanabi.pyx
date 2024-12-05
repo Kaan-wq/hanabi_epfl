@@ -455,8 +455,8 @@ cdef class HanabiState(object):
     def copy(self):
         return HanabiState.create(None, self._state, NULL)
 
-    #def observation(self, int player):
-    #    return HanabiObservation.create(self._state, self._game, player)
+    def observation(self, int player):
+        return HanabiObservation.create(self._state, self._game, player)
 
     def apply_move(self, HanabiMove move):
         StateApplyMove(self._state, move._move)
@@ -902,3 +902,54 @@ cdef class HanabiObservation:
         for knowledge in self._knowledge_pool:
             free(<pyhanabi_card_knowledge_t*>knowledge)
         self._knowledge_pool.clear()
+
+    
+cdef class ObservationEncoder:
+    cdef pyhanabi_game_t* _game
+    cdef pyhanabi_observation_encoder_t* _encoder
+
+    def __cinit__(self):
+        self._game = NULL
+        self._encoder = NULL
+
+    def __init__(self, HanabiGame game, enc_type=ObservationEncoderType.CANONICAL):
+        """Construct using HanabiState.observation(player)."""
+        self._encoder = <pyhanabi_observation_encoder_t*>malloc(sizeof(pyhanabi_observation_encoder_t))
+        if self._encoder == NULL:
+            raise MemoryError()
+        self._game = game._game
+        NewObservationEncoder(self._encoder, self._game, enc_type)
+
+    def shape(self):
+        cdef char* c_shape_str = ObservationShape(self._encoder)
+        if c_shape_str == NULL:
+            return []
+        shape_string = c_shape_str.decode('utf-8')
+        DeleteString(c_shape_str)
+        cdef list shape = []
+        for dim in shape_string.split(','):
+            try:
+                shape.append(int(dim))
+            except ValueError:
+                continue
+        return shape
+
+    def encode(self, HanabiObservation observation):
+        cdef char* c_encoding_str = EncodeObservation(self._encoder, observation._observation)
+        if c_encoding_str == NULL:
+            return []
+        encoding_string = c_encoding_str.decode('utf-8')
+        DeleteString(c_encoding_str)
+        cdef list encoding = []
+        for val in encoding_string.split(','):
+            try:
+                encoding.append(int(val))
+            except ValueError:
+                continue
+        return encoding
+
+    def __dealloc__(self):
+        if self._encoder != NULL:
+            DeleteObservationEncoder(self._encoder)
+            self._encoder = NULL
+        self._game = NULL
