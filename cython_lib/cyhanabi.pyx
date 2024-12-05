@@ -19,17 +19,6 @@ cdef int CHANCE_PLAYER_ID = -1
 
 
 def color_idx_to_char(color_idx):
-    """Helper function for converting color index to a character.
-
-    Args:
-        color_idx: int, index into color char vector.
-
-    Returns:
-        color_char: str, A single character representing a color.
-
-    Raises:
-        AssertionError: If index is not in range.
-    """
     assert isinstance(color_idx, int)
     if color_idx == -1:
         return None
@@ -38,17 +27,6 @@ def color_idx_to_char(color_idx):
 
 
 def color_char_to_idx(color_char):
-    """Helper function for converting color character to index.
-
-    Args:
-        color_char: str, Character representing a color.
-
-    Returns:
-        color_idx: int, Index into a color array \in [0, num_colors -1]
-
-    Raises:
-        ValueError: If color_char is not a valid color.
-    """
     assert isinstance(color_char, str)
     try:
         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)
@@ -57,7 +35,6 @@ def color_char_to_idx(color_char):
 
 
 class HanabiMoveType(enum.IntEnum):
-    """Move types, consistent with hanabi_lib/hanabi_move.h."""
     INVALID = 0
     PLAY = 1
     DISCARD = 2
@@ -81,20 +58,12 @@ class HanabiEndOfGameType(enum.IntEnum):
     COMPLETED_FIREWORKS = 3
 
 
+class ObservationEncoderType(enum.IntEnum):
+    CANONICAL = 0
+
+
 class HanabiCard(object):
-  """Hanabi card, with a color and a rank.
-
-  Python implementation of C++ HanabiCard class.
-  """
-
   def __init__(self, color, rank):
-    """A simple HanabiCard object.
-
-    Args:
-      color: an integer, starting at 0. Colors are in this order RYGWB.
-      rank: an integer, starting at 0 (representing a 1 card). In the standard
-          game, the largest value is 4 (representing a 5 card).
-    """
     self._color = color
     self._rank = rank
 
@@ -120,11 +89,6 @@ class HanabiCard(object):
     return self._color >= 0 and self._rank >= 0
 
   def to_dict(self):
-    """Serialize to dict.
-
-    Returns:
-      d: dict, containing color and rank of card.
-    """
     return {"color": color_idx_to_char(self._color), "rank": self._rank}
 
 
@@ -788,3 +752,110 @@ cdef class HanabiGame:
             free(c_game)
             raise ValueError("Failed to deserialize HanabiGame from JSON")
         return HanabiGame.from_ptr(c_game)
+
+
+class HanabiObservation(object):
+    def __init__(self, state, game, player):
+        self._observation = ffi.new("pyhanabi_observation_t*")
+        self._game = game
+        NewObservation(state, player, self._observation)
+
+        self._max_hand_size = 5
+        self._knowledge_pool = [
+            ffi.new("pyhanabi_card_knowledge_t*")
+            for _ in range(self.num_players() * self._max_hand_size)
+        ]
+
+    def __str__(self):
+        c_string = ObsToString(self._observation)
+        string = encode_ffi_string(c_string)
+        DeleteString(c_string)
+        return string
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __del__(self):
+        if self._observation is not None:
+        DeleteObservation(self._observation)
+        self._observation = None
+        del self
+
+    def observation(self):
+        return self._observation
+
+    def cur_player_offset(self):
+        return ObsCurPlayerOffset(self._observation)
+
+    def num_players(self):
+        return ObsNumPlayers(self._observation)
+
+    def observed_hands(self):
+        hand_list = []
+        c_card = ffi.new("pyhanabi_card_t*")
+        for pid in range(self.num_players()):
+            player_hand = []
+            hand_size = ObsGetHandSize(self._observation, pid)
+            for i in range(hand_size):
+                ObsGetHandCard(self._observation, pid, i, c_card)
+                player_hand.append(HanabiCard(c_card.color, c_card.rank))
+            hand_list.append(player_hand)
+        return hand_list
+
+    def card_knowledge(self):
+        num_players = self.num_players()
+        return [
+            [
+                HanabiCardKnowledge(self._get_c_knowledge(pid, i))
+                for i in range(ObsGetHandSize(self._observation, pid))
+            ]
+            for pid in range(num_players)
+        ]
+
+    def _get_c_knowledge(self, pid, i):
+        c_knowledge = self._knowledge_pool[pid * self._max_hand_size + i]
+        ObsGetHandCardKnowledge(self._observation, pid, i, c_knowledge)
+        return c_knowledge
+
+    def discard_pile(self):
+        discards = []
+        c_card = ffi.new("pyhanabi_card_t*")
+        for index in range(ObsDiscardPileSize(self._observation)):
+            ObsGetDiscard(self._observation, index, c_card)
+            discards.append(HanabiCard(c_card.color, c_card.rank))
+        return discards
+
+    def fireworks(self):
+        firework_list = []
+        num_colors = NumColors(self._game)
+        for c in range(num_colors):
+            firework_list.append(ObsFireworks(self._observation, c))
+        return firework_list
+
+    def deck_size(self):
+        return ObsDeckSize(self._observation)
+
+    def last_moves(self):
+        history_items = []
+        for i in range(ObsNumLastMoves(self._observation)):
+            history_item = ffi.new("pyhanabi_history_item_t*")
+            ObsGetLastMove(self._observation, i, history_item)
+            history_items.append(HanabiHistoryItem(history_item))
+        return history_items
+
+    def information_tokens(self):
+        return ObsInformationTokens(self._observation)
+
+    def life_tokens(self):
+        return ObsLifeTokens(self._observation)
+
+    def legal_moves(self):
+        num_legal_moves = ObsNumLegalMoves(self._observation)
+        moves = [ffi.new("pyhanabi_move_t*") for _ in range(num_legal_moves)]
+        for i in range(num_legal_moves):
+            ObsGetLegalMove(self._observation, i, moves[i])
+            moves[i] = HanabiMove(moves[i])
+        return moves
+
+    def card_playable_on_fireworks(self, color, rank):
+        return ObsCardPlayableOnFireworks(self._observation, color, rank)
