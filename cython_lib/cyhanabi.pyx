@@ -378,6 +378,65 @@ cdef class PyHanabiHistoryItem:
         return self.__str__()
 
 
+# Python wrapper for HanabiGame
+cdef class PyHanabiGame:
+    cdef HanabiGame* c_game
+
+    def __cinit__(self, dict params=None):
+        if params is None:
+            params = {}
+        cdef unordered_map[string, string] c_params
+        for key, value in params.items():
+            c_params[key.encode('utf-8')] = str(value).encode('utf-8')
+        self.c_game = new HanabiGame(c_params)
+
+    def __dealloc__(self):
+        if self.c_game != NULL:
+            del self.c_game
+
+    def new_initial_state(self):
+        return PyHanabiState(self)
+
+    def parameter_string(self):
+        params = self.c_game.Parameters()
+        return {k.decode('utf-8'): v.decode('utf-8') for k, v in params}
+
+    def num_players(self):
+        return self.c_game.NumPlayers()
+
+    def num_colors(self):
+        return self.c_game.NumColors()
+
+    def num_ranks(self):
+        return self.c_game.NumRanks()
+
+    def hand_size(self):
+        return self.c_game.HandSize()
+
+    def max_information_tokens(self):
+        return self.c_game.MaxInformationTokens()
+
+    def max_life_tokens(self):
+        return self.c_game.MaxLifeTokens()
+
+    def observation_type(self):
+        return AgentObservationType(self.c_game.ObservationType())
+
+    def max_moves(self):
+        return self.c_game.MaxMoves()
+
+    def num_cards(self, int color, int rank):
+        return self.c_game.NumberCardInstances(color, rank)
+
+    def get_move_uid(self, PyHanabiMove move):
+        return self.c_game.GetMoveUid(move.c_move)
+
+    def get_move(self, int move_uid):
+        c_move = self.c_game.GetMove(move_uid)
+        return PyHanabiMove(c_move.MoveType(), c_move.CardIndex(),
+                          c_move.TargetOffset(), c_move.Color(), c_move.Rank())
+
+
 # Python wrapper for HanabiState
 cdef class PyHanabiState:
     cdef HanabiState* c_state
@@ -498,65 +557,7 @@ cdef class PyHanabiState:
         return self.__str__()
 
 
-# Python wrapper for HanabiGame
-cdef class PyHanabiGame:
-    cdef HanabiGame* c_game
-
-    def __cinit__(self, dict params=None):
-        if params is None:
-            params = {}
-        cdef unordered_map[string, string] c_params
-        for key, value in params.items():
-            c_params[key.encode('utf-8')] = str(value).encode('utf-8')
-        self.c_game = new HanabiGame(c_params)
-
-    def __dealloc__(self):
-        if self.c_game != NULL:
-            del self.c_game
-
-    def new_initial_state(self):
-        return PyHanabiState(self)
-
-    def parameter_string(self):
-        params = self.c_game.Parameters()
-        return {k.decode('utf-8'): v.decode('utf-8') for k, v in params}
-
-    def num_players(self):
-        return self.c_game.NumPlayers()
-
-    def num_colors(self):
-        return self.c_game.NumColors()
-
-    def num_ranks(self):
-        return self.c_game.NumRanks()
-
-    def hand_size(self):
-        return self.c_game.HandSize()
-
-    def max_information_tokens(self):
-        return self.c_game.MaxInformationTokens()
-
-    def max_life_tokens(self):
-        return self.c_game.MaxLifeTokens()
-
-    def observation_type(self):
-        return AgentObservationType(self.c_game.ObservationType())
-
-    def max_moves(self):
-        return self.c_game.MaxMoves()
-
-    def num_cards(self, int color, int rank):
-        return self.c_game.NumberCardInstances(color, rank)
-
-    def get_move_uid(self, PyHanabiMove move):
-        return self.c_game.GetMoveUid(move.c_move)
-
-    def get_move(self, int move_uid):
-        c_move = self.c_game.GetMove(move_uid)
-        return PyHanabiMove(c_move.MoveType(), c_move.CardIndex(),
-                          c_move.TargetOffset(), c_move.Color(), c_move.Rank())
-
-
+# Python wrapper for HanabiObservation
 cdef class PyHanabiObservation:
     cdef HanabiObservation* c_obs
     cdef PyHanabiGame game
