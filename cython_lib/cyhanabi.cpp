@@ -1540,7 +1540,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame;
 struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx;
 struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr;
 
-/* "cython_lib/cyhanabi.pyx":128
+/* "cython_lib/cyhanabi.pyx":129
  * 
  * 
  * cdef class HanabiCardKnowledge(object):             # <<<<<<<<<<<<<<
@@ -1554,7 +1554,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi_HanabiCardKnowledge {
 };
 
 
-/* "cython_lib/cyhanabi.pyx":173
+/* "cython_lib/cyhanabi.pyx":174
  * 
  * 
  * cdef class HanabiMove(object):             # <<<<<<<<<<<<<<
@@ -1573,7 +1573,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove {
 };
 
 
-/* "cython_lib/cyhanabi.pyx":331
+/* "cython_lib/cyhanabi.pyx":332
  * 
  * 
  * cdef class HanabiHistoryItem(object):             # <<<<<<<<<<<<<<
@@ -1587,7 +1587,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi_HanabiHistoryItem {
 };
 
 
-/* "cython_lib/cyhanabi.pyx":421
+/* "cython_lib/cyhanabi.pyx":422
  * 
  * 
  * cdef class HanabiState(object):             # <<<<<<<<<<<<<<
@@ -1606,20 +1606,21 @@ struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState {
 };
 
 
-/* "cython_lib/cyhanabi.pyx":676
+/* "cython_lib/cyhanabi.pyx":668
  * 
  * 
- * cdef class HanabiGame(object):             # <<<<<<<<<<<<<<
+ * cdef class HanabiGame:             # <<<<<<<<<<<<<<
  *     cdef pyhanabi_game_t* _game
  * 
  */
 struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame {
   PyObject_HEAD
+  struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiGame *__pyx_vtab;
   pyhanabi_game_t *_game;
 };
 
 
-/* "cython_lib/cyhanabi.pyx":37
+/* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
@@ -1632,7 +1633,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx {
 };
 
 
-/* "cython_lib/cyhanabi.pyx":51
+/* "cython_lib/cyhanabi.pyx":52
  *     assert isinstance(color_char, str)
  *     try:
  *         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)             # <<<<<<<<<<<<<<
@@ -1652,7 +1653,7 @@ struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr {
 
 
 
-/* "cython_lib/cyhanabi.pyx":128
+/* "cython_lib/cyhanabi.pyx":129
  * 
  * 
  * cdef class HanabiCardKnowledge(object):             # <<<<<<<<<<<<<<
@@ -1670,7 +1671,7 @@ struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge {
 static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge *__pyx_vtabptr_10cython_lib_8cyhanabi_HanabiCardKnowledge;
 
 
-/* "cython_lib/cyhanabi.pyx":173
+/* "cython_lib/cyhanabi.pyx":174
  * 
  * 
  * cdef class HanabiMove(object):             # <<<<<<<<<<<<<<
@@ -1684,7 +1685,7 @@ struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiMove {
 static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiMove *__pyx_vtabptr_10cython_lib_8cyhanabi_HanabiMove;
 
 
-/* "cython_lib/cyhanabi.pyx":331
+/* "cython_lib/cyhanabi.pyx":332
  * 
  * 
  * cdef class HanabiHistoryItem(object):             # <<<<<<<<<<<<<<
@@ -1698,7 +1699,7 @@ struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiHistoryItem {
 static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiHistoryItem *__pyx_vtabptr_10cython_lib_8cyhanabi_HanabiHistoryItem;
 
 
-/* "cython_lib/cyhanabi.pyx":421
+/* "cython_lib/cyhanabi.pyx":422
  * 
  * 
  * cdef class HanabiState(object):             # <<<<<<<<<<<<<<
@@ -1710,6 +1711,20 @@ struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiState {
   struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *(*create)(PyObject *, pyhanabi_state_t *, pyhanabi_game_t *);
 };
 static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiState *__pyx_vtabptr_10cython_lib_8cyhanabi_HanabiState;
+
+
+/* "cython_lib/cyhanabi.pyx":668
+ * 
+ * 
+ * cdef class HanabiGame:             # <<<<<<<<<<<<<<
+ *     cdef pyhanabi_game_t* _game
+ * 
+ */
+
+struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiGame {
+  PyObject *(*from_ptr)(pyhanabi_game_t *);
+};
+static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiGame *__pyx_vtabptr_10cython_lib_8cyhanabi_HanabiGame;
 /* #### Code section: utility_code_proto ### */
 
 /* --- Runtime support code (head) --- */
@@ -2249,6 +2264,56 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
                                   int lineno, const char *filename,
                                   int full_traceback, int nogil);
 
+/* IterFinish.proto */
+static CYTHON_INLINE int __Pyx_IterFinish(void);
+
+/* PyObjectGetMethod.proto */
+static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
+
+/* PyObjectCallMethod0.proto */
+static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
+
+/* RaiseNeedMoreValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
+
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+
+/* UnpackItemEndCheck.proto */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
+/* RaiseNoneIterError.proto */
+static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
+
+/* UnpackTupleError.proto */
+static void __Pyx_UnpackTupleError(PyObject *, Py_ssize_t index);
+
+/* UnpackTuple2.proto */
+#define __Pyx_unpack_tuple2(tuple, value1, value2, is_tuple, has_known_size, decref_tuple)\
+    (likely(is_tuple || PyTuple_Check(tuple)) ?\
+        (likely(has_known_size || PyTuple_GET_SIZE(tuple) == 2) ?\
+            __Pyx_unpack_tuple2_exact(tuple, value1, value2, decref_tuple) :\
+            (__Pyx_UnpackTupleError(tuple, 2), -1)) :\
+        __Pyx_unpack_tuple2_generic(tuple, value1, value2, has_known_size, decref_tuple))
+static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
+    PyObject* tuple, PyObject** value1, PyObject** value2, int decref_tuple);
+static int __Pyx_unpack_tuple2_generic(
+    PyObject* tuple, PyObject** value1, PyObject** value2, int has_known_size, int decref_tuple);
+
+/* dict_iter.proto */
+static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* dict, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_is_dict);
+static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t orig_length, Py_ssize_t* ppos,
+                                              PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
+
+/* SwapException.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_ExceptionSwap(type, value, tb)  __Pyx__ExceptionSwap(__pyx_tstate, type, value, tb)
+static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
+#else
+static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb);
+#endif
+
 /* IncludeStructmemberH.proto */
 #include <structmember.h>
 
@@ -2256,12 +2321,6 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
 #if CYTHON_USE_TYPE_SPECS
 static int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec, PyTypeObject *type);
 #endif
-
-/* PyObjectGetMethod.proto */
-static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method);
-
-/* PyObjectCallMethod0.proto */
-static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
 
 /* ValidateBasesTuple.proto */
 #if CYTHON_COMPILING_IN_CPYTHON || CYTHON_COMPILING_IN_LIMITED_API || CYTHON_USE_TYPE_SPECS
@@ -2594,14 +2653,6 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 #define __Pyx_PyErr_ExceptionMatches2(err1, err2)  __Pyx_PyErr_GivenExceptionMatches2(__Pyx_PyErr_CurrentExceptionType(), err1, err2)
 #define __Pyx_PyException_Check(obj) __Pyx_TypeCheck(obj, PyExc_Exception)
 
-/* SwapException.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_ExceptionSwap(type, value, tb)  __Pyx__ExceptionSwap(__pyx_tstate, type, value, tb)
-static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb);
-#else
-static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb);
-#endif
-
 /* PyObjectCallMethod1.proto */
 static PyObject* __Pyx_PyObject_CallMethod1(PyObject* obj, PyObject* method_name, PyObject* arg);
 
@@ -2697,6 +2748,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank_plaus
 static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_move_t *__pyx_v_move); /* proto*/
 static PyObject *__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(pyhanabi_history_item_t *__pyx_v_item); /* proto*/
 static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(PyObject *__pyx_v_game, pyhanabi_state_t *__pyx_v_c_state, pyhanabi_game_t *__pyx_v_c_game); /* proto*/
+static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiGame_from_ptr(pyhanabi_game_t *__pyx_v_game); /* proto*/
 
 /* Module declarations from "libc.stdint" */
 
@@ -2741,7 +2793,7 @@ static const char __pyx_k_XX[] = "XX";
 static const char __pyx_k__3[] = "";
 static const char __pyx_k_eq[] = "__eq__";
 static const char __pyx_k_gc[] = "gc";
-static const char __pyx_k__12[] = "*";
+static const char __pyx_k__13[] = "*";
 static const char __pyx_k_cls[] = "cls";
 static const char __pyx_k_doc[] = "__doc__";
 static const char __pyx_k_pid[] = "pid";
@@ -2750,7 +2802,7 @@ static const char __pyx_k_sum[] = "sum";
 static const char __pyx_k_DEAL[] = "DEAL";
 static const char __pyx_k_PLAY[] = "PLAY";
 static const char __pyx_k_SEER[] = "SEER";
-static const char __pyx_k__113[] = "?";
+static const char __pyx_k__132[] = "?";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_copy[] = "copy";
 static const char __pyx_k_dict[] = "__dict__";
@@ -2774,6 +2826,7 @@ static const char __pyx_k_close[] = "close";
 static const char __pyx_k_color[] = "color";
 static const char __pyx_k_dumps[] = "dumps";
 static const char __pyx_k_index[] = "index";
+static const char __pyx_k_items[] = "items";
 static const char __pyx_k_loads[] = "loads";
 static const char __pyx_k_moves[] = "moves";
 static const char __pyx_k_other[] = "other";
@@ -2796,10 +2849,12 @@ static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_module[] = "__module__";
 static const char __pyx_k_name_2[] = "__name__";
 static const char __pyx_k_object[] = "object";
+static const char __pyx_k_params[] = "params";
 static const char __pyx_k_player[] = "player";
 static const char __pyx_k_rank_2[] = "_rank";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_scored[] = "scored";
+static const char __pyx_k_string[] = "string";
 static const char __pyx_k_type_2[] = "type";
 static const char __pyx_k_DISCARD[] = "DISCARD";
 static const char __pyx_k_INVALID[] = "INVALID";
@@ -2815,9 +2870,12 @@ static const char __pyx_k_prepare[] = "__prepare__";
 static const char __pyx_k_py_json[] = "py_json";
 static const char __pyx_k_to_dict[] = "to_dict";
 static const char __pyx_k_to_json[] = "to_json";
+static const char __pyx_k_c_string[] = "c_string";
 static const char __pyx_k_discards[] = "discards";
+static const char __pyx_k_get_move[] = "get_move";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_json_str[] = "json_str";
+static const char __pyx_k_move_uid[] = "move_uid";
 static const char __pyx_k_progress[] = "progress";
 static const char __pyx_k_qualname[] = "__qualname__";
 static const char __pyx_k_revealed[] = "revealed";
@@ -2833,10 +2891,13 @@ static const char __pyx_k_hand_list[] = "hand_list";
 static const char __pyx_k_hand_size[] = "hand_size";
 static const char __pyx_k_isenabled[] = "isenabled";
 static const char __pyx_k_json_game[] = "json_game";
+static const char __pyx_k_max_moves[] = "max_moves";
 static const char __pyx_k_metaclass[] = "__metaclass__";
 static const char __pyx_k_move_dict[] = "move_dict";
 static const char __pyx_k_move_type[] = "move_type";
+static const char __pyx_k_num_cards[] = "num_cards";
 static const char __pyx_k_num_moves[] = "num_moves";
+static const char __pyx_k_num_ranks[] = "num_ranks";
 static const char __pyx_k_pile_size[] = "pile_size";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
@@ -2850,7 +2911,7 @@ static const char __pyx_k_card_index[] = "card_index";
 static const char __pyx_k_color_char[] = "color_char";
 static const char __pyx_k_cur_player[] = "cur_player";
 static const char __pyx_k_json_state[] = "json_state";
-static const char __pyx_k_param_list[] = "param_list";
+static const char __pyx_k_num_colors[] = "num_colors";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
 static const char __pyx_k_HanabiState[] = "HanabiState";
 static const char __pyx_k_MemoryError[] = "MemoryError";
@@ -2869,6 +2930,7 @@ static const char __pyx_k_OUT_OF_CARDS[] = "OUT_OF_CARDS";
 static const char __pyx_k_REVEAL_COLOR[] = "REVEAL_COLOR";
 static const char __pyx_k_card_index_2[] = "_card_index";
 static const char __pyx_k_discard_pile[] = "discard_pile";
+static const char __pyx_k_get_move_uid[] = "get_move_uid";
 static const char __pyx_k_initializing[] = "_initializing";
 static const char __pyx_k_is_coroutine[] = "_is_coroutine";
 static const char __pyx_k_move_history[] = "move_history";
@@ -2895,6 +2957,7 @@ static const char __pyx_k_HanabiCard_rank[] = "HanabiCard.rank";
 static const char __pyx_k_HanabiMove_rank[] = "HanabiMove.rank";
 static const char __pyx_k_HanabiMove_type[] = "HanabiMove.type";
 static const char __pyx_k_get_return_move[] = "get_return_move";
+static const char __pyx_k_max_life_tokens[] = "max_life_tokens";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_target_offset_2[] = "_target_offset";
 static const char __pyx_k_HanabiCard___str[] = "HanabiCard.__str__";
@@ -2906,6 +2969,8 @@ static const char __pyx_k_Unsupported_move[] = "Unsupported move: ";
 static const char __pyx_k_deal_random_card[] = "deal_random_card";
 static const char __pyx_k_get_discard_move[] = "get_discard_move";
 static const char __pyx_k_json_game_result[] = "json_game_result";
+static const char __pyx_k_observation_type[] = "observation_type";
+static const char __pyx_k_parameter_string[] = "parameter_string";
 static const char __pyx_k_remove_knowledge[] = "remove_knowledge";
 static const char __pyx_k_HanabiCard___init[] = "HanabiCard.__init__";
 static const char __pyx_k_HanabiCard___repr[] = "HanabiCard.__repr__";
@@ -2915,7 +2980,9 @@ static const char __pyx_k_color_char_to_idx[] = "color_char_to_idx";
 static const char __pyx_k_color_idx_to_char[] = "color_idx_to_char";
 static const char __pyx_k_information_token[] = "information_token";
 static const char __pyx_k_json_state_result[] = "json_state_result";
+static const char __pyx_k_new_initial_state[] = "new_initial_state";
 static const char __pyx_k_HanabiCard_to_dict[] = "HanabiCard.to_dict";
+static const char __pyx_k_HanabiGame_to_json[] = "HanabiGame.to_json";
 static const char __pyx_k_HanabiMove_to_dict[] = "HanabiMove.to_dict";
 static const char __pyx_k_HanabiMove_to_json[] = "HanabiMove.to_json";
 static const char __pyx_k_Invalid_parameters[] = "Invalid parameters";
@@ -2929,22 +2996,32 @@ static const char __pyx_k_information_tokens[] = "information_tokens";
 static const char __pyx_k_COMPLETED_FIREWORKS[] = "COMPLETED_FIREWORKS";
 static const char __pyx_k_HanabiCardKnowledge[] = "HanabiCardKnowledge";
 static const char __pyx_k_HanabiEndOfGameType[] = "HanabiEndOfGameType";
+static const char __pyx_k_HanabiGame_get_move[] = "HanabiGame.get_move";
 static const char __pyx_k_HanabiState_to_json[] = "HanabiState.to_json";
 static const char __pyx_k_cython_lib_cyhanabi[] = "cython_lib.cyhanabi";
 static const char __pyx_k_AgentObservationType[] = "AgentObservationType";
+static const char __pyx_k_HanabiGame_from_json[] = "HanabiGame.from_json";
+static const char __pyx_k_HanabiGame_hand_size[] = "HanabiGame.hand_size";
+static const char __pyx_k_HanabiGame_max_moves[] = "HanabiGame.max_moves";
+static const char __pyx_k_HanabiGame_num_cards[] = "HanabiGame.num_cards";
+static const char __pyx_k_HanabiGame_num_ranks[] = "HanabiGame.num_ranks";
 static const char __pyx_k_HanabiMove_from_json[] = "HanabiMove.from_json";
 static const char __pyx_k_HanabiState_progress[] = "HanabiState.progress";
 static const char __pyx_k_get_reveal_rank_move[] = "get_reveal_rank_move";
+static const char __pyx_k_HanabiGame_num_colors[] = "HanabiGame.num_colors";
 static const char __pyx_k_HanabiMove_card_index[] = "HanabiMove.card_index";
 static const char __pyx_k_HanabiState_deck_size[] = "HanabiState.deck_size";
 static const char __pyx_k_HanabiState_fireworks[] = "HanabiState.fireworks";
 static const char __pyx_k_HanabiState_from_json[] = "HanabiState.from_json";
 static const char __pyx_k_get_reveal_color_move[] = "get_reveal_color_move";
+static const char __pyx_k_HanabiGame_num_players[] = "HanabiGame.num_players";
 static const char __pyx_k_HanabiHistoryItem_move[] = "HanabiHistoryItem.move";
 static const char __pyx_k_HanabiHistoryItem_rank[] = "HanabiHistoryItem.rank";
 static const char __pyx_k_HanabiState_apply_move[] = "HanabiState.apply_move";
 static const char __pyx_k_HanabiState_cur_player[] = "HanabiState.cur_player";
 static const char __pyx_k_get_deal_specific_move[] = "get_deal_specific_move";
+static const char __pyx_k_max_information_tokens[] = "max_information_tokens";
+static const char __pyx_k_HanabiGame_get_move_uid[] = "HanabiGame.get_move_uid";
 static const char __pyx_k_HanabiHistoryItem_color[] = "HanabiHistoryItem.color";
 static const char __pyx_k_HanabiState_is_terminal[] = "HanabiState.is_terminal";
 static const char __pyx_k_HanabiState_legal_moves[] = "HanabiState.legal_moves";
@@ -2963,14 +3040,18 @@ static const char __pyx_k_HanabiHistoryItem_to_json[] = "HanabiHistoryItem.to_js
 static const char __pyx_k_HanabiState_move_is_legal[] = "HanabiState.move_is_legal";
 static const char __pyx_k_HanabiState_turns_to_play[] = "HanabiState.turns_to_play";
 static const char __pyx_k_HanabiGame___reduce_cython[] = "HanabiGame.__reduce_cython__";
+static const char __pyx_k_HanabiGame_max_life_tokens[] = "HanabiGame.max_life_tokens";
 static const char __pyx_k_HanabiMove___reduce_cython[] = "HanabiMove.__reduce_cython__";
 static const char __pyx_k_HanabiMove_get_return_move[] = "HanabiMove.get_return_move";
 static const char __pyx_k_card_playable_on_fireworks[] = "card_playable_on_fireworks";
 static const char __pyx_k_HanabiCardKnowledge_to_dict[] = "HanabiCardKnowledge.to_dict";
+static const char __pyx_k_HanabiGame_observation_type[] = "HanabiGame.observation_type";
+static const char __pyx_k_HanabiGame_parameter_string[] = "HanabiGame.parameter_string";
 static const char __pyx_k_HanabiHistoryItem_from_json[] = "HanabiHistoryItem.from_json";
 static const char __pyx_k_HanabiMove_get_discard_move[] = "HanabiMove.get_discard_move";
 static const char __pyx_k_HanabiState___reduce_cython[] = "HanabiState.__reduce_cython__";
 static const char __pyx_k_HanabiGame___setstate_cython[] = "HanabiGame.__setstate_cython__";
+static const char __pyx_k_HanabiGame_new_initial_state[] = "HanabiGame.new_initial_state";
 static const char __pyx_k_HanabiMove___setstate_cython[] = "HanabiMove.__setstate_cython__";
 static const char __pyx_k_HanabiState_deal_random_card[] = "HanabiState.deal_random_card";
 static const char __pyx_k_HanabiState_remove_knowledge[] = "HanabiState.remove_knowledge";
@@ -2980,6 +3061,7 @@ static const char __pyx_k_HanabiState_end_of_game_status[] = "HanabiState.end_of
 static const char __pyx_k_HanabiState_information_tokens[] = "HanabiState.information_tokens";
 static const char __pyx_k_Invalid_color_Should_be_one_of[] = "Invalid color: {}. Should be one of {}.";
 static const char __pyx_k_HanabiMove_get_reveal_rank_move[] = "HanabiMove.get_reveal_rank_move";
+static const char __pyx_k_Serialization_failed_GameToJSON[] = "Serialization failed: GameToJSON returned NULL";
 static const char __pyx_k_Serialization_failed_GameToJson[] = "Serialization failed: GameToJson returned NULL.";
 static const char __pyx_k_Serialization_failed_MoveToJSON[] = "Serialization failed: MoveToJSON returned NULL.";
 static const char __pyx_k_Failed_to_deserialize_HanabiGame[] = "Failed to deserialize HanabiGame from JSON";
@@ -2988,6 +3070,7 @@ static const char __pyx_k_Failed_to_deserialize_HanabiMove[] = "Failed to deseri
 static const char __pyx_k_Failed_to_deserialize_HanabiStat[] = "Failed to deserialize HanabiState from JSON";
 static const char __pyx_k_HanabiCardKnowledge___reduce_cyt[] = "HanabiCardKnowledge.__reduce_cython__";
 static const char __pyx_k_HanabiCardKnowledge___setstate_c[] = "HanabiCardKnowledge.__setstate_cython__";
+static const char __pyx_k_HanabiGame_max_information_token[] = "HanabiGame.max_information_tokens";
 static const char __pyx_k_HanabiHistoryItem___reduce_cytho[] = "HanabiHistoryItem.__reduce_cython__";
 static const char __pyx_k_HanabiHistoryItem___setstate_cyt[] = "HanabiHistoryItem.__setstate_cython__";
 static const char __pyx_k_HanabiHistoryItem_card_info_newl[] = "HanabiHistoryItem.card_info_newly_revealed";
@@ -3094,9 +3177,25 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
 static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_60__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_62__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame___cinit__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
-static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_param_list); /* proto */
-static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, PyObject *__pyx_v_params); /* proto */
+static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__dealloc__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6new_initial_state(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_8num_players(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_10num_colors(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_12num_ranks(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_14hand_size(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_16max_information_tokens(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_18max_life_tokens(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_20max_moves(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_22observation_type(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_24num_cards(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, int __pyx_v_color, int __pyx_v_rank); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_26get_move_uid(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *__pyx_v_move); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_28get_move(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, int __pyx_v_move_uid); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_30parameter_string(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_32to_json(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_34from_json(CYTHON_UNUSED PyTypeObject *__pyx_v_cls, PyObject *__pyx_v_json_str); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_36__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_38__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_10cython_lib_8cyhanabi_HanabiCardKnowledge(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_10cython_lib_8cyhanabi_HanabiMove(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_10cython_lib_8cyhanabi_HanabiHistoryItem(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
@@ -3191,6 +3290,21 @@ typedef struct {
   PyObject *__pyx_n_u_HanabiGame;
   PyObject *__pyx_n_s_HanabiGame___reduce_cython;
   PyObject *__pyx_n_s_HanabiGame___setstate_cython;
+  PyObject *__pyx_n_s_HanabiGame_from_json;
+  PyObject *__pyx_n_s_HanabiGame_get_move;
+  PyObject *__pyx_n_s_HanabiGame_get_move_uid;
+  PyObject *__pyx_n_s_HanabiGame_hand_size;
+  PyObject *__pyx_n_s_HanabiGame_max_information_token;
+  PyObject *__pyx_n_s_HanabiGame_max_life_tokens;
+  PyObject *__pyx_n_s_HanabiGame_max_moves;
+  PyObject *__pyx_n_s_HanabiGame_new_initial_state;
+  PyObject *__pyx_n_s_HanabiGame_num_cards;
+  PyObject *__pyx_n_s_HanabiGame_num_colors;
+  PyObject *__pyx_n_s_HanabiGame_num_players;
+  PyObject *__pyx_n_s_HanabiGame_num_ranks;
+  PyObject *__pyx_n_s_HanabiGame_observation_type;
+  PyObject *__pyx_n_s_HanabiGame_parameter_string;
+  PyObject *__pyx_n_s_HanabiGame_to_json;
   PyObject *__pyx_n_s_HanabiHistoryItem;
   PyObject *__pyx_n_s_HanabiHistoryItem___reduce_cytho;
   PyObject *__pyx_n_s_HanabiHistoryItem___setstate_cyt;
@@ -3269,6 +3383,7 @@ typedef struct {
   PyObject *__pyx_n_s_REVEAL_COLOR;
   PyObject *__pyx_n_s_REVEAL_RANK;
   PyObject *__pyx_n_s_SEER;
+  PyObject *__pyx_kp_u_Serialization_failed_GameToJSON;
   PyObject *__pyx_kp_u_Serialization_failed_GameToJson;
   PyObject *__pyx_kp_u_Serialization_failed_HistoryItem;
   PyObject *__pyx_kp_u_Serialization_failed_MoveToJSON;
@@ -3278,8 +3393,8 @@ typedef struct {
   PyObject *__pyx_kp_u_Unsupported_move;
   PyObject *__pyx_n_s_ValueError;
   PyObject *__pyx_n_u_XX;
-  PyObject *__pyx_n_s__113;
-  PyObject *__pyx_n_s__12;
+  PyObject *__pyx_n_s__13;
+  PyObject *__pyx_n_s__132;
   PyObject *__pyx_kp_u__3;
   PyObject *__pyx_n_u_action_type;
   PyObject *__pyx_n_s_apply_move;
@@ -3295,6 +3410,7 @@ typedef struct {
   PyObject *__pyx_n_s_c_move;
   PyObject *__pyx_n_s_c_movelist;
   PyObject *__pyx_n_s_c_state;
+  PyObject *__pyx_n_s_c_string;
   PyObject *__pyx_n_s_card_index;
   PyObject *__pyx_n_u_card_index;
   PyObject *__pyx_n_s_card_index_2;
@@ -3343,6 +3459,8 @@ typedef struct {
   PyObject *__pyx_n_s_genexpr;
   PyObject *__pyx_n_s_get_deal_specific_move;
   PyObject *__pyx_n_s_get_discard_move;
+  PyObject *__pyx_n_s_get_move;
+  PyObject *__pyx_n_s_get_move_uid;
   PyObject *__pyx_n_s_get_play_move;
   PyObject *__pyx_n_s_get_return_move;
   PyObject *__pyx_n_s_get_reveal_color_move;
@@ -3363,6 +3481,7 @@ typedef struct {
   PyObject *__pyx_n_s_is_coroutine;
   PyObject *__pyx_n_s_is_terminal;
   PyObject *__pyx_kp_u_isenabled;
+  PyObject *__pyx_n_s_items;
   PyObject *__pyx_n_s_json;
   PyObject *__pyx_n_s_json_game;
   PyObject *__pyx_n_s_json_game_result;
@@ -3373,6 +3492,9 @@ typedef struct {
   PyObject *__pyx_n_s_life_tokens;
   PyObject *__pyx_n_s_loads;
   PyObject *__pyx_n_s_main;
+  PyObject *__pyx_n_s_max_information_tokens;
+  PyObject *__pyx_n_s_max_life_tokens;
+  PyObject *__pyx_n_s_max_moves;
   PyObject *__pyx_n_s_metaclass;
   PyObject *__pyx_n_s_module;
   PyObject *__pyx_n_s_move;
@@ -3380,16 +3502,23 @@ typedef struct {
   PyObject *__pyx_n_s_move_history;
   PyObject *__pyx_n_s_move_is_legal;
   PyObject *__pyx_n_s_move_type;
+  PyObject *__pyx_n_s_move_uid;
   PyObject *__pyx_n_s_moves;
   PyObject *__pyx_n_s_mro_entries;
   PyObject *__pyx_n_s_name;
   PyObject *__pyx_n_s_name_2;
+  PyObject *__pyx_n_s_new_initial_state;
   PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+  PyObject *__pyx_n_s_num_cards;
+  PyObject *__pyx_n_s_num_colors;
   PyObject *__pyx_n_s_num_moves;
   PyObject *__pyx_n_s_num_players;
+  PyObject *__pyx_n_s_num_ranks;
   PyObject *__pyx_n_s_object;
+  PyObject *__pyx_n_s_observation_type;
   PyObject *__pyx_n_s_other;
-  PyObject *__pyx_n_s_param_list;
+  PyObject *__pyx_n_s_parameter_string;
+  PyObject *__pyx_n_s_params;
   PyObject *__pyx_n_s_parent_game;
   PyObject *__pyx_n_s_pid;
   PyObject *__pyx_n_s_pile_size;
@@ -3423,6 +3552,7 @@ typedef struct {
   PyObject *__pyx_n_s_state;
   PyObject *__pyx_n_s_staticmethod;
   PyObject *__pyx_n_s_str;
+  PyObject *__pyx_n_s_string;
   PyObject *__pyx_kp_s_stringsource;
   PyObject *__pyx_n_s_sum;
   PyObject *__pyx_n_s_super;
@@ -3456,106 +3586,125 @@ typedef struct {
   PyObject *__pyx_tuple__9;
   PyObject *__pyx_tuple__10;
   PyObject *__pyx_tuple__11;
-  PyObject *__pyx_tuple__13;
-  PyObject *__pyx_tuple__15;
-  PyObject *__pyx_tuple__17;
+  PyObject *__pyx_tuple__12;
+  PyObject *__pyx_tuple__14;
+  PyObject *__pyx_tuple__16;
   PyObject *__pyx_tuple__18;
   PyObject *__pyx_tuple__19;
-  PyObject *__pyx_tuple__21;
-  PyObject *__pyx_tuple__26;
-  PyObject *__pyx_tuple__32;
-  PyObject *__pyx_tuple__39;
-  PyObject *__pyx_tuple__41;
-  PyObject *__pyx_tuple__44;
-  PyObject *__pyx_tuple__46;
-  PyObject *__pyx_tuple__48;
-  PyObject *__pyx_tuple__50;
-  PyObject *__pyx_tuple__52;
-  PyObject *__pyx_tuple__54;
-  PyObject *__pyx_tuple__58;
-  PyObject *__pyx_tuple__65;
-  PyObject *__pyx_tuple__70;
-  PyObject *__pyx_tuple__75;
-  PyObject *__pyx_tuple__80;
-  PyObject *__pyx_tuple__82;
-  PyObject *__pyx_tuple__87;
-  PyObject *__pyx_tuple__89;
-  PyObject *__pyx_tuple__91;
-  PyObject *__pyx_tuple__96;
-  PyObject *__pyx_tuple__103;
-  PyObject *__pyx_tuple__105;
-  PyObject *__pyx_tuple__107;
-  PyObject *__pyx_codeobj__14;
-  PyObject *__pyx_codeobj__16;
-  PyObject *__pyx_codeobj__20;
-  PyObject *__pyx_codeobj__22;
+  PyObject *__pyx_tuple__20;
+  PyObject *__pyx_tuple__22;
+  PyObject *__pyx_tuple__27;
+  PyObject *__pyx_tuple__33;
+  PyObject *__pyx_tuple__40;
+  PyObject *__pyx_tuple__42;
+  PyObject *__pyx_tuple__45;
+  PyObject *__pyx_tuple__47;
+  PyObject *__pyx_tuple__49;
+  PyObject *__pyx_tuple__51;
+  PyObject *__pyx_tuple__53;
+  PyObject *__pyx_tuple__55;
+  PyObject *__pyx_tuple__59;
+  PyObject *__pyx_tuple__66;
+  PyObject *__pyx_tuple__71;
+  PyObject *__pyx_tuple__76;
+  PyObject *__pyx_tuple__81;
+  PyObject *__pyx_tuple__83;
+  PyObject *__pyx_tuple__88;
+  PyObject *__pyx_tuple__90;
+  PyObject *__pyx_tuple__92;
+  PyObject *__pyx_tuple__97;
+  PyObject *__pyx_tuple__104;
+  PyObject *__pyx_tuple__106;
+  PyObject *__pyx_tuple__108;
+  PyObject *__pyx_tuple__123;
+  PyObject *__pyx_tuple__125;
+  PyObject *__pyx_tuple__128;
+  PyObject *__pyx_codeobj__15;
+  PyObject *__pyx_codeobj__17;
+  PyObject *__pyx_codeobj__21;
   PyObject *__pyx_codeobj__23;
   PyObject *__pyx_codeobj__24;
   PyObject *__pyx_codeobj__25;
-  PyObject *__pyx_codeobj__27;
+  PyObject *__pyx_codeobj__26;
   PyObject *__pyx_codeobj__28;
   PyObject *__pyx_codeobj__29;
   PyObject *__pyx_codeobj__30;
   PyObject *__pyx_codeobj__31;
-  PyObject *__pyx_codeobj__33;
+  PyObject *__pyx_codeobj__32;
   PyObject *__pyx_codeobj__34;
   PyObject *__pyx_codeobj__35;
   PyObject *__pyx_codeobj__36;
   PyObject *__pyx_codeobj__37;
   PyObject *__pyx_codeobj__38;
-  PyObject *__pyx_codeobj__40;
-  PyObject *__pyx_codeobj__42;
+  PyObject *__pyx_codeobj__39;
+  PyObject *__pyx_codeobj__41;
   PyObject *__pyx_codeobj__43;
-  PyObject *__pyx_codeobj__45;
-  PyObject *__pyx_codeobj__47;
-  PyObject *__pyx_codeobj__49;
-  PyObject *__pyx_codeobj__51;
-  PyObject *__pyx_codeobj__53;
-  PyObject *__pyx_codeobj__55;
+  PyObject *__pyx_codeobj__44;
+  PyObject *__pyx_codeobj__46;
+  PyObject *__pyx_codeobj__48;
+  PyObject *__pyx_codeobj__50;
+  PyObject *__pyx_codeobj__52;
+  PyObject *__pyx_codeobj__54;
   PyObject *__pyx_codeobj__56;
   PyObject *__pyx_codeobj__57;
-  PyObject *__pyx_codeobj__59;
+  PyObject *__pyx_codeobj__58;
   PyObject *__pyx_codeobj__60;
   PyObject *__pyx_codeobj__61;
   PyObject *__pyx_codeobj__62;
   PyObject *__pyx_codeobj__63;
   PyObject *__pyx_codeobj__64;
-  PyObject *__pyx_codeobj__66;
+  PyObject *__pyx_codeobj__65;
   PyObject *__pyx_codeobj__67;
   PyObject *__pyx_codeobj__68;
   PyObject *__pyx_codeobj__69;
-  PyObject *__pyx_codeobj__71;
+  PyObject *__pyx_codeobj__70;
   PyObject *__pyx_codeobj__72;
   PyObject *__pyx_codeobj__73;
   PyObject *__pyx_codeobj__74;
-  PyObject *__pyx_codeobj__76;
+  PyObject *__pyx_codeobj__75;
   PyObject *__pyx_codeobj__77;
   PyObject *__pyx_codeobj__78;
   PyObject *__pyx_codeobj__79;
-  PyObject *__pyx_codeobj__81;
-  PyObject *__pyx_codeobj__83;
+  PyObject *__pyx_codeobj__80;
+  PyObject *__pyx_codeobj__82;
   PyObject *__pyx_codeobj__84;
   PyObject *__pyx_codeobj__85;
   PyObject *__pyx_codeobj__86;
-  PyObject *__pyx_codeobj__88;
-  PyObject *__pyx_codeobj__90;
-  PyObject *__pyx_codeobj__92;
+  PyObject *__pyx_codeobj__87;
+  PyObject *__pyx_codeobj__89;
+  PyObject *__pyx_codeobj__91;
   PyObject *__pyx_codeobj__93;
   PyObject *__pyx_codeobj__94;
   PyObject *__pyx_codeobj__95;
-  PyObject *__pyx_codeobj__97;
+  PyObject *__pyx_codeobj__96;
   PyObject *__pyx_codeobj__98;
   PyObject *__pyx_codeobj__99;
   PyObject *__pyx_codeobj__100;
   PyObject *__pyx_codeobj__101;
   PyObject *__pyx_codeobj__102;
-  PyObject *__pyx_codeobj__104;
-  PyObject *__pyx_codeobj__106;
-  PyObject *__pyx_codeobj__108;
+  PyObject *__pyx_codeobj__103;
+  PyObject *__pyx_codeobj__105;
+  PyObject *__pyx_codeobj__107;
   PyObject *__pyx_codeobj__109;
   PyObject *__pyx_codeobj__110;
   PyObject *__pyx_codeobj__111;
   PyObject *__pyx_codeobj__112;
+  PyObject *__pyx_codeobj__113;
+  PyObject *__pyx_codeobj__114;
+  PyObject *__pyx_codeobj__115;
+  PyObject *__pyx_codeobj__116;
+  PyObject *__pyx_codeobj__117;
+  PyObject *__pyx_codeobj__118;
+  PyObject *__pyx_codeobj__119;
+  PyObject *__pyx_codeobj__120;
+  PyObject *__pyx_codeobj__121;
+  PyObject *__pyx_codeobj__122;
+  PyObject *__pyx_codeobj__124;
+  PyObject *__pyx_codeobj__126;
+  PyObject *__pyx_codeobj__127;
+  PyObject *__pyx_codeobj__129;
+  PyObject *__pyx_codeobj__130;
+  PyObject *__pyx_codeobj__131;
 } __pyx_mstate;
 
 #if CYTHON_USE_MODULE_STATE
@@ -3642,6 +3791,21 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_u_HanabiGame);
   Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame___reduce_cython);
   Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame___setstate_cython);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_from_json);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_get_move);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_get_move_uid);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_hand_size);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_max_information_token);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_max_life_tokens);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_max_moves);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_new_initial_state);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_num_cards);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_num_colors);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_num_players);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_num_ranks);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_observation_type);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_parameter_string);
+  Py_CLEAR(clear_module_state->__pyx_n_s_HanabiGame_to_json);
   Py_CLEAR(clear_module_state->__pyx_n_s_HanabiHistoryItem);
   Py_CLEAR(clear_module_state->__pyx_n_s_HanabiHistoryItem___reduce_cytho);
   Py_CLEAR(clear_module_state->__pyx_n_s_HanabiHistoryItem___setstate_cyt);
@@ -3720,6 +3884,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_REVEAL_COLOR);
   Py_CLEAR(clear_module_state->__pyx_n_s_REVEAL_RANK);
   Py_CLEAR(clear_module_state->__pyx_n_s_SEER);
+  Py_CLEAR(clear_module_state->__pyx_kp_u_Serialization_failed_GameToJSON);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Serialization_failed_GameToJson);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Serialization_failed_HistoryItem);
   Py_CLEAR(clear_module_state->__pyx_kp_u_Serialization_failed_MoveToJSON);
@@ -3729,8 +3894,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_kp_u_Unsupported_move);
   Py_CLEAR(clear_module_state->__pyx_n_s_ValueError);
   Py_CLEAR(clear_module_state->__pyx_n_u_XX);
-  Py_CLEAR(clear_module_state->__pyx_n_s__113);
-  Py_CLEAR(clear_module_state->__pyx_n_s__12);
+  Py_CLEAR(clear_module_state->__pyx_n_s__13);
+  Py_CLEAR(clear_module_state->__pyx_n_s__132);
   Py_CLEAR(clear_module_state->__pyx_kp_u__3);
   Py_CLEAR(clear_module_state->__pyx_n_u_action_type);
   Py_CLEAR(clear_module_state->__pyx_n_s_apply_move);
@@ -3746,6 +3911,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_c_move);
   Py_CLEAR(clear_module_state->__pyx_n_s_c_movelist);
   Py_CLEAR(clear_module_state->__pyx_n_s_c_state);
+  Py_CLEAR(clear_module_state->__pyx_n_s_c_string);
   Py_CLEAR(clear_module_state->__pyx_n_s_card_index);
   Py_CLEAR(clear_module_state->__pyx_n_u_card_index);
   Py_CLEAR(clear_module_state->__pyx_n_s_card_index_2);
@@ -3794,6 +3960,8 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_genexpr);
   Py_CLEAR(clear_module_state->__pyx_n_s_get_deal_specific_move);
   Py_CLEAR(clear_module_state->__pyx_n_s_get_discard_move);
+  Py_CLEAR(clear_module_state->__pyx_n_s_get_move);
+  Py_CLEAR(clear_module_state->__pyx_n_s_get_move_uid);
   Py_CLEAR(clear_module_state->__pyx_n_s_get_play_move);
   Py_CLEAR(clear_module_state->__pyx_n_s_get_return_move);
   Py_CLEAR(clear_module_state->__pyx_n_s_get_reveal_color_move);
@@ -3814,6 +3982,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_is_coroutine);
   Py_CLEAR(clear_module_state->__pyx_n_s_is_terminal);
   Py_CLEAR(clear_module_state->__pyx_kp_u_isenabled);
+  Py_CLEAR(clear_module_state->__pyx_n_s_items);
   Py_CLEAR(clear_module_state->__pyx_n_s_json);
   Py_CLEAR(clear_module_state->__pyx_n_s_json_game);
   Py_CLEAR(clear_module_state->__pyx_n_s_json_game_result);
@@ -3824,6 +3993,9 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_life_tokens);
   Py_CLEAR(clear_module_state->__pyx_n_s_loads);
   Py_CLEAR(clear_module_state->__pyx_n_s_main);
+  Py_CLEAR(clear_module_state->__pyx_n_s_max_information_tokens);
+  Py_CLEAR(clear_module_state->__pyx_n_s_max_life_tokens);
+  Py_CLEAR(clear_module_state->__pyx_n_s_max_moves);
   Py_CLEAR(clear_module_state->__pyx_n_s_metaclass);
   Py_CLEAR(clear_module_state->__pyx_n_s_module);
   Py_CLEAR(clear_module_state->__pyx_n_s_move);
@@ -3831,16 +4003,23 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_move_history);
   Py_CLEAR(clear_module_state->__pyx_n_s_move_is_legal);
   Py_CLEAR(clear_module_state->__pyx_n_s_move_type);
+  Py_CLEAR(clear_module_state->__pyx_n_s_move_uid);
   Py_CLEAR(clear_module_state->__pyx_n_s_moves);
   Py_CLEAR(clear_module_state->__pyx_n_s_mro_entries);
   Py_CLEAR(clear_module_state->__pyx_n_s_name);
   Py_CLEAR(clear_module_state->__pyx_n_s_name_2);
+  Py_CLEAR(clear_module_state->__pyx_n_s_new_initial_state);
   Py_CLEAR(clear_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
+  Py_CLEAR(clear_module_state->__pyx_n_s_num_cards);
+  Py_CLEAR(clear_module_state->__pyx_n_s_num_colors);
   Py_CLEAR(clear_module_state->__pyx_n_s_num_moves);
   Py_CLEAR(clear_module_state->__pyx_n_s_num_players);
+  Py_CLEAR(clear_module_state->__pyx_n_s_num_ranks);
   Py_CLEAR(clear_module_state->__pyx_n_s_object);
+  Py_CLEAR(clear_module_state->__pyx_n_s_observation_type);
   Py_CLEAR(clear_module_state->__pyx_n_s_other);
-  Py_CLEAR(clear_module_state->__pyx_n_s_param_list);
+  Py_CLEAR(clear_module_state->__pyx_n_s_parameter_string);
+  Py_CLEAR(clear_module_state->__pyx_n_s_params);
   Py_CLEAR(clear_module_state->__pyx_n_s_parent_game);
   Py_CLEAR(clear_module_state->__pyx_n_s_pid);
   Py_CLEAR(clear_module_state->__pyx_n_s_pile_size);
@@ -3874,6 +4053,7 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_n_s_state);
   Py_CLEAR(clear_module_state->__pyx_n_s_staticmethod);
   Py_CLEAR(clear_module_state->__pyx_n_s_str);
+  Py_CLEAR(clear_module_state->__pyx_n_s_string);
   Py_CLEAR(clear_module_state->__pyx_kp_s_stringsource);
   Py_CLEAR(clear_module_state->__pyx_n_s_sum);
   Py_CLEAR(clear_module_state->__pyx_n_s_super);
@@ -3907,106 +4087,125 @@ static int __pyx_m_clear(PyObject *m) {
   Py_CLEAR(clear_module_state->__pyx_tuple__9);
   Py_CLEAR(clear_module_state->__pyx_tuple__10);
   Py_CLEAR(clear_module_state->__pyx_tuple__11);
-  Py_CLEAR(clear_module_state->__pyx_tuple__13);
-  Py_CLEAR(clear_module_state->__pyx_tuple__15);
-  Py_CLEAR(clear_module_state->__pyx_tuple__17);
+  Py_CLEAR(clear_module_state->__pyx_tuple__12);
+  Py_CLEAR(clear_module_state->__pyx_tuple__14);
+  Py_CLEAR(clear_module_state->__pyx_tuple__16);
   Py_CLEAR(clear_module_state->__pyx_tuple__18);
   Py_CLEAR(clear_module_state->__pyx_tuple__19);
-  Py_CLEAR(clear_module_state->__pyx_tuple__21);
-  Py_CLEAR(clear_module_state->__pyx_tuple__26);
-  Py_CLEAR(clear_module_state->__pyx_tuple__32);
-  Py_CLEAR(clear_module_state->__pyx_tuple__39);
-  Py_CLEAR(clear_module_state->__pyx_tuple__41);
-  Py_CLEAR(clear_module_state->__pyx_tuple__44);
-  Py_CLEAR(clear_module_state->__pyx_tuple__46);
-  Py_CLEAR(clear_module_state->__pyx_tuple__48);
-  Py_CLEAR(clear_module_state->__pyx_tuple__50);
-  Py_CLEAR(clear_module_state->__pyx_tuple__52);
-  Py_CLEAR(clear_module_state->__pyx_tuple__54);
-  Py_CLEAR(clear_module_state->__pyx_tuple__58);
-  Py_CLEAR(clear_module_state->__pyx_tuple__65);
-  Py_CLEAR(clear_module_state->__pyx_tuple__70);
-  Py_CLEAR(clear_module_state->__pyx_tuple__75);
-  Py_CLEAR(clear_module_state->__pyx_tuple__80);
-  Py_CLEAR(clear_module_state->__pyx_tuple__82);
-  Py_CLEAR(clear_module_state->__pyx_tuple__87);
-  Py_CLEAR(clear_module_state->__pyx_tuple__89);
-  Py_CLEAR(clear_module_state->__pyx_tuple__91);
-  Py_CLEAR(clear_module_state->__pyx_tuple__96);
-  Py_CLEAR(clear_module_state->__pyx_tuple__103);
-  Py_CLEAR(clear_module_state->__pyx_tuple__105);
-  Py_CLEAR(clear_module_state->__pyx_tuple__107);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__14);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__16);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__20);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__22);
+  Py_CLEAR(clear_module_state->__pyx_tuple__20);
+  Py_CLEAR(clear_module_state->__pyx_tuple__22);
+  Py_CLEAR(clear_module_state->__pyx_tuple__27);
+  Py_CLEAR(clear_module_state->__pyx_tuple__33);
+  Py_CLEAR(clear_module_state->__pyx_tuple__40);
+  Py_CLEAR(clear_module_state->__pyx_tuple__42);
+  Py_CLEAR(clear_module_state->__pyx_tuple__45);
+  Py_CLEAR(clear_module_state->__pyx_tuple__47);
+  Py_CLEAR(clear_module_state->__pyx_tuple__49);
+  Py_CLEAR(clear_module_state->__pyx_tuple__51);
+  Py_CLEAR(clear_module_state->__pyx_tuple__53);
+  Py_CLEAR(clear_module_state->__pyx_tuple__55);
+  Py_CLEAR(clear_module_state->__pyx_tuple__59);
+  Py_CLEAR(clear_module_state->__pyx_tuple__66);
+  Py_CLEAR(clear_module_state->__pyx_tuple__71);
+  Py_CLEAR(clear_module_state->__pyx_tuple__76);
+  Py_CLEAR(clear_module_state->__pyx_tuple__81);
+  Py_CLEAR(clear_module_state->__pyx_tuple__83);
+  Py_CLEAR(clear_module_state->__pyx_tuple__88);
+  Py_CLEAR(clear_module_state->__pyx_tuple__90);
+  Py_CLEAR(clear_module_state->__pyx_tuple__92);
+  Py_CLEAR(clear_module_state->__pyx_tuple__97);
+  Py_CLEAR(clear_module_state->__pyx_tuple__104);
+  Py_CLEAR(clear_module_state->__pyx_tuple__106);
+  Py_CLEAR(clear_module_state->__pyx_tuple__108);
+  Py_CLEAR(clear_module_state->__pyx_tuple__123);
+  Py_CLEAR(clear_module_state->__pyx_tuple__125);
+  Py_CLEAR(clear_module_state->__pyx_tuple__128);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__15);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__17);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__21);
   Py_CLEAR(clear_module_state->__pyx_codeobj__23);
   Py_CLEAR(clear_module_state->__pyx_codeobj__24);
   Py_CLEAR(clear_module_state->__pyx_codeobj__25);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__27);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__26);
   Py_CLEAR(clear_module_state->__pyx_codeobj__28);
   Py_CLEAR(clear_module_state->__pyx_codeobj__29);
   Py_CLEAR(clear_module_state->__pyx_codeobj__30);
   Py_CLEAR(clear_module_state->__pyx_codeobj__31);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__33);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__32);
   Py_CLEAR(clear_module_state->__pyx_codeobj__34);
   Py_CLEAR(clear_module_state->__pyx_codeobj__35);
   Py_CLEAR(clear_module_state->__pyx_codeobj__36);
   Py_CLEAR(clear_module_state->__pyx_codeobj__37);
   Py_CLEAR(clear_module_state->__pyx_codeobj__38);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__40);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__42);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__39);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__41);
   Py_CLEAR(clear_module_state->__pyx_codeobj__43);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__45);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__47);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__49);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__51);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__53);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__55);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__44);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__46);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__48);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__50);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__52);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__54);
   Py_CLEAR(clear_module_state->__pyx_codeobj__56);
   Py_CLEAR(clear_module_state->__pyx_codeobj__57);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__59);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__58);
   Py_CLEAR(clear_module_state->__pyx_codeobj__60);
   Py_CLEAR(clear_module_state->__pyx_codeobj__61);
   Py_CLEAR(clear_module_state->__pyx_codeobj__62);
   Py_CLEAR(clear_module_state->__pyx_codeobj__63);
   Py_CLEAR(clear_module_state->__pyx_codeobj__64);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__66);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__65);
   Py_CLEAR(clear_module_state->__pyx_codeobj__67);
   Py_CLEAR(clear_module_state->__pyx_codeobj__68);
   Py_CLEAR(clear_module_state->__pyx_codeobj__69);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__71);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__70);
   Py_CLEAR(clear_module_state->__pyx_codeobj__72);
   Py_CLEAR(clear_module_state->__pyx_codeobj__73);
   Py_CLEAR(clear_module_state->__pyx_codeobj__74);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__76);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__75);
   Py_CLEAR(clear_module_state->__pyx_codeobj__77);
   Py_CLEAR(clear_module_state->__pyx_codeobj__78);
   Py_CLEAR(clear_module_state->__pyx_codeobj__79);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__81);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__83);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__80);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__82);
   Py_CLEAR(clear_module_state->__pyx_codeobj__84);
   Py_CLEAR(clear_module_state->__pyx_codeobj__85);
   Py_CLEAR(clear_module_state->__pyx_codeobj__86);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__88);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__90);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__92);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__87);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__89);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__91);
   Py_CLEAR(clear_module_state->__pyx_codeobj__93);
   Py_CLEAR(clear_module_state->__pyx_codeobj__94);
   Py_CLEAR(clear_module_state->__pyx_codeobj__95);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__97);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__96);
   Py_CLEAR(clear_module_state->__pyx_codeobj__98);
   Py_CLEAR(clear_module_state->__pyx_codeobj__99);
   Py_CLEAR(clear_module_state->__pyx_codeobj__100);
   Py_CLEAR(clear_module_state->__pyx_codeobj__101);
   Py_CLEAR(clear_module_state->__pyx_codeobj__102);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__104);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__106);
-  Py_CLEAR(clear_module_state->__pyx_codeobj__108);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__103);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__105);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__107);
   Py_CLEAR(clear_module_state->__pyx_codeobj__109);
   Py_CLEAR(clear_module_state->__pyx_codeobj__110);
   Py_CLEAR(clear_module_state->__pyx_codeobj__111);
   Py_CLEAR(clear_module_state->__pyx_codeobj__112);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__113);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__114);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__115);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__116);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__117);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__118);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__119);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__120);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__121);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__122);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__124);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__126);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__127);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__129);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__130);
+  Py_CLEAR(clear_module_state->__pyx_codeobj__131);
   return 0;
 }
 #endif
@@ -4071,6 +4270,21 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_u_HanabiGame);
   Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame___reduce_cython);
   Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame___setstate_cython);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_from_json);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_get_move);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_get_move_uid);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_hand_size);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_max_information_token);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_max_life_tokens);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_max_moves);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_new_initial_state);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_num_cards);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_num_colors);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_num_players);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_num_ranks);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_observation_type);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_parameter_string);
+  Py_VISIT(traverse_module_state->__pyx_n_s_HanabiGame_to_json);
   Py_VISIT(traverse_module_state->__pyx_n_s_HanabiHistoryItem);
   Py_VISIT(traverse_module_state->__pyx_n_s_HanabiHistoryItem___reduce_cytho);
   Py_VISIT(traverse_module_state->__pyx_n_s_HanabiHistoryItem___setstate_cyt);
@@ -4149,6 +4363,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_REVEAL_COLOR);
   Py_VISIT(traverse_module_state->__pyx_n_s_REVEAL_RANK);
   Py_VISIT(traverse_module_state->__pyx_n_s_SEER);
+  Py_VISIT(traverse_module_state->__pyx_kp_u_Serialization_failed_GameToJSON);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Serialization_failed_GameToJson);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Serialization_failed_HistoryItem);
   Py_VISIT(traverse_module_state->__pyx_kp_u_Serialization_failed_MoveToJSON);
@@ -4158,8 +4373,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_kp_u_Unsupported_move);
   Py_VISIT(traverse_module_state->__pyx_n_s_ValueError);
   Py_VISIT(traverse_module_state->__pyx_n_u_XX);
-  Py_VISIT(traverse_module_state->__pyx_n_s__113);
-  Py_VISIT(traverse_module_state->__pyx_n_s__12);
+  Py_VISIT(traverse_module_state->__pyx_n_s__13);
+  Py_VISIT(traverse_module_state->__pyx_n_s__132);
   Py_VISIT(traverse_module_state->__pyx_kp_u__3);
   Py_VISIT(traverse_module_state->__pyx_n_u_action_type);
   Py_VISIT(traverse_module_state->__pyx_n_s_apply_move);
@@ -4175,6 +4390,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_c_move);
   Py_VISIT(traverse_module_state->__pyx_n_s_c_movelist);
   Py_VISIT(traverse_module_state->__pyx_n_s_c_state);
+  Py_VISIT(traverse_module_state->__pyx_n_s_c_string);
   Py_VISIT(traverse_module_state->__pyx_n_s_card_index);
   Py_VISIT(traverse_module_state->__pyx_n_u_card_index);
   Py_VISIT(traverse_module_state->__pyx_n_s_card_index_2);
@@ -4223,6 +4439,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_genexpr);
   Py_VISIT(traverse_module_state->__pyx_n_s_get_deal_specific_move);
   Py_VISIT(traverse_module_state->__pyx_n_s_get_discard_move);
+  Py_VISIT(traverse_module_state->__pyx_n_s_get_move);
+  Py_VISIT(traverse_module_state->__pyx_n_s_get_move_uid);
   Py_VISIT(traverse_module_state->__pyx_n_s_get_play_move);
   Py_VISIT(traverse_module_state->__pyx_n_s_get_return_move);
   Py_VISIT(traverse_module_state->__pyx_n_s_get_reveal_color_move);
@@ -4243,6 +4461,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_is_coroutine);
   Py_VISIT(traverse_module_state->__pyx_n_s_is_terminal);
   Py_VISIT(traverse_module_state->__pyx_kp_u_isenabled);
+  Py_VISIT(traverse_module_state->__pyx_n_s_items);
   Py_VISIT(traverse_module_state->__pyx_n_s_json);
   Py_VISIT(traverse_module_state->__pyx_n_s_json_game);
   Py_VISIT(traverse_module_state->__pyx_n_s_json_game_result);
@@ -4253,6 +4472,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_life_tokens);
   Py_VISIT(traverse_module_state->__pyx_n_s_loads);
   Py_VISIT(traverse_module_state->__pyx_n_s_main);
+  Py_VISIT(traverse_module_state->__pyx_n_s_max_information_tokens);
+  Py_VISIT(traverse_module_state->__pyx_n_s_max_life_tokens);
+  Py_VISIT(traverse_module_state->__pyx_n_s_max_moves);
   Py_VISIT(traverse_module_state->__pyx_n_s_metaclass);
   Py_VISIT(traverse_module_state->__pyx_n_s_module);
   Py_VISIT(traverse_module_state->__pyx_n_s_move);
@@ -4260,16 +4482,23 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_move_history);
   Py_VISIT(traverse_module_state->__pyx_n_s_move_is_legal);
   Py_VISIT(traverse_module_state->__pyx_n_s_move_type);
+  Py_VISIT(traverse_module_state->__pyx_n_s_move_uid);
   Py_VISIT(traverse_module_state->__pyx_n_s_moves);
   Py_VISIT(traverse_module_state->__pyx_n_s_mro_entries);
   Py_VISIT(traverse_module_state->__pyx_n_s_name);
   Py_VISIT(traverse_module_state->__pyx_n_s_name_2);
+  Py_VISIT(traverse_module_state->__pyx_n_s_new_initial_state);
   Py_VISIT(traverse_module_state->__pyx_kp_s_no_default___reduce___due_to_non);
+  Py_VISIT(traverse_module_state->__pyx_n_s_num_cards);
+  Py_VISIT(traverse_module_state->__pyx_n_s_num_colors);
   Py_VISIT(traverse_module_state->__pyx_n_s_num_moves);
   Py_VISIT(traverse_module_state->__pyx_n_s_num_players);
+  Py_VISIT(traverse_module_state->__pyx_n_s_num_ranks);
   Py_VISIT(traverse_module_state->__pyx_n_s_object);
+  Py_VISIT(traverse_module_state->__pyx_n_s_observation_type);
   Py_VISIT(traverse_module_state->__pyx_n_s_other);
-  Py_VISIT(traverse_module_state->__pyx_n_s_param_list);
+  Py_VISIT(traverse_module_state->__pyx_n_s_parameter_string);
+  Py_VISIT(traverse_module_state->__pyx_n_s_params);
   Py_VISIT(traverse_module_state->__pyx_n_s_parent_game);
   Py_VISIT(traverse_module_state->__pyx_n_s_pid);
   Py_VISIT(traverse_module_state->__pyx_n_s_pile_size);
@@ -4303,6 +4532,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_n_s_state);
   Py_VISIT(traverse_module_state->__pyx_n_s_staticmethod);
   Py_VISIT(traverse_module_state->__pyx_n_s_str);
+  Py_VISIT(traverse_module_state->__pyx_n_s_string);
   Py_VISIT(traverse_module_state->__pyx_kp_s_stringsource);
   Py_VISIT(traverse_module_state->__pyx_n_s_sum);
   Py_VISIT(traverse_module_state->__pyx_n_s_super);
@@ -4336,106 +4566,125 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
   Py_VISIT(traverse_module_state->__pyx_tuple__9);
   Py_VISIT(traverse_module_state->__pyx_tuple__10);
   Py_VISIT(traverse_module_state->__pyx_tuple__11);
-  Py_VISIT(traverse_module_state->__pyx_tuple__13);
-  Py_VISIT(traverse_module_state->__pyx_tuple__15);
-  Py_VISIT(traverse_module_state->__pyx_tuple__17);
+  Py_VISIT(traverse_module_state->__pyx_tuple__12);
+  Py_VISIT(traverse_module_state->__pyx_tuple__14);
+  Py_VISIT(traverse_module_state->__pyx_tuple__16);
   Py_VISIT(traverse_module_state->__pyx_tuple__18);
   Py_VISIT(traverse_module_state->__pyx_tuple__19);
-  Py_VISIT(traverse_module_state->__pyx_tuple__21);
-  Py_VISIT(traverse_module_state->__pyx_tuple__26);
-  Py_VISIT(traverse_module_state->__pyx_tuple__32);
-  Py_VISIT(traverse_module_state->__pyx_tuple__39);
-  Py_VISIT(traverse_module_state->__pyx_tuple__41);
-  Py_VISIT(traverse_module_state->__pyx_tuple__44);
-  Py_VISIT(traverse_module_state->__pyx_tuple__46);
-  Py_VISIT(traverse_module_state->__pyx_tuple__48);
-  Py_VISIT(traverse_module_state->__pyx_tuple__50);
-  Py_VISIT(traverse_module_state->__pyx_tuple__52);
-  Py_VISIT(traverse_module_state->__pyx_tuple__54);
-  Py_VISIT(traverse_module_state->__pyx_tuple__58);
-  Py_VISIT(traverse_module_state->__pyx_tuple__65);
-  Py_VISIT(traverse_module_state->__pyx_tuple__70);
-  Py_VISIT(traverse_module_state->__pyx_tuple__75);
-  Py_VISIT(traverse_module_state->__pyx_tuple__80);
-  Py_VISIT(traverse_module_state->__pyx_tuple__82);
-  Py_VISIT(traverse_module_state->__pyx_tuple__87);
-  Py_VISIT(traverse_module_state->__pyx_tuple__89);
-  Py_VISIT(traverse_module_state->__pyx_tuple__91);
-  Py_VISIT(traverse_module_state->__pyx_tuple__96);
-  Py_VISIT(traverse_module_state->__pyx_tuple__103);
-  Py_VISIT(traverse_module_state->__pyx_tuple__105);
-  Py_VISIT(traverse_module_state->__pyx_tuple__107);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__14);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__16);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__20);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__22);
+  Py_VISIT(traverse_module_state->__pyx_tuple__20);
+  Py_VISIT(traverse_module_state->__pyx_tuple__22);
+  Py_VISIT(traverse_module_state->__pyx_tuple__27);
+  Py_VISIT(traverse_module_state->__pyx_tuple__33);
+  Py_VISIT(traverse_module_state->__pyx_tuple__40);
+  Py_VISIT(traverse_module_state->__pyx_tuple__42);
+  Py_VISIT(traverse_module_state->__pyx_tuple__45);
+  Py_VISIT(traverse_module_state->__pyx_tuple__47);
+  Py_VISIT(traverse_module_state->__pyx_tuple__49);
+  Py_VISIT(traverse_module_state->__pyx_tuple__51);
+  Py_VISIT(traverse_module_state->__pyx_tuple__53);
+  Py_VISIT(traverse_module_state->__pyx_tuple__55);
+  Py_VISIT(traverse_module_state->__pyx_tuple__59);
+  Py_VISIT(traverse_module_state->__pyx_tuple__66);
+  Py_VISIT(traverse_module_state->__pyx_tuple__71);
+  Py_VISIT(traverse_module_state->__pyx_tuple__76);
+  Py_VISIT(traverse_module_state->__pyx_tuple__81);
+  Py_VISIT(traverse_module_state->__pyx_tuple__83);
+  Py_VISIT(traverse_module_state->__pyx_tuple__88);
+  Py_VISIT(traverse_module_state->__pyx_tuple__90);
+  Py_VISIT(traverse_module_state->__pyx_tuple__92);
+  Py_VISIT(traverse_module_state->__pyx_tuple__97);
+  Py_VISIT(traverse_module_state->__pyx_tuple__104);
+  Py_VISIT(traverse_module_state->__pyx_tuple__106);
+  Py_VISIT(traverse_module_state->__pyx_tuple__108);
+  Py_VISIT(traverse_module_state->__pyx_tuple__123);
+  Py_VISIT(traverse_module_state->__pyx_tuple__125);
+  Py_VISIT(traverse_module_state->__pyx_tuple__128);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__15);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__17);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__21);
   Py_VISIT(traverse_module_state->__pyx_codeobj__23);
   Py_VISIT(traverse_module_state->__pyx_codeobj__24);
   Py_VISIT(traverse_module_state->__pyx_codeobj__25);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__27);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__26);
   Py_VISIT(traverse_module_state->__pyx_codeobj__28);
   Py_VISIT(traverse_module_state->__pyx_codeobj__29);
   Py_VISIT(traverse_module_state->__pyx_codeobj__30);
   Py_VISIT(traverse_module_state->__pyx_codeobj__31);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__33);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__32);
   Py_VISIT(traverse_module_state->__pyx_codeobj__34);
   Py_VISIT(traverse_module_state->__pyx_codeobj__35);
   Py_VISIT(traverse_module_state->__pyx_codeobj__36);
   Py_VISIT(traverse_module_state->__pyx_codeobj__37);
   Py_VISIT(traverse_module_state->__pyx_codeobj__38);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__40);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__42);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__39);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__41);
   Py_VISIT(traverse_module_state->__pyx_codeobj__43);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__45);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__47);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__49);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__51);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__53);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__55);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__44);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__46);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__48);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__50);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__52);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__54);
   Py_VISIT(traverse_module_state->__pyx_codeobj__56);
   Py_VISIT(traverse_module_state->__pyx_codeobj__57);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__59);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__58);
   Py_VISIT(traverse_module_state->__pyx_codeobj__60);
   Py_VISIT(traverse_module_state->__pyx_codeobj__61);
   Py_VISIT(traverse_module_state->__pyx_codeobj__62);
   Py_VISIT(traverse_module_state->__pyx_codeobj__63);
   Py_VISIT(traverse_module_state->__pyx_codeobj__64);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__66);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__65);
   Py_VISIT(traverse_module_state->__pyx_codeobj__67);
   Py_VISIT(traverse_module_state->__pyx_codeobj__68);
   Py_VISIT(traverse_module_state->__pyx_codeobj__69);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__71);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__70);
   Py_VISIT(traverse_module_state->__pyx_codeobj__72);
   Py_VISIT(traverse_module_state->__pyx_codeobj__73);
   Py_VISIT(traverse_module_state->__pyx_codeobj__74);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__76);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__75);
   Py_VISIT(traverse_module_state->__pyx_codeobj__77);
   Py_VISIT(traverse_module_state->__pyx_codeobj__78);
   Py_VISIT(traverse_module_state->__pyx_codeobj__79);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__81);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__83);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__80);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__82);
   Py_VISIT(traverse_module_state->__pyx_codeobj__84);
   Py_VISIT(traverse_module_state->__pyx_codeobj__85);
   Py_VISIT(traverse_module_state->__pyx_codeobj__86);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__88);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__90);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__92);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__87);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__89);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__91);
   Py_VISIT(traverse_module_state->__pyx_codeobj__93);
   Py_VISIT(traverse_module_state->__pyx_codeobj__94);
   Py_VISIT(traverse_module_state->__pyx_codeobj__95);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__97);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__96);
   Py_VISIT(traverse_module_state->__pyx_codeobj__98);
   Py_VISIT(traverse_module_state->__pyx_codeobj__99);
   Py_VISIT(traverse_module_state->__pyx_codeobj__100);
   Py_VISIT(traverse_module_state->__pyx_codeobj__101);
   Py_VISIT(traverse_module_state->__pyx_codeobj__102);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__104);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__106);
-  Py_VISIT(traverse_module_state->__pyx_codeobj__108);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__103);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__105);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__107);
   Py_VISIT(traverse_module_state->__pyx_codeobj__109);
   Py_VISIT(traverse_module_state->__pyx_codeobj__110);
   Py_VISIT(traverse_module_state->__pyx_codeobj__111);
   Py_VISIT(traverse_module_state->__pyx_codeobj__112);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__113);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__114);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__115);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__116);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__117);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__118);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__119);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__120);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__121);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__122);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__124);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__126);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__127);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__129);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__130);
+  Py_VISIT(traverse_module_state->__pyx_codeobj__131);
   return 0;
 }
 #endif
@@ -4524,6 +4773,21 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_u_HanabiGame __pyx_mstate_global->__pyx_n_u_HanabiGame
 #define __pyx_n_s_HanabiGame___reduce_cython __pyx_mstate_global->__pyx_n_s_HanabiGame___reduce_cython
 #define __pyx_n_s_HanabiGame___setstate_cython __pyx_mstate_global->__pyx_n_s_HanabiGame___setstate_cython
+#define __pyx_n_s_HanabiGame_from_json __pyx_mstate_global->__pyx_n_s_HanabiGame_from_json
+#define __pyx_n_s_HanabiGame_get_move __pyx_mstate_global->__pyx_n_s_HanabiGame_get_move
+#define __pyx_n_s_HanabiGame_get_move_uid __pyx_mstate_global->__pyx_n_s_HanabiGame_get_move_uid
+#define __pyx_n_s_HanabiGame_hand_size __pyx_mstate_global->__pyx_n_s_HanabiGame_hand_size
+#define __pyx_n_s_HanabiGame_max_information_token __pyx_mstate_global->__pyx_n_s_HanabiGame_max_information_token
+#define __pyx_n_s_HanabiGame_max_life_tokens __pyx_mstate_global->__pyx_n_s_HanabiGame_max_life_tokens
+#define __pyx_n_s_HanabiGame_max_moves __pyx_mstate_global->__pyx_n_s_HanabiGame_max_moves
+#define __pyx_n_s_HanabiGame_new_initial_state __pyx_mstate_global->__pyx_n_s_HanabiGame_new_initial_state
+#define __pyx_n_s_HanabiGame_num_cards __pyx_mstate_global->__pyx_n_s_HanabiGame_num_cards
+#define __pyx_n_s_HanabiGame_num_colors __pyx_mstate_global->__pyx_n_s_HanabiGame_num_colors
+#define __pyx_n_s_HanabiGame_num_players __pyx_mstate_global->__pyx_n_s_HanabiGame_num_players
+#define __pyx_n_s_HanabiGame_num_ranks __pyx_mstate_global->__pyx_n_s_HanabiGame_num_ranks
+#define __pyx_n_s_HanabiGame_observation_type __pyx_mstate_global->__pyx_n_s_HanabiGame_observation_type
+#define __pyx_n_s_HanabiGame_parameter_string __pyx_mstate_global->__pyx_n_s_HanabiGame_parameter_string
+#define __pyx_n_s_HanabiGame_to_json __pyx_mstate_global->__pyx_n_s_HanabiGame_to_json
 #define __pyx_n_s_HanabiHistoryItem __pyx_mstate_global->__pyx_n_s_HanabiHistoryItem
 #define __pyx_n_s_HanabiHistoryItem___reduce_cytho __pyx_mstate_global->__pyx_n_s_HanabiHistoryItem___reduce_cytho
 #define __pyx_n_s_HanabiHistoryItem___setstate_cyt __pyx_mstate_global->__pyx_n_s_HanabiHistoryItem___setstate_cyt
@@ -4602,6 +4866,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_REVEAL_COLOR __pyx_mstate_global->__pyx_n_s_REVEAL_COLOR
 #define __pyx_n_s_REVEAL_RANK __pyx_mstate_global->__pyx_n_s_REVEAL_RANK
 #define __pyx_n_s_SEER __pyx_mstate_global->__pyx_n_s_SEER
+#define __pyx_kp_u_Serialization_failed_GameToJSON __pyx_mstate_global->__pyx_kp_u_Serialization_failed_GameToJSON
 #define __pyx_kp_u_Serialization_failed_GameToJson __pyx_mstate_global->__pyx_kp_u_Serialization_failed_GameToJson
 #define __pyx_kp_u_Serialization_failed_HistoryItem __pyx_mstate_global->__pyx_kp_u_Serialization_failed_HistoryItem
 #define __pyx_kp_u_Serialization_failed_MoveToJSON __pyx_mstate_global->__pyx_kp_u_Serialization_failed_MoveToJSON
@@ -4611,8 +4876,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_kp_u_Unsupported_move __pyx_mstate_global->__pyx_kp_u_Unsupported_move
 #define __pyx_n_s_ValueError __pyx_mstate_global->__pyx_n_s_ValueError
 #define __pyx_n_u_XX __pyx_mstate_global->__pyx_n_u_XX
-#define __pyx_n_s__113 __pyx_mstate_global->__pyx_n_s__113
-#define __pyx_n_s__12 __pyx_mstate_global->__pyx_n_s__12
+#define __pyx_n_s__13 __pyx_mstate_global->__pyx_n_s__13
+#define __pyx_n_s__132 __pyx_mstate_global->__pyx_n_s__132
 #define __pyx_kp_u__3 __pyx_mstate_global->__pyx_kp_u__3
 #define __pyx_n_u_action_type __pyx_mstate_global->__pyx_n_u_action_type
 #define __pyx_n_s_apply_move __pyx_mstate_global->__pyx_n_s_apply_move
@@ -4628,6 +4893,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_c_move __pyx_mstate_global->__pyx_n_s_c_move
 #define __pyx_n_s_c_movelist __pyx_mstate_global->__pyx_n_s_c_movelist
 #define __pyx_n_s_c_state __pyx_mstate_global->__pyx_n_s_c_state
+#define __pyx_n_s_c_string __pyx_mstate_global->__pyx_n_s_c_string
 #define __pyx_n_s_card_index __pyx_mstate_global->__pyx_n_s_card_index
 #define __pyx_n_u_card_index __pyx_mstate_global->__pyx_n_u_card_index
 #define __pyx_n_s_card_index_2 __pyx_mstate_global->__pyx_n_s_card_index_2
@@ -4676,6 +4942,8 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_genexpr __pyx_mstate_global->__pyx_n_s_genexpr
 #define __pyx_n_s_get_deal_specific_move __pyx_mstate_global->__pyx_n_s_get_deal_specific_move
 #define __pyx_n_s_get_discard_move __pyx_mstate_global->__pyx_n_s_get_discard_move
+#define __pyx_n_s_get_move __pyx_mstate_global->__pyx_n_s_get_move
+#define __pyx_n_s_get_move_uid __pyx_mstate_global->__pyx_n_s_get_move_uid
 #define __pyx_n_s_get_play_move __pyx_mstate_global->__pyx_n_s_get_play_move
 #define __pyx_n_s_get_return_move __pyx_mstate_global->__pyx_n_s_get_return_move
 #define __pyx_n_s_get_reveal_color_move __pyx_mstate_global->__pyx_n_s_get_reveal_color_move
@@ -4696,6 +4964,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_is_coroutine __pyx_mstate_global->__pyx_n_s_is_coroutine
 #define __pyx_n_s_is_terminal __pyx_mstate_global->__pyx_n_s_is_terminal
 #define __pyx_kp_u_isenabled __pyx_mstate_global->__pyx_kp_u_isenabled
+#define __pyx_n_s_items __pyx_mstate_global->__pyx_n_s_items
 #define __pyx_n_s_json __pyx_mstate_global->__pyx_n_s_json
 #define __pyx_n_s_json_game __pyx_mstate_global->__pyx_n_s_json_game
 #define __pyx_n_s_json_game_result __pyx_mstate_global->__pyx_n_s_json_game_result
@@ -4706,6 +4975,9 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_life_tokens __pyx_mstate_global->__pyx_n_s_life_tokens
 #define __pyx_n_s_loads __pyx_mstate_global->__pyx_n_s_loads
 #define __pyx_n_s_main __pyx_mstate_global->__pyx_n_s_main
+#define __pyx_n_s_max_information_tokens __pyx_mstate_global->__pyx_n_s_max_information_tokens
+#define __pyx_n_s_max_life_tokens __pyx_mstate_global->__pyx_n_s_max_life_tokens
+#define __pyx_n_s_max_moves __pyx_mstate_global->__pyx_n_s_max_moves
 #define __pyx_n_s_metaclass __pyx_mstate_global->__pyx_n_s_metaclass
 #define __pyx_n_s_module __pyx_mstate_global->__pyx_n_s_module
 #define __pyx_n_s_move __pyx_mstate_global->__pyx_n_s_move
@@ -4713,16 +4985,23 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_move_history __pyx_mstate_global->__pyx_n_s_move_history
 #define __pyx_n_s_move_is_legal __pyx_mstate_global->__pyx_n_s_move_is_legal
 #define __pyx_n_s_move_type __pyx_mstate_global->__pyx_n_s_move_type
+#define __pyx_n_s_move_uid __pyx_mstate_global->__pyx_n_s_move_uid
 #define __pyx_n_s_moves __pyx_mstate_global->__pyx_n_s_moves
 #define __pyx_n_s_mro_entries __pyx_mstate_global->__pyx_n_s_mro_entries
 #define __pyx_n_s_name __pyx_mstate_global->__pyx_n_s_name
 #define __pyx_n_s_name_2 __pyx_mstate_global->__pyx_n_s_name_2
+#define __pyx_n_s_new_initial_state __pyx_mstate_global->__pyx_n_s_new_initial_state
 #define __pyx_kp_s_no_default___reduce___due_to_non __pyx_mstate_global->__pyx_kp_s_no_default___reduce___due_to_non
+#define __pyx_n_s_num_cards __pyx_mstate_global->__pyx_n_s_num_cards
+#define __pyx_n_s_num_colors __pyx_mstate_global->__pyx_n_s_num_colors
 #define __pyx_n_s_num_moves __pyx_mstate_global->__pyx_n_s_num_moves
 #define __pyx_n_s_num_players __pyx_mstate_global->__pyx_n_s_num_players
+#define __pyx_n_s_num_ranks __pyx_mstate_global->__pyx_n_s_num_ranks
 #define __pyx_n_s_object __pyx_mstate_global->__pyx_n_s_object
+#define __pyx_n_s_observation_type __pyx_mstate_global->__pyx_n_s_observation_type
 #define __pyx_n_s_other __pyx_mstate_global->__pyx_n_s_other
-#define __pyx_n_s_param_list __pyx_mstate_global->__pyx_n_s_param_list
+#define __pyx_n_s_parameter_string __pyx_mstate_global->__pyx_n_s_parameter_string
+#define __pyx_n_s_params __pyx_mstate_global->__pyx_n_s_params
 #define __pyx_n_s_parent_game __pyx_mstate_global->__pyx_n_s_parent_game
 #define __pyx_n_s_pid __pyx_mstate_global->__pyx_n_s_pid
 #define __pyx_n_s_pile_size __pyx_mstate_global->__pyx_n_s_pile_size
@@ -4756,6 +5035,7 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_n_s_state __pyx_mstate_global->__pyx_n_s_state
 #define __pyx_n_s_staticmethod __pyx_mstate_global->__pyx_n_s_staticmethod
 #define __pyx_n_s_str __pyx_mstate_global->__pyx_n_s_str
+#define __pyx_n_s_string __pyx_mstate_global->__pyx_n_s_string
 #define __pyx_kp_s_stringsource __pyx_mstate_global->__pyx_kp_s_stringsource
 #define __pyx_n_s_sum __pyx_mstate_global->__pyx_n_s_sum
 #define __pyx_n_s_super __pyx_mstate_global->__pyx_n_s_super
@@ -4789,109 +5069,128 @@ static int __pyx_m_traverse(PyObject *m, visitproc visit, void *arg) {
 #define __pyx_tuple__9 __pyx_mstate_global->__pyx_tuple__9
 #define __pyx_tuple__10 __pyx_mstate_global->__pyx_tuple__10
 #define __pyx_tuple__11 __pyx_mstate_global->__pyx_tuple__11
-#define __pyx_tuple__13 __pyx_mstate_global->__pyx_tuple__13
-#define __pyx_tuple__15 __pyx_mstate_global->__pyx_tuple__15
-#define __pyx_tuple__17 __pyx_mstate_global->__pyx_tuple__17
+#define __pyx_tuple__12 __pyx_mstate_global->__pyx_tuple__12
+#define __pyx_tuple__14 __pyx_mstate_global->__pyx_tuple__14
+#define __pyx_tuple__16 __pyx_mstate_global->__pyx_tuple__16
 #define __pyx_tuple__18 __pyx_mstate_global->__pyx_tuple__18
 #define __pyx_tuple__19 __pyx_mstate_global->__pyx_tuple__19
-#define __pyx_tuple__21 __pyx_mstate_global->__pyx_tuple__21
-#define __pyx_tuple__26 __pyx_mstate_global->__pyx_tuple__26
-#define __pyx_tuple__32 __pyx_mstate_global->__pyx_tuple__32
-#define __pyx_tuple__39 __pyx_mstate_global->__pyx_tuple__39
-#define __pyx_tuple__41 __pyx_mstate_global->__pyx_tuple__41
-#define __pyx_tuple__44 __pyx_mstate_global->__pyx_tuple__44
-#define __pyx_tuple__46 __pyx_mstate_global->__pyx_tuple__46
-#define __pyx_tuple__48 __pyx_mstate_global->__pyx_tuple__48
-#define __pyx_tuple__50 __pyx_mstate_global->__pyx_tuple__50
-#define __pyx_tuple__52 __pyx_mstate_global->__pyx_tuple__52
-#define __pyx_tuple__54 __pyx_mstate_global->__pyx_tuple__54
-#define __pyx_tuple__58 __pyx_mstate_global->__pyx_tuple__58
-#define __pyx_tuple__65 __pyx_mstate_global->__pyx_tuple__65
-#define __pyx_tuple__70 __pyx_mstate_global->__pyx_tuple__70
-#define __pyx_tuple__75 __pyx_mstate_global->__pyx_tuple__75
-#define __pyx_tuple__80 __pyx_mstate_global->__pyx_tuple__80
-#define __pyx_tuple__82 __pyx_mstate_global->__pyx_tuple__82
-#define __pyx_tuple__87 __pyx_mstate_global->__pyx_tuple__87
-#define __pyx_tuple__89 __pyx_mstate_global->__pyx_tuple__89
-#define __pyx_tuple__91 __pyx_mstate_global->__pyx_tuple__91
-#define __pyx_tuple__96 __pyx_mstate_global->__pyx_tuple__96
-#define __pyx_tuple__103 __pyx_mstate_global->__pyx_tuple__103
-#define __pyx_tuple__105 __pyx_mstate_global->__pyx_tuple__105
-#define __pyx_tuple__107 __pyx_mstate_global->__pyx_tuple__107
-#define __pyx_codeobj__14 __pyx_mstate_global->__pyx_codeobj__14
-#define __pyx_codeobj__16 __pyx_mstate_global->__pyx_codeobj__16
-#define __pyx_codeobj__20 __pyx_mstate_global->__pyx_codeobj__20
-#define __pyx_codeobj__22 __pyx_mstate_global->__pyx_codeobj__22
+#define __pyx_tuple__20 __pyx_mstate_global->__pyx_tuple__20
+#define __pyx_tuple__22 __pyx_mstate_global->__pyx_tuple__22
+#define __pyx_tuple__27 __pyx_mstate_global->__pyx_tuple__27
+#define __pyx_tuple__33 __pyx_mstate_global->__pyx_tuple__33
+#define __pyx_tuple__40 __pyx_mstate_global->__pyx_tuple__40
+#define __pyx_tuple__42 __pyx_mstate_global->__pyx_tuple__42
+#define __pyx_tuple__45 __pyx_mstate_global->__pyx_tuple__45
+#define __pyx_tuple__47 __pyx_mstate_global->__pyx_tuple__47
+#define __pyx_tuple__49 __pyx_mstate_global->__pyx_tuple__49
+#define __pyx_tuple__51 __pyx_mstate_global->__pyx_tuple__51
+#define __pyx_tuple__53 __pyx_mstate_global->__pyx_tuple__53
+#define __pyx_tuple__55 __pyx_mstate_global->__pyx_tuple__55
+#define __pyx_tuple__59 __pyx_mstate_global->__pyx_tuple__59
+#define __pyx_tuple__66 __pyx_mstate_global->__pyx_tuple__66
+#define __pyx_tuple__71 __pyx_mstate_global->__pyx_tuple__71
+#define __pyx_tuple__76 __pyx_mstate_global->__pyx_tuple__76
+#define __pyx_tuple__81 __pyx_mstate_global->__pyx_tuple__81
+#define __pyx_tuple__83 __pyx_mstate_global->__pyx_tuple__83
+#define __pyx_tuple__88 __pyx_mstate_global->__pyx_tuple__88
+#define __pyx_tuple__90 __pyx_mstate_global->__pyx_tuple__90
+#define __pyx_tuple__92 __pyx_mstate_global->__pyx_tuple__92
+#define __pyx_tuple__97 __pyx_mstate_global->__pyx_tuple__97
+#define __pyx_tuple__104 __pyx_mstate_global->__pyx_tuple__104
+#define __pyx_tuple__106 __pyx_mstate_global->__pyx_tuple__106
+#define __pyx_tuple__108 __pyx_mstate_global->__pyx_tuple__108
+#define __pyx_tuple__123 __pyx_mstate_global->__pyx_tuple__123
+#define __pyx_tuple__125 __pyx_mstate_global->__pyx_tuple__125
+#define __pyx_tuple__128 __pyx_mstate_global->__pyx_tuple__128
+#define __pyx_codeobj__15 __pyx_mstate_global->__pyx_codeobj__15
+#define __pyx_codeobj__17 __pyx_mstate_global->__pyx_codeobj__17
+#define __pyx_codeobj__21 __pyx_mstate_global->__pyx_codeobj__21
 #define __pyx_codeobj__23 __pyx_mstate_global->__pyx_codeobj__23
 #define __pyx_codeobj__24 __pyx_mstate_global->__pyx_codeobj__24
 #define __pyx_codeobj__25 __pyx_mstate_global->__pyx_codeobj__25
-#define __pyx_codeobj__27 __pyx_mstate_global->__pyx_codeobj__27
+#define __pyx_codeobj__26 __pyx_mstate_global->__pyx_codeobj__26
 #define __pyx_codeobj__28 __pyx_mstate_global->__pyx_codeobj__28
 #define __pyx_codeobj__29 __pyx_mstate_global->__pyx_codeobj__29
 #define __pyx_codeobj__30 __pyx_mstate_global->__pyx_codeobj__30
 #define __pyx_codeobj__31 __pyx_mstate_global->__pyx_codeobj__31
-#define __pyx_codeobj__33 __pyx_mstate_global->__pyx_codeobj__33
+#define __pyx_codeobj__32 __pyx_mstate_global->__pyx_codeobj__32
 #define __pyx_codeobj__34 __pyx_mstate_global->__pyx_codeobj__34
 #define __pyx_codeobj__35 __pyx_mstate_global->__pyx_codeobj__35
 #define __pyx_codeobj__36 __pyx_mstate_global->__pyx_codeobj__36
 #define __pyx_codeobj__37 __pyx_mstate_global->__pyx_codeobj__37
 #define __pyx_codeobj__38 __pyx_mstate_global->__pyx_codeobj__38
-#define __pyx_codeobj__40 __pyx_mstate_global->__pyx_codeobj__40
-#define __pyx_codeobj__42 __pyx_mstate_global->__pyx_codeobj__42
+#define __pyx_codeobj__39 __pyx_mstate_global->__pyx_codeobj__39
+#define __pyx_codeobj__41 __pyx_mstate_global->__pyx_codeobj__41
 #define __pyx_codeobj__43 __pyx_mstate_global->__pyx_codeobj__43
-#define __pyx_codeobj__45 __pyx_mstate_global->__pyx_codeobj__45
-#define __pyx_codeobj__47 __pyx_mstate_global->__pyx_codeobj__47
-#define __pyx_codeobj__49 __pyx_mstate_global->__pyx_codeobj__49
-#define __pyx_codeobj__51 __pyx_mstate_global->__pyx_codeobj__51
-#define __pyx_codeobj__53 __pyx_mstate_global->__pyx_codeobj__53
-#define __pyx_codeobj__55 __pyx_mstate_global->__pyx_codeobj__55
+#define __pyx_codeobj__44 __pyx_mstate_global->__pyx_codeobj__44
+#define __pyx_codeobj__46 __pyx_mstate_global->__pyx_codeobj__46
+#define __pyx_codeobj__48 __pyx_mstate_global->__pyx_codeobj__48
+#define __pyx_codeobj__50 __pyx_mstate_global->__pyx_codeobj__50
+#define __pyx_codeobj__52 __pyx_mstate_global->__pyx_codeobj__52
+#define __pyx_codeobj__54 __pyx_mstate_global->__pyx_codeobj__54
 #define __pyx_codeobj__56 __pyx_mstate_global->__pyx_codeobj__56
 #define __pyx_codeobj__57 __pyx_mstate_global->__pyx_codeobj__57
-#define __pyx_codeobj__59 __pyx_mstate_global->__pyx_codeobj__59
+#define __pyx_codeobj__58 __pyx_mstate_global->__pyx_codeobj__58
 #define __pyx_codeobj__60 __pyx_mstate_global->__pyx_codeobj__60
 #define __pyx_codeobj__61 __pyx_mstate_global->__pyx_codeobj__61
 #define __pyx_codeobj__62 __pyx_mstate_global->__pyx_codeobj__62
 #define __pyx_codeobj__63 __pyx_mstate_global->__pyx_codeobj__63
 #define __pyx_codeobj__64 __pyx_mstate_global->__pyx_codeobj__64
-#define __pyx_codeobj__66 __pyx_mstate_global->__pyx_codeobj__66
+#define __pyx_codeobj__65 __pyx_mstate_global->__pyx_codeobj__65
 #define __pyx_codeobj__67 __pyx_mstate_global->__pyx_codeobj__67
 #define __pyx_codeobj__68 __pyx_mstate_global->__pyx_codeobj__68
 #define __pyx_codeobj__69 __pyx_mstate_global->__pyx_codeobj__69
-#define __pyx_codeobj__71 __pyx_mstate_global->__pyx_codeobj__71
+#define __pyx_codeobj__70 __pyx_mstate_global->__pyx_codeobj__70
 #define __pyx_codeobj__72 __pyx_mstate_global->__pyx_codeobj__72
 #define __pyx_codeobj__73 __pyx_mstate_global->__pyx_codeobj__73
 #define __pyx_codeobj__74 __pyx_mstate_global->__pyx_codeobj__74
-#define __pyx_codeobj__76 __pyx_mstate_global->__pyx_codeobj__76
+#define __pyx_codeobj__75 __pyx_mstate_global->__pyx_codeobj__75
 #define __pyx_codeobj__77 __pyx_mstate_global->__pyx_codeobj__77
 #define __pyx_codeobj__78 __pyx_mstate_global->__pyx_codeobj__78
 #define __pyx_codeobj__79 __pyx_mstate_global->__pyx_codeobj__79
-#define __pyx_codeobj__81 __pyx_mstate_global->__pyx_codeobj__81
-#define __pyx_codeobj__83 __pyx_mstate_global->__pyx_codeobj__83
+#define __pyx_codeobj__80 __pyx_mstate_global->__pyx_codeobj__80
+#define __pyx_codeobj__82 __pyx_mstate_global->__pyx_codeobj__82
 #define __pyx_codeobj__84 __pyx_mstate_global->__pyx_codeobj__84
 #define __pyx_codeobj__85 __pyx_mstate_global->__pyx_codeobj__85
 #define __pyx_codeobj__86 __pyx_mstate_global->__pyx_codeobj__86
-#define __pyx_codeobj__88 __pyx_mstate_global->__pyx_codeobj__88
-#define __pyx_codeobj__90 __pyx_mstate_global->__pyx_codeobj__90
-#define __pyx_codeobj__92 __pyx_mstate_global->__pyx_codeobj__92
+#define __pyx_codeobj__87 __pyx_mstate_global->__pyx_codeobj__87
+#define __pyx_codeobj__89 __pyx_mstate_global->__pyx_codeobj__89
+#define __pyx_codeobj__91 __pyx_mstate_global->__pyx_codeobj__91
 #define __pyx_codeobj__93 __pyx_mstate_global->__pyx_codeobj__93
 #define __pyx_codeobj__94 __pyx_mstate_global->__pyx_codeobj__94
 #define __pyx_codeobj__95 __pyx_mstate_global->__pyx_codeobj__95
-#define __pyx_codeobj__97 __pyx_mstate_global->__pyx_codeobj__97
+#define __pyx_codeobj__96 __pyx_mstate_global->__pyx_codeobj__96
 #define __pyx_codeobj__98 __pyx_mstate_global->__pyx_codeobj__98
 #define __pyx_codeobj__99 __pyx_mstate_global->__pyx_codeobj__99
 #define __pyx_codeobj__100 __pyx_mstate_global->__pyx_codeobj__100
 #define __pyx_codeobj__101 __pyx_mstate_global->__pyx_codeobj__101
 #define __pyx_codeobj__102 __pyx_mstate_global->__pyx_codeobj__102
-#define __pyx_codeobj__104 __pyx_mstate_global->__pyx_codeobj__104
-#define __pyx_codeobj__106 __pyx_mstate_global->__pyx_codeobj__106
-#define __pyx_codeobj__108 __pyx_mstate_global->__pyx_codeobj__108
+#define __pyx_codeobj__103 __pyx_mstate_global->__pyx_codeobj__103
+#define __pyx_codeobj__105 __pyx_mstate_global->__pyx_codeobj__105
+#define __pyx_codeobj__107 __pyx_mstate_global->__pyx_codeobj__107
 #define __pyx_codeobj__109 __pyx_mstate_global->__pyx_codeobj__109
 #define __pyx_codeobj__110 __pyx_mstate_global->__pyx_codeobj__110
 #define __pyx_codeobj__111 __pyx_mstate_global->__pyx_codeobj__111
 #define __pyx_codeobj__112 __pyx_mstate_global->__pyx_codeobj__112
+#define __pyx_codeobj__113 __pyx_mstate_global->__pyx_codeobj__113
+#define __pyx_codeobj__114 __pyx_mstate_global->__pyx_codeobj__114
+#define __pyx_codeobj__115 __pyx_mstate_global->__pyx_codeobj__115
+#define __pyx_codeobj__116 __pyx_mstate_global->__pyx_codeobj__116
+#define __pyx_codeobj__117 __pyx_mstate_global->__pyx_codeobj__117
+#define __pyx_codeobj__118 __pyx_mstate_global->__pyx_codeobj__118
+#define __pyx_codeobj__119 __pyx_mstate_global->__pyx_codeobj__119
+#define __pyx_codeobj__120 __pyx_mstate_global->__pyx_codeobj__120
+#define __pyx_codeobj__121 __pyx_mstate_global->__pyx_codeobj__121
+#define __pyx_codeobj__122 __pyx_mstate_global->__pyx_codeobj__122
+#define __pyx_codeobj__124 __pyx_mstate_global->__pyx_codeobj__124
+#define __pyx_codeobj__126 __pyx_mstate_global->__pyx_codeobj__126
+#define __pyx_codeobj__127 __pyx_mstate_global->__pyx_codeobj__127
+#define __pyx_codeobj__129 __pyx_mstate_global->__pyx_codeobj__129
+#define __pyx_codeobj__130 __pyx_mstate_global->__pyx_codeobj__130
+#define __pyx_codeobj__131 __pyx_mstate_global->__pyx_codeobj__131
 /* #### Code section: module_code ### */
 
-/* "cython_lib/cyhanabi.pyx":18
+/* "cython_lib/cyhanabi.pyx":19
  * 
  * 
  * def color_idx_to_char(color_idx):             # <<<<<<<<<<<<<<
@@ -4953,12 +5252,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 18, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 19, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color_idx_to_char") < 0)) __PYX_ERR(0, 18, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color_idx_to_char") < 0)) __PYX_ERR(0, 19, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -4969,7 +5268,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("color_idx_to_char", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 18, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("color_idx_to_char", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 19, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5007,7 +5306,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color_idx_to_char", 1);
 
-  /* "cython_lib/cyhanabi.pyx":30
+  /* "cython_lib/cyhanabi.pyx":31
  *         AssertionError: If index is not in range.
  *     """
  *     assert isinstance(color_idx, int)             # <<<<<<<<<<<<<<
@@ -5019,24 +5318,24 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
     __pyx_t_1 = PyInt_Check(__pyx_v_color_idx); 
     if (unlikely(!__pyx_t_1)) {
       __Pyx_Raise(__pyx_builtin_AssertionError, 0, 0, 0);
-      __PYX_ERR(0, 30, __pyx_L1_error)
+      __PYX_ERR(0, 31, __pyx_L1_error)
     }
   }
   #else
-  if ((1)); else __PYX_ERR(0, 30, __pyx_L1_error)
+  if ((1)); else __PYX_ERR(0, 31, __pyx_L1_error)
   #endif
 
-  /* "cython_lib/cyhanabi.pyx":31
+  /* "cython_lib/cyhanabi.pyx":32
  *     """
  *     assert isinstance(color_idx, int)
  *     if color_idx == -1:             # <<<<<<<<<<<<<<
  *         return None
  *     else:
  */
-  __pyx_t_1 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_color_idx, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyInt_BoolEqObjC(__pyx_v_color_idx, __pyx_int_neg_1, -1L, 0)); if (unlikely((__pyx_t_1 < 0))) __PYX_ERR(0, 32, __pyx_L1_error)
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":32
+    /* "cython_lib/cyhanabi.pyx":33
  *     assert isinstance(color_idx, int)
  *     if color_idx == -1:
  *         return None             # <<<<<<<<<<<<<<
@@ -5047,7 +5346,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":31
+    /* "cython_lib/cyhanabi.pyx":32
  *     """
  *     assert isinstance(color_idx, int)
  *     if color_idx == -1:             # <<<<<<<<<<<<<<
@@ -5056,7 +5355,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":34
+  /* "cython_lib/cyhanabi.pyx":35
  *         return None
  *     else:
  *         return COLOR_CHAR[color_idx]             # <<<<<<<<<<<<<<
@@ -5065,15 +5364,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_v_color_idx); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 34, __pyx_L1_error)
-    __pyx_t_3 = __Pyx_PyInt_From_char((__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[__pyx_t_2])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 34, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_v_color_idx); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_char((__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[__pyx_t_2])); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":18
+  /* "cython_lib/cyhanabi.pyx":19
  * 
  * 
  * def color_idx_to_char(color_idx):             # <<<<<<<<<<<<<<
@@ -5092,7 +5391,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_color_idx_to_char(CYTHON_UNUSED
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":37
+/* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
@@ -5154,12 +5453,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 37, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color_char_to_idx") < 0)) __PYX_ERR(0, 37, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color_char_to_idx") < 0)) __PYX_ERR(0, 38, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5170,7 +5469,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("color_char_to_idx", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 37, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("color_char_to_idx", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 38, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5198,7 +5497,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
 }
 static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cython_lib/cyhanabi.pyx":51
+/* "cython_lib/cyhanabi.pyx":52
  *     assert isinstance(color_char, str)
  *     try:
  *         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)             # <<<<<<<<<<<<<<
@@ -5218,7 +5517,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17color_char_to_idx_genexpr(PyO
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 51, __pyx_L1_error)
+    __PYX_ERR(0, 52, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -5227,7 +5526,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17color_char_to_idx_genexpr(PyO
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_outer_scope);
   memcpy(__pyx_cur_scope->__pyx_genexpr_arg_0, __pyx_genexpr_arg_0, sizeof(__pyx_cur_scope->__pyx_genexpr_arg_0));
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_color_char_to_idx_locals_genexpr, __pyx_n_s_cython_lib_cyhanabi); if (unlikely(!gen)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_color_char_to_idx_locals_genexpr, __pyx_n_s_cython_lib_cyhanabi); if (unlikely(!gen)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -5265,14 +5564,14 @@ static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_INCREF(__pyx_int_0);
   __pyx_t_1 = __pyx_int_0;
-  __pyx_t_2 = __Pyx_PyObject_FromString(__pyx_cur_scope->__pyx_genexpr_arg_0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_FromString(__pyx_cur_scope->__pyx_genexpr_arg_0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetIterNextFunc(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   for (;;) {
     {
@@ -5281,7 +5580,7 @@ static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 51, __pyx_L1_error)
+          else __PYX_ERR(0, 52, __pyx_L1_error)
         }
         break;
       }
@@ -5295,14 +5594,14 @@ static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(
     __Pyx_XGOTREF(__pyx_cur_scope->__pyx_v_idx);
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_idx, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1);
     __pyx_t_1 = __pyx_t_2;
     __pyx_t_2 = 0;
-    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_color_char)) { __Pyx_RaiseClosureNameError("color_char"); __PYX_ERR(0, 51, __pyx_L1_error) }
-    __pyx_t_2 = PyObject_RichCompare(__pyx_cur_scope->__pyx_v_c, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_color_char, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 51, __pyx_L1_error)
+    if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_color_char)) { __Pyx_RaiseClosureNameError("color_char"); __PYX_ERR(0, 52, __pyx_L1_error) }
+    __pyx_t_2 = PyObject_RichCompare(__pyx_cur_scope->__pyx_v_c, __pyx_cur_scope->__pyx_outer_scope->__pyx_v_color_char, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_5) {
       __Pyx_INCREF(__pyx_cur_scope->__pyx_v_idx);
@@ -5326,7 +5625,7 @@ static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(
       __pyx_cur_scope->__pyx_t_1 = 0;
       __Pyx_XGOTREF(__pyx_t_3);
       __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 51, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 52, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5353,7 +5652,7 @@ static PyObject *__pyx_gb_10cython_lib_8cyhanabi_17color_char_to_idx_2generator(
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":37
+/* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
@@ -5387,7 +5686,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 37, __pyx_L1_error)
+    __PYX_ERR(0, 38, __pyx_L1_error)
   } else {
     __Pyx_GOTREF((PyObject *)__pyx_cur_scope);
   }
@@ -5395,7 +5694,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
   __Pyx_INCREF(__pyx_cur_scope->__pyx_v_color_char);
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_color_char);
 
-  /* "cython_lib/cyhanabi.pyx":49
+  /* "cython_lib/cyhanabi.pyx":50
  *         ValueError: If color_char is not a valid color.
  *     """
  *     assert isinstance(color_char, str)             # <<<<<<<<<<<<<<
@@ -5410,14 +5709,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(!__pyx_t_2)) {
       __Pyx_Raise(__pyx_builtin_AssertionError, 0, 0, 0);
-      __PYX_ERR(0, 49, __pyx_L1_error)
+      __PYX_ERR(0, 50, __pyx_L1_error)
     }
   }
   #else
-  if ((1)); else __PYX_ERR(0, 49, __pyx_L1_error)
+  if ((1)); else __PYX_ERR(0, 50, __pyx_L1_error)
   #endif
 
-  /* "cython_lib/cyhanabi.pyx":50
+  /* "cython_lib/cyhanabi.pyx":51
  *     """
  *     assert isinstance(color_char, str)
  *     try:             # <<<<<<<<<<<<<<
@@ -5433,7 +5732,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
     __Pyx_XGOTREF(__pyx_t_5);
     /*try:*/ {
 
-      /* "cython_lib/cyhanabi.pyx":51
+      /* "cython_lib/cyhanabi.pyx":52
  *     assert isinstance(color_char, str)
  *     try:
  *         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)             # <<<<<<<<<<<<<<
@@ -5441,16 +5740,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
  *         raise ValueError("Invalid color: {}. Should be one of {}.".format(color_char, COLOR_CHAR))
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_1 = __pyx_pf_10cython_lib_8cyhanabi_17color_char_to_idx_genexpr(((PyObject*)__pyx_cur_scope), __pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __pyx_t_1 = __pyx_pf_10cython_lib_8cyhanabi_17color_char_to_idx_genexpr(((PyObject*)__pyx_cur_scope), __pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 52, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_PyIter_Next(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 51, __pyx_L3_error)
+      __pyx_t_6 = __Pyx_PyIter_Next(__pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L3_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_r = __pyx_t_6;
       __pyx_t_6 = 0;
       goto __pyx_L7_try_return;
 
-      /* "cython_lib/cyhanabi.pyx":50
+      /* "cython_lib/cyhanabi.pyx":51
  *     """
  *     assert isinstance(color_char, str)
  *     try:             # <<<<<<<<<<<<<<
@@ -5462,7 +5761,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":52
+    /* "cython_lib/cyhanabi.pyx":53
  *     try:
  *         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)
  *     except StopIteration:             # <<<<<<<<<<<<<<
@@ -5472,21 +5771,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
     __pyx_t_7 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_StopIteration);
     if (__pyx_t_7) {
       __Pyx_AddTraceback("cython_lib.cyhanabi.color_char_to_idx", __pyx_clineno, __pyx_lineno, __pyx_filename);
-      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_1, &__pyx_t_8) < 0) __PYX_ERR(0, 52, __pyx_L5_except_error)
+      if (__Pyx_GetException(&__pyx_t_6, &__pyx_t_1, &__pyx_t_8) < 0) __PYX_ERR(0, 53, __pyx_L5_except_error)
       __Pyx_XGOTREF(__pyx_t_6);
       __Pyx_XGOTREF(__pyx_t_1);
       __Pyx_XGOTREF(__pyx_t_8);
 
-      /* "cython_lib/cyhanabi.pyx":53
+      /* "cython_lib/cyhanabi.pyx":54
  *         return next(idx for (idx, c) in enumerate(COLOR_CHAR) if c == color_char)
  *     except StopIteration:
  *         raise ValueError("Invalid color: {}. Should be one of {}.".format(color_char, COLOR_CHAR))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Invalid_color_Should_be_one_of, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 53, __pyx_L5_except_error)
+      __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_Invalid_color_Should_be_one_of, __pyx_n_s_format); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 54, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_11 = __Pyx_PyObject_FromString(__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 53, __pyx_L5_except_error)
+      __pyx_t_11 = __Pyx_PyObject_FromString(__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 54, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_11);
       __pyx_t_12 = NULL;
       __pyx_t_13 = 0;
@@ -5507,20 +5806,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
         __pyx_t_9 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_13, 2+__pyx_t_13);
         __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 53, __pyx_L5_except_error)
+        if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 54, __pyx_L5_except_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
-      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 53, __pyx_L5_except_error)
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_9); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 54, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_Raise(__pyx_t_10, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __PYX_ERR(0, 53, __pyx_L5_except_error)
+      __PYX_ERR(0, 54, __pyx_L5_except_error)
     }
     goto __pyx_L5_except_error;
 
-    /* "cython_lib/cyhanabi.pyx":50
+    /* "cython_lib/cyhanabi.pyx":51
  *     """
  *     assert isinstance(color_char, str)
  *     try:             # <<<<<<<<<<<<<<
@@ -5541,7 +5840,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
     goto __pyx_L0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":37
+  /* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
@@ -5568,7 +5867,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_2color_char_to_idx(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":87
+/* "cython_lib/cyhanabi.pyx":88
  *   """
  * 
  *   def __init__(self, color, rank):             # <<<<<<<<<<<<<<
@@ -5636,7 +5935,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -5644,9 +5943,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 1); __PYX_ERR(0, 87, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 1); __PYX_ERR(0, 88, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -5654,14 +5953,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 2); __PYX_ERR(0, 87, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, 2); __PYX_ERR(0, 88, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 87, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 88, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -5676,7 +5975,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 87, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 88, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5711,25 +6010,25 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard___init__(CYTHON_UN
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":95
+  /* "cython_lib/cyhanabi.pyx":96
  *           game, the largest value is 4 (representing a 5 card).
  *     """
  *     self._color = color             # <<<<<<<<<<<<<<
  *     self._rank = rank
  * 
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_color_2, __pyx_v_color) < 0) __PYX_ERR(0, 95, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_color_2, __pyx_v_color) < 0) __PYX_ERR(0, 96, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":96
+  /* "cython_lib/cyhanabi.pyx":97
  *     """
  *     self._color = color
  *     self._rank = rank             # <<<<<<<<<<<<<<
  * 
  *   def color(self):
  */
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rank_2, __pyx_v_rank) < 0) __PYX_ERR(0, 96, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_rank_2, __pyx_v_rank) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":87
+  /* "cython_lib/cyhanabi.pyx":88
  *   """
  * 
  *   def __init__(self, color, rank):             # <<<<<<<<<<<<<<
@@ -5749,7 +6048,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard___init__(CYTHON_UN
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":98
+/* "cython_lib/cyhanabi.pyx":99
  *     self._rank = rank
  * 
  *   def color(self):             # <<<<<<<<<<<<<<
@@ -5810,12 +6109,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color") < 0)) __PYX_ERR(0, 98, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "color") < 0)) __PYX_ERR(0, 99, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5826,7 +6125,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("color", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 98, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("color", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 99, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5862,7 +6161,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_2color(CYTHON_UNUS
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color", 1);
 
-  /* "cython_lib/cyhanabi.pyx":99
+  /* "cython_lib/cyhanabi.pyx":100
  * 
  *   def color(self):
  *     return self._color             # <<<<<<<<<<<<<<
@@ -5870,13 +6169,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_2color(CYTHON_UNUS
  *   def rank(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":98
+  /* "cython_lib/cyhanabi.pyx":99
  *     self._rank = rank
  * 
  *   def color(self):             # <<<<<<<<<<<<<<
@@ -5895,7 +6194,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_2color(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":101
+/* "cython_lib/cyhanabi.pyx":102
  *     return self._color
  * 
  *   def rank(self):             # <<<<<<<<<<<<<<
@@ -5956,12 +6255,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "rank") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "rank") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -5972,7 +6271,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("rank", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 101, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("rank", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 102, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6008,7 +6307,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_4rank(CYTHON_UNUSE
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rank", 1);
 
-  /* "cython_lib/cyhanabi.pyx":102
+  /* "cython_lib/cyhanabi.pyx":103
  * 
  *   def rank(self):
  *     return self._rank             # <<<<<<<<<<<<<<
@@ -6016,13 +6315,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_4rank(CYTHON_UNUSE
  *   def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":101
+  /* "cython_lib/cyhanabi.pyx":102
  *     return self._color
  * 
  *   def rank(self):             # <<<<<<<<<<<<<<
@@ -6041,7 +6340,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_4rank(CYTHON_UNUSE
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":104
+/* "cython_lib/cyhanabi.pyx":105
  *     return self._rank
  * 
  *   def __str__(self):             # <<<<<<<<<<<<<<
@@ -6102,12 +6401,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__str__") < 0)) __PYX_ERR(0, 104, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__str__") < 0)) __PYX_ERR(0, 105, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -6118,7 +6417,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__str__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 104, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__str__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 105, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6159,14 +6458,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":105
+  /* "cython_lib/cyhanabi.pyx":106
  * 
  *   def __str__(self):
  *     if self.valid():             # <<<<<<<<<<<<<<
  *       return COLOR_CHAR[self._color] + str(self._rank + 1)
  *     else:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_valid); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_valid); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -6186,15 +6485,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_5) {
 
-    /* "cython_lib/cyhanabi.pyx":106
+    /* "cython_lib/cyhanabi.pyx":107
  *   def __str__(self):
  *     if self.valid():
  *       return COLOR_CHAR[self._color] + str(self._rank + 1)             # <<<<<<<<<<<<<<
@@ -6202,21 +6501,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
  *       return "XX"
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyInt_From_char((__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[__pyx_t_6])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_char((__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[__pyx_t_6])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Unicode(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Unicode(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -6224,7 +6523,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":105
+    /* "cython_lib/cyhanabi.pyx":106
  * 
  *   def __str__(self):
  *     if self.valid():             # <<<<<<<<<<<<<<
@@ -6233,7 +6532,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":108
+  /* "cython_lib/cyhanabi.pyx":109
  *       return COLOR_CHAR[self._color] + str(self._rank + 1)
  *     else:
  *       return "XX"             # <<<<<<<<<<<<<<
@@ -6247,7 +6546,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
     goto __pyx_L0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":104
+  /* "cython_lib/cyhanabi.pyx":105
  *     return self._rank
  * 
  *   def __str__(self):             # <<<<<<<<<<<<<<
@@ -6268,7 +6567,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_6__str__(CYTHON_UN
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":110
+/* "cython_lib/cyhanabi.pyx":111
  *       return "XX"
  * 
  *   def __repr__(self):             # <<<<<<<<<<<<<<
@@ -6329,12 +6628,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 110, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 111, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__repr__") < 0)) __PYX_ERR(0, 110, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__repr__") < 0)) __PYX_ERR(0, 111, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -6345,7 +6644,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__repr__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 110, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__repr__", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 111, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6384,7 +6683,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_8__repr__(CYTHON_U
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":111
+  /* "cython_lib/cyhanabi.pyx":112
  * 
  *   def __repr__(self):
  *     return self.__str__()             # <<<<<<<<<<<<<<
@@ -6392,7 +6691,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_8__repr__(CYTHON_U
  *   def __eq__(self, other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -6412,7 +6711,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_8__repr__(CYTHON_U
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -6420,7 +6719,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_8__repr__(CYTHON_U
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":110
+  /* "cython_lib/cyhanabi.pyx":111
  *       return "XX"
  * 
  *   def __repr__(self):             # <<<<<<<<<<<<<<
@@ -6441,7 +6740,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_8__repr__(CYTHON_U
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":113
+/* "cython_lib/cyhanabi.pyx":114
  *     return self.__str__()
  * 
  *   def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -6505,7 +6804,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -6513,14 +6812,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 113, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, 1); __PYX_ERR(0, 114, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__eq__") < 0)) __PYX_ERR(0, 113, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__eq__") < 0)) __PYX_ERR(0, 114, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -6533,7 +6832,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 113, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__eq__", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 114, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6575,7 +6874,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__eq__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":114
+  /* "cython_lib/cyhanabi.pyx":115
  * 
  *   def __eq__(self, other):
  *     return self._color == other.color() and self._rank == other.rank()             # <<<<<<<<<<<<<<
@@ -6583,9 +6882,9 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
  *   def valid(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -6605,14 +6904,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
     PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 114, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_2, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_7 < 0))) __PYX_ERR(0, 115, __pyx_L1_error)
   if (__pyx_t_7) {
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
@@ -6621,9 +6920,9 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -6643,11 +6942,11 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
     PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 114, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_4, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_INCREF(__pyx_t_2);
@@ -6658,7 +6957,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":113
+  /* "cython_lib/cyhanabi.pyx":114
  *     return self.__str__()
  * 
  *   def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -6681,7 +6980,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_10__eq__(CYTHON_UN
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":116
+/* "cython_lib/cyhanabi.pyx":117
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  *   def valid(self):             # <<<<<<<<<<<<<<
@@ -6742,12 +7041,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 116, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 117, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "valid") < 0)) __PYX_ERR(0, 116, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "valid") < 0)) __PYX_ERR(0, 117, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -6758,7 +7057,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("valid", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 116, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("valid", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 117, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6797,7 +7096,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_12valid(CYTHON_UNU
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("valid", 1);
 
-  /* "cython_lib/cyhanabi.pyx":117
+  /* "cython_lib/cyhanabi.pyx":118
  * 
  *   def valid(self):
  *     return self._color >= 0 and self._rank >= 0             # <<<<<<<<<<<<<<
@@ -6805,11 +7104,11 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_12valid(CYTHON_UNU
  *   def to_dict(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_t_2, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_4 < 0))) __PYX_ERR(0, 118, __pyx_L1_error)
   if (__pyx_t_4) {
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
@@ -6818,9 +7117,9 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_12valid(CYTHON_UNU
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     goto __pyx_L3_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_int_0, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_INCREF(__pyx_t_2);
   __pyx_t_1 = __pyx_t_2;
@@ -6830,7 +7129,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_12valid(CYTHON_UNU
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":116
+  /* "cython_lib/cyhanabi.pyx":117
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  *   def valid(self):             # <<<<<<<<<<<<<<
@@ -6851,7 +7150,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_12valid(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":119
+/* "cython_lib/cyhanabi.pyx":120
  *     return self._color >= 0 and self._rank >= 0
  * 
  *   def to_dict(self):             # <<<<<<<<<<<<<<
@@ -6913,12 +7212,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 119, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 120, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "to_dict") < 0)) __PYX_ERR(0, 119, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "to_dict") < 0)) __PYX_ERR(0, 120, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -6929,7 +7228,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("to_dict", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 119, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("to_dict", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 120, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -6970,7 +7269,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_14to_dict(CYTHON_U
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_dict", 1);
 
-  /* "cython_lib/cyhanabi.pyx":125
+  /* "cython_lib/cyhanabi.pyx":126
  *       d: dict, containing color and rank of card.
  *     """
  *     return {"color": color_idx_to_char(self._color), "rank": self._rank}             # <<<<<<<<<<<<<<
@@ -6978,11 +7277,11 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_14to_dict(CYTHON_U
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_color_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -7003,21 +7302,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_14to_dict(CYTHON_U
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_color, __pyx_t_2) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_color, __pyx_t_2) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_rank, __pyx_t_2) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_rank, __pyx_t_2) < 0) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":119
+  /* "cython_lib/cyhanabi.pyx":120
  *     return self._color >= 0 and self._rank >= 0
  * 
  *   def to_dict(self):             # <<<<<<<<<<<<<<
@@ -7040,7 +7339,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiCard_14to_dict(CYTHON_U
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":132
+/* "cython_lib/cyhanabi.pyx":133
  *     cdef pyhanabi_card_knowledge_t* _knowledge
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -7075,7 +7374,7 @@ static int __pyx_pw_10cython_lib_8cyhanabi_19HanabiCardKnowledge_1__cinit__(PyOb
 static int __pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge___cinit__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiCardKnowledge *__pyx_v_self) {
   int __pyx_r;
 
-  /* "cython_lib/cyhanabi.pyx":133
+  /* "cython_lib/cyhanabi.pyx":134
  * 
  *     def __cinit__(self):
  *         self._knowledge = NULL             # <<<<<<<<<<<<<<
@@ -7084,7 +7383,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge___cinit__(struc
  */
   __pyx_v_self->_knowledge = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":132
+  /* "cython_lib/cyhanabi.pyx":133
  *     cdef pyhanabi_card_knowledge_t* _knowledge
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -7097,7 +7396,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge___cinit__(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":136
+/* "cython_lib/cyhanabi.pyx":137
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_card_knowledge_t* knowledge):             # <<<<<<<<<<<<<<
@@ -7115,19 +7414,19 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_from_ptr(p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_ptr", 1);
 
-  /* "cython_lib/cyhanabi.pyx":138
+  /* "cython_lib/cyhanabi.pyx":139
  *     cdef from_ptr(pyhanabi_card_knowledge_t* knowledge):
  *         """Factory method to create from C++ pointer."""
  *         cdef HanabiCardKnowledge instance = HanabiCardKnowledge()             # <<<<<<<<<<<<<<
  *         instance._knowledge = knowledge
  *         return instance
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_instance = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiCardKnowledge *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":139
+  /* "cython_lib/cyhanabi.pyx":140
  *         """Factory method to create from C++ pointer."""
  *         cdef HanabiCardKnowledge instance = HanabiCardKnowledge()
  *         instance._knowledge = knowledge             # <<<<<<<<<<<<<<
@@ -7136,7 +7435,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_from_ptr(p
  */
   __pyx_v_instance->_knowledge = __pyx_v_knowledge;
 
-  /* "cython_lib/cyhanabi.pyx":140
+  /* "cython_lib/cyhanabi.pyx":141
  *         cdef HanabiCardKnowledge instance = HanabiCardKnowledge()
  *         instance._knowledge = knowledge
  *         return instance             # <<<<<<<<<<<<<<
@@ -7148,7 +7447,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_from_ptr(p
   __pyx_r = ((PyObject *)__pyx_v_instance);
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":136
+  /* "cython_lib/cyhanabi.pyx":137
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_card_knowledge_t* knowledge):             # <<<<<<<<<<<<<<
@@ -7168,7 +7467,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_from_ptr(p
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":142
+/* "cython_lib/cyhanabi.pyx":143
  *         return instance
  * 
  *     cdef color(self):             # <<<<<<<<<<<<<<
@@ -7186,7 +7485,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color", 1);
 
-  /* "cython_lib/cyhanabi.pyx":143
+  /* "cython_lib/cyhanabi.pyx":144
  * 
  *     cdef color(self):
  *         if ColorWasHinted(self._knowledge):             # <<<<<<<<<<<<<<
@@ -7196,7 +7495,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
   __pyx_t_1 = (ColorWasHinted(__pyx_v_self->_knowledge) != 0);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":144
+    /* "cython_lib/cyhanabi.pyx":145
  *     cdef color(self):
  *         if ColorWasHinted(self._knowledge):
  *             return KnownColor(self._knowledge)             # <<<<<<<<<<<<<<
@@ -7204,13 +7503,13 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_From_int(KnownColor(__pyx_v_self->_knowledge)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(KnownColor(__pyx_v_self->_knowledge)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":143
+    /* "cython_lib/cyhanabi.pyx":144
  * 
  *     cdef color(self):
  *         if ColorWasHinted(self._knowledge):             # <<<<<<<<<<<<<<
@@ -7219,7 +7518,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":146
+  /* "cython_lib/cyhanabi.pyx":147
  *             return KnownColor(self._knowledge)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -7232,7 +7531,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
     goto __pyx_L0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":142
+  /* "cython_lib/cyhanabi.pyx":143
  *         return instance
  * 
  *     cdef color(self):             # <<<<<<<<<<<<<<
@@ -7251,7 +7550,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color(stru
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":148
+/* "cython_lib/cyhanabi.pyx":149
  *             return None
  * 
  *     cdef color_plausible(self, color_index):             # <<<<<<<<<<<<<<
@@ -7269,7 +7568,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color_plau
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color_plausible", 1);
 
-  /* "cython_lib/cyhanabi.pyx":149
+  /* "cython_lib/cyhanabi.pyx":150
  * 
  *     cdef color_plausible(self, color_index):
  *         return ColorIsPlausible(self._knowledge, color_index)             # <<<<<<<<<<<<<<
@@ -7277,14 +7576,14 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color_plau
  *     cdef rank(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_color_index); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 149, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(ColorIsPlausible(__pyx_v_self->_knowledge, __pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_color_index); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(ColorIsPlausible(__pyx_v_self->_knowledge, __pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":148
+  /* "cython_lib/cyhanabi.pyx":149
  *             return None
  * 
  *     cdef color_plausible(self, color_index):             # <<<<<<<<<<<<<<
@@ -7303,7 +7602,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_color_plau
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":151
+/* "cython_lib/cyhanabi.pyx":152
  *         return ColorIsPlausible(self._knowledge, color_index)
  * 
  *     cdef rank(self):             # <<<<<<<<<<<<<<
@@ -7321,7 +7620,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rank", 1);
 
-  /* "cython_lib/cyhanabi.pyx":152
+  /* "cython_lib/cyhanabi.pyx":153
  * 
  *     cdef rank(self):
  *         if RankWasHinted(self._knowledge):             # <<<<<<<<<<<<<<
@@ -7331,7 +7630,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
   __pyx_t_1 = (RankWasHinted(__pyx_v_self->_knowledge) != 0);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":153
+    /* "cython_lib/cyhanabi.pyx":154
  *     cdef rank(self):
  *         if RankWasHinted(self._knowledge):
  *             return KnownRank(self._knowledge)             # <<<<<<<<<<<<<<
@@ -7339,13 +7638,13 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
  *             return None
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_From_int(KnownRank(__pyx_v_self->_knowledge)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(KnownRank(__pyx_v_self->_knowledge)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = __pyx_t_2;
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":152
+    /* "cython_lib/cyhanabi.pyx":153
  * 
  *     cdef rank(self):
  *         if RankWasHinted(self._knowledge):             # <<<<<<<<<<<<<<
@@ -7354,7 +7653,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":155
+  /* "cython_lib/cyhanabi.pyx":156
  *             return KnownRank(self._knowledge)
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -7367,7 +7666,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
     goto __pyx_L0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":151
+  /* "cython_lib/cyhanabi.pyx":152
  *         return ColorIsPlausible(self._knowledge, color_index)
  * 
  *     cdef rank(self):             # <<<<<<<<<<<<<<
@@ -7386,7 +7685,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":157
+/* "cython_lib/cyhanabi.pyx":158
  *             return None
  * 
  *     cdef rank_plausible(self, rank_index):             # <<<<<<<<<<<<<<
@@ -7404,7 +7703,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank_plaus
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rank_plausible", 1);
 
-  /* "cython_lib/cyhanabi.pyx":158
+  /* "cython_lib/cyhanabi.pyx":159
  * 
  *     cdef rank_plausible(self, rank_index):
  *         return RankIsPlausible(self._knowledge, rank_index)             # <<<<<<<<<<<<<<
@@ -7412,14 +7711,14 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank_plaus
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_rank_index); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 158, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_From_int(RankIsPlausible(__pyx_v_self->_knowledge, __pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 158, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_rank_index); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(RankIsPlausible(__pyx_v_self->_knowledge, __pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":157
+  /* "cython_lib/cyhanabi.pyx":158
  *             return None
  * 
  *     cdef rank_plausible(self, rank_index):             # <<<<<<<<<<<<<<
@@ -7438,7 +7737,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank_plaus
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":160
+/* "cython_lib/cyhanabi.pyx":161
  *         return RankIsPlausible(self._knowledge, rank_index)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -7473,7 +7772,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_2__str__(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":161
+  /* "cython_lib/cyhanabi.pyx":162
  * 
  *     def __str__(self):
  *         c_string = CardKnowledgeToString(self._knowledge)             # <<<<<<<<<<<<<<
@@ -7482,20 +7781,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_2__str__(
  */
   __pyx_v_c_string = CardKnowledgeToString(__pyx_v_self->_knowledge);
 
-  /* "cython_lib/cyhanabi.pyx":162
+  /* "cython_lib/cyhanabi.pyx":163
  *     def __str__(self):
  *         c_string = CardKnowledgeToString(self._knowledge)
  *         string = c_string.decode("utf-8")             # <<<<<<<<<<<<<<
  *         DeleteString(c_string)
  *         return string
  */
-  __pyx_t_1 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 162, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_1, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 163, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_1, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_string = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":163
+  /* "cython_lib/cyhanabi.pyx":164
  *         c_string = CardKnowledgeToString(self._knowledge)
  *         string = c_string.decode("utf-8")
  *         DeleteString(c_string)             # <<<<<<<<<<<<<<
@@ -7504,7 +7803,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_2__str__(
  */
   DeleteString(__pyx_v_c_string);
 
-  /* "cython_lib/cyhanabi.pyx":164
+  /* "cython_lib/cyhanabi.pyx":165
  *         string = c_string.decode("utf-8")
  *         DeleteString(c_string)
  *         return string             # <<<<<<<<<<<<<<
@@ -7516,7 +7815,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_2__str__(
   __pyx_r = __pyx_v_string;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":160
+  /* "cython_lib/cyhanabi.pyx":161
  *         return RankIsPlausible(self._knowledge, rank_index)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -7536,7 +7835,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_2__str__(
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":166
+/* "cython_lib/cyhanabi.pyx":167
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -7571,7 +7870,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_4__repr__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":167
+  /* "cython_lib/cyhanabi.pyx":168
  * 
  *     def __repr__(self):
  *         return self.__str__()             # <<<<<<<<<<<<<<
@@ -7579,7 +7878,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_4__repr__
  *     def to_dict(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 168, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -7599,7 +7898,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_4__repr__
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 168, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -7607,7 +7906,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_4__repr__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":166
+  /* "cython_lib/cyhanabi.pyx":167
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -7628,7 +7927,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_4__repr__
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":169
+/* "cython_lib/cyhanabi.pyx":170
  *         return self.__str__()
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
@@ -7691,7 +7990,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_6to_dict(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_dict", 1);
 
-  /* "cython_lib/cyhanabi.pyx":170
+  /* "cython_lib/cyhanabi.pyx":171
  * 
  *     def to_dict(self):
  *         return {"color": color_idx_to_char(self.color()), "rank": self.rank()}             # <<<<<<<<<<<<<<
@@ -7699,11 +7998,11 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_6to_dict(
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = ((struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge *)__pyx_v_self->__pyx_vtab)->color(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_t_4 = ((struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge *)__pyx_v_self->__pyx_vtab)->color(__pyx_v_self); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -7724,21 +8023,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_6to_dict(
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_6, 1+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_color, __pyx_t_2) < 0) __PYX_ERR(0, 170, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_color, __pyx_t_2) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = ((struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge *)__pyx_v_self->__pyx_vtab)->rank(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiCardKnowledge *)__pyx_v_self->__pyx_vtab)->rank(__pyx_v_self); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_rank, __pyx_t_2) < 0) __PYX_ERR(0, 170, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_u_rank, __pyx_t_2) < 0) __PYX_ERR(0, 171, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":169
+  /* "cython_lib/cyhanabi.pyx":170
  *         return self.__str__()
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
@@ -7975,7 +8274,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_19HanabiCardKnowledge_10__setst
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":181
+/* "cython_lib/cyhanabi.pyx":182
  *     cdef int _rank
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -8010,7 +8309,7 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiMove_1__cinit__(PyObject *__p
 static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove___cinit__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *__pyx_v_self) {
   int __pyx_r;
 
-  /* "cython_lib/cyhanabi.pyx":182
+  /* "cython_lib/cyhanabi.pyx":183
  * 
  *     def __cinit__(self):
  *         self._move = NULL             # <<<<<<<<<<<<<<
@@ -8019,7 +8318,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove___cinit__(struct __pyx_o
  */
   __pyx_v_self->_move = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":181
+  /* "cython_lib/cyhanabi.pyx":182
  *     cdef int _rank
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -8032,7 +8331,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove___cinit__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":185
+/* "cython_lib/cyhanabi.pyx":186
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_move_t* move):             # <<<<<<<<<<<<<<
@@ -8050,19 +8349,19 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_ptr", 1);
 
-  /* "cython_lib/cyhanabi.pyx":186
+  /* "cython_lib/cyhanabi.pyx":187
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_move_t* move):
  *         cdef HanabiMove instance = HanabiMove()             # <<<<<<<<<<<<<<
  *         instance._move = move
  *         instance._type = MoveType(instance._move)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_instance = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":187
+  /* "cython_lib/cyhanabi.pyx":188
  *     cdef from_ptr(pyhanabi_move_t* move):
  *         cdef HanabiMove instance = HanabiMove()
  *         instance._move = move             # <<<<<<<<<<<<<<
@@ -8071,7 +8370,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_move = __pyx_v_move;
 
-  /* "cython_lib/cyhanabi.pyx":188
+  /* "cython_lib/cyhanabi.pyx":189
  *         cdef HanabiMove instance = HanabiMove()
  *         instance._move = move
  *         instance._type = MoveType(instance._move)             # <<<<<<<<<<<<<<
@@ -8080,7 +8379,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_type = MoveType(__pyx_v_instance->_move);
 
-  /* "cython_lib/cyhanabi.pyx":189
+  /* "cython_lib/cyhanabi.pyx":190
  *         instance._move = move
  *         instance._type = MoveType(instance._move)
  *         instance._card_index = CardIndex(instance._move)             # <<<<<<<<<<<<<<
@@ -8089,7 +8388,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_card_index = CardIndex(__pyx_v_instance->_move);
 
-  /* "cython_lib/cyhanabi.pyx":190
+  /* "cython_lib/cyhanabi.pyx":191
  *         instance._type = MoveType(instance._move)
  *         instance._card_index = CardIndex(instance._move)
  *         instance._target_offset = TargetOffset(instance._move)             # <<<<<<<<<<<<<<
@@ -8098,7 +8397,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_target_offset = TargetOffset(__pyx_v_instance->_move);
 
-  /* "cython_lib/cyhanabi.pyx":191
+  /* "cython_lib/cyhanabi.pyx":192
  *         instance._card_index = CardIndex(instance._move)
  *         instance._target_offset = TargetOffset(instance._move)
  *         instance._color = MoveColor(instance._move)             # <<<<<<<<<<<<<<
@@ -8107,7 +8406,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_color = MoveColor(__pyx_v_instance->_move);
 
-  /* "cython_lib/cyhanabi.pyx":192
+  /* "cython_lib/cyhanabi.pyx":193
  *         instance._target_offset = TargetOffset(instance._move)
  *         instance._color = MoveColor(instance._move)
  *         instance._rank = MoveRank(instance._move)             # <<<<<<<<<<<<<<
@@ -8116,7 +8415,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
  */
   __pyx_v_instance->_rank = MoveRank(__pyx_v_instance->_move);
 
-  /* "cython_lib/cyhanabi.pyx":193
+  /* "cython_lib/cyhanabi.pyx":194
  *         instance._color = MoveColor(instance._move)
  *         instance._rank = MoveRank(instance._move)
  *         return instance             # <<<<<<<<<<<<<<
@@ -8128,7 +8427,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
   __pyx_r = ((PyObject *)__pyx_v_instance);
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":185
+  /* "cython_lib/cyhanabi.pyx":186
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_move_t* move):             # <<<<<<<<<<<<<<
@@ -8148,7 +8447,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(pyhanabi_m
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":195
+/* "cython_lib/cyhanabi.pyx":196
  *         return instance
  * 
  *     def type(self):             # <<<<<<<<<<<<<<
@@ -8210,7 +8509,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_2type(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("type", 1);
 
-  /* "cython_lib/cyhanabi.pyx":196
+  /* "cython_lib/cyhanabi.pyx":197
  * 
  *     def type(self):
  *         return HanabiMoveType(self._type)             # <<<<<<<<<<<<<<
@@ -8218,9 +8517,9 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_2type(struct __pyx
  *     def card_index(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -8241,7 +8540,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_2type(struct __pyx
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -8249,7 +8548,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_2type(struct __pyx
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":195
+  /* "cython_lib/cyhanabi.pyx":196
  *         return instance
  * 
  *     def type(self):             # <<<<<<<<<<<<<<
@@ -8271,7 +8570,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_2type(struct __pyx
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":198
+/* "cython_lib/cyhanabi.pyx":199
  *         return HanabiMoveType(self._type)
  * 
  *     def card_index(self):             # <<<<<<<<<<<<<<
@@ -8329,7 +8628,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_4card_index(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("card_index", 1);
 
-  /* "cython_lib/cyhanabi.pyx":199
+  /* "cython_lib/cyhanabi.pyx":200
  * 
  *     def card_index(self):
  *         return self._card_index             # <<<<<<<<<<<<<<
@@ -8337,13 +8636,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_4card_index(struct
  *     def target_offset(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":198
+  /* "cython_lib/cyhanabi.pyx":199
  *         return HanabiMoveType(self._type)
  * 
  *     def card_index(self):             # <<<<<<<<<<<<<<
@@ -8362,7 +8661,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_4card_index(struct
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":201
+/* "cython_lib/cyhanabi.pyx":202
  *         return self._card_index
  * 
  *     def target_offset(self):             # <<<<<<<<<<<<<<
@@ -8420,7 +8719,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_6target_offset(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("target_offset", 1);
 
-  /* "cython_lib/cyhanabi.pyx":202
+  /* "cython_lib/cyhanabi.pyx":203
  * 
  *     def target_offset(self):
  *         return self._target_offset             # <<<<<<<<<<<<<<
@@ -8428,13 +8727,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_6target_offset(str
  *     def color(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 202, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":201
+  /* "cython_lib/cyhanabi.pyx":202
  *         return self._card_index
  * 
  *     def target_offset(self):             # <<<<<<<<<<<<<<
@@ -8453,7 +8752,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_6target_offset(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":204
+/* "cython_lib/cyhanabi.pyx":205
  *         return self._target_offset
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
@@ -8511,7 +8810,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_8color(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color", 1);
 
-  /* "cython_lib/cyhanabi.pyx":205
+  /* "cython_lib/cyhanabi.pyx":206
  * 
  *     def color(self):
  *         return self._color             # <<<<<<<<<<<<<<
@@ -8519,13 +8818,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_8color(struct __py
  *     def rank(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":204
+  /* "cython_lib/cyhanabi.pyx":205
  *         return self._target_offset
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
@@ -8544,7 +8843,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_8color(struct __py
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":207
+/* "cython_lib/cyhanabi.pyx":208
  *         return self._color
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
@@ -8602,7 +8901,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_10rank(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rank", 1);
 
-  /* "cython_lib/cyhanabi.pyx":208
+  /* "cython_lib/cyhanabi.pyx":209
  * 
  *     def rank(self):
  *         return self._rank             # <<<<<<<<<<<<<<
@@ -8610,13 +8909,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_10rank(struct __py
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":207
+  /* "cython_lib/cyhanabi.pyx":208
  *         return self._color
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
@@ -8635,7 +8934,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_10rank(struct __py
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":210
+/* "cython_lib/cyhanabi.pyx":211
  *         return self._rank
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -8696,23 +8995,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 210, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_discard_move") < 0)) __PYX_ERR(0, 210, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_discard_move") < 0)) __PYX_ERR(0, 211, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 211, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 212, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_discard_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 210, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_discard_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 211, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8750,7 +9049,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_discard_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":212
+  /* "cython_lib/cyhanabi.pyx":213
  *     @staticmethod
  *     def get_discard_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -8759,7 +9058,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":213
+  /* "cython_lib/cyhanabi.pyx":214
  *     def get_discard_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDiscardMove(card_index, c_move):             # <<<<<<<<<<<<<<
@@ -8769,7 +9068,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
   __pyx_t_1 = (!(GetDiscardMove(__pyx_v_card_index, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":214
+    /* "cython_lib/cyhanabi.pyx":215
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDiscardMove(card_index, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -8778,7 +9077,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":215
+    /* "cython_lib/cyhanabi.pyx":216
  *         if not GetDiscardMove(card_index, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -8789,7 +9088,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":213
+    /* "cython_lib/cyhanabi.pyx":214
  *     def get_discard_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDiscardMove(card_index, c_move):             # <<<<<<<<<<<<<<
@@ -8798,7 +9097,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":216
+  /* "cython_lib/cyhanabi.pyx":217
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -8806,13 +9105,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":210
+  /* "cython_lib/cyhanabi.pyx":211
  *         return self._rank
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -8831,7 +9130,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_12get_discard_move
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":218
+/* "cython_lib/cyhanabi.pyx":219
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -8895,7 +9194,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -8903,14 +9202,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 218, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_return_move", 1, 2, 2, 1); __PYX_ERR(0, 218, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_return_move", 1, 2, 2, 1); __PYX_ERR(0, 219, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_return_move") < 0)) __PYX_ERR(0, 218, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_return_move") < 0)) __PYX_ERR(0, 219, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -8918,12 +9217,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L3_error)
-    __pyx_v_player = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 219, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 220, __pyx_L3_error)
+    __pyx_v_player = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 220, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_return_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 218, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_return_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 219, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -8961,7 +9260,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_return_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":220
+  /* "cython_lib/cyhanabi.pyx":221
  *     @staticmethod
  *     def get_return_move(int card_index, int player):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -8970,7 +9269,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":221
+  /* "cython_lib/cyhanabi.pyx":222
  *     def get_return_move(int card_index, int player):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetReturnMove(card_index, player, c_move):             # <<<<<<<<<<<<<<
@@ -8980,7 +9279,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
   __pyx_t_1 = (!(GetReturnMove(__pyx_v_card_index, __pyx_v_player, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":222
+    /* "cython_lib/cyhanabi.pyx":223
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetReturnMove(card_index, player, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -8989,7 +9288,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":223
+    /* "cython_lib/cyhanabi.pyx":224
  *         if not GetReturnMove(card_index, player, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -9000,7 +9299,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":221
+    /* "cython_lib/cyhanabi.pyx":222
  *     def get_return_move(int card_index, int player):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetReturnMove(card_index, player, c_move):             # <<<<<<<<<<<<<<
@@ -9009,7 +9308,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":224
+  /* "cython_lib/cyhanabi.pyx":225
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -9017,13 +9316,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":218
+  /* "cython_lib/cyhanabi.pyx":219
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9042,7 +9341,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_14get_return_move(
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":226
+/* "cython_lib/cyhanabi.pyx":227
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9103,23 +9402,23 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_play_move") < 0)) __PYX_ERR(0, 226, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_play_move") < 0)) __PYX_ERR(0, 227, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
     }
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 228, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_play_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 226, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_play_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 227, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9157,7 +9456,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_play_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":228
+  /* "cython_lib/cyhanabi.pyx":229
  *     @staticmethod
  *     def get_play_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -9166,7 +9465,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":229
+  /* "cython_lib/cyhanabi.pyx":230
  *     def get_play_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetPlayMove(card_index, c_move):             # <<<<<<<<<<<<<<
@@ -9176,7 +9475,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
   __pyx_t_1 = (!(GetPlayMove(__pyx_v_card_index, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":230
+    /* "cython_lib/cyhanabi.pyx":231
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetPlayMove(card_index, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -9185,7 +9484,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":231
+    /* "cython_lib/cyhanabi.pyx":232
  *         if not GetPlayMove(card_index, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -9196,7 +9495,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":229
+    /* "cython_lib/cyhanabi.pyx":230
  *     def get_play_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetPlayMove(card_index, c_move):             # <<<<<<<<<<<<<<
@@ -9205,7 +9504,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":232
+  /* "cython_lib/cyhanabi.pyx":233
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -9213,13 +9512,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":226
+  /* "cython_lib/cyhanabi.pyx":227
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9238,7 +9537,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_16get_play_move(in
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":234
+/* "cython_lib/cyhanabi.pyx":235
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9302,7 +9601,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -9310,14 +9609,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 234, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_reveal_color_move", 1, 2, 2, 1); __PYX_ERR(0, 234, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_reveal_color_move", 1, 2, 2, 1); __PYX_ERR(0, 235, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_reveal_color_move") < 0)) __PYX_ERR(0, 234, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_reveal_color_move") < 0)) __PYX_ERR(0, 235, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -9325,12 +9624,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-    __pyx_v_target_offset = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_target_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L3_error)
-    __pyx_v_color = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 235, __pyx_L3_error)
+    __pyx_v_target_offset = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_target_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L3_error)
+    __pyx_v_color = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 236, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_reveal_color_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 234, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_reveal_color_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 235, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9368,7 +9667,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_reveal_color_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":236
+  /* "cython_lib/cyhanabi.pyx":237
  *     @staticmethod
  *     def get_reveal_color_move(int target_offset, int color):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -9377,7 +9676,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":237
+  /* "cython_lib/cyhanabi.pyx":238
  *     def get_reveal_color_move(int target_offset, int color):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealColorMove(target_offset, color, c_move):             # <<<<<<<<<<<<<<
@@ -9387,7 +9686,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
   __pyx_t_1 = (!(GetRevealColorMove(__pyx_v_target_offset, __pyx_v_color, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":238
+    /* "cython_lib/cyhanabi.pyx":239
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealColorMove(target_offset, color, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -9396,7 +9695,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":239
+    /* "cython_lib/cyhanabi.pyx":240
  *         if not GetRevealColorMove(target_offset, color, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -9407,7 +9706,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":237
+    /* "cython_lib/cyhanabi.pyx":238
  *     def get_reveal_color_move(int target_offset, int color):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealColorMove(target_offset, color, c_move):             # <<<<<<<<<<<<<<
@@ -9416,7 +9715,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":240
+  /* "cython_lib/cyhanabi.pyx":241
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -9424,13 +9723,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 241, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":234
+  /* "cython_lib/cyhanabi.pyx":235
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9449,7 +9748,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_18get_reveal_color
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":242
+/* "cython_lib/cyhanabi.pyx":243
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9513,7 +9812,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 242, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -9521,14 +9820,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 242, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_reveal_rank_move", 1, 2, 2, 1); __PYX_ERR(0, 242, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_reveal_rank_move", 1, 2, 2, 1); __PYX_ERR(0, 243, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_reveal_rank_move") < 0)) __PYX_ERR(0, 242, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_reveal_rank_move") < 0)) __PYX_ERR(0, 243, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -9536,12 +9835,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
       values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
     }
-    __pyx_v_target_offset = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_target_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L3_error)
-    __pyx_v_rank = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 243, __pyx_L3_error)
+    __pyx_v_target_offset = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_target_offset == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
+    __pyx_v_rank = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 244, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_reveal_rank_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 242, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_reveal_rank_move", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 243, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9579,7 +9878,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_reveal_rank_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":244
+  /* "cython_lib/cyhanabi.pyx":245
  *     @staticmethod
  *     def get_reveal_rank_move(int target_offset, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -9588,7 +9887,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":245
+  /* "cython_lib/cyhanabi.pyx":246
  *     def get_reveal_rank_move(int target_offset, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealRankMove(target_offset, rank, c_move):             # <<<<<<<<<<<<<<
@@ -9598,7 +9897,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
   __pyx_t_1 = (!(GetRevealRankMove(__pyx_v_target_offset, __pyx_v_rank, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":246
+    /* "cython_lib/cyhanabi.pyx":247
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealRankMove(target_offset, rank, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -9607,7 +9906,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":247
+    /* "cython_lib/cyhanabi.pyx":248
  *         if not GetRevealRankMove(target_offset, rank, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -9618,7 +9917,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":245
+    /* "cython_lib/cyhanabi.pyx":246
  *     def get_reveal_rank_move(int target_offset, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetRevealRankMove(target_offset, rank, c_move):             # <<<<<<<<<<<<<<
@@ -9627,7 +9926,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":248
+  /* "cython_lib/cyhanabi.pyx":249
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -9635,13 +9934,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
  *     @staticmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 248, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 249, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":242
+  /* "cython_lib/cyhanabi.pyx":243
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9660,7 +9959,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_20get_reveal_rank_
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":250
+/* "cython_lib/cyhanabi.pyx":251
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9730,7 +10029,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -9738,9 +10037,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 1); __PYX_ERR(0, 250, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 1); __PYX_ERR(0, 251, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -9748,9 +10047,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 2); __PYX_ERR(0, 250, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 2); __PYX_ERR(0, 251, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -9758,14 +10057,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[3]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 250, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 3); __PYX_ERR(0, 250, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, 3); __PYX_ERR(0, 251, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_deal_specific_move") < 0)) __PYX_ERR(0, 250, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_deal_specific_move") < 0)) __PYX_ERR(0, 251, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 4)) {
       goto __pyx_L5_argtuple_error;
@@ -9775,14 +10074,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
       values[2] = __Pyx_Arg_FASTCALL(__pyx_args, 2);
       values[3] = __Pyx_Arg_FASTCALL(__pyx_args, 3);
     }
-    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
-    __pyx_v_player = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
-    __pyx_v_color = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
-    __pyx_v_rank = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 251, __pyx_L3_error)
+    __pyx_v_card_index = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_card_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L3_error)
+    __pyx_v_player = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_player == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L3_error)
+    __pyx_v_color = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L3_error)
+    __pyx_v_rank = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 252, __pyx_L3_error)
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, __pyx_nargs); __PYX_ERR(0, 250, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("get_deal_specific_move", 1, 4, 4, __pyx_nargs); __PYX_ERR(0, 251, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -9820,7 +10119,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_deal_specific_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":252
+  /* "cython_lib/cyhanabi.pyx":253
  *     @staticmethod
  *     def get_deal_specific_move(int card_index, int player, int color, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -9829,7 +10128,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":253
+  /* "cython_lib/cyhanabi.pyx":254
  *     def get_deal_specific_move(int card_index, int player, int color, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDealSpecificMove(card_index, player, color, rank, c_move):             # <<<<<<<<<<<<<<
@@ -9839,7 +10138,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
   __pyx_t_1 = (!(GetDealSpecificMove(__pyx_v_card_index, __pyx_v_player, __pyx_v_color, __pyx_v_rank, __pyx_v_c_move) != 0));
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":254
+    /* "cython_lib/cyhanabi.pyx":255
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDealSpecificMove(card_index, player, color, rank, c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -9848,7 +10147,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":255
+    /* "cython_lib/cyhanabi.pyx":256
  *         if not GetDealSpecificMove(card_index, player, color, rank, c_move):
  *             free(c_move)
  *             return None             # <<<<<<<<<<<<<<
@@ -9859,7 +10158,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":253
+    /* "cython_lib/cyhanabi.pyx":254
  *     def get_deal_specific_move(int card_index, int player, int color, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         if not GetDealSpecificMove(card_index, player, color, rank, c_move):             # <<<<<<<<<<<<<<
@@ -9868,7 +10167,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":256
+  /* "cython_lib/cyhanabi.pyx":257
  *             free(c_move)
  *             return None
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -9876,13 +10175,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
  *     def to_json(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":250
+  /* "cython_lib/cyhanabi.pyx":251
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
@@ -9901,7 +10200,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_22get_deal_specifi
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":258
+/* "cython_lib/cyhanabi.pyx":259
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -9964,7 +10263,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":260
+  /* "cython_lib/cyhanabi.pyx":261
  *     def to_json(self):
  *         """Serialize move to JSON."""
  *         cdef char* json_str = MoveToJson(self._move)             # <<<<<<<<<<<<<<
@@ -9973,7 +10272,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
  */
   __pyx_v_json_str = MoveToJson(__pyx_v_self->_move);
 
-  /* "cython_lib/cyhanabi.pyx":261
+  /* "cython_lib/cyhanabi.pyx":262
  *         """Serialize move to JSON."""
  *         cdef char* json_str = MoveToJson(self._move)
  *         if json_str == NULL:             # <<<<<<<<<<<<<<
@@ -9983,20 +10282,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
   __pyx_t_1 = (__pyx_v_json_str == NULL);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cython_lib/cyhanabi.pyx":262
+    /* "cython_lib/cyhanabi.pyx":263
  *         cdef char* json_str = MoveToJson(self._move)
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: MoveToJSON returned NULL.")             # <<<<<<<<<<<<<<
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 262, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 262, __pyx_L1_error)
+    __PYX_ERR(0, 263, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":261
+    /* "cython_lib/cyhanabi.pyx":262
  *         """Serialize move to JSON."""
  *         cdef char* json_str = MoveToJson(self._move)
  *         if json_str == NULL:             # <<<<<<<<<<<<<<
@@ -10005,20 +10304,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":263
+  /* "cython_lib/cyhanabi.pyx":264
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: MoveToJSON returned NULL.")
  *         py_json = json_str.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(json_str)
  *         return py_json
  */
-  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_str); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 263, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_str, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 263, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_str); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 264, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_str, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 264, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_py_json = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":264
+  /* "cython_lib/cyhanabi.pyx":265
  *             raise ValueError("Serialization failed: MoveToJSON returned NULL.")
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)             # <<<<<<<<<<<<<<
@@ -10027,7 +10326,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
  */
   DeleteString(__pyx_v_json_str);
 
-  /* "cython_lib/cyhanabi.pyx":265
+  /* "cython_lib/cyhanabi.pyx":266
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  *         return py_json             # <<<<<<<<<<<<<<
@@ -10039,7 +10338,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
   __pyx_r = __pyx_v_py_json;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":258
+  /* "cython_lib/cyhanabi.pyx":259
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -10059,7 +10358,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_24to_json(struct _
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":267
+/* "cython_lib/cyhanabi.pyx":268
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -10121,12 +10420,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 267, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 268, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -10137,7 +10436,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 267, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 268, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -10151,7 +10450,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 268, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 269, __pyx_L1_error)
   __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(((PyTypeObject*)__pyx_v_cls), __pyx_v_json_str);
 
   /* function exit code */
@@ -10181,7 +10480,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":270
+  /* "cython_lib/cyhanabi.pyx":271
  *     def from_json(cls, str json_str):
  *         """Deserialize move from JSON."""
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -10190,7 +10489,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":271
+  /* "cython_lib/cyhanabi.pyx":272
  *         """Deserialize move from JSON."""
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *         if not MoveFromJson(json_str.encode('ascii'), c_move):             # <<<<<<<<<<<<<<
@@ -10199,16 +10498,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
  */
   if (unlikely(__pyx_v_json_str == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 272, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsASCIIString(__pyx_v_json_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsASCIIString(__pyx_v_json_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 272, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L1_error)
   __pyx_t_3 = (!(MoveFromJson(__pyx_t_2, __pyx_v_c_move) != 0));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (unlikely(__pyx_t_3)) {
 
-    /* "cython_lib/cyhanabi.pyx":272
+    /* "cython_lib/cyhanabi.pyx":273
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *         if not MoveFromJson(json_str.encode('ascii'), c_move):
  *             free(c_move)             # <<<<<<<<<<<<<<
@@ -10217,20 +10516,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
  */
     free(__pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":273
+    /* "cython_lib/cyhanabi.pyx":274
  *         if not MoveFromJson(json_str.encode('ascii'), c_move):
  *             free(c_move)
  *             raise ValueError("Failed to deserialize HanabiMove from JSON")             # <<<<<<<<<<<<<<
  *         return HanabiMove.from_ptr(c_move)
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 273, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 273, __pyx_L1_error)
+    __PYX_ERR(0, 274, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":271
+    /* "cython_lib/cyhanabi.pyx":272
  *         """Deserialize move from JSON."""
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *         if not MoveFromJson(json_str.encode('ascii'), c_move):             # <<<<<<<<<<<<<<
@@ -10239,7 +10538,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":274
+  /* "cython_lib/cyhanabi.pyx":275
  *             free(c_move)
  *             raise ValueError("Failed to deserialize HanabiMove from JSON")
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -10247,13 +10546,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
  *     def __hash__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 274, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 275, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":267
+  /* "cython_lib/cyhanabi.pyx":268
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -10272,7 +10571,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_26from_json(CYTHON
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":276
+/* "cython_lib/cyhanabi.pyx":277
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -10314,46 +10613,46 @@ static Py_hash_t __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_28__hash__(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__hash__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":278
+  /* "cython_lib/cyhanabi.pyx":279
  *     def __hash__(self):
  *         """Hash function for a move."""
  *         return hash((self._type, self._card_index, self._target_offset, self._color, self._rank))             # <<<<<<<<<<<<<<
  * 
  *     def __eq__(self, other):
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_1);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1)) __PYX_ERR(0, 278, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_1)) __PYX_ERR(0, 279, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_2);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2)) __PYX_ERR(0, 278, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 1, __pyx_t_2)) __PYX_ERR(0, 279, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_3);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_3)) __PYX_ERR(0, 278, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_3)) __PYX_ERR(0, 279, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_4)) __PYX_ERR(0, 278, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 3, __pyx_t_4)) __PYX_ERR(0, 279, __pyx_L1_error);
   __Pyx_GIVEREF(__pyx_t_5);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 4, __pyx_t_5)) __PYX_ERR(0, 278, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_6, 4, __pyx_t_5)) __PYX_ERR(0, 279, __pyx_L1_error);
   __pyx_t_1 = 0;
   __pyx_t_2 = 0;
   __pyx_t_3 = 0;
   __pyx_t_4 = 0;
   __pyx_t_5 = 0;
-  __pyx_t_7 = PyObject_Hash(__pyx_t_6); if (unlikely(__pyx_t_7 == ((Py_hash_t)-1))) __PYX_ERR(0, 278, __pyx_L1_error)
+  __pyx_t_7 = PyObject_Hash(__pyx_t_6); if (unlikely(__pyx_t_7 == ((Py_hash_t)-1))) __PYX_ERR(0, 279, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_r = __pyx_t_7;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":276
+  /* "cython_lib/cyhanabi.pyx":277
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def __hash__(self):             # <<<<<<<<<<<<<<
@@ -10377,7 +10676,7 @@ static Py_hash_t __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_28__hash__(struct 
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":280
+/* "cython_lib/cyhanabi.pyx":281
  *         return hash((self._type, self._card_index, self._target_offset, self._color, self._rank))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -10414,7 +10713,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__eq__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":281
+  /* "cython_lib/cyhanabi.pyx":282
  * 
  *     def __eq__(self, other):
  *         if not isinstance(other, HanabiMove):             # <<<<<<<<<<<<<<
@@ -10425,7 +10724,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
   __pyx_t_2 = (!__pyx_t_1);
   if (__pyx_t_2) {
 
-    /* "cython_lib/cyhanabi.pyx":282
+    /* "cython_lib/cyhanabi.pyx":283
  *     def __eq__(self, other):
  *         if not isinstance(other, HanabiMove):
  *             return NotImplemented             # <<<<<<<<<<<<<<
@@ -10437,7 +10736,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
     __pyx_r = __pyx_builtin_NotImplemented;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":281
+    /* "cython_lib/cyhanabi.pyx":282
  * 
  *     def __eq__(self, other):
  *         if not isinstance(other, HanabiMove):             # <<<<<<<<<<<<<<
@@ -10446,7 +10745,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":283
+  /* "cython_lib/cyhanabi.pyx":284
  *         if not isinstance(other, HanabiMove):
  *             return NotImplemented
  *         return (self._type == other._type and             # <<<<<<<<<<<<<<
@@ -10454,14 +10753,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
  *                 self._target_offset == other._target_offset and
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_type); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_type); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 284, __pyx_L1_error)
   if (__pyx_t_2) {
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
@@ -10471,21 +10770,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "cython_lib/cyhanabi.pyx":284
+  /* "cython_lib/cyhanabi.pyx":285
  *             return NotImplemented
  *         return (self._type == other._type and
  *                 self._card_index == other._card_index and             # <<<<<<<<<<<<<<
  *                 self._target_offset == other._target_offset and
  *                 self._color == other._color and
  */
-  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_card_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_card_index_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_card_index_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 284, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 285, __pyx_L1_error)
   if (__pyx_t_2) {
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
@@ -10495,21 +10794,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "cython_lib/cyhanabi.pyx":285
+  /* "cython_lib/cyhanabi.pyx":286
  *         return (self._type == other._type and
  *                 self._card_index == other._card_index and
  *                 self._target_offset == other._target_offset and             # <<<<<<<<<<<<<<
  *                 self._color == other._color and
  *                 self._rank == other._rank)
  */
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_target_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_target_offset_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_target_offset_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 286, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 285, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 286, __pyx_L1_error)
   if (__pyx_t_2) {
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
@@ -10519,21 +10818,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "cython_lib/cyhanabi.pyx":286
+  /* "cython_lib/cyhanabi.pyx":287
  *                 self._card_index == other._card_index and
  *                 self._target_offset == other._target_offset and
  *                 self._color == other._color and             # <<<<<<<<<<<<<<
  *                 self._rank == other._rank)
  * 
  */
-  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_color_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_color_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_t_6, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 286, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely((__pyx_t_2 < 0))) __PYX_ERR(0, 287, __pyx_L1_error)
   if (__pyx_t_2) {
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
@@ -10543,18 +10842,18 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
     goto __pyx_L4_bool_binop_done;
   }
 
-  /* "cython_lib/cyhanabi.pyx":287
+  /* "cython_lib/cyhanabi.pyx":288
  *                 self._target_offset == other._target_offset and
  *                 self._color == other._color and
  *                 self._rank == other._rank)             # <<<<<<<<<<<<<<
  * 
  *     def __str__(self):
  */
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_self->_rank); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other, __pyx_n_s_rank_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 288, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_4, __pyx_t_5, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 288, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_INCREF(__pyx_t_6);
@@ -10565,7 +10864,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":280
+  /* "cython_lib/cyhanabi.pyx":281
  *         return hash((self._type, self._card_index, self._target_offset, self._color, self._rank))
  * 
  *     def __eq__(self, other):             # <<<<<<<<<<<<<<
@@ -10587,7 +10886,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_30__eq__(struct __
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":289
+/* "cython_lib/cyhanabi.pyx":290
  *                 self._rank == other._rank)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -10623,7 +10922,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":290
+  /* "cython_lib/cyhanabi.pyx":291
  * 
  *     def __str__(self):
  *         cdef char* c_string = MoveToString(self._move)             # <<<<<<<<<<<<<<
@@ -10632,7 +10931,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
  */
   __pyx_v_c_string = MoveToString(__pyx_v_self->_move);
 
-  /* "cython_lib/cyhanabi.pyx":291
+  /* "cython_lib/cyhanabi.pyx":292
  *     def __str__(self):
  *         cdef char* c_string = MoveToString(self._move)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -10642,7 +10941,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
   __pyx_t_1 = (__pyx_v_c_string == NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":292
+    /* "cython_lib/cyhanabi.pyx":293
  *         cdef char* c_string = MoveToString(self._move)
  *         if c_string == NULL:
  *             return ""             # <<<<<<<<<<<<<<
@@ -10654,7 +10953,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
     __pyx_r = __pyx_kp_u__3;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":291
+    /* "cython_lib/cyhanabi.pyx":292
  *     def __str__(self):
  *         cdef char* c_string = MoveToString(self._move)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -10663,20 +10962,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":293
+  /* "cython_lib/cyhanabi.pyx":294
  *         if c_string == NULL:
  *             return ""
  *         string = c_string.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(c_string)
  *         return string
  */
-  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 293, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 293, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 294, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 294, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_string = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":294
+  /* "cython_lib/cyhanabi.pyx":295
  *             return ""
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)             # <<<<<<<<<<<<<<
@@ -10685,7 +10984,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
  */
   DeleteString(__pyx_v_c_string);
 
-  /* "cython_lib/cyhanabi.pyx":295
+  /* "cython_lib/cyhanabi.pyx":296
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)
  *         return string             # <<<<<<<<<<<<<<
@@ -10697,7 +10996,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
   __pyx_r = __pyx_v_string;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":289
+  /* "cython_lib/cyhanabi.pyx":290
  *                 self._rank == other._rank)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -10717,7 +11016,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_32__str__(struct _
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":297
+/* "cython_lib/cyhanabi.pyx":298
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -10752,7 +11051,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_34__repr__(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":298
+  /* "cython_lib/cyhanabi.pyx":299
  * 
  *     def __repr__(self):
  *         return self.__str__()             # <<<<<<<<<<<<<<
@@ -10760,7 +11059,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_34__repr__(struct 
  *     def __dealloc__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 299, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -10780,7 +11079,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_34__repr__(struct 
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -10788,7 +11087,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_34__repr__(struct 
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":297
+  /* "cython_lib/cyhanabi.pyx":298
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -10809,7 +11108,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_34__repr__(struct 
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":300
+/* "cython_lib/cyhanabi.pyx":301
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -10833,7 +11132,7 @@ static void __pyx_pw_10cython_lib_8cyhanabi_10HanabiMove_37__dealloc__(PyObject 
 static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *__pyx_v_self) {
   int __pyx_t_1;
 
-  /* "cython_lib/cyhanabi.pyx":301
+  /* "cython_lib/cyhanabi.pyx":302
  * 
  *     def __dealloc__(self):
  *         if self._move != NULL:             # <<<<<<<<<<<<<<
@@ -10843,7 +11142,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __
   __pyx_t_1 = (__pyx_v_self->_move != NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":302
+    /* "cython_lib/cyhanabi.pyx":303
  *     def __dealloc__(self):
  *         if self._move != NULL:
  *             DeleteMove(self._move)             # <<<<<<<<<<<<<<
@@ -10852,7 +11151,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __
  */
     DeleteMove(__pyx_v_self->_move);
 
-    /* "cython_lib/cyhanabi.pyx":303
+    /* "cython_lib/cyhanabi.pyx":304
  *         if self._move != NULL:
  *             DeleteMove(self._move)
  *             self._move = NULL             # <<<<<<<<<<<<<<
@@ -10861,7 +11160,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __
  */
     __pyx_v_self->_move = NULL;
 
-    /* "cython_lib/cyhanabi.pyx":301
+    /* "cython_lib/cyhanabi.pyx":302
  * 
  *     def __dealloc__(self):
  *         if self._move != NULL:             # <<<<<<<<<<<<<<
@@ -10870,7 +11169,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":300
+  /* "cython_lib/cyhanabi.pyx":301
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -10881,7 +11180,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_36__dealloc__(struct __
   /* function exit code */
 }
 
-/* "cython_lib/cyhanabi.pyx":305
+/* "cython_lib/cyhanabi.pyx":306
  *             self._move = NULL
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
@@ -10948,14 +11247,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_dict", 1);
 
-  /* "cython_lib/cyhanabi.pyx":306
+  /* "cython_lib/cyhanabi.pyx":307
  * 
  *     def to_dict(self):
  *         move_type = self.type()             # <<<<<<<<<<<<<<
  *         move_dict = {}
  *         move_dict["action_type"] = move_type.name
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_type_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_type_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -10975,38 +11274,38 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __pyx_v_move_type = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":307
+  /* "cython_lib/cyhanabi.pyx":308
  *     def to_dict(self):
  *         move_type = self.type()
  *         move_dict = {}             # <<<<<<<<<<<<<<
  *         move_dict["action_type"] = move_type.name
  * 
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_move_dict = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":308
+  /* "cython_lib/cyhanabi.pyx":309
  *         move_type = self.type()
  *         move_dict = {}
  *         move_dict["action_type"] = move_type.name             # <<<<<<<<<<<<<<
  * 
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_type, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 308, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_move_type, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_action_type, __pyx_t_1) < 0))) __PYX_ERR(0, 308, __pyx_L1_error)
+  if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_action_type, __pyx_t_1) < 0))) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":310
+  /* "cython_lib/cyhanabi.pyx":311
  *         move_dict["action_type"] = move_type.name
  * 
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):             # <<<<<<<<<<<<<<
@@ -11015,28 +11314,28 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
  */
   __Pyx_INCREF(__pyx_v_move_type);
   __pyx_t_1 = __pyx_v_move_type;
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_PLAY); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_PLAY); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (!__pyx_t_6) {
   } else {
     __pyx_t_5 = __pyx_t_6;
     goto __pyx_L4_bool_binop_done;
   }
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DISCARD); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DISCARD); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_5 = __pyx_t_6;
   __pyx_L4_bool_binop_done:;
@@ -11044,14 +11343,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
   __pyx_t_6 = __pyx_t_5;
   if (__pyx_t_6) {
 
-    /* "cython_lib/cyhanabi.pyx":311
+    /* "cython_lib/cyhanabi.pyx":312
  * 
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):
  *             move_dict["card_index"] = self.card_index()             # <<<<<<<<<<<<<<
  *         elif move_type == HanabiMoveType.REVEAL_COLOR:
  *             move_dict["target_offset"] = self.target_offset()
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 311, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 312, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11071,14 +11370,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 311, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_card_index, __pyx_t_1) < 0))) __PYX_ERR(0, 311, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_card_index, __pyx_t_1) < 0))) __PYX_ERR(0, 312, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":310
+    /* "cython_lib/cyhanabi.pyx":311
  *         move_dict["action_type"] = move_type.name
  * 
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):             # <<<<<<<<<<<<<<
@@ -11088,32 +11387,32 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":312
+  /* "cython_lib/cyhanabi.pyx":313
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):
  *             move_dict["card_index"] = self.card_index()
  *         elif move_type == HanabiMoveType.REVEAL_COLOR:             # <<<<<<<<<<<<<<
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["color"] = color_idx_to_char(self.color())
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_REVEAL_COLOR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 312, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_REVEAL_COLOR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 312, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 312, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 313, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "cython_lib/cyhanabi.pyx":313
+    /* "cython_lib/cyhanabi.pyx":314
  *             move_dict["card_index"] = self.card_index()
  *         elif move_type == HanabiMoveType.REVEAL_COLOR:
  *             move_dict["target_offset"] = self.target_offset()             # <<<<<<<<<<<<<<
  *             move_dict["color"] = color_idx_to_char(self.color())
  *         elif move_type == HanabiMoveType.REVEAL_RANK:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_target_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 313, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_target_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11133,23 +11432,23 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 313, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_target_offset, __pyx_t_1) < 0))) __PYX_ERR(0, 313, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_target_offset, __pyx_t_1) < 0))) __PYX_ERR(0, 314, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":314
+    /* "cython_lib/cyhanabi.pyx":315
  *         elif move_type == HanabiMoveType.REVEAL_COLOR:
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["color"] = color_idx_to_char(self.color())             # <<<<<<<<<<<<<<
  *         elif move_type == HanabiMoveType.REVEAL_RANK:
  *             move_dict["target_offset"] = self.target_offset()
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 314, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 315, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_4 = 0;
@@ -11169,7 +11468,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -11192,14 +11491,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 314, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 314, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 315, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":312
+    /* "cython_lib/cyhanabi.pyx":313
  *         if move_type in (HanabiMoveType.PLAY, HanabiMoveType.DISCARD):
  *             move_dict["card_index"] = self.card_index()
  *         elif move_type == HanabiMoveType.REVEAL_COLOR:             # <<<<<<<<<<<<<<
@@ -11209,66 +11508,32 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":315
+  /* "cython_lib/cyhanabi.pyx":316
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["color"] = color_idx_to_char(self.color())
  *         elif move_type == HanabiMoveType.REVEAL_RANK:             # <<<<<<<<<<<<<<
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["rank"] = self.rank()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_REVEAL_RANK); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_REVEAL_RANK); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 315, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 316, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "cython_lib/cyhanabi.pyx":316
+    /* "cython_lib/cyhanabi.pyx":317
  *             move_dict["color"] = color_idx_to_char(self.color())
  *         elif move_type == HanabiMoveType.REVEAL_RANK:
  *             move_dict["target_offset"] = self.target_offset()             # <<<<<<<<<<<<<<
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL:
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_target_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 316, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = NULL;
-    __pyx_t_4 = 0;
-    #if CYTHON_UNPACK_METHODS
-    if (likely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_3)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_3);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-        __pyx_t_4 = 1;
-      }
-    }
-    #endif
-    {
-      PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
-      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 316, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_target_offset, __pyx_t_1) < 0))) __PYX_ERR(0, 316, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "cython_lib/cyhanabi.pyx":317
- *         elif move_type == HanabiMoveType.REVEAL_RANK:
- *             move_dict["target_offset"] = self.target_offset()
- *             move_dict["rank"] = self.rank()             # <<<<<<<<<<<<<<
- *         elif move_type == HanabiMoveType.DEAL:
- *             move_dict["color"] = color_idx_to_char(self.color())
- */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_target_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 317, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11292,10 +11557,44 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 317, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_target_offset, __pyx_t_1) < 0))) __PYX_ERR(0, 317, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":315
+    /* "cython_lib/cyhanabi.pyx":318
+ *         elif move_type == HanabiMoveType.REVEAL_RANK:
+ *             move_dict["target_offset"] = self.target_offset()
+ *             move_dict["rank"] = self.rank()             # <<<<<<<<<<<<<<
+ *         elif move_type == HanabiMoveType.DEAL:
+ *             move_dict["color"] = color_idx_to_char(self.color())
+ */
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = NULL;
+    __pyx_t_4 = 0;
+    #if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(__pyx_t_2))) {
+      __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+      if (likely(__pyx_t_3)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+        __Pyx_INCREF(__pyx_t_3);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_2, function);
+        __pyx_t_4 = 1;
+      }
+    }
+    #endif
+    {
+      PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
+      __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    }
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 318, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+    /* "cython_lib/cyhanabi.pyx":316
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["color"] = color_idx_to_char(self.color())
  *         elif move_type == HanabiMoveType.REVEAL_RANK:             # <<<<<<<<<<<<<<
@@ -11305,34 +11604,34 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":318
+  /* "cython_lib/cyhanabi.pyx":319
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL:             # <<<<<<<<<<<<<<
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEAL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEAL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 318, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "cython_lib/cyhanabi.pyx":319
+    /* "cython_lib/cyhanabi.pyx":320
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL:
  *             move_dict["color"] = color_idx_to_char(self.color())             # <<<<<<<<<<<<<<
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 319, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 319, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 320, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_4 = 0;
@@ -11352,7 +11651,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 319, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 320, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -11375,21 +11674,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 319, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 320, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":320
+    /* "cython_lib/cyhanabi.pyx":321
  *         elif move_type == HanabiMoveType.DEAL:
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()             # <<<<<<<<<<<<<<
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:
  *             move_dict["color"] = color_idx_to_char(self.color())
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 321, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11409,14 +11708,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 320, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 320, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 321, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":318
+    /* "cython_lib/cyhanabi.pyx":319
  *             move_dict["target_offset"] = self.target_offset()
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL:             # <<<<<<<<<<<<<<
@@ -11426,34 +11725,34 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":321
+  /* "cython_lib/cyhanabi.pyx":322
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:             # <<<<<<<<<<<<<<
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEAL_SPECIFIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_DEAL_SPECIFIC); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 321, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 322, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_6) {
 
-    /* "cython_lib/cyhanabi.pyx":322
+    /* "cython_lib/cyhanabi.pyx":323
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:
  *             move_dict["color"] = color_idx_to_char(self.color())             # <<<<<<<<<<<<<<
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.RETURN:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 322, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_color_idx_to_char); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 322, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_color); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 323, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_4 = 0;
@@ -11473,7 +11772,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_8, NULL};
       __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_7, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
-      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 322, __pyx_L1_error)
+      if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
@@ -11496,21 +11795,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 322, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 322, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_color, __pyx_t_1) < 0))) __PYX_ERR(0, 323, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":323
+    /* "cython_lib/cyhanabi.pyx":324
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()             # <<<<<<<<<<<<<<
  *         elif move_type == HanabiMoveType.RETURN:
  *             move_dict["card_index"] = self.card_index()
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 323, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_rank); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11530,14 +11829,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 323, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_rank, __pyx_t_1) < 0))) __PYX_ERR(0, 324, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":321
+    /* "cython_lib/cyhanabi.pyx":322
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.DEAL_SPECIFIC:             # <<<<<<<<<<<<<<
@@ -11547,32 +11846,32 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":324
+  /* "cython_lib/cyhanabi.pyx":325
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.RETURN:             # <<<<<<<<<<<<<<
  *             move_dict["card_index"] = self.card_index()
  *         else:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HanabiMoveType); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_RETURN); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_RETURN); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_move_type, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 324, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 325, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_6)) {
 
-    /* "cython_lib/cyhanabi.pyx":325
+    /* "cython_lib/cyhanabi.pyx":326
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.RETURN:
  *             move_dict["card_index"] = self.card_index()             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError(f"Unsupported move: {self}")
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 325, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_card_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -11592,14 +11891,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 325, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 326, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_card_index, __pyx_t_1) < 0))) __PYX_ERR(0, 325, __pyx_L1_error)
+    if (unlikely((PyDict_SetItem(__pyx_v_move_dict, __pyx_n_u_card_index, __pyx_t_1) < 0))) __PYX_ERR(0, 326, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":324
+    /* "cython_lib/cyhanabi.pyx":325
  *             move_dict["color"] = color_idx_to_char(self.color())
  *             move_dict["rank"] = self.rank()
  *         elif move_type == HanabiMoveType.RETURN:             # <<<<<<<<<<<<<<
@@ -11609,7 +11908,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
     goto __pyx_L3;
   }
 
-  /* "cython_lib/cyhanabi.pyx":327
+  /* "cython_lib/cyhanabi.pyx":328
  *             move_dict["card_index"] = self.card_index()
  *         else:
  *             raise ValueError(f"Unsupported move: {self}")             # <<<<<<<<<<<<<<
@@ -11617,21 +11916,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
  * 
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_FormatSimple(((PyObject *)__pyx_v_self), __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_FormatSimple(((PyObject *)__pyx_v_self), __pyx_empty_unicode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Unsupported_move, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyUnicode_Concat(__pyx_kp_u_Unsupported_move, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 328, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 327, __pyx_L1_error)
+    __PYX_ERR(0, 328, __pyx_L1_error)
   }
   __pyx_L3:;
 
-  /* "cython_lib/cyhanabi.pyx":328
+  /* "cython_lib/cyhanabi.pyx":329
  *         else:
  *             raise ValueError(f"Unsupported move: {self}")
  *         return move_dict             # <<<<<<<<<<<<<<
@@ -11643,7 +11942,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_38to_dict(struct _
   __pyx_r = __pyx_v_move_dict;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":305
+  /* "cython_lib/cyhanabi.pyx":306
  *             self._move = NULL
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
@@ -11882,7 +12181,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiMove_42__setstate_cytho
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":334
+/* "cython_lib/cyhanabi.pyx":335
  *     cdef pyhanabi_history_item_t* _item
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -11917,7 +12216,7 @@ static int __pyx_pw_10cython_lib_8cyhanabi_17HanabiHistoryItem_1__cinit__(PyObje
 static int __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem___cinit__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiHistoryItem *__pyx_v_self) {
   int __pyx_r;
 
-  /* "cython_lib/cyhanabi.pyx":335
+  /* "cython_lib/cyhanabi.pyx":336
  * 
  *     def __cinit__(self):
  *         self._item = NULL             # <<<<<<<<<<<<<<
@@ -11926,7 +12225,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem___cinit__(struct 
  */
   __pyx_v_self->_item = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":334
+  /* "cython_lib/cyhanabi.pyx":335
  *     cdef pyhanabi_history_item_t* _item
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -11939,7 +12238,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem___cinit__(struct 
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":338
+/* "cython_lib/cyhanabi.pyx":339
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_history_item_t* item):             # <<<<<<<<<<<<<<
@@ -11957,19 +12256,19 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(pyh
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_ptr", 1);
 
-  /* "cython_lib/cyhanabi.pyx":339
+  /* "cython_lib/cyhanabi.pyx":340
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_history_item_t* item):
  *         cdef HanabiHistoryItem instance = HanabiHistoryItem()             # <<<<<<<<<<<<<<
  *         instance._item = item
  *         return instance
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 339, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_instance = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiHistoryItem *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":340
+  /* "cython_lib/cyhanabi.pyx":341
  *     cdef from_ptr(pyhanabi_history_item_t* item):
  *         cdef HanabiHistoryItem instance = HanabiHistoryItem()
  *         instance._item = item             # <<<<<<<<<<<<<<
@@ -11978,7 +12277,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(pyh
  */
   __pyx_v_instance->_item = __pyx_v_item;
 
-  /* "cython_lib/cyhanabi.pyx":341
+  /* "cython_lib/cyhanabi.pyx":342
  *         cdef HanabiHistoryItem instance = HanabiHistoryItem()
  *         instance._item = item
  *         return instance             # <<<<<<<<<<<<<<
@@ -11990,7 +12289,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(pyh
   __pyx_r = ((PyObject *)__pyx_v_instance);
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":338
+  /* "cython_lib/cyhanabi.pyx":339
  * 
  *     @staticmethod
  *     cdef from_ptr(pyhanabi_history_item_t* item):             # <<<<<<<<<<<<<<
@@ -12010,7 +12309,7 @@ static PyObject *__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(pyh
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":343
+/* "cython_lib/cyhanabi.pyx":344
  *         return instance
  * 
  *     def move(self):             # <<<<<<<<<<<<<<
@@ -12069,7 +12368,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_2move(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":344
+  /* "cython_lib/cyhanabi.pyx":345
  * 
  *     def move(self):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -12078,7 +12377,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_2move(struc
  */
   __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-  /* "cython_lib/cyhanabi.pyx":345
+  /* "cython_lib/cyhanabi.pyx":346
  *     def move(self):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         HistoryItemMove(self._item, c_move)             # <<<<<<<<<<<<<<
@@ -12087,7 +12386,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_2move(struc
  */
   HistoryItemMove(__pyx_v_self->_item, __pyx_v_c_move);
 
-  /* "cython_lib/cyhanabi.pyx":346
+  /* "cython_lib/cyhanabi.pyx":347
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         HistoryItemMove(self._item, c_move)
  *         return HanabiMove.from_ptr(c_move)             # <<<<<<<<<<<<<<
@@ -12095,13 +12394,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_2move(struc
  *     def player(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 347, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":343
+  /* "cython_lib/cyhanabi.pyx":344
  *         return instance
  * 
  *     def move(self):             # <<<<<<<<<<<<<<
@@ -12120,7 +12419,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_2move(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":348
+/* "cython_lib/cyhanabi.pyx":349
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def player(self):             # <<<<<<<<<<<<<<
@@ -12178,7 +12477,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_4player(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("player", 1);
 
-  /* "cython_lib/cyhanabi.pyx":349
+  /* "cython_lib/cyhanabi.pyx":350
  * 
  *     def player(self):
  *         return HistoryItemPlayer(self._item)             # <<<<<<<<<<<<<<
@@ -12186,13 +12485,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_4player(str
  *     def scored(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemPlayer(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 349, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemPlayer(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 350, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":348
+  /* "cython_lib/cyhanabi.pyx":349
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def player(self):             # <<<<<<<<<<<<<<
@@ -12211,7 +12510,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_4player(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":351
+/* "cython_lib/cyhanabi.pyx":352
  *         return HistoryItemPlayer(self._item)
  * 
  *     def scored(self):             # <<<<<<<<<<<<<<
@@ -12270,7 +12569,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_6scored(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("scored", 1);
 
-  /* "cython_lib/cyhanabi.pyx":353
+  /* "cython_lib/cyhanabi.pyx":354
  *     def scored(self):
  *         """Play move succeeded in placing card on fireworks."""
  *         return <bint>HistoryItemScored(self._item)             # <<<<<<<<<<<<<<
@@ -12278,13 +12577,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_6scored(str
  *     def information_token(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((HistoryItemScored(__pyx_v_self->_item) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((HistoryItemScored(__pyx_v_self->_item) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":351
+  /* "cython_lib/cyhanabi.pyx":352
  *         return HistoryItemPlayer(self._item)
  * 
  *     def scored(self):             # <<<<<<<<<<<<<<
@@ -12303,7 +12602,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_6scored(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":355
+/* "cython_lib/cyhanabi.pyx":356
  *         return <bint>HistoryItemScored(self._item)
  * 
  *     def information_token(self):             # <<<<<<<<<<<<<<
@@ -12362,7 +12661,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_8informatio
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("information_token", 1);
 
-  /* "cython_lib/cyhanabi.pyx":357
+  /* "cython_lib/cyhanabi.pyx":358
  *     def information_token(self):
  *         """Play/Discard move increased the number of information tokens."""
  *         return <bint>HistoryItemInformationToken(self._item)             # <<<<<<<<<<<<<<
@@ -12370,13 +12669,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_8informatio
  *     def color(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((HistoryItemInformationToken(__pyx_v_self->_item) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((HistoryItemInformationToken(__pyx_v_self->_item) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":355
+  /* "cython_lib/cyhanabi.pyx":356
  *         return <bint>HistoryItemScored(self._item)
  * 
  *     def information_token(self):             # <<<<<<<<<<<<<<
@@ -12395,7 +12694,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_8informatio
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":359
+/* "cython_lib/cyhanabi.pyx":360
  *         return <bint>HistoryItemInformationToken(self._item)
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
@@ -12454,7 +12753,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_10color(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("color", 1);
 
-  /* "cython_lib/cyhanabi.pyx":361
+  /* "cython_lib/cyhanabi.pyx":362
  *     def color(self):
  *         """Color index of card that was Played/Discarded."""
  *         return HistoryItemColor(self._item)             # <<<<<<<<<<<<<<
@@ -12462,13 +12761,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_10color(str
  *     def rank(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemColor(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemColor(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":359
+  /* "cython_lib/cyhanabi.pyx":360
  *         return <bint>HistoryItemInformationToken(self._item)
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
@@ -12487,7 +12786,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_10color(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":363
+/* "cython_lib/cyhanabi.pyx":364
  *         return HistoryItemColor(self._item)
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
@@ -12546,7 +12845,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_12rank(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("rank", 1);
 
-  /* "cython_lib/cyhanabi.pyx":365
+  /* "cython_lib/cyhanabi.pyx":366
  *     def rank(self):
  *         """Rank index of card that was Played/Discarded."""
  *         return HistoryItemRank(self._item)             # <<<<<<<<<<<<<<
@@ -12554,13 +12853,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_12rank(stru
  *     def card_info_revealed(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemRank(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemRank(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":363
+  /* "cython_lib/cyhanabi.pyx":364
  *         return HistoryItemColor(self._item)
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
@@ -12579,7 +12878,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_12rank(stru
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":367
+/* "cython_lib/cyhanabi.pyx":368
  *         return HistoryItemRank(self._item)
  * 
  *     def card_info_revealed(self):             # <<<<<<<<<<<<<<
@@ -12643,7 +12942,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("card_info_revealed", 1);
 
-  /* "cython_lib/cyhanabi.pyx":368
+  /* "cython_lib/cyhanabi.pyx":369
  * 
  *     def card_info_revealed(self):
  *         cdef int bitmask = HistoryItemRevealBitmask(self._item)             # <<<<<<<<<<<<<<
@@ -12652,19 +12951,19 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
  */
   __pyx_v_bitmask = HistoryItemRevealBitmask(__pyx_v_self->_item);
 
-  /* "cython_lib/cyhanabi.pyx":369
+  /* "cython_lib/cyhanabi.pyx":370
  *     def card_info_revealed(self):
  *         cdef int bitmask = HistoryItemRevealBitmask(self._item)
  *         revealed = []             # <<<<<<<<<<<<<<
  *         for i in range(8):
  *             if bitmask & (1 << i):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_revealed = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":370
+  /* "cython_lib/cyhanabi.pyx":371
  *         cdef int bitmask = HistoryItemRevealBitmask(self._item)
  *         revealed = []
  *         for i in range(8):             # <<<<<<<<<<<<<<
@@ -12674,7 +12973,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
   for (__pyx_t_2 = 0; __pyx_t_2 < 8; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "cython_lib/cyhanabi.pyx":371
+    /* "cython_lib/cyhanabi.pyx":372
  *         revealed = []
  *         for i in range(8):
  *             if bitmask & (1 << i):             # <<<<<<<<<<<<<<
@@ -12684,19 +12983,19 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
     __pyx_t_3 = ((__pyx_v_bitmask & (1 << __pyx_v_i)) != 0);
     if (__pyx_t_3) {
 
-      /* "cython_lib/cyhanabi.pyx":372
+      /* "cython_lib/cyhanabi.pyx":373
  *         for i in range(8):
  *             if bitmask & (1 << i):
  *                 revealed.append(i)             # <<<<<<<<<<<<<<
  *         return revealed
  * 
  */
-      __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 373, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_revealed, __pyx_t_1); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 372, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_revealed, __pyx_t_1); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 373, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "cython_lib/cyhanabi.pyx":371
+      /* "cython_lib/cyhanabi.pyx":372
  *         revealed = []
  *         for i in range(8):
  *             if bitmask & (1 << i):             # <<<<<<<<<<<<<<
@@ -12706,7 +13005,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
     }
   }
 
-  /* "cython_lib/cyhanabi.pyx":373
+  /* "cython_lib/cyhanabi.pyx":374
  *             if bitmask & (1 << i):
  *                 revealed.append(i)
  *         return revealed             # <<<<<<<<<<<<<<
@@ -12718,7 +13017,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
   __pyx_r = __pyx_v_revealed;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":367
+  /* "cython_lib/cyhanabi.pyx":368
  *         return HistoryItemRank(self._item)
  * 
  *     def card_info_revealed(self):             # <<<<<<<<<<<<<<
@@ -12738,7 +13037,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_14card_info
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":375
+/* "cython_lib/cyhanabi.pyx":376
  *         return revealed
  * 
  *     def card_info_newly_revealed(self):             # <<<<<<<<<<<<<<
@@ -12802,7 +13101,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("card_info_newly_revealed", 1);
 
-  /* "cython_lib/cyhanabi.pyx":376
+  /* "cython_lib/cyhanabi.pyx":377
  * 
  *     def card_info_newly_revealed(self):
  *         cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)             # <<<<<<<<<<<<<<
@@ -12811,19 +13110,19 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
  */
   __pyx_v_bitmask = HistoryItemNewlyRevealedBitmask(__pyx_v_self->_item);
 
-  /* "cython_lib/cyhanabi.pyx":377
+  /* "cython_lib/cyhanabi.pyx":378
  *     def card_info_newly_revealed(self):
  *         cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)
  *         revealed = []             # <<<<<<<<<<<<<<
  *         for i in range(8):
  *             if bitmask & (1 << i):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 377, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 378, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_revealed = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":378
+  /* "cython_lib/cyhanabi.pyx":379
  *         cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)
  *         revealed = []
  *         for i in range(8):             # <<<<<<<<<<<<<<
@@ -12833,7 +13132,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
   for (__pyx_t_2 = 0; __pyx_t_2 < 8; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "cython_lib/cyhanabi.pyx":379
+    /* "cython_lib/cyhanabi.pyx":380
  *         revealed = []
  *         for i in range(8):
  *             if bitmask & (1 << i):             # <<<<<<<<<<<<<<
@@ -12843,19 +13142,19 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
     __pyx_t_3 = ((__pyx_v_bitmask & (1 << __pyx_v_i)) != 0);
     if (__pyx_t_3) {
 
-      /* "cython_lib/cyhanabi.pyx":380
+      /* "cython_lib/cyhanabi.pyx":381
  *         for i in range(8):
  *             if bitmask & (1 << i):
  *                 revealed.append(i)             # <<<<<<<<<<<<<<
  *         return revealed
  * 
  */
-      __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 380, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 381, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_revealed, __pyx_t_1); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 380, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyList_Append(__pyx_v_revealed, __pyx_t_1); if (unlikely(__pyx_t_4 == ((int)-1))) __PYX_ERR(0, 381, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "cython_lib/cyhanabi.pyx":379
+      /* "cython_lib/cyhanabi.pyx":380
  *         revealed = []
  *         for i in range(8):
  *             if bitmask & (1 << i):             # <<<<<<<<<<<<<<
@@ -12865,7 +13164,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
     }
   }
 
-  /* "cython_lib/cyhanabi.pyx":381
+  /* "cython_lib/cyhanabi.pyx":382
  *             if bitmask & (1 << i):
  *                 revealed.append(i)
  *         return revealed             # <<<<<<<<<<<<<<
@@ -12877,7 +13176,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
   __pyx_r = __pyx_v_revealed;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":375
+  /* "cython_lib/cyhanabi.pyx":376
  *         return revealed
  * 
  *     def card_info_newly_revealed(self):             # <<<<<<<<<<<<<<
@@ -12897,7 +13196,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_16card_info
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":383
+/* "cython_lib/cyhanabi.pyx":384
  *         return revealed
  * 
  *     def deal_to_player(self):             # <<<<<<<<<<<<<<
@@ -12955,7 +13254,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_18deal_to_p
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("deal_to_player", 1);
 
-  /* "cython_lib/cyhanabi.pyx":384
+  /* "cython_lib/cyhanabi.pyx":385
  * 
  *     def deal_to_player(self):
  *         return HistoryItemDealToPlayer(self._item)             # <<<<<<<<<<<<<<
@@ -12963,13 +13262,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_18deal_to_p
  *     def to_json(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemDealToPlayer(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 384, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(HistoryItemDealToPlayer(__pyx_v_self->_item)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 385, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":383
+  /* "cython_lib/cyhanabi.pyx":384
  *         return revealed
  * 
  *     def deal_to_player(self):             # <<<<<<<<<<<<<<
@@ -12988,7 +13287,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_18deal_to_p
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":386
+/* "cython_lib/cyhanabi.pyx":387
  *         return HistoryItemDealToPlayer(self._item)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -13051,7 +13350,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":388
+  /* "cython_lib/cyhanabi.pyx":389
  *     def to_json(self):
  *         """Serialize history item to JSON."""
  *         cdef char* json_str = HistoryItemToJson(self._item)             # <<<<<<<<<<<<<<
@@ -13060,7 +13359,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
  */
   __pyx_v_json_str = HistoryItemToJson(__pyx_v_self->_item);
 
-  /* "cython_lib/cyhanabi.pyx":389
+  /* "cython_lib/cyhanabi.pyx":390
  *         """Serialize history item to JSON."""
  *         cdef char* json_str = HistoryItemToJson(self._item)
  *         if json_str == NULL:             # <<<<<<<<<<<<<<
@@ -13070,20 +13369,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
   __pyx_t_1 = (__pyx_v_json_str == NULL);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cython_lib/cyhanabi.pyx":390
+    /* "cython_lib/cyhanabi.pyx":391
  *         cdef char* json_str = HistoryItemToJson(self._item)
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 391, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 390, __pyx_L1_error)
+    __PYX_ERR(0, 391, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":389
+    /* "cython_lib/cyhanabi.pyx":390
  *         """Serialize history item to JSON."""
  *         cdef char* json_str = HistoryItemToJson(self._item)
  *         if json_str == NULL:             # <<<<<<<<<<<<<<
@@ -13092,20 +13391,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":391
+  /* "cython_lib/cyhanabi.pyx":392
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")
  *         py_json = json_str.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(json_str)
  *         return py_json
  */
-  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_str); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 391, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_str, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 391, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_str); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_str, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 392, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_py_json = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":392
+  /* "cython_lib/cyhanabi.pyx":393
  *             raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)             # <<<<<<<<<<<<<<
@@ -13114,7 +13413,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
  */
   DeleteString(__pyx_v_json_str);
 
-  /* "cython_lib/cyhanabi.pyx":393
+  /* "cython_lib/cyhanabi.pyx":394
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  *         return py_json             # <<<<<<<<<<<<<<
@@ -13126,7 +13425,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
   __pyx_r = __pyx_v_py_json;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":386
+  /* "cython_lib/cyhanabi.pyx":387
  *         return HistoryItemDealToPlayer(self._item)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -13146,7 +13445,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_20to_json(s
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":395
+/* "cython_lib/cyhanabi.pyx":396
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -13208,12 +13507,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 395, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 396, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 395, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 396, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -13224,7 +13523,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 395, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 396, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -13238,7 +13537,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 396, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 397, __pyx_L1_error)
   __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json(((PyTypeObject*)__pyx_v_cls), __pyx_v_json_str);
 
   /* function exit code */
@@ -13268,7 +13567,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":398
+  /* "cython_lib/cyhanabi.pyx":399
  *     def from_json(cls, str json_str):
  *         """Deserialize history item from JSON."""
  *         cdef pyhanabi_history_item_t* c_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))             # <<<<<<<<<<<<<<
@@ -13277,7 +13576,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
  */
   __pyx_v_c_item = ((pyhanabi_history_item_t *)malloc((sizeof(pyhanabi_history_item_t))));
 
-  /* "cython_lib/cyhanabi.pyx":399
+  /* "cython_lib/cyhanabi.pyx":400
  *         """Deserialize history item from JSON."""
  *         cdef pyhanabi_history_item_t* c_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *         if not HistoryItemFromJson(json_str.encode('ascii'), c_item):             # <<<<<<<<<<<<<<
@@ -13286,16 +13585,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
  */
   if (unlikely(__pyx_v_json_str == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
-    __PYX_ERR(0, 399, __pyx_L1_error)
+    __PYX_ERR(0, 400, __pyx_L1_error)
   }
-  __pyx_t_1 = PyUnicode_AsASCIIString(__pyx_v_json_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 399, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_AsASCIIString(__pyx_v_json_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 400, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 399, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 400, __pyx_L1_error)
   __pyx_t_3 = (!(HistoryItemFromJson(__pyx_t_2, __pyx_v_c_item) != 0));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (unlikely(__pyx_t_3)) {
 
-    /* "cython_lib/cyhanabi.pyx":400
+    /* "cython_lib/cyhanabi.pyx":401
  *         cdef pyhanabi_history_item_t* c_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *         if not HistoryItemFromJson(json_str.encode('ascii'), c_item):
  *             free(c_item)             # <<<<<<<<<<<<<<
@@ -13304,20 +13603,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
  */
     free(__pyx_v_c_item);
 
-    /* "cython_lib/cyhanabi.pyx":401
+    /* "cython_lib/cyhanabi.pyx":402
  *         if not HistoryItemFromJson(json_str.encode('ascii'), c_item):
  *             free(c_item)
  *             raise ValueError("Failed to deserialize HanabiHistoryItem from JSON")             # <<<<<<<<<<<<<<
  *         return HanabiHistoryItem.from_ptr(c_item)
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 402, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 401, __pyx_L1_error)
+    __PYX_ERR(0, 402, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":399
+    /* "cython_lib/cyhanabi.pyx":400
  *         """Deserialize history item from JSON."""
  *         cdef pyhanabi_history_item_t* c_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *         if not HistoryItemFromJson(json_str.encode('ascii'), c_item):             # <<<<<<<<<<<<<<
@@ -13326,7 +13625,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":402
+  /* "cython_lib/cyhanabi.pyx":403
  *             free(c_item)
  *             raise ValueError("Failed to deserialize HanabiHistoryItem from JSON")
  *         return HanabiHistoryItem.from_ptr(c_item)             # <<<<<<<<<<<<<<
@@ -13334,13 +13633,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(__pyx_v_c_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(__pyx_v_c_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 403, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":395
+  /* "cython_lib/cyhanabi.pyx":396
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -13359,7 +13658,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_22from_json
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":404
+/* "cython_lib/cyhanabi.pyx":405
  *         return HanabiHistoryItem.from_ptr(c_item)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -13395,7 +13694,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":405
+  /* "cython_lib/cyhanabi.pyx":406
  * 
  *     def __str__(self):
  *         cdef char* c_string = HistoryItemToString(self._item)             # <<<<<<<<<<<<<<
@@ -13404,7 +13703,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
  */
   __pyx_v_c_string = HistoryItemToString(__pyx_v_self->_item);
 
-  /* "cython_lib/cyhanabi.pyx":406
+  /* "cython_lib/cyhanabi.pyx":407
  *     def __str__(self):
  *         cdef char* c_string = HistoryItemToString(self._item)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -13414,7 +13713,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
   __pyx_t_1 = (__pyx_v_c_string == NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":407
+    /* "cython_lib/cyhanabi.pyx":408
  *         cdef char* c_string = HistoryItemToString(self._item)
  *         if c_string == NULL:
  *             return ""             # <<<<<<<<<<<<<<
@@ -13426,7 +13725,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
     __pyx_r = __pyx_kp_u__3;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":406
+    /* "cython_lib/cyhanabi.pyx":407
  *     def __str__(self):
  *         cdef char* c_string = HistoryItemToString(self._item)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -13435,20 +13734,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":408
+  /* "cython_lib/cyhanabi.pyx":409
  *         if c_string == NULL:
  *             return ""
  *         string = c_string.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(c_string)
  *         return string
  */
-  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 408, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 408, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 409, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_string = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":409
+  /* "cython_lib/cyhanabi.pyx":410
  *             return ""
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)             # <<<<<<<<<<<<<<
@@ -13457,7 +13756,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
  */
   DeleteString(__pyx_v_c_string);
 
-  /* "cython_lib/cyhanabi.pyx":410
+  /* "cython_lib/cyhanabi.pyx":411
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)
  *         return string             # <<<<<<<<<<<<<<
@@ -13469,7 +13768,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
   __pyx_r = __pyx_v_string;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":404
+  /* "cython_lib/cyhanabi.pyx":405
  *         return HanabiHistoryItem.from_ptr(c_item)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -13489,7 +13788,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_24__str__(s
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":412
+/* "cython_lib/cyhanabi.pyx":413
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -13524,7 +13823,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_26__repr__(
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":413
+  /* "cython_lib/cyhanabi.pyx":414
  * 
  *     def __repr__(self):
  *         return self.__str__()             # <<<<<<<<<<<<<<
@@ -13532,7 +13831,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_26__repr__(
  *     def __dealloc__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 413, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -13552,7 +13851,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_26__repr__(
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 413, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -13560,7 +13859,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_26__repr__(
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":412
+  /* "cython_lib/cyhanabi.pyx":413
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -13581,7 +13880,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_26__repr__(
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":415
+/* "cython_lib/cyhanabi.pyx":416
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -13605,7 +13904,7 @@ static void __pyx_pw_10cython_lib_8cyhanabi_17HanabiHistoryItem_29__dealloc__(Py
 static void __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_28__dealloc__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiHistoryItem *__pyx_v_self) {
   int __pyx_t_1;
 
-  /* "cython_lib/cyhanabi.pyx":416
+  /* "cython_lib/cyhanabi.pyx":417
  * 
  *     def __dealloc__(self):
  *         if self._item != NULL:             # <<<<<<<<<<<<<<
@@ -13615,7 +13914,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_28__dealloc__(st
   __pyx_t_1 = (__pyx_v_self->_item != NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":417
+    /* "cython_lib/cyhanabi.pyx":418
  *     def __dealloc__(self):
  *         if self._item != NULL:
  *             DeleteHistoryItem(self._item)             # <<<<<<<<<<<<<<
@@ -13624,7 +13923,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_28__dealloc__(st
  */
     DeleteHistoryItem(__pyx_v_self->_item);
 
-    /* "cython_lib/cyhanabi.pyx":418
+    /* "cython_lib/cyhanabi.pyx":419
  *         if self._item != NULL:
  *             DeleteHistoryItem(self._item)
  *             self._item = NULL             # <<<<<<<<<<<<<<
@@ -13633,7 +13932,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_28__dealloc__(st
  */
     __pyx_v_self->_item = NULL;
 
-    /* "cython_lib/cyhanabi.pyx":416
+    /* "cython_lib/cyhanabi.pyx":417
  * 
  *     def __dealloc__(self):
  *         if self._item != NULL:             # <<<<<<<<<<<<<<
@@ -13642,7 +13941,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_28__dealloc__(st
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":415
+  /* "cython_lib/cyhanabi.pyx":416
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -13867,7 +14166,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_17HanabiHistoryItem_32__setstat
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":429
+/* "cython_lib/cyhanabi.pyx":430
  *     cdef pyhanabi_card_t* _discard_pool
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -13908,7 +14207,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__cinit__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":430
+  /* "cython_lib/cyhanabi.pyx":431
  * 
  *     def __cinit__(self):
  *         self._state = NULL             # <<<<<<<<<<<<<<
@@ -13917,7 +14216,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
  */
   __pyx_v_self->_state = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":431
+  /* "cython_lib/cyhanabi.pyx":432
  *     def __cinit__(self):
  *         self._state = NULL
  *         self._game = NULL             # <<<<<<<<<<<<<<
@@ -13926,7 +14225,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
  */
   __pyx_v_self->_game = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":432
+  /* "cython_lib/cyhanabi.pyx":433
  *         self._state = NULL
  *         self._game = NULL
  *         self._discard_pool = NULL             # <<<<<<<<<<<<<<
@@ -13935,14 +14234,14 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
  */
   __pyx_v_self->_discard_pool = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":433
+  /* "cython_lib/cyhanabi.pyx":434
  *         self._game = NULL
  *         self._discard_pool = NULL
  *         self._card_pool = []             # <<<<<<<<<<<<<<
  *         self._num_players = 0
  *         self._max_hand_size = 5
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 433, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 434, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_card_pool);
@@ -13950,7 +14249,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
   __pyx_v_self->_card_pool = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":434
+  /* "cython_lib/cyhanabi.pyx":435
  *         self._discard_pool = NULL
  *         self._card_pool = []
  *         self._num_players = 0             # <<<<<<<<<<<<<<
@@ -13959,7 +14258,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
  */
   __pyx_v_self->_num_players = 0;
 
-  /* "cython_lib/cyhanabi.pyx":435
+  /* "cython_lib/cyhanabi.pyx":436
  *         self._card_pool = []
  *         self._num_players = 0
  *         self._max_hand_size = 5             # <<<<<<<<<<<<<<
@@ -13968,7 +14267,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
  */
   __pyx_v_self->_max_hand_size = 5;
 
-  /* "cython_lib/cyhanabi.pyx":429
+  /* "cython_lib/cyhanabi.pyx":430
  *     cdef pyhanabi_card_t* _discard_pool
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -13988,7 +14287,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState___cinit__(struct __pyx_
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":438
+/* "cython_lib/cyhanabi.pyx":439
  * 
  *     @staticmethod
  *     cdef HanabiState create(object game, pyhanabi_state_t* c_state, pyhanabi_game_t* c_game):             # <<<<<<<<<<<<<<
@@ -14014,19 +14313,19 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("create", 1);
 
-  /* "cython_lib/cyhanabi.pyx":441
+  /* "cython_lib/cyhanabi.pyx":442
  *         """Factory method to create HanabiState."""
  *         # Instantiate state
  *         cdef HanabiState instance = HanabiState()             # <<<<<<<<<<<<<<
  *         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if instance._state == NULL:
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 442, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_instance = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":442
+  /* "cython_lib/cyhanabi.pyx":443
  *         # Instantiate state
  *         cdef HanabiState instance = HanabiState()
  *         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))             # <<<<<<<<<<<<<<
@@ -14035,7 +14334,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   __pyx_v_instance->_state = ((pyhanabi_state_t *)malloc((sizeof(pyhanabi_state_t))));
 
-  /* "cython_lib/cyhanabi.pyx":443
+  /* "cython_lib/cyhanabi.pyx":444
  *         cdef HanabiState instance = HanabiState()
  *         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if instance._state == NULL:             # <<<<<<<<<<<<<<
@@ -14045,16 +14344,16 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_t_2 = (__pyx_v_instance->_state == NULL);
   if (unlikely(__pyx_t_2)) {
 
-    /* "cython_lib/cyhanabi.pyx":444
+    /* "cython_lib/cyhanabi.pyx":445
  *         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if instance._state == NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  * 
  *         # Initialize based on parameters
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 444, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 445, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":443
+    /* "cython_lib/cyhanabi.pyx":444
  *         cdef HanabiState instance = HanabiState()
  *         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if instance._state == NULL:             # <<<<<<<<<<<<<<
@@ -14063,7 +14362,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":447
+  /* "cython_lib/cyhanabi.pyx":448
  * 
  *         # Initialize based on parameters
  *         if c_state == NULL and game is not None:             # <<<<<<<<<<<<<<
@@ -14081,19 +14380,19 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_L5_bool_binop_done:;
   if (__pyx_t_2) {
 
-    /* "cython_lib/cyhanabi.pyx":448
+    /* "cython_lib/cyhanabi.pyx":449
  *         # Initialize based on parameters
  *         if c_state == NULL and game is not None:
  *             instance._game = <pyhanabi_game_t*>game._game             # <<<<<<<<<<<<<<
  *             NewState(instance._game, instance._state)
  *         elif c_game != NULL:
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_game, __pyx_n_s_game); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 448, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_game, __pyx_n_s_game); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 449, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_instance->_game = ((pyhanabi_game_t *)__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":449
+    /* "cython_lib/cyhanabi.pyx":450
  *         if c_state == NULL and game is not None:
  *             instance._game = <pyhanabi_game_t*>game._game
  *             NewState(instance._game, instance._state)             # <<<<<<<<<<<<<<
@@ -14102,7 +14401,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     NewState(__pyx_v_instance->_game, __pyx_v_instance->_state);
 
-    /* "cython_lib/cyhanabi.pyx":447
+    /* "cython_lib/cyhanabi.pyx":448
  * 
  *         # Initialize based on parameters
  *         if c_state == NULL and game is not None:             # <<<<<<<<<<<<<<
@@ -14112,7 +14411,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
     goto __pyx_L4;
   }
 
-  /* "cython_lib/cyhanabi.pyx":450
+  /* "cython_lib/cyhanabi.pyx":451
  *             instance._game = <pyhanabi_game_t*>game._game
  *             NewState(instance._game, instance._state)
  *         elif c_game != NULL:             # <<<<<<<<<<<<<<
@@ -14122,7 +14421,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_t_2 = (__pyx_v_c_game != NULL);
   if (__pyx_t_2) {
 
-    /* "cython_lib/cyhanabi.pyx":451
+    /* "cython_lib/cyhanabi.pyx":452
  *             NewState(instance._game, instance._state)
  *         elif c_game != NULL:
  *             instance._game = c_game             # <<<<<<<<<<<<<<
@@ -14131,7 +14430,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     __pyx_v_instance->_game = __pyx_v_c_game;
 
-    /* "cython_lib/cyhanabi.pyx":452
+    /* "cython_lib/cyhanabi.pyx":453
  *         elif c_game != NULL:
  *             instance._game = c_game
  *             CopyState(c_state, instance._state)             # <<<<<<<<<<<<<<
@@ -14140,7 +14439,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     CopyState(__pyx_v_c_state, __pyx_v_instance->_state);
 
-    /* "cython_lib/cyhanabi.pyx":450
+    /* "cython_lib/cyhanabi.pyx":451
  *             instance._game = <pyhanabi_game_t*>game._game
  *             NewState(instance._game, instance._state)
  *         elif c_game != NULL:             # <<<<<<<<<<<<<<
@@ -14150,7 +14449,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
     goto __pyx_L4;
   }
 
-  /* "cython_lib/cyhanabi.pyx":453
+  /* "cython_lib/cyhanabi.pyx":454
  *             instance._game = c_game
  *             CopyState(c_state, instance._state)
  *         elif c_state != NULL:             # <<<<<<<<<<<<<<
@@ -14160,7 +14459,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_t_2 = (__pyx_v_c_state != NULL);
   if (likely(__pyx_t_2)) {
 
-    /* "cython_lib/cyhanabi.pyx":454
+    /* "cython_lib/cyhanabi.pyx":455
  *             CopyState(c_state, instance._state)
  *         elif c_state != NULL:
  *             instance._game = <pyhanabi_game_t*>StateParentGame(c_state)             # <<<<<<<<<<<<<<
@@ -14169,7 +14468,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     __pyx_v_instance->_game = ((pyhanabi_game_t *)StateParentGame(__pyx_v_c_state));
 
-    /* "cython_lib/cyhanabi.pyx":455
+    /* "cython_lib/cyhanabi.pyx":456
  *         elif c_state != NULL:
  *             instance._game = <pyhanabi_game_t*>StateParentGame(c_state)
  *             CopyState(c_state, instance._state)             # <<<<<<<<<<<<<<
@@ -14178,7 +14477,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     CopyState(__pyx_v_c_state, __pyx_v_instance->_state);
 
-    /* "cython_lib/cyhanabi.pyx":453
+    /* "cython_lib/cyhanabi.pyx":454
  *             instance._game = c_game
  *             CopyState(c_state, instance._state)
  *         elif c_state != NULL:             # <<<<<<<<<<<<<<
@@ -14188,7 +14487,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
     goto __pyx_L4;
   }
 
-  /* "cython_lib/cyhanabi.pyx":457
+  /* "cython_lib/cyhanabi.pyx":458
  *             CopyState(c_state, instance._state)
  *         else:
  *             raise ValueError("Invalid parameters")             # <<<<<<<<<<<<<<
@@ -14196,15 +14495,15 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  *         # Initialize other members
  */
   /*else*/ {
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 458, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 457, __pyx_L1_error)
+    __PYX_ERR(0, 458, __pyx_L1_error)
   }
   __pyx_L4:;
 
-  /* "cython_lib/cyhanabi.pyx":460
+  /* "cython_lib/cyhanabi.pyx":461
  * 
  *         # Initialize other members
  *         instance._num_players = StateNumPlayers(instance._state)             # <<<<<<<<<<<<<<
@@ -14213,7 +14512,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   __pyx_v_instance->_num_players = StateNumPlayers(__pyx_v_instance->_state);
 
-  /* "cython_lib/cyhanabi.pyx":461
+  /* "cython_lib/cyhanabi.pyx":462
  *         # Initialize other members
  *         instance._num_players = StateNumPlayers(instance._state)
  *         instance._max_hand_size = 5             # <<<<<<<<<<<<<<
@@ -14222,7 +14521,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   __pyx_v_instance->_max_hand_size = 5;
 
-  /* "cython_lib/cyhanabi.pyx":465
+  /* "cython_lib/cyhanabi.pyx":466
  *         # Initialize card pool
  *         cdef pyhanabi_card_t* card
  *         for i in range(instance._num_players * instance._max_hand_size):             # <<<<<<<<<<<<<<
@@ -14234,7 +14533,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "cython_lib/cyhanabi.pyx":466
+    /* "cython_lib/cyhanabi.pyx":467
  *         cdef pyhanabi_card_t* card
  *         for i in range(instance._num_players * instance._max_hand_size):
  *             card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))             # <<<<<<<<<<<<<<
@@ -14243,7 +14542,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     __pyx_v_card = ((pyhanabi_card_t *)malloc((sizeof(pyhanabi_card_t))));
 
-    /* "cython_lib/cyhanabi.pyx":467
+    /* "cython_lib/cyhanabi.pyx":468
  *         for i in range(instance._num_players * instance._max_hand_size):
  *             card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *             if card == NULL:             # <<<<<<<<<<<<<<
@@ -14253,16 +14552,16 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
     __pyx_t_2 = (__pyx_v_card == NULL);
     if (unlikely(__pyx_t_2)) {
 
-      /* "cython_lib/cyhanabi.pyx":468
+      /* "cython_lib/cyhanabi.pyx":469
  *             card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *             if card == NULL:
  *                 raise MemoryError()             # <<<<<<<<<<<<<<
  *             instance._card_pool.append(<size_t>card)
  * 
  */
-      PyErr_NoMemory(); __PYX_ERR(0, 468, __pyx_L1_error)
+      PyErr_NoMemory(); __PYX_ERR(0, 469, __pyx_L1_error)
 
-      /* "cython_lib/cyhanabi.pyx":467
+      /* "cython_lib/cyhanabi.pyx":468
  *         for i in range(instance._num_players * instance._max_hand_size):
  *             card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *             if card == NULL:             # <<<<<<<<<<<<<<
@@ -14271,7 +14570,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     }
 
-    /* "cython_lib/cyhanabi.pyx":469
+    /* "cython_lib/cyhanabi.pyx":470
  *             if card == NULL:
  *                 raise MemoryError()
  *             instance._card_pool.append(<size_t>card)             # <<<<<<<<<<<<<<
@@ -14280,15 +14579,15 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
     if (unlikely(__pyx_v_instance->_card_pool == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-      __PYX_ERR(0, 469, __pyx_L1_error)
+      __PYX_ERR(0, 470, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyInt_FromSize_t(((size_t)__pyx_v_card)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 469, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_FromSize_t(((size_t)__pyx_v_card)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 470, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_instance->_card_pool, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 469, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyList_Append(__pyx_v_instance->_card_pool, __pyx_t_1); if (unlikely(__pyx_t_7 == ((int)-1))) __PYX_ERR(0, 470, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":472
+  /* "cython_lib/cyhanabi.pyx":473
  * 
  *         # Initialize discard pool
  *         instance._discard_pool = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))             # <<<<<<<<<<<<<<
@@ -14297,7 +14596,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   __pyx_v_instance->_discard_pool = ((pyhanabi_card_t *)malloc((sizeof(pyhanabi_card_t))));
 
-  /* "cython_lib/cyhanabi.pyx":473
+  /* "cython_lib/cyhanabi.pyx":474
  *         # Initialize discard pool
  *         instance._discard_pool = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *         if instance._discard_pool == NULL:             # <<<<<<<<<<<<<<
@@ -14307,16 +14606,16 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_t_2 = (__pyx_v_instance->_discard_pool == NULL);
   if (unlikely(__pyx_t_2)) {
 
-    /* "cython_lib/cyhanabi.pyx":474
+    /* "cython_lib/cyhanabi.pyx":475
  *         instance._discard_pool = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *         if instance._discard_pool == NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  * 
  *         return instance
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 474, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 475, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":473
+    /* "cython_lib/cyhanabi.pyx":474
  *         # Initialize discard pool
  *         instance._discard_pool = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
  *         if instance._discard_pool == NULL:             # <<<<<<<<<<<<<<
@@ -14325,7 +14624,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":476
+  /* "cython_lib/cyhanabi.pyx":477
  *             raise MemoryError()
  * 
  *         return instance             # <<<<<<<<<<<<<<
@@ -14337,7 +14636,7 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   __pyx_r = __pyx_v_instance;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":438
+  /* "cython_lib/cyhanabi.pyx":439
  * 
  *     @staticmethod
  *     cdef HanabiState create(object game, pyhanabi_state_t* c_state, pyhanabi_game_t* c_game):             # <<<<<<<<<<<<<<
@@ -14357,20 +14656,16 @@ static struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *__pyx_f_10cython_lib
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":478
+/* "cython_lib/cyhanabi.pyx":479
  *         return instance
  * 
  *     def __init__(self, game=None, state=None, parent_game=None):             # <<<<<<<<<<<<<<
- *         """Python constructor that calls the factory method."""
  *         if state is None and game is not None:
+ *             self = HanabiState.create(game, NULL, NULL)
  */
 
 /* Python wrapper */
 static int __pyx_pw_10cython_lib_8cyhanabi_11HanabiState_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-PyDoc_STRVAR(__pyx_doc_10cython_lib_8cyhanabi_11HanabiState_2__init__, "Python constructor that calls the factory method.");
-#if CYTHON_UPDATE_DESCRIPTOR_DOC
-struct wrapperbase __pyx_wrapperbase_10cython_lib_8cyhanabi_11HanabiState_2__init__;
-#endif
 static int __pyx_pw_10cython_lib_8cyhanabi_11HanabiState_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_game = 0;
   PyObject *__pyx_v_state = 0;
@@ -14413,26 +14708,26 @@ static int __pyx_pw_10cython_lib_8cyhanabi_11HanabiState_3__init__(PyObject *__p
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_game_2);
           if (value) { values[0] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 478, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  1:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_state);
           if (value) { values[1] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 478, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (kw_args > 0) {
           PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_parent_game);
           if (value) { values[2] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 478, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 478, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 479, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -14452,7 +14747,7 @@ static int __pyx_pw_10cython_lib_8cyhanabi_11HanabiState_3__init__(PyObject *__p
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 3, __pyx_nargs); __PYX_ERR(0, 478, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 3, __pyx_nargs); __PYX_ERR(0, 479, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -14492,8 +14787,8 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_2__init__(CYTHON_UNUSED
   __Pyx_INCREF((PyObject *)__pyx_v_self);
 
   /* "cython_lib/cyhanabi.pyx":480
+ * 
  *     def __init__(self, game=None, state=None, parent_game=None):
- *         """Python constructor that calls the factory method."""
  *         if state is None and game is not None:             # <<<<<<<<<<<<<<
  *             self = HanabiState.create(game, NULL, NULL)
  *         elif state is not None and parent_game is not None:
@@ -14510,7 +14805,7 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_2__init__(CYTHON_UNUSED
   if (__pyx_t_1) {
 
     /* "cython_lib/cyhanabi.pyx":481
- *         """Python constructor that calls the factory method."""
+ *     def __init__(self, game=None, state=None, parent_game=None):
  *         if state is None and game is not None:
  *             self = HanabiState.create(game, NULL, NULL)             # <<<<<<<<<<<<<<
  *         elif state is not None and parent_game is not None:
@@ -14522,8 +14817,8 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_2__init__(CYTHON_UNUSED
     __pyx_t_3 = 0;
 
     /* "cython_lib/cyhanabi.pyx":480
+ * 
  *     def __init__(self, game=None, state=None, parent_game=None):
- *         """Python constructor that calls the factory method."""
  *         if state is None and game is not None:             # <<<<<<<<<<<<<<
  *             self = HanabiState.create(game, NULL, NULL)
  *         elif state is not None and parent_game is not None:
@@ -14619,12 +14914,12 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_2__init__(CYTHON_UNUSED
   }
   __pyx_L3:;
 
-  /* "cython_lib/cyhanabi.pyx":478
+  /* "cython_lib/cyhanabi.pyx":479
  *         return instance
  * 
  *     def __init__(self, game=None, state=None, parent_game=None):             # <<<<<<<<<<<<<<
- *         """Python constructor that calls the factory method."""
  *         if state is None and game is not None:
+ *             self = HanabiState.create(game, NULL, NULL)
  */
 
   /* function exit code */
@@ -14644,8 +14939,8 @@ static int __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_2__init__(CYTHON_UNUSED
  *             raise ValueError("Invalid parameters")
  * 
  *     def copy(self):             # <<<<<<<<<<<<<<
- *         """Returns a copy of the state."""
  *         return HanabiState.create(None, self._state, NULL)
+ * 
  */
 
 /* Python wrapper */
@@ -14656,8 +14951,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_10cython_lib_8cyhanabi_11HanabiState_4copy, "Returns a copy of the state.");
-static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_5copy = {"copy", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_10cython_lib_8cyhanabi_11HanabiState_4copy};
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_5copy = {"copy", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
 static PyObject *__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_5copy(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
@@ -14699,15 +14993,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_4copy(struct __py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("copy", 1);
 
-  /* "cython_lib/cyhanabi.pyx":491
+  /* "cython_lib/cyhanabi.pyx":490
+ * 
  *     def copy(self):
- *         """Returns a copy of the state."""
  *         return HanabiState.create(None, self._state, NULL)             # <<<<<<<<<<<<<<
  * 
  *     #def observation(self, int player):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(Py_None, __pyx_v_self->_state, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 491, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(Py_None, __pyx_v_self->_state, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 490, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14717,8 +15011,8 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_4copy(struct __py
  *             raise ValueError("Invalid parameters")
  * 
  *     def copy(self):             # <<<<<<<<<<<<<<
- *         """Returns a copy of the state."""
  *         return HanabiState.create(None, self._state, NULL)
+ * 
  */
 
   /* function exit code */
@@ -14732,7 +15026,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_4copy(struct __py
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":496
+/* "cython_lib/cyhanabi.pyx":495
  *     #    return HanabiObservation.create(self._state, self._game, player)
  * 
  *     def apply_move(self, HanabiMove move):             # <<<<<<<<<<<<<<
@@ -14793,12 +15087,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 496, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 495, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "apply_move") < 0)) __PYX_ERR(0, 496, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "apply_move") < 0)) __PYX_ERR(0, 495, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -14809,7 +15103,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("apply_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 496, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("apply_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 495, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -14823,7 +15117,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_move), __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, 1, "move", 0))) __PYX_ERR(0, 496, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_move), __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, 1, "move", 0))) __PYX_ERR(0, 495, __pyx_L1_error)
   __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_6apply_move(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *)__pyx_v_self), __pyx_v_move);
 
   /* function exit code */
@@ -14846,7 +15140,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_6apply_move(struc
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("apply_move", 1);
 
-  /* "cython_lib/cyhanabi.pyx":497
+  /* "cython_lib/cyhanabi.pyx":496
  * 
  *     def apply_move(self, HanabiMove move):
  *         StateApplyMove(self._state, move._move)             # <<<<<<<<<<<<<<
@@ -14855,7 +15149,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_6apply_move(struc
  */
   StateApplyMove(__pyx_v_self->_state, __pyx_v_move->_move);
 
-  /* "cython_lib/cyhanabi.pyx":496
+  /* "cython_lib/cyhanabi.pyx":495
  *     #    return HanabiObservation.create(self._state, self._game, player)
  * 
  *     def apply_move(self, HanabiMove move):             # <<<<<<<<<<<<<<
@@ -14870,7 +15164,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_6apply_move(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":499
+/* "cython_lib/cyhanabi.pyx":498
  *         StateApplyMove(self._state, move._move)
  * 
  *     def turns_to_play(self):             # <<<<<<<<<<<<<<
@@ -14928,7 +15222,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_8turns_to_play(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("turns_to_play", 1);
 
-  /* "cython_lib/cyhanabi.pyx":500
+  /* "cython_lib/cyhanabi.pyx":499
  * 
  *     def turns_to_play(self):
  *         return StateTurnsToPlay(self._state)             # <<<<<<<<<<<<<<
@@ -14936,13 +15230,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_8turns_to_play(st
  *     def cur_player(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateTurnsToPlay(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 500, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateTurnsToPlay(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 499, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":499
+  /* "cython_lib/cyhanabi.pyx":498
  *         StateApplyMove(self._state, move._move)
  * 
  *     def turns_to_play(self):             # <<<<<<<<<<<<<<
@@ -14961,7 +15255,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_8turns_to_play(st
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":502
+/* "cython_lib/cyhanabi.pyx":501
  *         return StateTurnsToPlay(self._state)
  * 
  *     def cur_player(self):             # <<<<<<<<<<<<<<
@@ -15019,7 +15313,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_10cur_player(stru
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("cur_player", 1);
 
-  /* "cython_lib/cyhanabi.pyx":503
+  /* "cython_lib/cyhanabi.pyx":502
  * 
  *     def cur_player(self):
  *         return StateCurPlayer(self._state)             # <<<<<<<<<<<<<<
@@ -15027,13 +15321,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_10cur_player(stru
  *     def deck_size(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateCurPlayer(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateCurPlayer(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 502, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":502
+  /* "cython_lib/cyhanabi.pyx":501
  *         return StateTurnsToPlay(self._state)
  * 
  *     def cur_player(self):             # <<<<<<<<<<<<<<
@@ -15052,7 +15346,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_10cur_player(stru
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":505
+/* "cython_lib/cyhanabi.pyx":504
  *         return StateCurPlayer(self._state)
  * 
  *     def deck_size(self):             # <<<<<<<<<<<<<<
@@ -15110,7 +15404,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_12deck_size(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("deck_size", 1);
 
-  /* "cython_lib/cyhanabi.pyx":506
+  /* "cython_lib/cyhanabi.pyx":505
  * 
  *     def deck_size(self):
  *         return StateDeckSize(self._state)             # <<<<<<<<<<<<<<
@@ -15118,13 +15412,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_12deck_size(struc
  *     def discard_pile(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateDeckSize(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 506, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateDeckSize(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 505, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":505
+  /* "cython_lib/cyhanabi.pyx":504
  *         return StateCurPlayer(self._state)
  * 
  *     def deck_size(self):             # <<<<<<<<<<<<<<
@@ -15143,7 +15437,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_12deck_size(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":508
+/* "cython_lib/cyhanabi.pyx":507
  *         return StateDeckSize(self._state)
  * 
  *     def discard_pile(self):             # <<<<<<<<<<<<<<
@@ -15213,30 +15507,30 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("discard_pile", 1);
 
-  /* "cython_lib/cyhanabi.pyx":509
+  /* "cython_lib/cyhanabi.pyx":508
  * 
  *     def discard_pile(self):
  *         discards = []             # <<<<<<<<<<<<<<
  *         cdef int pile_size = StateDiscardPileSize(self._state)
- * 
+ *         for index in range(pile_size):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 509, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 508, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_discards = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":510
+  /* "cython_lib/cyhanabi.pyx":509
  *     def discard_pile(self):
  *         discards = []
  *         cdef int pile_size = StateDiscardPileSize(self._state)             # <<<<<<<<<<<<<<
- * 
  *         for index in range(pile_size):
+ *             StateGetDiscard(self._state, index, self._discard_pool)
  */
   __pyx_v_pile_size = StateDiscardPileSize(__pyx_v_self->_state);
 
-  /* "cython_lib/cyhanabi.pyx":512
+  /* "cython_lib/cyhanabi.pyx":510
+ *         discards = []
  *         cdef int pile_size = StateDiscardPileSize(self._state)
- * 
  *         for index in range(pile_size):             # <<<<<<<<<<<<<<
  *             StateGetDiscard(self._state, index, self._discard_pool)
  *             discards.append(HanabiCard(self._discard_pool.color, self._discard_pool.rank))
@@ -15246,8 +15540,8 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_index = __pyx_t_4;
 
-    /* "cython_lib/cyhanabi.pyx":513
- * 
+    /* "cython_lib/cyhanabi.pyx":511
+ *         cdef int pile_size = StateDiscardPileSize(self._state)
  *         for index in range(pile_size):
  *             StateGetDiscard(self._state, index, self._discard_pool)             # <<<<<<<<<<<<<<
  *             discards.append(HanabiCard(self._discard_pool.color, self._discard_pool.rank))
@@ -15255,18 +15549,18 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
  */
     StateGetDiscard(__pyx_v_self->_state, __pyx_v_index, __pyx_v_self->_discard_pool);
 
-    /* "cython_lib/cyhanabi.pyx":514
+    /* "cython_lib/cyhanabi.pyx":512
  *         for index in range(pile_size):
  *             StateGetDiscard(self._state, index, self._discard_pool)
  *             discards.append(HanabiCard(self._discard_pool.color, self._discard_pool.rank))             # <<<<<<<<<<<<<<
  *         return discards
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 514, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 512, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_discard_pool->color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 514, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_self->_discard_pool->color); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 512, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_self->_discard_pool->rank); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 514, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_self->_discard_pool->rank); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 512, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __pyx_t_8 = NULL;
     __pyx_t_9 = 0;
@@ -15288,15 +15582,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
       __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 514, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 512, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
-    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_discards, __pyx_t_1); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 514, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_discards, __pyx_t_1); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 512, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":515
+  /* "cython_lib/cyhanabi.pyx":513
  *             StateGetDiscard(self._state, index, self._discard_pool)
  *             discards.append(HanabiCard(self._discard_pool.color, self._discard_pool.rank))
  *         return discards             # <<<<<<<<<<<<<<
@@ -15308,7 +15602,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
   __pyx_r = __pyx_v_discards;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":508
+  /* "cython_lib/cyhanabi.pyx":507
  *         return StateDeckSize(self._state)
  * 
  *     def discard_pile(self):             # <<<<<<<<<<<<<<
@@ -15332,7 +15626,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_14discard_pile(st
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":517
+/* "cython_lib/cyhanabi.pyx":515
  *         return discards
  * 
  *     def fireworks(self):             # <<<<<<<<<<<<<<
@@ -15393,7 +15687,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_16fireworks(struc
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("fireworks", 1);
 
-  /* "cython_lib/cyhanabi.pyx":518
+  /* "cython_lib/cyhanabi.pyx":516
  * 
  *     def fireworks(self):
  *         return [StateFireworks(self._state, c) for c in range(5)]             # <<<<<<<<<<<<<<
@@ -15402,13 +15696,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_16fireworks(struc
  */
   __Pyx_XDECREF(__pyx_r);
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 518, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 516, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     for (__pyx_t_2 = 0; __pyx_t_2 < 5; __pyx_t_2+=1) {
       __pyx_8genexpr1__pyx_v_c = __pyx_t_2;
-      __pyx_t_3 = __Pyx_PyInt_From_int(StateFireworks(__pyx_v_self->_state, __pyx_8genexpr1__pyx_v_c)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 518, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(StateFireworks(__pyx_v_self->_state, __pyx_8genexpr1__pyx_v_c)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 516, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_3))) __PYX_ERR(0, 518, __pyx_L1_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_3))) __PYX_ERR(0, 516, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     }
   } /* exit inner scope */
@@ -15416,7 +15710,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_16fireworks(struc
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":517
+  /* "cython_lib/cyhanabi.pyx":515
  *         return discards
  * 
  *     def fireworks(self):             # <<<<<<<<<<<<<<
@@ -15436,7 +15730,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_16fireworks(struc
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":520
+/* "cython_lib/cyhanabi.pyx":518
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  *     def progress(self):             # <<<<<<<<<<<<<<
@@ -15497,7 +15791,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_18progress(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("progress", 1);
 
-  /* "cython_lib/cyhanabi.pyx":521
+  /* "cython_lib/cyhanabi.pyx":519
  * 
  *     def progress(self):
  *         return sum(self.fireworks())             # <<<<<<<<<<<<<<
@@ -15505,7 +15799,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_18progress(struct
  *     def score(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_fireworks); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 521, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_fireworks); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 519, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -15525,18 +15819,18 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_18progress(struct
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 519, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 521, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_sum, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 519, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":520
+  /* "cython_lib/cyhanabi.pyx":518
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  *     def progress(self):             # <<<<<<<<<<<<<<
@@ -15557,7 +15851,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_18progress(struct
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":523
+/* "cython_lib/cyhanabi.pyx":521
  *         return sum(self.fireworks())
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
@@ -15619,14 +15913,71 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_20score(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("score", 1);
 
-  /* "cython_lib/cyhanabi.pyx":524
+  /* "cython_lib/cyhanabi.pyx":522
  * 
  *     def score(self):
  *         if self.life_tokens() == 0:             # <<<<<<<<<<<<<<
  *             return 0
  *         return self.progress()
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_life_tokens); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_life_tokens); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 522, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = NULL;
+  __pyx_t_4 = 0;
+  #if CYTHON_UNPACK_METHODS
+  if (likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_3)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_3);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_4 = 1;
+    }
+  }
+  #endif
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
+    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
+    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 522, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
+  __pyx_t_5 = (__Pyx_PyInt_BoolEqObjC(__pyx_t_1, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 522, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (__pyx_t_5) {
+
+    /* "cython_lib/cyhanabi.pyx":523
+ *     def score(self):
+ *         if self.life_tokens() == 0:
+ *             return 0             # <<<<<<<<<<<<<<
+ *         return self.progress()
+ * 
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_int_0);
+    __pyx_r = __pyx_int_0;
+    goto __pyx_L0;
+
+    /* "cython_lib/cyhanabi.pyx":522
+ * 
+ *     def score(self):
+ *         if self.life_tokens() == 0:             # <<<<<<<<<<<<<<
+ *             return 0
+ *         return self.progress()
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":524
+ *         if self.life_tokens() == 0:
+ *             return 0
+ *         return self.progress()             # <<<<<<<<<<<<<<
+ * 
+ *     def deal_random_card(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_progress); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -15650,68 +16001,11 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_20score(struct __
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_5 = (__Pyx_PyInt_BoolEqObjC(__pyx_t_1, __pyx_int_0, 0, 0)); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 524, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__pyx_t_5) {
-
-    /* "cython_lib/cyhanabi.pyx":525
- *     def score(self):
- *         if self.life_tokens() == 0:
- *             return 0             # <<<<<<<<<<<<<<
- *         return self.progress()
- * 
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_INCREF(__pyx_int_0);
-    __pyx_r = __pyx_int_0;
-    goto __pyx_L0;
-
-    /* "cython_lib/cyhanabi.pyx":524
- * 
- *     def score(self):
- *         if self.life_tokens() == 0:             # <<<<<<<<<<<<<<
- *             return 0
- *         return self.progress()
- */
-  }
-
-  /* "cython_lib/cyhanabi.pyx":526
- *         if self.life_tokens() == 0:
- *             return 0
- *         return self.progress()             # <<<<<<<<<<<<<<
- * 
- *     def deal_random_card(self):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_progress); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 526, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  __pyx_t_4 = 0;
-  #if CYTHON_UNPACK_METHODS
-  if (likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-      __pyx_t_4 = 1;
-    }
-  }
-  #endif
-  {
-    PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
-    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
-    __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 526, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  }
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":523
+  /* "cython_lib/cyhanabi.pyx":521
  *         return sum(self.fireworks())
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
@@ -15732,7 +16026,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_20score(struct __
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":528
+/* "cython_lib/cyhanabi.pyx":526
  *         return self.progress()
  * 
  *     def deal_random_card(self):             # <<<<<<<<<<<<<<
@@ -15786,7 +16080,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_22deal_random_car
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("deal_random_card", 1);
 
-  /* "cython_lib/cyhanabi.pyx":529
+  /* "cython_lib/cyhanabi.pyx":527
  * 
  *     def deal_random_card(self):
  *         StateDealCard(self._state)             # <<<<<<<<<<<<<<
@@ -15795,7 +16089,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_22deal_random_car
  */
   StateDealCard(__pyx_v_self->_state);
 
-  /* "cython_lib/cyhanabi.pyx":528
+  /* "cython_lib/cyhanabi.pyx":526
  *         return self.progress()
  * 
  *     def deal_random_card(self):             # <<<<<<<<<<<<<<
@@ -15810,7 +16104,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_22deal_random_car
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":531
+/* "cython_lib/cyhanabi.pyx":529
  *         StateDealCard(self._state)
  * 
  *     def deal_specific_card(self, color, rank, card_index):             # <<<<<<<<<<<<<<
@@ -15877,7 +16171,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 531, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 529, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -15885,9 +16179,9 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 531, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 529, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, 1); __PYX_ERR(0, 531, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, 1); __PYX_ERR(0, 529, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
@@ -15895,14 +16189,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[2]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 531, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 529, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, 2); __PYX_ERR(0, 531, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, 2); __PYX_ERR(0, 529, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "deal_specific_card") < 0)) __PYX_ERR(0, 531, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "deal_specific_card") < 0)) __PYX_ERR(0, 529, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 3)) {
       goto __pyx_L5_argtuple_error;
@@ -15917,7 +16211,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 531, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("deal_specific_card", 1, 3, 3, __pyx_nargs); __PYX_ERR(0, 529, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -15958,7 +16252,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("deal_specific_card", 1);
 
-  /* "cython_lib/cyhanabi.pyx":532
+  /* "cython_lib/cyhanabi.pyx":530
  * 
  *     def deal_specific_card(self, color, rank, card_index):
  *         assert self.cur_player() == CHANCE_PLAYER_ID             # <<<<<<<<<<<<<<
@@ -15967,7 +16261,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(__pyx_assertions_enabled())) {
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cur_player); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 532, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cur_player); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     __pyx_t_4 = 0;
@@ -15987,34 +16281,34 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
       PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
       __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 532, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     }
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_10cython_lib_8cyhanabi_CHANCE_PLAYER_ID); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 532, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_10cython_lib_8cyhanabi_CHANCE_PLAYER_ID); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 532, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 530, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 532, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 530, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (unlikely(!__pyx_t_5)) {
       __Pyx_Raise(__pyx_builtin_AssertionError, 0, 0, 0);
-      __PYX_ERR(0, 532, __pyx_L1_error)
+      __PYX_ERR(0, 530, __pyx_L1_error)
     }
   }
   #else
-  if ((1)); else __PYX_ERR(0, 532, __pyx_L1_error)
+  if ((1)); else __PYX_ERR(0, 530, __pyx_L1_error)
   #endif
 
-  /* "cython_lib/cyhanabi.pyx":533
+  /* "cython_lib/cyhanabi.pyx":531
  *     def deal_specific_card(self, color, rank, card_index):
  *         assert self.cur_player() == CHANCE_PLAYER_ID
  *         move = HanabiMove.get_deal_specific_move(color, rank, card_index)             # <<<<<<<<<<<<<<
  *         self.apply_move(move)
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove), __pyx_n_s_get_deal_specific_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 533, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove), __pyx_n_s_get_deal_specific_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 531, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   __pyx_t_4 = 0;
@@ -16034,21 +16328,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
     PyObject *__pyx_callargs[4] = {__pyx_t_1, __pyx_v_color, __pyx_v_rank, __pyx_v_card_index};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 3+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 533, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 531, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __pyx_v_move = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":534
+  /* "cython_lib/cyhanabi.pyx":532
  *         assert self.cur_player() == CHANCE_PLAYER_ID
  *         move = HanabiMove.get_deal_specific_move(color, rank, card_index)
  *         self.apply_move(move)             # <<<<<<<<<<<<<<
  * 
  *     def remove_knowledge(self, player, card_index):
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_apply_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 534, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_apply_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_1 = NULL;
   __pyx_t_4 = 0;
@@ -16068,13 +16362,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
     PyObject *__pyx_callargs[2] = {__pyx_t_1, __pyx_v_move};
     __pyx_t_3 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 534, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 532, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":531
+  /* "cython_lib/cyhanabi.pyx":529
  *         StateDealCard(self._state)
  * 
  *     def deal_specific_card(self, color, rank, card_index):             # <<<<<<<<<<<<<<
@@ -16098,7 +16392,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_24deal_specific_c
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":536
+/* "cython_lib/cyhanabi.pyx":534
  *         self.apply_move(move)
  * 
  *     def remove_knowledge(self, player, card_index):             # <<<<<<<<<<<<<<
@@ -16162,7 +16456,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 536, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 534, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -16170,14 +16464,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 536, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 534, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("remove_knowledge", 1, 2, 2, 1); __PYX_ERR(0, 536, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("remove_knowledge", 1, 2, 2, 1); __PYX_ERR(0, 534, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "remove_knowledge") < 0)) __PYX_ERR(0, 536, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "remove_knowledge") < 0)) __PYX_ERR(0, 534, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -16190,7 +16484,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("remove_knowledge", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 536, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("remove_knowledge", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 534, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -16227,18 +16521,18 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_26remove_knowledg
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove_knowledge", 1);
 
-  /* "cython_lib/cyhanabi.pyx":537
+  /* "cython_lib/cyhanabi.pyx":535
  * 
  *     def remove_knowledge(self, player, card_index):
  *         StateRemoveKnowledge(self._state, player, card_index)             # <<<<<<<<<<<<<<
  * 
  *     def player_hands(self):
  */
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_player); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 537, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_card_index); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 537, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_player); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_card_index); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 535, __pyx_L1_error)
   StateRemoveKnowledge(__pyx_v_self->_state, __pyx_t_1, __pyx_t_2);
 
-  /* "cython_lib/cyhanabi.pyx":536
+  /* "cython_lib/cyhanabi.pyx":534
  *         self.apply_move(move)
  * 
  *     def remove_knowledge(self, player, card_index):             # <<<<<<<<<<<<<<
@@ -16258,7 +16552,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_26remove_knowledg
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":539
+/* "cython_lib/cyhanabi.pyx":537
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  *     def player_hands(self):             # <<<<<<<<<<<<<<
@@ -16325,33 +16619,32 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_28player_hands(st
   int __pyx_t_7;
   int __pyx_t_8;
   size_t __pyx_t_9;
-  int __pyx_t_10;
+  PyObject *__pyx_t_10 = NULL;
   PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
   PyObject *__pyx_t_13 = NULL;
-  PyObject *__pyx_t_14 = NULL;
-  unsigned int __pyx_t_15;
-  int __pyx_t_16;
+  unsigned int __pyx_t_14;
+  int __pyx_t_15;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("player_hands", 1);
 
-  /* "cython_lib/cyhanabi.pyx":540
+  /* "cython_lib/cyhanabi.pyx":538
  * 
  *     def player_hands(self):
  *         hand_list = []             # <<<<<<<<<<<<<<
  *         cdef int pid, hand_size, i
  *         cdef pyhanabi_card_t* c_card
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 540, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_hand_list = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":544
+  /* "cython_lib/cyhanabi.pyx":541
+ *         cdef int pid, hand_size, i
  *         cdef pyhanabi_card_t* c_card
- * 
  *         for pid in range(self._num_players):             # <<<<<<<<<<<<<<
  *             player_hand = []
  *             hand_size = StateGetHandSize(self._state, pid)
@@ -16361,144 +16654,115 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_28player_hands(st
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_pid = __pyx_t_4;
 
-    /* "cython_lib/cyhanabi.pyx":545
- * 
+    /* "cython_lib/cyhanabi.pyx":542
+ *         cdef pyhanabi_card_t* c_card
  *         for pid in range(self._num_players):
  *             player_hand = []             # <<<<<<<<<<<<<<
  *             hand_size = StateGetHandSize(self._state, pid)
  *             for i in range(hand_size):
  */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 545, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_player_hand, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":546
+    /* "cython_lib/cyhanabi.pyx":543
  *         for pid in range(self._num_players):
  *             player_hand = []
  *             hand_size = StateGetHandSize(self._state, pid)             # <<<<<<<<<<<<<<
  *             for i in range(hand_size):
- *                 # Cast the stored integer back to a pointer
+ *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
  */
     __pyx_v_hand_size = StateGetHandSize(__pyx_v_self->_state, __pyx_v_pid);
 
-    /* "cython_lib/cyhanabi.pyx":547
+    /* "cython_lib/cyhanabi.pyx":544
  *             player_hand = []
  *             hand_size = StateGetHandSize(self._state, pid)
  *             for i in range(hand_size):             # <<<<<<<<<<<<<<
- *                 # Cast the stored integer back to a pointer
  *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
+ *                 StateGetHandCard(self._state, pid, i, c_card)
  */
     __pyx_t_5 = __pyx_v_hand_size;
     __pyx_t_6 = __pyx_t_5;
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
       __pyx_v_i = __pyx_t_7;
 
-      /* "cython_lib/cyhanabi.pyx":549
+      /* "cython_lib/cyhanabi.pyx":545
+ *             hand_size = StateGetHandSize(self._state, pid)
  *             for i in range(hand_size):
- *                 # Cast the stored integer back to a pointer
  *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]             # <<<<<<<<<<<<<<
- *                 if c_card == NULL:
- *                     continue
- */
-      if (unlikely(__pyx_v_self->_card_pool == Py_None)) {
-        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-        __PYX_ERR(0, 549, __pyx_L1_error)
-      }
-      __pyx_t_8 = ((__pyx_v_pid * __pyx_v_self->_max_hand_size) + __pyx_v_i);
-      __pyx_t_9 = __Pyx_PyInt_As_size_t(PyList_GET_ITEM(__pyx_v_self->_card_pool, __pyx_t_8)); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 549, __pyx_L1_error)
-      __pyx_v_c_card = ((pyhanabi_card_t *)((size_t)__pyx_t_9));
-
-      /* "cython_lib/cyhanabi.pyx":550
- *                 # Cast the stored integer back to a pointer
- *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
- *                 if c_card == NULL:             # <<<<<<<<<<<<<<
- *                     continue
- *                 StateGetHandCard(self._state, pid, i, c_card)
- */
-      __pyx_t_10 = (__pyx_v_c_card == NULL);
-      if (__pyx_t_10) {
-
-        /* "cython_lib/cyhanabi.pyx":551
- *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
- *                 if c_card == NULL:
- *                     continue             # <<<<<<<<<<<<<<
  *                 StateGetHandCard(self._state, pid, i, c_card)
  *                 player_hand.append(HanabiCard(c_card.color, c_card.rank))
  */
-        goto __pyx_L5_continue;
-
-        /* "cython_lib/cyhanabi.pyx":550
- *                 # Cast the stored integer back to a pointer
- *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
- *                 if c_card == NULL:             # <<<<<<<<<<<<<<
- *                     continue
- *                 StateGetHandCard(self._state, pid, i, c_card)
- */
+      if (unlikely(__pyx_v_self->_card_pool == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+        __PYX_ERR(0, 545, __pyx_L1_error)
       }
+      __pyx_t_8 = ((__pyx_v_pid * __pyx_v_self->_max_hand_size) + __pyx_v_i);
+      __pyx_t_9 = __Pyx_PyInt_As_size_t(PyList_GET_ITEM(__pyx_v_self->_card_pool, __pyx_t_8)); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 545, __pyx_L1_error)
+      __pyx_v_c_card = ((pyhanabi_card_t *)((size_t)__pyx_t_9));
 
-      /* "cython_lib/cyhanabi.pyx":552
- *                 if c_card == NULL:
- *                     continue
+      /* "cython_lib/cyhanabi.pyx":546
+ *             for i in range(hand_size):
+ *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
  *                 StateGetHandCard(self._state, pid, i, c_card)             # <<<<<<<<<<<<<<
  *                 player_hand.append(HanabiCard(c_card.color, c_card.rank))
  *             hand_list.append(player_hand)
  */
       StateGetHandCard(__pyx_v_self->_state, __pyx_v_pid, __pyx_v_i, __pyx_v_c_card);
 
-      /* "cython_lib/cyhanabi.pyx":553
- *                     continue
+      /* "cython_lib/cyhanabi.pyx":547
+ *                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
  *                 StateGetHandCard(self._state, pid, i, c_card)
  *                 player_hand.append(HanabiCard(c_card.color, c_card.rank))             # <<<<<<<<<<<<<<
  *             hand_list.append(player_hand)
  *         return hand_list
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 553, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_HanabiCard); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 547, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
+      __pyx_t_11 = __Pyx_PyInt_From_int(__pyx_v_c_card->color); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 547, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_c_card->color); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 553, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyInt_From_int(__pyx_v_c_card->rank); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 547, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v_c_card->rank); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 553, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_13);
-      __pyx_t_14 = NULL;
-      __pyx_t_15 = 0;
+      __pyx_t_13 = NULL;
+      __pyx_t_14 = 0;
       #if CYTHON_UNPACK_METHODS
-      if (unlikely(PyMethod_Check(__pyx_t_11))) {
-        __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_11);
-        if (likely(__pyx_t_14)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-          __Pyx_INCREF(__pyx_t_14);
+      if (unlikely(PyMethod_Check(__pyx_t_10))) {
+        __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_10);
+        if (likely(__pyx_t_13)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_10);
+          __Pyx_INCREF(__pyx_t_13);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_11, function);
-          __pyx_t_15 = 1;
+          __Pyx_DECREF_SET(__pyx_t_10, function);
+          __pyx_t_14 = 1;
         }
       }
       #endif
       {
-        PyObject *__pyx_callargs[3] = {__pyx_t_14, __pyx_t_12, __pyx_t_13};
-        __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_11, __pyx_callargs+1-__pyx_t_15, 2+__pyx_t_15);
-        __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 553, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
+        PyObject *__pyx_callargs[3] = {__pyx_t_13, __pyx_t_11, __pyx_t_12};
+        __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_10, __pyx_callargs+1-__pyx_t_14, 2+__pyx_t_14);
+        __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
         __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 547, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       }
-      __pyx_t_16 = __Pyx_PyList_Append(__pyx_v_player_hand, __pyx_t_1); if (unlikely(__pyx_t_16 == ((int)-1))) __PYX_ERR(0, 553, __pyx_L1_error)
+      __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_player_hand, __pyx_t_1); if (unlikely(__pyx_t_15 == ((int)-1))) __PYX_ERR(0, 547, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_L5_continue:;
     }
 
-    /* "cython_lib/cyhanabi.pyx":554
+    /* "cython_lib/cyhanabi.pyx":548
  *                 StateGetHandCard(self._state, pid, i, c_card)
  *                 player_hand.append(HanabiCard(c_card.color, c_card.rank))
  *             hand_list.append(player_hand)             # <<<<<<<<<<<<<<
  *         return hand_list
  * 
  */
-    __pyx_t_16 = __Pyx_PyList_Append(__pyx_v_hand_list, __pyx_v_player_hand); if (unlikely(__pyx_t_16 == ((int)-1))) __PYX_ERR(0, 554, __pyx_L1_error)
+    __pyx_t_15 = __Pyx_PyList_Append(__pyx_v_hand_list, __pyx_v_player_hand); if (unlikely(__pyx_t_15 == ((int)-1))) __PYX_ERR(0, 548, __pyx_L1_error)
   }
 
-  /* "cython_lib/cyhanabi.pyx":555
+  /* "cython_lib/cyhanabi.pyx":549
  *                 player_hand.append(HanabiCard(c_card.color, c_card.rank))
  *             hand_list.append(player_hand)
  *         return hand_list             # <<<<<<<<<<<<<<
@@ -16510,7 +16774,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_28player_hands(st
   __pyx_r = __pyx_v_hand_list;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":539
+  /* "cython_lib/cyhanabi.pyx":537
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  *     def player_hands(self):             # <<<<<<<<<<<<<<
@@ -16521,10 +16785,10 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_28player_hands(st
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_XDECREF(__pyx_t_14);
   __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiState.player_hands", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -16535,7 +16799,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_28player_hands(st
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":557
+/* "cython_lib/cyhanabi.pyx":551
  *         return hand_list
  * 
  *     def information_tokens(self):             # <<<<<<<<<<<<<<
@@ -16593,7 +16857,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_30information_tok
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("information_tokens", 1);
 
-  /* "cython_lib/cyhanabi.pyx":558
+  /* "cython_lib/cyhanabi.pyx":552
  * 
  *     def information_tokens(self):
  *         return StateInformationTokens(self._state)             # <<<<<<<<<<<<<<
@@ -16601,13 +16865,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_30information_tok
  *     def end_of_game_status(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateInformationTokens(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 558, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateInformationTokens(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 552, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":557
+  /* "cython_lib/cyhanabi.pyx":551
  *         return hand_list
  * 
  *     def information_tokens(self):             # <<<<<<<<<<<<<<
@@ -16626,7 +16890,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_30information_tok
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":560
+/* "cython_lib/cyhanabi.pyx":554
  *         return StateInformationTokens(self._state)
  * 
  *     def end_of_game_status(self):             # <<<<<<<<<<<<<<
@@ -16688,7 +16952,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_32end_of_game_sta
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("end_of_game_status", 1);
 
-  /* "cython_lib/cyhanabi.pyx":561
+  /* "cython_lib/cyhanabi.pyx":555
  * 
  *     def end_of_game_status(self):
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))             # <<<<<<<<<<<<<<
@@ -16696,9 +16960,9 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_32end_of_game_sta
  *     def is_terminal(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 561, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyInt_From_int(StateEndOfGameStatus(__pyx_v_self->_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 561, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(StateEndOfGameStatus(__pyx_v_self->_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 555, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   __pyx_t_5 = 0;
@@ -16719,7 +16983,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_32end_of_game_sta
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 561, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 555, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -16727,7 +16991,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_32end_of_game_sta
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":560
+  /* "cython_lib/cyhanabi.pyx":554
  *         return StateInformationTokens(self._state)
  * 
  *     def end_of_game_status(self):             # <<<<<<<<<<<<<<
@@ -16749,7 +17013,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_32end_of_game_sta
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":563
+/* "cython_lib/cyhanabi.pyx":557
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  *     def is_terminal(self):             # <<<<<<<<<<<<<<
@@ -16809,7 +17073,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_34is_terminal(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("is_terminal", 1);
 
-  /* "cython_lib/cyhanabi.pyx":564
+  /* "cython_lib/cyhanabi.pyx":558
  * 
  *     def is_terminal(self):
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)             # <<<<<<<<<<<<<<
@@ -16817,21 +17081,21 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_34is_terminal(str
  *     def legal_moves(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateEndOfGameStatus(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateEndOfGameStatus(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_NOT_FINISHED); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_NOT_FINISHED); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 558, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":563
+  /* "cython_lib/cyhanabi.pyx":557
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  *     def is_terminal(self):             # <<<<<<<<<<<<<<
@@ -16852,7 +17116,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_34is_terminal(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":566
+/* "cython_lib/cyhanabi.pyx":560
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  *     def legal_moves(self):             # <<<<<<<<<<<<<<
@@ -16923,14 +17187,14 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("legal_moves", 1);
 
-  /* "cython_lib/cyhanabi.pyx":567
+  /* "cython_lib/cyhanabi.pyx":561
  * 
  *     def legal_moves(self):
  *         if self.is_terminal():             # <<<<<<<<<<<<<<
  *             return []
  *         cdef void* c_movelist = StateLegalMoves(self._state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_terminal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 567, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_is_terminal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 561, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -16950,29 +17214,29 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 567, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 561, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 567, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely((__pyx_t_5 < 0))) __PYX_ERR(0, 561, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_5) {
 
-    /* "cython_lib/cyhanabi.pyx":568
+    /* "cython_lib/cyhanabi.pyx":562
  *     def legal_moves(self):
  *         if self.is_terminal():
  *             return []             # <<<<<<<<<<<<<<
  *         cdef void* c_movelist = StateLegalMoves(self._state)
- *         if c_movelist == NULL:
+ *         cdef int num_moves = NumMoves(c_movelist)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 568, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 562, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":567
+    /* "cython_lib/cyhanabi.pyx":561
  * 
  *     def legal_moves(self):
  *         if self.is_terminal():             # <<<<<<<<<<<<<<
@@ -16981,70 +17245,37 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":569
+  /* "cython_lib/cyhanabi.pyx":563
  *         if self.is_terminal():
  *             return []
  *         cdef void* c_movelist = StateLegalMoves(self._state)             # <<<<<<<<<<<<<<
- *         if c_movelist == NULL:
- *             return []
- */
-  __pyx_v_c_movelist = StateLegalMoves(__pyx_v_self->_state);
-
-  /* "cython_lib/cyhanabi.pyx":570
- *             return []
- *         cdef void* c_movelist = StateLegalMoves(self._state)
- *         if c_movelist == NULL:             # <<<<<<<<<<<<<<
- *             return []
- *         cdef int num_moves = NumMoves(c_movelist)
- */
-  __pyx_t_5 = (__pyx_v_c_movelist == NULL);
-  if (__pyx_t_5) {
-
-    /* "cython_lib/cyhanabi.pyx":571
- *         cdef void* c_movelist = StateLegalMoves(self._state)
- *         if c_movelist == NULL:
- *             return []             # <<<<<<<<<<<<<<
  *         cdef int num_moves = NumMoves(c_movelist)
  *         moves = []
  */
-    __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 571, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
+  __pyx_v_c_movelist = StateLegalMoves(__pyx_v_self->_state);
 
-    /* "cython_lib/cyhanabi.pyx":570
+  /* "cython_lib/cyhanabi.pyx":564
  *             return []
  *         cdef void* c_movelist = StateLegalMoves(self._state)
- *         if c_movelist == NULL:             # <<<<<<<<<<<<<<
- *             return []
- *         cdef int num_moves = NumMoves(c_movelist)
- */
-  }
-
-  /* "cython_lib/cyhanabi.pyx":572
- *         if c_movelist == NULL:
- *             return []
  *         cdef int num_moves = NumMoves(c_movelist)             # <<<<<<<<<<<<<<
  *         moves = []
  *         cdef pyhanabi_move_t* c_move
  */
   __pyx_v_num_moves = NumMoves(__pyx_v_c_movelist);
 
-  /* "cython_lib/cyhanabi.pyx":573
- *             return []
+  /* "cython_lib/cyhanabi.pyx":565
+ *         cdef void* c_movelist = StateLegalMoves(self._state)
  *         cdef int num_moves = NumMoves(c_movelist)
  *         moves = []             # <<<<<<<<<<<<<<
  *         cdef pyhanabi_move_t* c_move
  *         for i in range(num_moves):
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 565, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_moves = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":575
+  /* "cython_lib/cyhanabi.pyx":567
  *         moves = []
  *         cdef pyhanabi_move_t* c_move
  *         for i in range(num_moves):             # <<<<<<<<<<<<<<
@@ -17056,7 +17287,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "cython_lib/cyhanabi.pyx":576
+    /* "cython_lib/cyhanabi.pyx":568
  *         cdef pyhanabi_move_t* c_move
  *         for i in range(num_moves):
  *             c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
@@ -17065,7 +17296,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
     __pyx_v_c_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
 
-    /* "cython_lib/cyhanabi.pyx":577
+    /* "cython_lib/cyhanabi.pyx":569
  *         for i in range(num_moves):
  *             c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *             if c_move == NULL:             # <<<<<<<<<<<<<<
@@ -17075,7 +17306,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
     __pyx_t_5 = (__pyx_v_c_move == NULL);
     if (unlikely(__pyx_t_5)) {
 
-      /* "cython_lib/cyhanabi.pyx":578
+      /* "cython_lib/cyhanabi.pyx":570
  *             c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *             if c_move == NULL:
  *                 DeleteMoveList(c_movelist)             # <<<<<<<<<<<<<<
@@ -17084,16 +17315,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
       DeleteMoveList(__pyx_v_c_movelist);
 
-      /* "cython_lib/cyhanabi.pyx":579
+      /* "cython_lib/cyhanabi.pyx":571
  *             if c_move == NULL:
  *                 DeleteMoveList(c_movelist)
  *                 raise MemoryError()             # <<<<<<<<<<<<<<
  *             GetMove(c_movelist, i, c_move)
  *             moves.append(HanabiMove.from_ptr(c_move))
  */
-      PyErr_NoMemory(); __PYX_ERR(0, 579, __pyx_L1_error)
+      PyErr_NoMemory(); __PYX_ERR(0, 571, __pyx_L1_error)
 
-      /* "cython_lib/cyhanabi.pyx":577
+      /* "cython_lib/cyhanabi.pyx":569
  *         for i in range(num_moves):
  *             c_move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
  *             if c_move == NULL:             # <<<<<<<<<<<<<<
@@ -17102,7 +17333,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
     }
 
-    /* "cython_lib/cyhanabi.pyx":580
+    /* "cython_lib/cyhanabi.pyx":572
  *                 DeleteMoveList(c_movelist)
  *                 raise MemoryError()
  *             GetMove(c_movelist, i, c_move)             # <<<<<<<<<<<<<<
@@ -17111,20 +17342,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
     GetMove(__pyx_v_c_movelist, __pyx_v_i, __pyx_v_c_move);
 
-    /* "cython_lib/cyhanabi.pyx":581
+    /* "cython_lib/cyhanabi.pyx":573
  *                 raise MemoryError()
  *             GetMove(c_movelist, i, c_move)
  *             moves.append(HanabiMove.from_ptr(c_move))             # <<<<<<<<<<<<<<
  *         DeleteMoveList(c_movelist)
  *         return moves
  */
-    __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 581, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_c_move); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 573, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_moves, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 581, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_moves, __pyx_t_1); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 573, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":582
+  /* "cython_lib/cyhanabi.pyx":574
  *             GetMove(c_movelist, i, c_move)
  *             moves.append(HanabiMove.from_ptr(c_move))
  *         DeleteMoveList(c_movelist)             # <<<<<<<<<<<<<<
@@ -17133,7 +17364,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
  */
   DeleteMoveList(__pyx_v_c_movelist);
 
-  /* "cython_lib/cyhanabi.pyx":583
+  /* "cython_lib/cyhanabi.pyx":575
  *             moves.append(HanabiMove.from_ptr(c_move))
  *         DeleteMoveList(c_movelist)
  *         return moves             # <<<<<<<<<<<<<<
@@ -17145,7 +17376,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
   __pyx_r = __pyx_v_moves;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":566
+  /* "cython_lib/cyhanabi.pyx":560
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  *     def legal_moves(self):             # <<<<<<<<<<<<<<
@@ -17167,7 +17398,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_36legal_moves(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":585
+/* "cython_lib/cyhanabi.pyx":577
  *         return moves
  * 
  *     def move_is_legal(self, HanabiMove move):             # <<<<<<<<<<<<<<
@@ -17228,12 +17459,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 585, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 577, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "move_is_legal") < 0)) __PYX_ERR(0, 585, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "move_is_legal") < 0)) __PYX_ERR(0, 577, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -17244,7 +17475,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("move_is_legal", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 585, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("move_is_legal", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 577, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17258,7 +17489,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_move), __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, 1, "move", 0))) __PYX_ERR(0, 585, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_move), __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, 1, "move", 0))) __PYX_ERR(0, 577, __pyx_L1_error)
   __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_38move_is_legal(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *)__pyx_v_self), __pyx_v_move);
 
   /* function exit code */
@@ -17285,7 +17516,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_38move_is_legal(s
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("move_is_legal", 1);
 
-  /* "cython_lib/cyhanabi.pyx":586
+  /* "cython_lib/cyhanabi.pyx":578
  * 
  *     def move_is_legal(self, HanabiMove move):
  *         return <bint>MoveIsLegal(self._state, move._move)             # <<<<<<<<<<<<<<
@@ -17293,13 +17524,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_38move_is_legal(s
  *     def card_playable_on_fireworks(self, color, rank):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong((MoveIsLegal(__pyx_v_self->_state, __pyx_v_move->_move) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 586, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((MoveIsLegal(__pyx_v_self->_state, __pyx_v_move->_move) != 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 578, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":585
+  /* "cython_lib/cyhanabi.pyx":577
  *         return moves
  * 
  *     def move_is_legal(self, HanabiMove move):             # <<<<<<<<<<<<<<
@@ -17318,7 +17549,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_38move_is_legal(s
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":588
+/* "cython_lib/cyhanabi.pyx":580
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  *     def card_playable_on_fireworks(self, color, rank):             # <<<<<<<<<<<<<<
@@ -17382,7 +17613,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 588, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 580, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
@@ -17390,14 +17621,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 588, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 580, __pyx_L3_error)
         else {
-          __Pyx_RaiseArgtupleInvalid("card_playable_on_fireworks", 1, 2, 2, 1); __PYX_ERR(0, 588, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("card_playable_on_fireworks", 1, 2, 2, 1); __PYX_ERR(0, 580, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "card_playable_on_fireworks") < 0)) __PYX_ERR(0, 588, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "card_playable_on_fireworks") < 0)) __PYX_ERR(0, 580, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 2)) {
       goto __pyx_L5_argtuple_error;
@@ -17410,7 +17641,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("card_playable_on_fireworks", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 588, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("card_playable_on_fireworks", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 580, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -17448,7 +17679,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_40card_playable_o
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("card_playable_on_fireworks", 1);
 
-  /* "cython_lib/cyhanabi.pyx":589
+  /* "cython_lib/cyhanabi.pyx":581
  * 
  *     def card_playable_on_fireworks(self, color, rank):
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)             # <<<<<<<<<<<<<<
@@ -17456,15 +17687,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_40card_playable_o
  *     def life_tokens(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_color); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 589, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_rank); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 589, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_PyBool_FromLong((CardPlayableOnFireworks(__pyx_v_self->_state, __pyx_t_1, __pyx_t_2) != 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 589, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_As_int(__pyx_v_color); if (unlikely((__pyx_t_1 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 581, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_As_int(__pyx_v_rank); if (unlikely((__pyx_t_2 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 581, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyBool_FromLong((CardPlayableOnFireworks(__pyx_v_self->_state, __pyx_t_1, __pyx_t_2) != 0)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 581, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":588
+  /* "cython_lib/cyhanabi.pyx":580
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  *     def card_playable_on_fireworks(self, color, rank):             # <<<<<<<<<<<<<<
@@ -17483,7 +17714,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_40card_playable_o
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":591
+/* "cython_lib/cyhanabi.pyx":583
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  *     def life_tokens(self):             # <<<<<<<<<<<<<<
@@ -17541,7 +17772,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_42life_tokens(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("life_tokens", 1);
 
-  /* "cython_lib/cyhanabi.pyx":592
+  /* "cython_lib/cyhanabi.pyx":584
  * 
  *     def life_tokens(self):
  *         return StateLifeTokens(self._state)             # <<<<<<<<<<<<<<
@@ -17549,13 +17780,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_42life_tokens(str
  *     def num_players(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateLifeTokens(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 592, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateLifeTokens(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 584, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":591
+  /* "cython_lib/cyhanabi.pyx":583
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  *     def life_tokens(self):             # <<<<<<<<<<<<<<
@@ -17574,7 +17805,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_42life_tokens(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":594
+/* "cython_lib/cyhanabi.pyx":586
  *         return StateLifeTokens(self._state)
  * 
  *     def num_players(self):             # <<<<<<<<<<<<<<
@@ -17632,7 +17863,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_44num_players(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("num_players", 1);
 
-  /* "cython_lib/cyhanabi.pyx":595
+  /* "cython_lib/cyhanabi.pyx":587
  * 
  *     def num_players(self):
  *         return StateNumPlayers(self._state)             # <<<<<<<<<<<<<<
@@ -17640,13 +17871,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_44num_players(str
  *     def score(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateNumPlayers(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateNumPlayers(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 587, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":594
+  /* "cython_lib/cyhanabi.pyx":586
  *         return StateLifeTokens(self._state)
  * 
  *     def num_players(self):             # <<<<<<<<<<<<<<
@@ -17665,7 +17896,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_44num_players(str
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":597
+/* "cython_lib/cyhanabi.pyx":589
  *         return StateNumPlayers(self._state)
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
@@ -17723,7 +17954,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_46score(struct __
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("score", 1);
 
-  /* "cython_lib/cyhanabi.pyx":598
+  /* "cython_lib/cyhanabi.pyx":590
  * 
  *     def score(self):
  *         return StateScore(self._state)             # <<<<<<<<<<<<<<
@@ -17731,13 +17962,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_46score(struct __
  *     def move_history(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(StateScore(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 598, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(StateScore(__pyx_v_self->_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 590, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":597
+  /* "cython_lib/cyhanabi.pyx":589
  *         return StateNumPlayers(self._state)
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
@@ -17756,7 +17987,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_46score(struct __
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":600
+/* "cython_lib/cyhanabi.pyx":592
  *         return StateScore(self._state)
  * 
  *     def move_history(self):             # <<<<<<<<<<<<<<
@@ -17823,19 +18054,19 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("move_history", 1);
 
-  /* "cython_lib/cyhanabi.pyx":601
+  /* "cython_lib/cyhanabi.pyx":593
  * 
  *     def move_history(self):
  *         history = []             # <<<<<<<<<<<<<<
  *         cdef int history_len = StateLenMoveHistory(self._state)
  *         cdef pyhanabi_history_item_t* c_history_item
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 601, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 593, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_history = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":602
+  /* "cython_lib/cyhanabi.pyx":594
  *     def move_history(self):
  *         history = []
  *         cdef int history_len = StateLenMoveHistory(self._state)             # <<<<<<<<<<<<<<
@@ -17844,7 +18075,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
  */
   __pyx_v_history_len = StateLenMoveHistory(__pyx_v_self->_state);
 
-  /* "cython_lib/cyhanabi.pyx":604
+  /* "cython_lib/cyhanabi.pyx":596
  *         cdef int history_len = StateLenMoveHistory(self._state)
  *         cdef pyhanabi_history_item_t* c_history_item
  *         for i in range(history_len):             # <<<<<<<<<<<<<<
@@ -17856,7 +18087,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "cython_lib/cyhanabi.pyx":605
+    /* "cython_lib/cyhanabi.pyx":597
  *         cdef pyhanabi_history_item_t* c_history_item
  *         for i in range(history_len):
  *             c_history_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))             # <<<<<<<<<<<<<<
@@ -17865,7 +18096,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
  */
     __pyx_v_c_history_item = ((pyhanabi_history_item_t *)malloc((sizeof(pyhanabi_history_item_t))));
 
-    /* "cython_lib/cyhanabi.pyx":606
+    /* "cython_lib/cyhanabi.pyx":598
  *         for i in range(history_len):
  *             c_history_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *             if c_history_item == NULL:             # <<<<<<<<<<<<<<
@@ -17875,16 +18106,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
     __pyx_t_5 = (__pyx_v_c_history_item == NULL);
     if (unlikely(__pyx_t_5)) {
 
-      /* "cython_lib/cyhanabi.pyx":607
+      /* "cython_lib/cyhanabi.pyx":599
  *             c_history_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *             if c_history_item == NULL:
  *                 raise MemoryError()             # <<<<<<<<<<<<<<
  *             StateGetMoveHistory(self._state, i, c_history_item)
  *             history.append(HanabiHistoryItem.from_ptr(c_history_item))
  */
-      PyErr_NoMemory(); __PYX_ERR(0, 607, __pyx_L1_error)
+      PyErr_NoMemory(); __PYX_ERR(0, 599, __pyx_L1_error)
 
-      /* "cython_lib/cyhanabi.pyx":606
+      /* "cython_lib/cyhanabi.pyx":598
  *         for i in range(history_len):
  *             c_history_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
  *             if c_history_item == NULL:             # <<<<<<<<<<<<<<
@@ -17893,7 +18124,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
  */
     }
 
-    /* "cython_lib/cyhanabi.pyx":608
+    /* "cython_lib/cyhanabi.pyx":600
  *             if c_history_item == NULL:
  *                 raise MemoryError()
  *             StateGetMoveHistory(self._state, i, c_history_item)             # <<<<<<<<<<<<<<
@@ -17902,20 +18133,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
  */
     StateGetMoveHistory(__pyx_v_self->_state, __pyx_v_i, __pyx_v_c_history_item);
 
-    /* "cython_lib/cyhanabi.pyx":609
+    /* "cython_lib/cyhanabi.pyx":601
  *                 raise MemoryError()
  *             StateGetMoveHistory(self._state, i, c_history_item)
  *             history.append(HanabiHistoryItem.from_ptr(c_history_item))             # <<<<<<<<<<<<<<
  *         return history
  * 
  */
-    __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(__pyx_v_c_history_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr(__pyx_v_c_history_item); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 601, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_history, __pyx_t_1); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 609, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyList_Append(__pyx_v_history, __pyx_t_1); if (unlikely(__pyx_t_6 == ((int)-1))) __PYX_ERR(0, 601, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cython_lib/cyhanabi.pyx":610
+  /* "cython_lib/cyhanabi.pyx":602
  *             StateGetMoveHistory(self._state, i, c_history_item)
  *             history.append(HanabiHistoryItem.from_ptr(c_history_item))
  *         return history             # <<<<<<<<<<<<<<
@@ -17927,7 +18158,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
   __pyx_r = __pyx_v_history;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":600
+  /* "cython_lib/cyhanabi.pyx":592
  *         return StateScore(self._state)
  * 
  *     def move_history(self):             # <<<<<<<<<<<<<<
@@ -17947,7 +18178,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_48move_history(st
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":612
+/* "cython_lib/cyhanabi.pyx":604
  *         return history
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -18015,7 +18246,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("to_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":613
+  /* "cython_lib/cyhanabi.pyx":605
  * 
  *     def to_json(self):
  *         cdef char* json_state = StateToJson(self._state)             # <<<<<<<<<<<<<<
@@ -18024,7 +18255,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   __pyx_v_json_state = StateToJson(__pyx_v_self->_state);
 
-  /* "cython_lib/cyhanabi.pyx":614
+  /* "cython_lib/cyhanabi.pyx":606
  *     def to_json(self):
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:             # <<<<<<<<<<<<<<
@@ -18034,20 +18265,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
   __pyx_t_1 = (__pyx_v_json_state == NULL);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cython_lib/cyhanabi.pyx":615
+    /* "cython_lib/cyhanabi.pyx":607
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:
  *             raise ValueError("Serialization failed: StateToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         json_state_result = json_state.decode('utf-8')
  *         DeleteString(json_state)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 615, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 607, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 615, __pyx_L1_error)
+    __PYX_ERR(0, 607, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":614
+    /* "cython_lib/cyhanabi.pyx":606
  *     def to_json(self):
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:             # <<<<<<<<<<<<<<
@@ -18056,20 +18287,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":616
+  /* "cython_lib/cyhanabi.pyx":608
  *         if json_state == NULL:
  *             raise ValueError("Serialization failed: StateToJson returned NULL.")
  *         json_state_result = json_state.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(json_state)
  * 
  */
-  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_state); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 616, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_state, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 616, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_state); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 608, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_state, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 608, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_json_state_result = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":617
+  /* "cython_lib/cyhanabi.pyx":609
  *             raise ValueError("Serialization failed: StateToJson returned NULL.")
  *         json_state_result = json_state.decode('utf-8')
  *         DeleteString(json_state)             # <<<<<<<<<<<<<<
@@ -18078,7 +18309,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   DeleteString(__pyx_v_json_state);
 
-  /* "cython_lib/cyhanabi.pyx":619
+  /* "cython_lib/cyhanabi.pyx":611
  *         DeleteString(json_state)
  * 
  *         cdef char* json_game = GameToJson(self._game)             # <<<<<<<<<<<<<<
@@ -18087,7 +18318,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   __pyx_v_json_game = GameToJson(__pyx_v_self->_game);
 
-  /* "cython_lib/cyhanabi.pyx":620
+  /* "cython_lib/cyhanabi.pyx":612
  * 
  *         cdef char* json_game = GameToJson(self._game)
  *         if json_game == NULL:             # <<<<<<<<<<<<<<
@@ -18097,20 +18328,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
   __pyx_t_1 = (__pyx_v_json_game == NULL);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cython_lib/cyhanabi.pyx":621
+    /* "cython_lib/cyhanabi.pyx":613
  *         cdef char* json_game = GameToJson(self._game)
  *         if json_game == NULL:
  *             raise ValueError("Serialization failed: GameToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         json_game_result = json_game.decode('utf-8')
  *         DeleteString(json_game)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 613, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 621, __pyx_L1_error)
+    __PYX_ERR(0, 613, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":620
+    /* "cython_lib/cyhanabi.pyx":612
  * 
  *         cdef char* json_game = GameToJson(self._game)
  *         if json_game == NULL:             # <<<<<<<<<<<<<<
@@ -18119,20 +18350,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":622
+  /* "cython_lib/cyhanabi.pyx":614
  *         if json_game == NULL:
  *             raise ValueError("Serialization failed: GameToJson returned NULL.")
  *         json_game_result = json_game.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(json_game)
  * 
  */
-  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_game); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 622, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_game, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 622, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_json_game); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 614, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_json_game, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 614, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_json_game_result = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":623
+  /* "cython_lib/cyhanabi.pyx":615
  *             raise ValueError("Serialization failed: GameToJson returned NULL.")
  *         json_game_result = json_game.decode('utf-8')
  *         DeleteString(json_game)             # <<<<<<<<<<<<<<
@@ -18141,7 +18372,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  */
   DeleteString(__pyx_v_json_game);
 
-  /* "cython_lib/cyhanabi.pyx":625
+  /* "cython_lib/cyhanabi.pyx":617
  *         DeleteString(json_game)
  * 
  *         return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})             # <<<<<<<<<<<<<<
@@ -18149,15 +18380,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
  *     @classmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_json); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 625, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_json); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_dumps); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 625, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_dumps); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 625, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_HanabiGame, __pyx_v_json_game_result) < 0) __PYX_ERR(0, 625, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_HanabiState, __pyx_v_json_state_result) < 0) __PYX_ERR(0, 625, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_HanabiGame, __pyx_v_json_game_result) < 0) __PYX_ERR(0, 617, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_u_HanabiState, __pyx_v_json_state_result) < 0) __PYX_ERR(0, 617, __pyx_L1_error)
   __pyx_t_6 = NULL;
   __pyx_t_7 = 0;
   #if CYTHON_UNPACK_METHODS
@@ -18177,7 +18408,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_5, __pyx_callargs+1-__pyx_t_7, 1+__pyx_t_7);
     __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 625, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 617, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -18185,7 +18416,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":612
+  /* "cython_lib/cyhanabi.pyx":604
  *         return history
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
@@ -18209,7 +18440,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_50to_json(struct 
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":627
+/* "cython_lib/cyhanabi.pyx":619
  *         return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -18270,12 +18501,12 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
           (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
           kw_args--;
         }
-        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 627, __pyx_L3_error)
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 619, __pyx_L3_error)
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 627, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 619, __pyx_L3_error)
       }
     } else if (unlikely(__pyx_nargs != 1)) {
       goto __pyx_L5_argtuple_error;
@@ -18286,7 +18517,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 627, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 619, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -18300,7 +18531,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 628, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 620, __pyx_L1_error)
   __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(((PyTypeObject*)__pyx_v_cls), __pyx_v_json_str);
 
   /* function exit code */
@@ -18337,16 +18568,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("from_json", 1);
 
-  /* "cython_lib/cyhanabi.pyx":629
+  /* "cython_lib/cyhanabi.pyx":621
  *     @classmethod
  *     def from_json(cls, str json_str):
  *         combined_json = json.loads(json_str)             # <<<<<<<<<<<<<<
  *         if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:
  *             raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 629, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_loads); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 629, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_loads); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -18367,45 +18598,45 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
     PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_v_json_str};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 629, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 621, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
   __pyx_v_combined_json = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":630
+  /* "cython_lib/cyhanabi.pyx":622
  *     def from_json(cls, str json_str):
  *         combined_json = json.loads(json_str)
  *         if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:             # <<<<<<<<<<<<<<
  *             raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")
  * 
  */
-  __pyx_t_6 = (__Pyx_PySequence_ContainsTF(__pyx_n_u_HanabiGame, __pyx_v_combined_json, Py_NE)); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 630, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PySequence_ContainsTF(__pyx_n_u_HanabiGame, __pyx_v_combined_json, Py_NE)); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 622, __pyx_L1_error)
   if (!__pyx_t_6) {
   } else {
     __pyx_t_5 = __pyx_t_6;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_6 = (__Pyx_PySequence_ContainsTF(__pyx_n_u_HanabiState, __pyx_v_combined_json, Py_NE)); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 630, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PySequence_ContainsTF(__pyx_n_u_HanabiState, __pyx_v_combined_json, Py_NE)); if (unlikely((__pyx_t_6 < 0))) __PYX_ERR(0, 622, __pyx_L1_error)
   __pyx_t_5 = __pyx_t_6;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_5)) {
 
-    /* "cython_lib/cyhanabi.pyx":631
+    /* "cython_lib/cyhanabi.pyx":623
  *         combined_json = json.loads(json_str)
  *         if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:
  *             raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")             # <<<<<<<<<<<<<<
  * 
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 631, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 623, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 631, __pyx_L1_error)
+    __PYX_ERR(0, 623, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":630
+    /* "cython_lib/cyhanabi.pyx":622
  *     def from_json(cls, str json_str):
  *         combined_json = json.loads(json_str)
  *         if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:             # <<<<<<<<<<<<<<
@@ -18414,7 +18645,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":633
+  /* "cython_lib/cyhanabi.pyx":625
  *             raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")
  * 
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))             # <<<<<<<<<<<<<<
@@ -18423,7 +18654,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   __pyx_v_c_game = ((pyhanabi_game_t *)malloc((sizeof(pyhanabi_game_t))));
 
-  /* "cython_lib/cyhanabi.pyx":634
+  /* "cython_lib/cyhanabi.pyx":626
  * 
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
  *         if c_game == NULL:             # <<<<<<<<<<<<<<
@@ -18433,16 +18664,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
   __pyx_t_5 = (__pyx_v_c_game == NULL);
   if (unlikely(__pyx_t_5)) {
 
-    /* "cython_lib/cyhanabi.pyx":635
+    /* "cython_lib/cyhanabi.pyx":627
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
  *         if c_game == NULL:
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):
  *             free(c_game)
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 635, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 627, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":634
+    /* "cython_lib/cyhanabi.pyx":626
  * 
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
  *         if c_game == NULL:             # <<<<<<<<<<<<<<
@@ -18451,16 +18682,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":636
+  /* "cython_lib/cyhanabi.pyx":628
  *         if c_game == NULL:
  *             raise MemoryError()
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):             # <<<<<<<<<<<<<<
  *             free(c_game)
  *             raise ValueError("Failed to deserialize HanabiGame from JSON")
  */
-  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_combined_json, __pyx_n_u_HanabiGame); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 636, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_Dict_GetItem(__pyx_v_combined_json, __pyx_n_u_HanabiGame); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 636, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_encode); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 628, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -18481,16 +18712,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
     PyObject *__pyx_callargs[2] = {__pyx_t_3, __pyx_n_u_ascii};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 636, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 628, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
-  __pyx_t_7 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 636, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_7) && PyErr_Occurred())) __PYX_ERR(0, 628, __pyx_L1_error)
   __pyx_t_5 = (!(GameFromJson(__pyx_t_7, __pyx_v_c_game) != 0));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (unlikely(__pyx_t_5)) {
 
-    /* "cython_lib/cyhanabi.pyx":637
+    /* "cython_lib/cyhanabi.pyx":629
  *             raise MemoryError()
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):
  *             free(c_game)             # <<<<<<<<<<<<<<
@@ -18499,20 +18730,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
     free(__pyx_v_c_game);
 
-    /* "cython_lib/cyhanabi.pyx":638
+    /* "cython_lib/cyhanabi.pyx":630
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):
  *             free(c_game)
  *             raise ValueError("Failed to deserialize HanabiGame from JSON")             # <<<<<<<<<<<<<<
  * 
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 638, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 630, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 638, __pyx_L1_error)
+    __PYX_ERR(0, 630, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":636
+    /* "cython_lib/cyhanabi.pyx":628
  *         if c_game == NULL:
  *             raise MemoryError()
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):             # <<<<<<<<<<<<<<
@@ -18521,7 +18752,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":640
+  /* "cython_lib/cyhanabi.pyx":632
  *             raise ValueError("Failed to deserialize HanabiGame from JSON")
  * 
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))             # <<<<<<<<<<<<<<
@@ -18530,7 +18761,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   __pyx_v_c_state = ((pyhanabi_state_t *)malloc((sizeof(pyhanabi_state_t))));
 
-  /* "cython_lib/cyhanabi.pyx":641
+  /* "cython_lib/cyhanabi.pyx":633
  * 
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if c_state == NULL:             # <<<<<<<<<<<<<<
@@ -18540,7 +18771,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
   __pyx_t_5 = (__pyx_v_c_state == NULL);
   if (unlikely(__pyx_t_5)) {
 
-    /* "cython_lib/cyhanabi.pyx":642
+    /* "cython_lib/cyhanabi.pyx":634
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if c_state == NULL:
  *             free(c_game)             # <<<<<<<<<<<<<<
@@ -18549,16 +18780,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
     free(__pyx_v_c_game);
 
-    /* "cython_lib/cyhanabi.pyx":643
+    /* "cython_lib/cyhanabi.pyx":635
  *         if c_state == NULL:
  *             free(c_game)
  *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         if not StateFromJson(combined_json['HanabiState'].encode('ascii'), c_state, c_game):
  *             free(c_state)
  */
-    PyErr_NoMemory(); __PYX_ERR(0, 643, __pyx_L1_error)
+    PyErr_NoMemory(); __PYX_ERR(0, 635, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":641
+    /* "cython_lib/cyhanabi.pyx":633
  * 
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  *         if c_state == NULL:             # <<<<<<<<<<<<<<
@@ -18567,16 +18798,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":644
+  /* "cython_lib/cyhanabi.pyx":636
  *             free(c_game)
  *             raise MemoryError()
  *         if not StateFromJson(combined_json['HanabiState'].encode('ascii'), c_state, c_game):             # <<<<<<<<<<<<<<
  *             free(c_state)
  *             free(c_game)
  */
-  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_combined_json, __pyx_n_u_HanabiState); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 644, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Dict_GetItem(__pyx_v_combined_json, __pyx_n_u_HanabiState); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 636, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 644, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_encode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 636, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -18597,16 +18828,16 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
     PyObject *__pyx_callargs[2] = {__pyx_t_2, __pyx_n_u_ascii};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_3, __pyx_callargs+1-__pyx_t_4, 1+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 644, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 636, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
-  __pyx_t_8 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_8) && PyErr_Occurred())) __PYX_ERR(0, 644, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_AsString(__pyx_t_1); if (unlikely((!__pyx_t_8) && PyErr_Occurred())) __PYX_ERR(0, 636, __pyx_L1_error)
   __pyx_t_5 = (!(StateFromJson(__pyx_t_8, __pyx_v_c_state, __pyx_v_c_game) != 0));
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (unlikely(__pyx_t_5)) {
 
-    /* "cython_lib/cyhanabi.pyx":645
+    /* "cython_lib/cyhanabi.pyx":637
  *             raise MemoryError()
  *         if not StateFromJson(combined_json['HanabiState'].encode('ascii'), c_state, c_game):
  *             free(c_state)             # <<<<<<<<<<<<<<
@@ -18615,7 +18846,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
     free(__pyx_v_c_state);
 
-    /* "cython_lib/cyhanabi.pyx":646
+    /* "cython_lib/cyhanabi.pyx":638
  *         if not StateFromJson(combined_json['HanabiState'].encode('ascii'), c_state, c_game):
  *             free(c_state)
  *             free(c_game)             # <<<<<<<<<<<<<<
@@ -18624,20 +18855,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
     free(__pyx_v_c_game);
 
-    /* "cython_lib/cyhanabi.pyx":647
+    /* "cython_lib/cyhanabi.pyx":639
  *             free(c_state)
  *             free(c_game)
  *             raise ValueError("Failed to deserialize HanabiState from JSON")             # <<<<<<<<<<<<<<
  * 
  *         return HanabiState.create(None, c_state, c_game)
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 647, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 647, __pyx_L1_error)
+    __PYX_ERR(0, 639, __pyx_L1_error)
 
-    /* "cython_lib/cyhanabi.pyx":644
+    /* "cython_lib/cyhanabi.pyx":636
  *             free(c_game)
  *             raise MemoryError()
  *         if not StateFromJson(combined_json['HanabiState'].encode('ascii'), c_state, c_game):             # <<<<<<<<<<<<<<
@@ -18646,7 +18877,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":649
+  /* "cython_lib/cyhanabi.pyx":641
  *             raise ValueError("Failed to deserialize HanabiState from JSON")
  * 
  *         return HanabiState.create(None, c_state, c_game)             # <<<<<<<<<<<<<<
@@ -18654,13 +18885,13 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
  *     def __str__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(Py_None, __pyx_v_c_state, __pyx_v_c_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 649, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(Py_None, __pyx_v_c_state, __pyx_v_c_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 641, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":627
+  /* "cython_lib/cyhanabi.pyx":619
  *         return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
@@ -18682,7 +18913,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_52from_json(CYTHO
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":651
+/* "cython_lib/cyhanabi.pyx":643
  *         return HanabiState.create(None, c_state, c_game)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -18718,7 +18949,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__str__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":652
+  /* "cython_lib/cyhanabi.pyx":644
  * 
  *     def __str__(self):
  *         cdef char* c_string = StateToString(self._state)             # <<<<<<<<<<<<<<
@@ -18727,7 +18958,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
  */
   __pyx_v_c_string = StateToString(__pyx_v_self->_state);
 
-  /* "cython_lib/cyhanabi.pyx":653
+  /* "cython_lib/cyhanabi.pyx":645
  *     def __str__(self):
  *         cdef char* c_string = StateToString(self._state)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -18737,7 +18968,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
   __pyx_t_1 = (__pyx_v_c_string == NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":654
+    /* "cython_lib/cyhanabi.pyx":646
  *         cdef char* c_string = StateToString(self._state)
  *         if c_string == NULL:
  *             return ""             # <<<<<<<<<<<<<<
@@ -18749,7 +18980,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
     __pyx_r = __pyx_kp_u__3;
     goto __pyx_L0;
 
-    /* "cython_lib/cyhanabi.pyx":653
+    /* "cython_lib/cyhanabi.pyx":645
  *     def __str__(self):
  *         cdef char* c_string = StateToString(self._state)
  *         if c_string == NULL:             # <<<<<<<<<<<<<<
@@ -18758,20 +18989,20 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":655
+  /* "cython_lib/cyhanabi.pyx":647
  *         if c_string == NULL:
  *             return ""
  *         string = c_string.decode('utf-8')             # <<<<<<<<<<<<<<
  *         DeleteString(c_string)
  *         return string
  */
-  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 655, __pyx_L1_error)
-  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 655, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 647, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 647, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_v_string = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":656
+  /* "cython_lib/cyhanabi.pyx":648
  *             return ""
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)             # <<<<<<<<<<<<<<
@@ -18780,7 +19011,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
  */
   DeleteString(__pyx_v_c_string);
 
-  /* "cython_lib/cyhanabi.pyx":657
+  /* "cython_lib/cyhanabi.pyx":649
  *         string = c_string.decode('utf-8')
  *         DeleteString(c_string)
  *         return string             # <<<<<<<<<<<<<<
@@ -18792,7 +19023,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
   __pyx_r = __pyx_v_string;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":651
+  /* "cython_lib/cyhanabi.pyx":643
  *         return HanabiState.create(None, c_state, c_game)
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -18812,7 +19043,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_54__str__(struct 
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":659
+/* "cython_lib/cyhanabi.pyx":651
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -18847,7 +19078,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_56__repr__(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__repr__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":660
+  /* "cython_lib/cyhanabi.pyx":652
  * 
  *     def __repr__(self):
  *         return self.__str__()             # <<<<<<<<<<<<<<
@@ -18855,7 +19086,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_56__repr__(struct
  *     def __dealloc__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 660, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_str); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 652, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   __pyx_t_4 = 0;
@@ -18875,7 +19106,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_56__repr__(struct
     PyObject *__pyx_callargs[2] = {__pyx_t_3, NULL};
     __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_4, 0+__pyx_t_4);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 660, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 652, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
@@ -18883,7 +19114,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_56__repr__(struct
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cython_lib/cyhanabi.pyx":659
+  /* "cython_lib/cyhanabi.pyx":651
  *         return string
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -18904,7 +19135,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_56__repr__(struct
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":662
+/* "cython_lib/cyhanabi.pyx":654
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -18939,7 +19170,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__dealloc__", 1);
 
-  /* "cython_lib/cyhanabi.pyx":663
+  /* "cython_lib/cyhanabi.pyx":655
  * 
  *     def __dealloc__(self):
  *         if self._state != NULL:             # <<<<<<<<<<<<<<
@@ -18949,7 +19180,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
   __pyx_t_1 = (__pyx_v_self->_state != NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":664
+    /* "cython_lib/cyhanabi.pyx":656
  *     def __dealloc__(self):
  *         if self._state != NULL:
  *             DeleteState(self._state)             # <<<<<<<<<<<<<<
@@ -18958,7 +19189,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
     DeleteState(__pyx_v_self->_state);
 
-    /* "cython_lib/cyhanabi.pyx":665
+    /* "cython_lib/cyhanabi.pyx":657
  *         if self._state != NULL:
  *             DeleteState(self._state)
  *             self._state = NULL             # <<<<<<<<<<<<<<
@@ -18967,7 +19198,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
     __pyx_v_self->_state = NULL;
 
-    /* "cython_lib/cyhanabi.pyx":663
+    /* "cython_lib/cyhanabi.pyx":655
  * 
  *     def __dealloc__(self):
  *         if self._state != NULL:             # <<<<<<<<<<<<<<
@@ -18976,7 +19207,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":667
+  /* "cython_lib/cyhanabi.pyx":659
  *             self._state = NULL
  * 
  *         if self._discard_pool != NULL:             # <<<<<<<<<<<<<<
@@ -18986,7 +19217,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
   __pyx_t_1 = (__pyx_v_self->_discard_pool != NULL);
   if (__pyx_t_1) {
 
-    /* "cython_lib/cyhanabi.pyx":668
+    /* "cython_lib/cyhanabi.pyx":660
  * 
  *         if self._discard_pool != NULL:
  *             free(self._discard_pool)             # <<<<<<<<<<<<<<
@@ -18995,7 +19226,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
     free(__pyx_v_self->_discard_pool);
 
-    /* "cython_lib/cyhanabi.pyx":669
+    /* "cython_lib/cyhanabi.pyx":661
  *         if self._discard_pool != NULL:
  *             free(self._discard_pool)
  *             self._discard_pool = NULL             # <<<<<<<<<<<<<<
@@ -19004,7 +19235,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
     __pyx_v_self->_discard_pool = NULL;
 
-    /* "cython_lib/cyhanabi.pyx":667
+    /* "cython_lib/cyhanabi.pyx":659
  *             self._state = NULL
  * 
  *         if self._discard_pool != NULL:             # <<<<<<<<<<<<<<
@@ -19013,7 +19244,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
   }
 
-  /* "cython_lib/cyhanabi.pyx":671
+  /* "cython_lib/cyhanabi.pyx":663
  *             self._discard_pool = NULL
  * 
  *         for card in self._card_pool:             # <<<<<<<<<<<<<<
@@ -19022,7 +19253,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
   if (unlikely(__pyx_v_self->_card_pool == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 671, __pyx_L1_error)
+    __PYX_ERR(0, 663, __pyx_L1_error)
   }
   __pyx_t_2 = __pyx_v_self->_card_pool; __Pyx_INCREF(__pyx_t_2);
   __pyx_t_3 = 0;
@@ -19030,20 +19261,20 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
     {
       Py_ssize_t __pyx_temp = __Pyx_PyList_GET_SIZE(__pyx_t_2);
       #if !CYTHON_ASSUME_SAFE_MACROS
-      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 671, __pyx_L1_error)
+      if (unlikely((__pyx_temp < 0))) __PYX_ERR(0, 663, __pyx_L1_error)
       #endif
       if (__pyx_t_3 >= __pyx_temp) break;
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 671, __pyx_L1_error)
+    __pyx_t_4 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_4); __pyx_t_3++; if (unlikely((0 < 0))) __PYX_ERR(0, 663, __pyx_L1_error)
     #else
-    __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 671, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 663, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_card, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "cython_lib/cyhanabi.pyx":672
+    /* "cython_lib/cyhanabi.pyx":664
  * 
  *         for card in self._card_pool:
  *             free(<pyhanabi_card_t*>card)             # <<<<<<<<<<<<<<
@@ -19052,7 +19283,7 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
  */
     free(((pyhanabi_card_t *)__pyx_v_card));
 
-    /* "cython_lib/cyhanabi.pyx":671
+    /* "cython_lib/cyhanabi.pyx":663
  *             self._discard_pool = NULL
  * 
  *         for card in self._card_pool:             # <<<<<<<<<<<<<<
@@ -19062,14 +19293,14 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":673
+  /* "cython_lib/cyhanabi.pyx":665
  *         for card in self._card_pool:
  *             free(<pyhanabi_card_t*>card)
  *         self._card_pool.clear()             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_card_pool, __pyx_n_s_clear); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 673, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->_card_pool, __pyx_n_s_clear); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 665, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -19089,13 +19320,13 @@ static void __pyx_pf_10cython_lib_8cyhanabi_11HanabiState_58__dealloc__(struct _
     PyObject *__pyx_callargs[2] = {__pyx_t_5, NULL};
     __pyx_t_2 = __Pyx_PyObject_FastCall(__pyx_t_4, __pyx_callargs+1-__pyx_t_6, 0+__pyx_t_6);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 673, __pyx_L1_error)
+    if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 665, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":662
+  /* "cython_lib/cyhanabi.pyx":654
  *         return self.__str__()
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -19329,7 +19560,7 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_11HanabiState_62__setstate_cyth
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":679
+/* "cython_lib/cyhanabi.pyx":671
  *     cdef pyhanabi_game_t* _game
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -19364,16 +19595,16 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_1__cinit__(PyObject *__p
 static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame___cinit__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
   int __pyx_r;
 
-  /* "cython_lib/cyhanabi.pyx":680
+  /* "cython_lib/cyhanabi.pyx":672
  * 
  *     def __cinit__(self):
  *         self._game = NULL             # <<<<<<<<<<<<<<
  * 
- *     def __init__(self, list param_list=None):
+ *     @staticmethod
  */
   __pyx_v_self->_game = NULL;
 
-  /* "cython_lib/cyhanabi.pyx":679
+  /* "cython_lib/cyhanabi.pyx":671
  *     cdef pyhanabi_game_t* _game
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -19386,17 +19617,89 @@ static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame___cinit__(struct __pyx_o
   return __pyx_r;
 }
 
-/* "cython_lib/cyhanabi.pyx":682
- *         self._game = NULL
+/* "cython_lib/cyhanabi.pyx":675
  * 
- *     def __init__(self, list param_list=None):             # <<<<<<<<<<<<<<
- *         self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *     @staticmethod
+ *     cdef from_ptr(pyhanabi_game_t* game):             # <<<<<<<<<<<<<<
+ *         cdef HanabiGame instance = HanabiGame()
+ *         instance._game = game
+ */
+
+static PyObject *__pyx_f_10cython_lib_8cyhanabi_10HanabiGame_from_ptr(pyhanabi_game_t *__pyx_v_game) {
+  struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_instance = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("from_ptr", 1);
+
+  /* "cython_lib/cyhanabi.pyx":676
+ *     @staticmethod
+ *     cdef from_ptr(pyhanabi_game_t* game):
+ *         cdef HanabiGame instance = HanabiGame()             # <<<<<<<<<<<<<<
+ *         instance._game = game
+ *         return instance
+ */
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 676, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_instance = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "cython_lib/cyhanabi.pyx":677
+ *     cdef from_ptr(pyhanabi_game_t* game):
+ *         cdef HanabiGame instance = HanabiGame()
+ *         instance._game = game             # <<<<<<<<<<<<<<
+ *         return instance
+ * 
+ */
+  __pyx_v_instance->_game = __pyx_v_game;
+
+  /* "cython_lib/cyhanabi.pyx":678
+ *         cdef HanabiGame instance = HanabiGame()
+ *         instance._game = game
+ *         return instance             # <<<<<<<<<<<<<<
+ * 
+ *     def __init__(self, dict params=None):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF((PyObject *)__pyx_v_instance);
+  __pyx_r = ((PyObject *)__pyx_v_instance);
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":675
+ * 
+ *     @staticmethod
+ *     cdef from_ptr(pyhanabi_game_t* game):             # <<<<<<<<<<<<<<
+ *         cdef HanabiGame instance = HanabiGame()
+ *         instance._game = game
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.from_ptr", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_instance);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":680
+ *         return instance
+ * 
+ *     def __init__(self, dict params=None):             # <<<<<<<<<<<<<<
+ *         cdef:
+ *             int param_count, i = 0
  */
 
 /* Python wrapper */
 static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  CYTHON_UNUSED PyObject *__pyx_v_param_list = 0;
+  PyObject *__pyx_v_params = 0;
   CYTHON_UNUSED Py_ssize_t __pyx_nargs;
   CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
   PyObject* values[1] = {0};
@@ -19413,7 +19716,7 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__py
   #endif
   __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
   {
-    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_param_list,0};
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_params,0};
     values[0] = __Pyx_Arg_NewRef_VARARGS(((PyObject*)Py_None));
     if (__pyx_kwds) {
       Py_ssize_t kw_args;
@@ -19427,14 +19730,14 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__py
       switch (__pyx_nargs) {
         case  0:
         if (kw_args > 0) {
-          PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_param_list);
+          PyObject* value = __Pyx_GetKwValue_VARARGS(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_params);
           if (value) { values[0] = __Pyx_Arg_NewRef_VARARGS(value); kw_args--; }
-          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 682, __pyx_L3_error)
+          else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 680, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
         const Py_ssize_t kwd_pos_args = __pyx_nargs;
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 682, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "__init__") < 0)) __PYX_ERR(0, 680, __pyx_L3_error)
       }
     } else {
       switch (__pyx_nargs) {
@@ -19444,11 +19747,11 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__py
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_param_list = ((PyObject*)values[0]);
+    __pyx_v_params = ((PyObject*)values[0]);
   }
   goto __pyx_L6_skip;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 1, __pyx_nargs); __PYX_ERR(0, 682, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 1, __pyx_nargs); __PYX_ERR(0, 680, __pyx_L3_error)
   __pyx_L6_skip:;
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -19462,8 +19765,8 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__py
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_param_list), (&PyList_Type), 1, "param_list", 1))) __PYX_ERR(0, 682, __pyx_L1_error)
-  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v_param_list);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_params), (&PyDict_Type), 1, "params", 1))) __PYX_ERR(0, 680, __pyx_L1_error)
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v_params);
 
   /* function exit code */
   goto __pyx_L0;
@@ -19480,25 +19783,2521 @@ static int __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_3__init__(PyObject *__py
   return __pyx_r;
 }
 
-static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_param_list) {
+static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, PyObject *__pyx_v_params) {
+  int __pyx_v_param_count;
+  int __pyx_v_i;
+  char const **__pyx_v_c_array;
+  PyObject *__pyx_v_key_bytes = 0;
+  PyObject *__pyx_v_value_bytes = 0;
+  PyObject *__pyx_v_key = NULL;
+  PyObject *__pyx_v_value = NULL;
+  int __pyx_v_j;
   int __pyx_r;
-
-  /* "cython_lib/cyhanabi.pyx":683
- * 
- *     def __init__(self, list param_list=None):
- *         self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))             # <<<<<<<<<<<<<<
- */
-  __pyx_v_self->_game = ((pyhanabi_game_t *)malloc((sizeof(pyhanabi_game_t))));
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
+  int __pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  char const *__pyx_t_9;
+  char const *__pyx_t_10;
+  int __pyx_t_11;
+  int __pyx_t_12;
+  char const *__pyx_t_13;
+  PyObject *__pyx_t_14 = NULL;
+  PyObject *__pyx_t_15 = NULL;
+  PyObject *__pyx_t_16 = NULL;
+  PyObject *__pyx_t_17 = NULL;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
+  int __pyx_t_20;
+  int __pyx_t_21;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__init__", 1);
 
   /* "cython_lib/cyhanabi.pyx":682
- *         self._game = NULL
+ *     def __init__(self, dict params=None):
+ *         cdef:
+ *             int param_count, i = 0             # <<<<<<<<<<<<<<
+ *             const char** c_array
+ *             bytes key_bytes, value_bytes
+ */
+  __pyx_v_i = 0;
+
+  /* "cython_lib/cyhanabi.pyx":686
+ *             bytes key_bytes, value_bytes
  * 
- *     def __init__(self, list param_list=None):             # <<<<<<<<<<<<<<
- *         self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *         if params is None:             # <<<<<<<<<<<<<<
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:
+ */
+  __pyx_t_1 = (__pyx_v_params == ((PyObject*)Py_None));
+  if (__pyx_t_1) {
+
+    /* "cython_lib/cyhanabi.pyx":687
+ * 
+ *         if params is None:
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))             # <<<<<<<<<<<<<<
+ *             if self._game == NULL:
+ *                 raise MemoryError()
+ */
+    __pyx_v_self->_game = ((pyhanabi_game_t *)malloc((sizeof(pyhanabi_game_t))));
+
+    /* "cython_lib/cyhanabi.pyx":688
+ *         if params is None:
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:             # <<<<<<<<<<<<<<
+ *                 raise MemoryError()
+ *             NewDefaultGame(self._game)
+ */
+    __pyx_t_1 = (__pyx_v_self->_game == NULL);
+    if (unlikely(__pyx_t_1)) {
+
+      /* "cython_lib/cyhanabi.pyx":689
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:
+ *                 raise MemoryError()             # <<<<<<<<<<<<<<
+ *             NewDefaultGame(self._game)
+ *             return
+ */
+      PyErr_NoMemory(); __PYX_ERR(0, 689, __pyx_L1_error)
+
+      /* "cython_lib/cyhanabi.pyx":688
+ *         if params is None:
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:             # <<<<<<<<<<<<<<
+ *                 raise MemoryError()
+ *             NewDefaultGame(self._game)
+ */
+    }
+
+    /* "cython_lib/cyhanabi.pyx":690
+ *             if self._game == NULL:
+ *                 raise MemoryError()
+ *             NewDefaultGame(self._game)             # <<<<<<<<<<<<<<
+ *             return
+ * 
+ */
+    NewDefaultGame(__pyx_v_self->_game);
+
+    /* "cython_lib/cyhanabi.pyx":691
+ *                 raise MemoryError()
+ *             NewDefaultGame(self._game)
+ *             return             # <<<<<<<<<<<<<<
+ * 
+ *         param_count = len(params) * 2
+ */
+    __pyx_r = 0;
+    goto __pyx_L0;
+
+    /* "cython_lib/cyhanabi.pyx":686
+ *             bytes key_bytes, value_bytes
+ * 
+ *         if params is None:             # <<<<<<<<<<<<<<
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":693
+ *             return
+ * 
+ *         param_count = len(params) * 2             # <<<<<<<<<<<<<<
+ *         c_array = <const char**>malloc(param_count * sizeof(const char*))
+ *         if c_array == NULL:
+ */
+  if (unlikely(__pyx_v_params == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 693, __pyx_L1_error)
+  }
+  __pyx_t_2 = PyDict_Size(__pyx_v_params); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 693, __pyx_L1_error)
+  __pyx_v_param_count = (__pyx_t_2 * 2);
+
+  /* "cython_lib/cyhanabi.pyx":694
+ * 
+ *         param_count = len(params) * 2
+ *         c_array = <const char**>malloc(param_count * sizeof(const char*))             # <<<<<<<<<<<<<<
+ *         if c_array == NULL:
+ *             raise MemoryError()
+ */
+  __pyx_v_c_array = ((char const **)malloc((__pyx_v_param_count * (sizeof(char const *)))));
+
+  /* "cython_lib/cyhanabi.pyx":695
+ *         param_count = len(params) * 2
+ *         c_array = <const char**>malloc(param_count * sizeof(const char*))
+ *         if c_array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ * 
+ */
+  __pyx_t_1 = (__pyx_v_c_array == NULL);
+  if (unlikely(__pyx_t_1)) {
+
+    /* "cython_lib/cyhanabi.pyx":696
+ *         c_array = <const char**>malloc(param_count * sizeof(const char*))
+ *         if c_array == NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
+ * 
+ *         try:
+ */
+    PyErr_NoMemory(); __PYX_ERR(0, 696, __pyx_L1_error)
+
+    /* "cython_lib/cyhanabi.pyx":695
+ *         param_count = len(params) * 2
+ *         c_array = <const char**>malloc(param_count * sizeof(const char*))
+ *         if c_array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ * 
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":698
+ *             raise MemoryError()
+ * 
+ *         try:             # <<<<<<<<<<<<<<
+ *             for key, value in params.items():
+ *                 key_bytes = str(key).encode('ascii')
+ */
+  /*try:*/ {
+
+    /* "cython_lib/cyhanabi.pyx":699
+ * 
+ *         try:
+ *             for key, value in params.items():             # <<<<<<<<<<<<<<
+ *                 key_bytes = str(key).encode('ascii')
+ *                 value_bytes = str(value).encode('ascii')
+ */
+    __pyx_t_2 = 0;
+    if (unlikely(__pyx_v_params == Py_None)) {
+      PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+      __PYX_ERR(0, 699, __pyx_L7_error)
+    }
+    __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_params, 1, __pyx_n_s_items, (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 699, __pyx_L7_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_XDECREF(__pyx_t_3);
+    __pyx_t_3 = __pyx_t_6;
+    __pyx_t_6 = 0;
+    while (1) {
+      __pyx_t_8 = __Pyx_dict_iter_next(__pyx_t_3, __pyx_t_4, &__pyx_t_2, &__pyx_t_6, &__pyx_t_7, NULL, __pyx_t_5);
+      if (unlikely(__pyx_t_8 == 0)) break;
+      if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 699, __pyx_L7_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_XDECREF_SET(__pyx_v_key, __pyx_t_6);
+      __pyx_t_6 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_7);
+      __pyx_t_7 = 0;
+
+      /* "cython_lib/cyhanabi.pyx":700
+ *         try:
+ *             for key, value in params.items():
+ *                 key_bytes = str(key).encode('ascii')             # <<<<<<<<<<<<<<
+ *                 value_bytes = str(value).encode('ascii')
+ * 
+ */
+      __pyx_t_7 = __Pyx_PyObject_Unicode(__pyx_v_key); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 700, __pyx_L7_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_6 = PyUnicode_AsASCIIString(((PyObject*)__pyx_t_7)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 700, __pyx_L7_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_key_bytes, ((PyObject*)__pyx_t_6));
+      __pyx_t_6 = 0;
+
+      /* "cython_lib/cyhanabi.pyx":701
+ *             for key, value in params.items():
+ *                 key_bytes = str(key).encode('ascii')
+ *                 value_bytes = str(value).encode('ascii')             # <<<<<<<<<<<<<<
+ * 
+ *                 c_array[i] = strdup(<const char*>key_bytes)
+ */
+      __pyx_t_6 = __Pyx_PyObject_Unicode(__pyx_v_value); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 701, __pyx_L7_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_7 = PyUnicode_AsASCIIString(((PyObject*)__pyx_t_6)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 701, __pyx_L7_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF_SET(__pyx_v_value_bytes, ((PyObject*)__pyx_t_7));
+      __pyx_t_7 = 0;
+
+      /* "cython_lib/cyhanabi.pyx":703
+ *                 value_bytes = str(value).encode('ascii')
+ * 
+ *                 c_array[i] = strdup(<const char*>key_bytes)             # <<<<<<<<<<<<<<
+ *                 c_array[i+1] = strdup(<const char*>value_bytes)
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:
+ */
+      if (unlikely(__pyx_v_key_bytes == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
+        __PYX_ERR(0, 703, __pyx_L7_error)
+      }
+      __pyx_t_9 = __Pyx_PyBytes_AsString(__pyx_v_key_bytes); if (unlikely((!__pyx_t_9) && PyErr_Occurred())) __PYX_ERR(0, 703, __pyx_L7_error)
+      (__pyx_v_c_array[__pyx_v_i]) = strdup(((char const *)__pyx_t_9));
+
+      /* "cython_lib/cyhanabi.pyx":704
+ * 
+ *                 c_array[i] = strdup(<const char*>key_bytes)
+ *                 c_array[i+1] = strdup(<const char*>value_bytes)             # <<<<<<<<<<<<<<
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:
+ *                     raise MemoryError()
+ */
+      if (unlikely(__pyx_v_value_bytes == Py_None)) {
+        PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
+        __PYX_ERR(0, 704, __pyx_L7_error)
+      }
+      __pyx_t_10 = __Pyx_PyBytes_AsString(__pyx_v_value_bytes); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(0, 704, __pyx_L7_error)
+      (__pyx_v_c_array[(__pyx_v_i + 1)]) = strdup(((char const *)__pyx_t_10));
+
+      /* "cython_lib/cyhanabi.pyx":705
+ *                 c_array[i] = strdup(<const char*>key_bytes)
+ *                 c_array[i+1] = strdup(<const char*>value_bytes)
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:             # <<<<<<<<<<<<<<
+ *                     raise MemoryError()
+ *                 i += 2
+ */
+      __pyx_t_11 = ((__pyx_v_c_array[__pyx_v_i]) == NULL);
+      if (!__pyx_t_11) {
+      } else {
+        __pyx_t_1 = __pyx_t_11;
+        goto __pyx_L12_bool_binop_done;
+      }
+      __pyx_t_11 = ((__pyx_v_c_array[(__pyx_v_i + 1)]) == NULL);
+      __pyx_t_1 = __pyx_t_11;
+      __pyx_L12_bool_binop_done:;
+      if (unlikely(__pyx_t_1)) {
+
+        /* "cython_lib/cyhanabi.pyx":706
+ *                 c_array[i+1] = strdup(<const char*>value_bytes)
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:
+ *                     raise MemoryError()             # <<<<<<<<<<<<<<
+ *                 i += 2
+ * 
+ */
+        PyErr_NoMemory(); __PYX_ERR(0, 706, __pyx_L7_error)
+
+        /* "cython_lib/cyhanabi.pyx":705
+ *                 c_array[i] = strdup(<const char*>key_bytes)
+ *                 c_array[i+1] = strdup(<const char*>value_bytes)
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:             # <<<<<<<<<<<<<<
+ *                     raise MemoryError()
+ *                 i += 2
+ */
+      }
+
+      /* "cython_lib/cyhanabi.pyx":707
+ *                 if c_array[i] == NULL or c_array[i+1] == NULL:
+ *                     raise MemoryError()
+ *                 i += 2             # <<<<<<<<<<<<<<
+ * 
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ */
+      __pyx_v_i = (__pyx_v_i + 2);
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+
+    /* "cython_lib/cyhanabi.pyx":709
+ *                 i += 2
+ * 
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))             # <<<<<<<<<<<<<<
+ *             if self._game == NULL:
+ *                 raise MemoryError()
+ */
+    __pyx_v_self->_game = ((pyhanabi_game_t *)malloc((sizeof(pyhanabi_game_t))));
+
+    /* "cython_lib/cyhanabi.pyx":710
+ * 
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:             # <<<<<<<<<<<<<<
+ *                 raise MemoryError()
+ *             NewGame(self._game, param_count, c_array)
+ */
+    __pyx_t_1 = (__pyx_v_self->_game == NULL);
+    if (unlikely(__pyx_t_1)) {
+
+      /* "cython_lib/cyhanabi.pyx":711
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:
+ *                 raise MemoryError()             # <<<<<<<<<<<<<<
+ *             NewGame(self._game, param_count, c_array)
+ *         finally:
+ */
+      PyErr_NoMemory(); __PYX_ERR(0, 711, __pyx_L7_error)
+
+      /* "cython_lib/cyhanabi.pyx":710
+ * 
+ *             self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *             if self._game == NULL:             # <<<<<<<<<<<<<<
+ *                 raise MemoryError()
+ *             NewGame(self._game, param_count, c_array)
+ */
+    }
+
+    /* "cython_lib/cyhanabi.pyx":712
+ *             if self._game == NULL:
+ *                 raise MemoryError()
+ *             NewGame(self._game, param_count, c_array)             # <<<<<<<<<<<<<<
+ *         finally:
+ *             for j in range(i):
+ */
+    NewGame(__pyx_v_self->_game, __pyx_v_param_count, __pyx_v_c_array);
+  }
+
+  /* "cython_lib/cyhanabi.pyx":714
+ *             NewGame(self._game, param_count, c_array)
+ *         finally:
+ *             for j in range(i):             # <<<<<<<<<<<<<<
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])
+ */
+  /*finally:*/ {
+    /*normal exit:*/{
+      __pyx_t_5 = __pyx_v_i;
+      __pyx_t_8 = __pyx_t_5;
+      for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_8; __pyx_t_12+=1) {
+        __pyx_v_j = __pyx_t_12;
+
+        /* "cython_lib/cyhanabi.pyx":715
+ *         finally:
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:             # <<<<<<<<<<<<<<
+ *                     free(<void*>c_array[j])
+ *             free(c_array)
+ */
+        __pyx_t_1 = ((__pyx_v_c_array[__pyx_v_j]) != NULL);
+        if (__pyx_t_1) {
+
+          /* "cython_lib/cyhanabi.pyx":716
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])             # <<<<<<<<<<<<<<
+ *             free(c_array)
+ * 
+ */
+          free(((void *)(__pyx_v_c_array[__pyx_v_j])));
+
+          /* "cython_lib/cyhanabi.pyx":715
+ *         finally:
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:             # <<<<<<<<<<<<<<
+ *                     free(<void*>c_array[j])
+ *             free(c_array)
+ */
+        }
+      }
+
+      /* "cython_lib/cyhanabi.pyx":717
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])
+ *             free(c_array)             # <<<<<<<<<<<<<<
+ * 
+ *     def __dealloc__(self):
+ */
+      free(__pyx_v_c_array);
+      goto __pyx_L8;
+    }
+    __pyx_L7_error:;
+    /*exception exit:*/{
+      __Pyx_PyThreadState_declare
+      __Pyx_PyThreadState_assign
+      __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0;
+      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (PY_MAJOR_VERSION >= 3) __Pyx_ExceptionSwap(&__pyx_t_17, &__pyx_t_18, &__pyx_t_19);
+      if ((PY_MAJOR_VERSION < 3) || unlikely(__Pyx_GetException(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16) < 0)) __Pyx_ErrFetch(&__pyx_t_14, &__pyx_t_15, &__pyx_t_16);
+      __Pyx_XGOTREF(__pyx_t_14);
+      __Pyx_XGOTREF(__pyx_t_15);
+      __Pyx_XGOTREF(__pyx_t_16);
+      __Pyx_XGOTREF(__pyx_t_17);
+      __Pyx_XGOTREF(__pyx_t_18);
+      __Pyx_XGOTREF(__pyx_t_19);
+      __pyx_t_5 = __pyx_lineno; __pyx_t_8 = __pyx_clineno; __pyx_t_13 = __pyx_filename;
+      {
+
+        /* "cython_lib/cyhanabi.pyx":714
+ *             NewGame(self._game, param_count, c_array)
+ *         finally:
+ *             for j in range(i):             # <<<<<<<<<<<<<<
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])
+ */
+        __pyx_t_12 = __pyx_v_i;
+        __pyx_t_20 = __pyx_t_12;
+        for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
+          __pyx_v_j = __pyx_t_21;
+
+          /* "cython_lib/cyhanabi.pyx":715
+ *         finally:
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:             # <<<<<<<<<<<<<<
+ *                     free(<void*>c_array[j])
+ *             free(c_array)
+ */
+          __pyx_t_1 = ((__pyx_v_c_array[__pyx_v_j]) != NULL);
+          if (__pyx_t_1) {
+
+            /* "cython_lib/cyhanabi.pyx":716
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])             # <<<<<<<<<<<<<<
+ *             free(c_array)
+ * 
+ */
+            free(((void *)(__pyx_v_c_array[__pyx_v_j])));
+
+            /* "cython_lib/cyhanabi.pyx":715
+ *         finally:
+ *             for j in range(i):
+ *                 if c_array[j] != NULL:             # <<<<<<<<<<<<<<
+ *                     free(<void*>c_array[j])
+ *             free(c_array)
+ */
+          }
+        }
+
+        /* "cython_lib/cyhanabi.pyx":717
+ *                 if c_array[j] != NULL:
+ *                     free(<void*>c_array[j])
+ *             free(c_array)             # <<<<<<<<<<<<<<
+ * 
+ *     def __dealloc__(self):
+ */
+        free(__pyx_v_c_array);
+      }
+      if (PY_MAJOR_VERSION >= 3) {
+        __Pyx_XGIVEREF(__pyx_t_17);
+        __Pyx_XGIVEREF(__pyx_t_18);
+        __Pyx_XGIVEREF(__pyx_t_19);
+        __Pyx_ExceptionReset(__pyx_t_17, __pyx_t_18, __pyx_t_19);
+      }
+      __Pyx_XGIVEREF(__pyx_t_14);
+      __Pyx_XGIVEREF(__pyx_t_15);
+      __Pyx_XGIVEREF(__pyx_t_16);
+      __Pyx_ErrRestore(__pyx_t_14, __pyx_t_15, __pyx_t_16);
+      __pyx_t_14 = 0; __pyx_t_15 = 0; __pyx_t_16 = 0; __pyx_t_17 = 0; __pyx_t_18 = 0; __pyx_t_19 = 0;
+      __pyx_lineno = __pyx_t_5; __pyx_clineno = __pyx_t_8; __pyx_filename = __pyx_t_13;
+      goto __pyx_L1_error;
+    }
+    __pyx_L8:;
+  }
+
+  /* "cython_lib/cyhanabi.pyx":680
+ *         return instance
+ * 
+ *     def __init__(self, dict params=None):             # <<<<<<<<<<<<<<
+ *         cdef:
+ *             int param_count, i = 0
  */
 
   /* function exit code */
   __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_key_bytes);
+  __Pyx_XDECREF(__pyx_v_value_bytes);
+  __Pyx_XDECREF(__pyx_v_key);
+  __Pyx_XDECREF(__pyx_v_value);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":719
+ *             free(c_array)
+ * 
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *         if self._game != NULL:
+ *             DeleteGame(self._game)
+ */
+
+/* Python wrapper */
+static void __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__dealloc__(PyObject *__pyx_v_self); /*proto*/
+static void __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__dealloc__(PyObject *__pyx_v_self) {
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__dealloc__ (wrapper)", 0);
+  __pyx_kwvalues = __Pyx_KwValues_VARARGS(__pyx_args, __pyx_nargs);
+  __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__dealloc__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+static void __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__dealloc__(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  int __pyx_t_1;
+
+  /* "cython_lib/cyhanabi.pyx":720
+ * 
+ *     def __dealloc__(self):
+ *         if self._game != NULL:             # <<<<<<<<<<<<<<
+ *             DeleteGame(self._game)
+ *             self._game = NULL
+ */
+  __pyx_t_1 = (__pyx_v_self->_game != NULL);
+  if (__pyx_t_1) {
+
+    /* "cython_lib/cyhanabi.pyx":721
+ *     def __dealloc__(self):
+ *         if self._game != NULL:
+ *             DeleteGame(self._game)             # <<<<<<<<<<<<<<
+ *             self._game = NULL
+ * 
+ */
+    DeleteGame(__pyx_v_self->_game);
+
+    /* "cython_lib/cyhanabi.pyx":722
+ *         if self._game != NULL:
+ *             DeleteGame(self._game)
+ *             self._game = NULL             # <<<<<<<<<<<<<<
+ * 
+ *     def new_initial_state(self):
+ */
+    __pyx_v_self->_game = NULL;
+
+    /* "cython_lib/cyhanabi.pyx":720
+ * 
+ *     def __dealloc__(self):
+ *         if self._game != NULL:             # <<<<<<<<<<<<<<
+ *             DeleteGame(self._game)
+ *             self._game = NULL
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":719
+ *             free(c_array)
+ * 
+ *     def __dealloc__(self):             # <<<<<<<<<<<<<<
+ *         if self._game != NULL:
+ *             DeleteGame(self._game)
+ */
+
+  /* function exit code */
+}
+
+/* "cython_lib/cyhanabi.pyx":724
+ *             self._game = NULL
+ * 
+ *     def new_initial_state(self):             # <<<<<<<<<<<<<<
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state = {"new_initial_state", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("new_initial_state (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("new_initial_state", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "new_initial_state", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6new_initial_state(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6new_initial_state(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("new_initial_state", 1);
+
+  /* "cython_lib/cyhanabi.pyx":725
+ * 
+ *     def new_initial_state(self):
+ *         return HanabiState.create(self, NULL, NULL)             # <<<<<<<<<<<<<<
+ * 
+ *     def num_players(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((PyObject *)__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create(((PyObject *)__pyx_v_self), NULL, NULL)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 725, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":724
+ *             self._game = NULL
+ * 
+ *     def new_initial_state(self):             # <<<<<<<<<<<<<<
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.new_initial_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":727
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ *     def num_players(self):             # <<<<<<<<<<<<<<
+ *         return NumPlayers(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_9num_players(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_9num_players = {"num_players", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_9num_players, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_9num_players(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("num_players (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("num_players", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "num_players", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_8num_players(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_8num_players(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("num_players", 1);
+
+  /* "cython_lib/cyhanabi.pyx":728
+ * 
+ *     def num_players(self):
+ *         return NumPlayers(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def num_colors(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(NumPlayers(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 728, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":727
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ *     def num_players(self):             # <<<<<<<<<<<<<<
+ *         return NumPlayers(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.num_players", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":730
+ *         return NumPlayers(self._game)
+ * 
+ *     def num_colors(self):             # <<<<<<<<<<<<<<
+ *         return NumColors(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_11num_colors(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_11num_colors = {"num_colors", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_11num_colors, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_11num_colors(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("num_colors (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("num_colors", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "num_colors", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_10num_colors(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_10num_colors(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("num_colors", 1);
+
+  /* "cython_lib/cyhanabi.pyx":731
+ * 
+ *     def num_colors(self):
+ *         return NumColors(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def num_ranks(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(NumColors(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 731, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":730
+ *         return NumPlayers(self._game)
+ * 
+ *     def num_colors(self):             # <<<<<<<<<<<<<<
+ *         return NumColors(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.num_colors", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":733
+ *         return NumColors(self._game)
+ * 
+ *     def num_ranks(self):             # <<<<<<<<<<<<<<
+ *         return NumRanks(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks = {"num_ranks", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("num_ranks (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("num_ranks", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "num_ranks", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_12num_ranks(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_12num_ranks(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("num_ranks", 1);
+
+  /* "cython_lib/cyhanabi.pyx":734
+ * 
+ *     def num_ranks(self):
+ *         return NumRanks(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def hand_size(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(NumRanks(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 734, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":733
+ *         return NumColors(self._game)
+ * 
+ *     def num_ranks(self):             # <<<<<<<<<<<<<<
+ *         return NumRanks(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.num_ranks", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":736
+ *         return NumRanks(self._game)
+ * 
+ *     def hand_size(self):             # <<<<<<<<<<<<<<
+ *         return HandSize(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_15hand_size(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_15hand_size = {"hand_size", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_15hand_size, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_15hand_size(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("hand_size (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("hand_size", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "hand_size", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_14hand_size(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_14hand_size(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("hand_size", 1);
+
+  /* "cython_lib/cyhanabi.pyx":737
+ * 
+ *     def hand_size(self):
+ *         return HandSize(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def max_information_tokens(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(HandSize(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 737, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":736
+ *         return NumRanks(self._game)
+ * 
+ *     def hand_size(self):             # <<<<<<<<<<<<<<
+ *         return HandSize(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.hand_size", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":739
+ *         return HandSize(self._game)
+ * 
+ *     def max_information_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxInformationTokens(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens = {"max_information_tokens", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("max_information_tokens (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("max_information_tokens", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "max_information_tokens", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_16max_information_tokens(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_16max_information_tokens(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("max_information_tokens", 1);
+
+  /* "cython_lib/cyhanabi.pyx":740
+ * 
+ *     def max_information_tokens(self):
+ *         return MaxInformationTokens(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def max_life_tokens(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(MaxInformationTokens(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 740, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":739
+ *         return HandSize(self._game)
+ * 
+ *     def max_information_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxInformationTokens(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.max_information_tokens", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":742
+ *         return MaxInformationTokens(self._game)
+ * 
+ *     def max_life_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxLifeTokens(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens = {"max_life_tokens", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("max_life_tokens (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("max_life_tokens", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "max_life_tokens", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_18max_life_tokens(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_18max_life_tokens(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("max_life_tokens", 1);
+
+  /* "cython_lib/cyhanabi.pyx":743
+ * 
+ *     def max_life_tokens(self):
+ *         return MaxLifeTokens(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def max_moves(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(MaxLifeTokens(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 743, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":742
+ *         return MaxInformationTokens(self._game)
+ * 
+ *     def max_life_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxLifeTokens(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.max_life_tokens", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":745
+ *         return MaxLifeTokens(self._game)
+ * 
+ *     def max_moves(self):             # <<<<<<<<<<<<<<
+ *         return MaxMoves(self._game)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_21max_moves(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_21max_moves = {"max_moves", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_21max_moves, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_21max_moves(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("max_moves (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("max_moves", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "max_moves", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_20max_moves(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_20max_moves(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("max_moves", 1);
+
+  /* "cython_lib/cyhanabi.pyx":746
+ * 
+ *     def max_moves(self):
+ *         return MaxMoves(self._game)             # <<<<<<<<<<<<<<
+ * 
+ *     def observation_type(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(MaxMoves(__pyx_v_self->_game)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 746, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":745
+ *         return MaxLifeTokens(self._game)
+ * 
+ *     def max_moves(self):             # <<<<<<<<<<<<<<
+ *         return MaxMoves(self._game)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.max_moves", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":748
+ *         return MaxMoves(self._game)
+ * 
+ *     def observation_type(self):             # <<<<<<<<<<<<<<
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_23observation_type(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_23observation_type = {"observation_type", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_23observation_type, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_23observation_type(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("observation_type (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("observation_type", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "observation_type", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_22observation_type(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_22observation_type(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  unsigned int __pyx_t_5;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("observation_type", 1);
+
+  /* "cython_lib/cyhanabi.pyx":749
+ * 
+ *     def observation_type(self):
+ *         return AgentObservationType(ObservationType(self._game))             # <<<<<<<<<<<<<<
+ * 
+ *     def num_cards(self, int color, int rank):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_AgentObservationType); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 749, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyInt_From_int(ObservationType(__pyx_v_self->_game)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 749, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  __pyx_t_5 = 0;
+  #if CYTHON_UNPACK_METHODS
+  if (unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __pyx_t_5 = 1;
+    }
+  }
+  #endif
+  {
+    PyObject *__pyx_callargs[2] = {__pyx_t_4, __pyx_t_3};
+    __pyx_t_1 = __Pyx_PyObject_FastCall(__pyx_t_2, __pyx_callargs+1-__pyx_t_5, 1+__pyx_t_5);
+    __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 749, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":748
+ *         return MaxMoves(self._game)
+ * 
+ *     def observation_type(self):             # <<<<<<<<<<<<<<
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.observation_type", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":751
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ *     def num_cards(self, int color, int rank):             # <<<<<<<<<<<<<<
+ *         return NumCards(self._game, color, rank)
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_25num_cards(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_25num_cards = {"num_cards", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_25num_cards, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_25num_cards(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_color;
+  int __pyx_v_rank;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[2] = {0,0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("num_cards (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_color,&__pyx_n_s_rank,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  2: values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_color)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 751, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (likely((values[1] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_rank)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[1]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 751, __pyx_L3_error)
+        else {
+          __Pyx_RaiseArgtupleInvalid("num_cards", 1, 2, 2, 1); __PYX_ERR(0, 751, __pyx_L3_error)
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "num_cards") < 0)) __PYX_ERR(0, 751, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 2)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+      values[1] = __Pyx_Arg_FASTCALL(__pyx_args, 1);
+    }
+    __pyx_v_color = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_color == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 751, __pyx_L3_error)
+    __pyx_v_rank = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_rank == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 751, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("num_cards", 1, 2, 2, __pyx_nargs); __PYX_ERR(0, 751, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.num_cards", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_24num_cards(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v_color, __pyx_v_rank);
+
+  /* function exit code */
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_24num_cards(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, int __pyx_v_color, int __pyx_v_rank) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("num_cards", 1);
+
+  /* "cython_lib/cyhanabi.pyx":752
+ * 
+ *     def num_cards(self, int color, int rank):
+ *         return NumCards(self._game, color, rank)             # <<<<<<<<<<<<<<
+ * 
+ *     def get_move_uid(self, HanabiMove move):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __Pyx_PyInt_From_int(NumCards(__pyx_v_self->_game, __pyx_v_color, __pyx_v_rank)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 752, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":751
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ *     def num_cards(self, int color, int rank):             # <<<<<<<<<<<<<<
+ *         return NumCards(self._game, color, rank)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.num_cards", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":754
+ *         return NumCards(self._game, color, rank)
+ * 
+ *     def get_move_uid(self, HanabiMove move):             # <<<<<<<<<<<<<<
+ *         if move is None or move._move == NULL:
+ *             return 0
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid = {"get_move_uid", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *__pyx_v_move = 0;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_move_uid (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_move,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_move)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 754, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_move_uid") < 0)) __PYX_ERR(0, 754, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+    }
+    __pyx_v_move = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *)values[0]);
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("get_move_uid", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 754, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.get_move_uid", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_move), __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, 1, "move", 0))) __PYX_ERR(0, 754, __pyx_L1_error)
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_26get_move_uid(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v_move);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_26get_move_uid(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, struct __pyx_obj_10cython_lib_8cyhanabi_HanabiMove *__pyx_v_move) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_move_uid", 1);
+
+  /* "cython_lib/cyhanabi.pyx":755
+ * 
+ *     def get_move_uid(self, HanabiMove move):
+ *         if move is None or move._move == NULL:             # <<<<<<<<<<<<<<
+ *             return 0
+ *         return GetMoveUid(self._game, move._move)
+ */
+  __pyx_t_2 = (((PyObject *)__pyx_v_move) == Py_None);
+  if (!__pyx_t_2) {
+  } else {
+    __pyx_t_1 = __pyx_t_2;
+    goto __pyx_L4_bool_binop_done;
+  }
+  __pyx_t_2 = (__pyx_v_move->_move == NULL);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_L4_bool_binop_done:;
+  if (__pyx_t_1) {
+
+    /* "cython_lib/cyhanabi.pyx":756
+ *     def get_move_uid(self, HanabiMove move):
+ *         if move is None or move._move == NULL:
+ *             return 0             # <<<<<<<<<<<<<<
+ *         return GetMoveUid(self._game, move._move)
+ * 
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_int_0);
+    __pyx_r = __pyx_int_0;
+    goto __pyx_L0;
+
+    /* "cython_lib/cyhanabi.pyx":755
+ * 
+ *     def get_move_uid(self, HanabiMove move):
+ *         if move is None or move._move == NULL:             # <<<<<<<<<<<<<<
+ *             return 0
+ *         return GetMoveUid(self._game, move._move)
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":757
+ *         if move is None or move._move == NULL:
+ *             return 0
+ *         return GetMoveUid(self._game, move._move)             # <<<<<<<<<<<<<<
+ * 
+ *     def get_move(self, int move_uid):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_3 = __Pyx_PyInt_From_int(GetMoveUid(__pyx_v_self->_game, __pyx_v_move->_move)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 757, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":754
+ *         return NumCards(self._game, color, rank)
+ * 
+ *     def get_move_uid(self, HanabiMove move):             # <<<<<<<<<<<<<<
+ *         if move is None or move._move == NULL:
+ *             return 0
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.get_move_uid", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":759
+ *         return GetMoveUid(self._game, move._move)
+ * 
+ *     def get_move(self, int move_uid):             # <<<<<<<<<<<<<<
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_29get_move(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_29get_move = {"get_move", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_29get_move, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_29get_move(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  int __pyx_v_move_uid;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("get_move (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_move_uid,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_move_uid)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 759, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "get_move") < 0)) __PYX_ERR(0, 759, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+    }
+    __pyx_v_move_uid = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_move_uid == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 759, __pyx_L3_error)
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("get_move", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 759, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.get_move", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_28get_move(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v_move_uid);
+
+  /* function exit code */
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_28get_move(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, int __pyx_v_move_uid) {
+  pyhanabi_move_t *__pyx_v_move;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("get_move", 1);
+
+  /* "cython_lib/cyhanabi.pyx":760
+ * 
+ *     def get_move(self, int move_uid):
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))             # <<<<<<<<<<<<<<
+ *         if move == NULL:
+ *             raise MemoryError()
+ */
+  __pyx_v_move = ((pyhanabi_move_t *)malloc((sizeof(pyhanabi_move_t))));
+
+  /* "cython_lib/cyhanabi.pyx":761
+ *     def get_move(self, int move_uid):
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         GetMoveByUid(self._game, move_uid, move)
+ */
+  __pyx_t_1 = (__pyx_v_move == NULL);
+  if (unlikely(__pyx_t_1)) {
+
+    /* "cython_lib/cyhanabi.pyx":762
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
+ *         GetMoveByUid(self._game, move_uid, move)
+ *         return HanabiMove.from_ptr(move)
+ */
+    PyErr_NoMemory(); __PYX_ERR(0, 762, __pyx_L1_error)
+
+    /* "cython_lib/cyhanabi.pyx":761
+ *     def get_move(self, int move_uid):
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         GetMoveByUid(self._game, move_uid, move)
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":763
+ *         if move == NULL:
+ *             raise MemoryError()
+ *         GetMoveByUid(self._game, move_uid, move)             # <<<<<<<<<<<<<<
+ *         return HanabiMove.from_ptr(move)
+ * 
+ */
+  GetMoveByUid(__pyx_v_self->_game, __pyx_v_move_uid, __pyx_v_move);
+
+  /* "cython_lib/cyhanabi.pyx":764
+ *             raise MemoryError()
+ *         GetMoveByUid(self._game, move_uid, move)
+ *         return HanabiMove.from_ptr(move)             # <<<<<<<<<<<<<<
+ * 
+ *     def parameter_string(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr(__pyx_v_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 764, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":759
+ *         return GetMoveUid(self._game, move._move)
+ * 
+ *     def get_move(self, int move_uid):             # <<<<<<<<<<<<<<
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.get_move", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":766
+ *         return HanabiMove.from_ptr(move)
+ * 
+ *     def parameter_string(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string = {"parameter_string", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("parameter_string (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("parameter_string", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "parameter_string", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_30parameter_string(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_30parameter_string(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  char *__pyx_v_c_string;
+  PyObject *__pyx_v_string = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  Py_ssize_t __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("parameter_string", 1);
+
+  /* "cython_lib/cyhanabi.pyx":767
+ * 
+ *     def parameter_string(self):
+ *         cdef char* c_string = GameParamString(self._game)             # <<<<<<<<<<<<<<
+ *         if c_string == NULL:
+ *             return ""
+ */
+  __pyx_v_c_string = GameParamString(__pyx_v_self->_game);
+
+  /* "cython_lib/cyhanabi.pyx":768
+ *     def parameter_string(self):
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:             # <<<<<<<<<<<<<<
+ *             return ""
+ *         string = c_string.decode('utf-8')
+ */
+  __pyx_t_1 = (__pyx_v_c_string == NULL);
+  if (__pyx_t_1) {
+
+    /* "cython_lib/cyhanabi.pyx":769
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:
+ *             return ""             # <<<<<<<<<<<<<<
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_INCREF(__pyx_kp_u__3);
+    __pyx_r = __pyx_kp_u__3;
+    goto __pyx_L0;
+
+    /* "cython_lib/cyhanabi.pyx":768
+ *     def parameter_string(self):
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:             # <<<<<<<<<<<<<<
+ *             return ""
+ *         string = c_string.decode('utf-8')
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":770
+ *         if c_string == NULL:
+ *             return ""
+ *         string = c_string.decode('utf-8')             # <<<<<<<<<<<<<<
+ *         DeleteString(c_string)
+ *         return string
+ */
+  __pyx_t_2 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 770, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_2, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 770, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_v_string = __pyx_t_3;
+  __pyx_t_3 = 0;
+
+  /* "cython_lib/cyhanabi.pyx":771
+ *             return ""
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)             # <<<<<<<<<<<<<<
+ *         return string
+ * 
+ */
+  DeleteString(__pyx_v_c_string);
+
+  /* "cython_lib/cyhanabi.pyx":772
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)
+ *         return string             # <<<<<<<<<<<<<<
+ * 
+ *     def to_json(self):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_string);
+  __pyx_r = __pyx_v_string;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":766
+ *         return HanabiMove.from_ptr(move)
+ * 
+ *     def parameter_string(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.parameter_string", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_string);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":774
+ *         return string
+ * 
+ *     def to_json(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_33to_json(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_33to_json = {"to_json", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_33to_json, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_33to_json(PyObject *__pyx_v_self, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("to_json (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  if (unlikely(__pyx_nargs > 0)) {
+    __Pyx_RaiseArgtupleInvalid("to_json", 1, 0, 0, __pyx_nargs); return NULL;}
+  if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "to_json", 0))) return NULL;
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_32to_json(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_32to_json(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+  char *__pyx_v_c_string;
+  PyObject *__pyx_v_string = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  Py_ssize_t __pyx_t_3;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("to_json", 1);
+
+  /* "cython_lib/cyhanabi.pyx":775
+ * 
+ *     def to_json(self):
+ *         cdef char* c_string = GameToJson(self._game)             # <<<<<<<<<<<<<<
+ *         if c_string == NULL:
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")
+ */
+  __pyx_v_c_string = GameToJson(__pyx_v_self->_game);
+
+  /* "cython_lib/cyhanabi.pyx":776
+ *     def to_json(self):
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")
+ *         string = c_string.decode('utf-8')
+ */
+  __pyx_t_1 = (__pyx_v_c_string == NULL);
+  if (unlikely(__pyx_t_1)) {
+
+    /* "cython_lib/cyhanabi.pyx":777
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")             # <<<<<<<<<<<<<<
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)
+ */
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 777, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_Raise(__pyx_t_2, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __PYX_ERR(0, 777, __pyx_L1_error)
+
+    /* "cython_lib/cyhanabi.pyx":776
+ *     def to_json(self):
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:             # <<<<<<<<<<<<<<
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")
+ *         string = c_string.decode('utf-8')
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":778
+ *         if c_string == NULL:
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")
+ *         string = c_string.decode('utf-8')             # <<<<<<<<<<<<<<
+ *         DeleteString(c_string)
+ *         return string
+ */
+  __pyx_t_3 = __Pyx_ssize_strlen(__pyx_v_c_string); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 778, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_c_string(__pyx_v_c_string, 0, __pyx_t_3, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 778, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_v_string = __pyx_t_2;
+  __pyx_t_2 = 0;
+
+  /* "cython_lib/cyhanabi.pyx":779
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)             # <<<<<<<<<<<<<<
+ *         return string
+ * 
+ */
+  DeleteString(__pyx_v_c_string);
+
+  /* "cython_lib/cyhanabi.pyx":780
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)
+ *         return string             # <<<<<<<<<<<<<<
+ * 
+ *     @classmethod
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_string);
+  __pyx_r = __pyx_v_string;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":774
+ *         return string
+ * 
+ *     def to_json(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.to_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_string);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cython_lib/cyhanabi.pyx":782
+ *         return string
+ * 
+ *     @classmethod             # <<<<<<<<<<<<<<
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_35from_json(PyObject *__pyx_v_cls, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+); /*proto*/
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_35from_json = {"from_json", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_35from_json, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_35from_json(PyObject *__pyx_v_cls, 
+#if CYTHON_METH_FASTCALL
+PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
+#else
+PyObject *__pyx_args, PyObject *__pyx_kwds
+#endif
+) {
+  PyObject *__pyx_v_json_str = 0;
+  #if !CYTHON_METH_FASTCALL
+  CYTHON_UNUSED Py_ssize_t __pyx_nargs;
+  #endif
+  CYTHON_UNUSED PyObject *const *__pyx_kwvalues;
+  PyObject* values[1] = {0};
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("from_json (wrapper)", 0);
+  #if !CYTHON_METH_FASTCALL
+  #if CYTHON_ASSUME_SAFE_MACROS
+  __pyx_nargs = PyTuple_GET_SIZE(__pyx_args);
+  #else
+  __pyx_nargs = PyTuple_Size(__pyx_args); if (unlikely(__pyx_nargs < 0)) return NULL;
+  #endif
+  #endif
+  __pyx_kwvalues = __Pyx_KwValues_FASTCALL(__pyx_args, __pyx_nargs);
+  {
+    PyObject **__pyx_pyargnames[] = {&__pyx_n_s_json_str,0};
+    if (__pyx_kwds) {
+      Py_ssize_t kw_args;
+      switch (__pyx_nargs) {
+        case  1: values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = __Pyx_NumKwargs_FASTCALL(__pyx_kwds);
+      switch (__pyx_nargs) {
+        case  0:
+        if (likely((values[0] = __Pyx_GetKwValue_FASTCALL(__pyx_kwds, __pyx_kwvalues, __pyx_n_s_json_str)) != 0)) {
+          (void)__Pyx_Arg_NewRef_FASTCALL(values[0]);
+          kw_args--;
+        }
+        else if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 782, __pyx_L3_error)
+        else goto __pyx_L5_argtuple_error;
+      }
+      if (unlikely(kw_args > 0)) {
+        const Py_ssize_t kwd_pos_args = __pyx_nargs;
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_kwvalues, __pyx_pyargnames, 0, values + 0, kwd_pos_args, "from_json") < 0)) __PYX_ERR(0, 782, __pyx_L3_error)
+      }
+    } else if (unlikely(__pyx_nargs != 1)) {
+      goto __pyx_L5_argtuple_error;
+    } else {
+      values[0] = __Pyx_Arg_FASTCALL(__pyx_args, 0);
+    }
+    __pyx_v_json_str = ((PyObject*)values[0]);
+  }
+  goto __pyx_L6_skip;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("from_json", 1, 1, 1, __pyx_nargs); __PYX_ERR(0, 782, __pyx_L3_error)
+  __pyx_L6_skip:;
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.from_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_json_str), (&PyUnicode_Type), 1, "json_str", 1))) __PYX_ERR(0, 783, __pyx_L1_error)
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_34from_json(((PyTypeObject*)__pyx_v_cls), __pyx_v_json_str);
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  {
+    Py_ssize_t __pyx_temp;
+    for (__pyx_temp=0; __pyx_temp < (Py_ssize_t)(sizeof(values)/sizeof(values[0])); ++__pyx_temp) {
+      __Pyx_Arg_XDECREF_FASTCALL(values[__pyx_temp]);
+    }
+  }
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_34from_json(CYTHON_UNUSED PyTypeObject *__pyx_v_cls, PyObject *__pyx_v_json_str) {
+  pyhanabi_game_t *__pyx_v_c_game;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  char const *__pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("from_json", 1);
+
+  /* "cython_lib/cyhanabi.pyx":784
+ *     @classmethod
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))             # <<<<<<<<<<<<<<
+ *         if not GameFromJson(json_str.encode('ascii'), c_game):
+ *             free(c_game)
+ */
+  __pyx_v_c_game = ((pyhanabi_game_t *)malloc((sizeof(pyhanabi_game_t))));
+
+  /* "cython_lib/cyhanabi.pyx":785
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *         if not GameFromJson(json_str.encode('ascii'), c_game):             # <<<<<<<<<<<<<<
+ *             free(c_game)
+ *             raise ValueError("Failed to deserialize HanabiGame from JSON")
+ */
+  if (unlikely(__pyx_v_json_str == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "encode");
+    __PYX_ERR(0, 785, __pyx_L1_error)
+  }
+  __pyx_t_1 = PyUnicode_AsASCIIString(__pyx_v_json_str); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 785, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyBytes_AsString(__pyx_t_1); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 785, __pyx_L1_error)
+  __pyx_t_3 = (!(GameFromJson(__pyx_t_2, __pyx_v_c_game) != 0));
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(__pyx_t_3)) {
+
+    /* "cython_lib/cyhanabi.pyx":786
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *         if not GameFromJson(json_str.encode('ascii'), c_game):
+ *             free(c_game)             # <<<<<<<<<<<<<<
+ *             raise ValueError("Failed to deserialize HanabiGame from JSON")
+ *         return HanabiGame.from_ptr(c_game)
+ */
+    free(__pyx_v_c_game);
+
+    /* "cython_lib/cyhanabi.pyx":787
+ *         if not GameFromJson(json_str.encode('ascii'), c_game):
+ *             free(c_game)
+ *             raise ValueError("Failed to deserialize HanabiGame from JSON")             # <<<<<<<<<<<<<<
+ *         return HanabiGame.from_ptr(c_game)
+ */
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__10, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 787, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __PYX_ERR(0, 787, __pyx_L1_error)
+
+    /* "cython_lib/cyhanabi.pyx":785
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ *         if not GameFromJson(json_str.encode('ascii'), c_game):             # <<<<<<<<<<<<<<
+ *             free(c_game)
+ *             raise ValueError("Failed to deserialize HanabiGame from JSON")
+ */
+  }
+
+  /* "cython_lib/cyhanabi.pyx":788
+ *             free(c_game)
+ *             raise ValueError("Failed to deserialize HanabiGame from JSON")
+ *         return HanabiGame.from_ptr(c_game)             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_10cython_lib_8cyhanabi_10HanabiGame_from_ptr(__pyx_v_c_game); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 788, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cython_lib/cyhanabi.pyx":782
+ *         return string
+ * 
+ *     @classmethod             # <<<<<<<<<<<<<<
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("cython_lib.cyhanabi.HanabiGame.from_json", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
@@ -19509,15 +22308,15 @@ static int __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_2__init__(struct __pyx_o
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__ = {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19542,14 +22341,14 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   if (unlikely(__pyx_nargs > 0)) {
     __Pyx_RaiseArgtupleInvalid("__reduce_cython__", 1, 0, 0, __pyx_nargs); return NULL;}
   if (unlikely(__pyx_kwds) && __Pyx_NumKwargs_FASTCALL(__pyx_kwds) && unlikely(!__Pyx_CheckKeywordStrings(__pyx_kwds, "__reduce_cython__", 0))) return NULL;
-  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__reduce_cython__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_36__reduce_cython__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_36__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -19589,15 +22388,15 @@ static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_4__reduce_cython__
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__(PyObject *__pyx_v_self, 
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__(PyObject *__pyx_v_self, 
+static PyMethodDef __pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__ = {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__(PyObject *__pyx_v_self, 
 #if CYTHON_METH_FASTCALL
 PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 #else
@@ -19671,7 +22470,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6__setstate_cython__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_38__setstate_cython__(((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)__pyx_v_self), __pyx_v___pyx_state);
 
   /* function exit code */
   {
@@ -19684,7 +22483,7 @@ PyObject *__pyx_args, PyObject *__pyx_kwds
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_6__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_10cython_lib_8cyhanabi_10HanabiGame_38__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   int __pyx_lineno = 0;
@@ -20326,7 +23125,7 @@ static PyObject *__pyx_specialmethod___pyx_pw_10cython_lib_8cyhanabi_11HanabiSta
 }
 
 static PyMethodDef __pyx_methods_10cython_lib_8cyhanabi_HanabiState[] = {
-  {"copy", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_10cython_lib_8cyhanabi_11HanabiState_4copy},
+  {"copy", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"apply_move", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_7apply_move, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"turns_to_play", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_9turns_to_play, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {"cur_player", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_11HanabiState_11cur_player, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
@@ -20461,8 +23260,10 @@ static PyTypeObject __pyx_type_10cython_lib_8cyhanabi_HanabiState = {
   #endif
 };
 #endif
+static struct __pyx_vtabstruct_10cython_lib_8cyhanabi_HanabiGame __pyx_vtable_10cython_lib_8cyhanabi_HanabiGame;
 
 static PyObject *__pyx_tp_new_10cython_lib_8cyhanabi_HanabiGame(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *p;
   PyObject *o;
   #if CYTHON_COMPILING_IN_LIMITED_API
   allocfunc alloc_func = (allocfunc)PyType_GetSlot(t, Py_tp_alloc);
@@ -20475,6 +23276,8 @@ static PyObject *__pyx_tp_new_10cython_lib_8cyhanabi_HanabiGame(PyTypeObject *t,
   }
   if (unlikely(!o)) return 0;
   #endif
+  p = ((struct __pyx_obj_10cython_lib_8cyhanabi_HanabiGame *)o);
+  p->__pyx_vtab = __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiGame;
   if (unlikely(__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_1__cinit__(o, __pyx_empty_tuple, NULL) < 0)) goto bad;
   return o;
   bad:
@@ -20490,6 +23293,14 @@ static void __pyx_tp_dealloc_10cython_lib_8cyhanabi_HanabiGame(PyObject *o) {
     }
   }
   #endif
+  {
+    PyObject *etype, *eval, *etb;
+    PyErr_Fetch(&etype, &eval, &etb);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) + 1);
+    __pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__dealloc__(o);
+    __Pyx_SET_REFCNT(o, Py_REFCNT(o) - 1);
+    PyErr_Restore(etype, eval, etb);
+  }
   #if CYTHON_USE_TYPE_SLOTS || CYTHON_COMPILING_IN_PYPY
   (*Py_TYPE(o)->tp_free)(o);
   #else
@@ -20501,8 +23312,23 @@ static void __pyx_tp_dealloc_10cython_lib_8cyhanabi_HanabiGame(PyObject *o) {
 }
 
 static PyMethodDef __pyx_methods_10cython_lib_8cyhanabi_HanabiGame[] = {
-  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
-  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"new_initial_state", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"num_players", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_9num_players, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"num_colors", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_11num_colors, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"num_ranks", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"hand_size", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_15hand_size, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"max_information_tokens", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"max_life_tokens", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"max_moves", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_21max_moves, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"observation_type", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_23observation_type, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"num_cards", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_25num_cards, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"get_move_uid", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"get_move", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_29get_move, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"parameter_string", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"to_json", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_33to_json, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"from_json", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_35from_json, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
+  {"__setstate_cython__", (PyCFunction)(void*)(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__, __Pyx_METH_FASTCALL|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 #if CYTHON_USE_TYPE_SPECS
@@ -21006,6 +23832,21 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_u_HanabiGame, __pyx_k_HanabiGame, sizeof(__pyx_k_HanabiGame), 0, 1, 0, 1},
     {&__pyx_n_s_HanabiGame___reduce_cython, __pyx_k_HanabiGame___reduce_cython, sizeof(__pyx_k_HanabiGame___reduce_cython), 0, 0, 1, 1},
     {&__pyx_n_s_HanabiGame___setstate_cython, __pyx_k_HanabiGame___setstate_cython, sizeof(__pyx_k_HanabiGame___setstate_cython), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_from_json, __pyx_k_HanabiGame_from_json, sizeof(__pyx_k_HanabiGame_from_json), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_get_move, __pyx_k_HanabiGame_get_move, sizeof(__pyx_k_HanabiGame_get_move), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_get_move_uid, __pyx_k_HanabiGame_get_move_uid, sizeof(__pyx_k_HanabiGame_get_move_uid), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_hand_size, __pyx_k_HanabiGame_hand_size, sizeof(__pyx_k_HanabiGame_hand_size), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_max_information_token, __pyx_k_HanabiGame_max_information_token, sizeof(__pyx_k_HanabiGame_max_information_token), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_max_life_tokens, __pyx_k_HanabiGame_max_life_tokens, sizeof(__pyx_k_HanabiGame_max_life_tokens), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_max_moves, __pyx_k_HanabiGame_max_moves, sizeof(__pyx_k_HanabiGame_max_moves), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_new_initial_state, __pyx_k_HanabiGame_new_initial_state, sizeof(__pyx_k_HanabiGame_new_initial_state), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_num_cards, __pyx_k_HanabiGame_num_cards, sizeof(__pyx_k_HanabiGame_num_cards), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_num_colors, __pyx_k_HanabiGame_num_colors, sizeof(__pyx_k_HanabiGame_num_colors), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_num_players, __pyx_k_HanabiGame_num_players, sizeof(__pyx_k_HanabiGame_num_players), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_num_ranks, __pyx_k_HanabiGame_num_ranks, sizeof(__pyx_k_HanabiGame_num_ranks), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_observation_type, __pyx_k_HanabiGame_observation_type, sizeof(__pyx_k_HanabiGame_observation_type), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_parameter_string, __pyx_k_HanabiGame_parameter_string, sizeof(__pyx_k_HanabiGame_parameter_string), 0, 0, 1, 1},
+    {&__pyx_n_s_HanabiGame_to_json, __pyx_k_HanabiGame_to_json, sizeof(__pyx_k_HanabiGame_to_json), 0, 0, 1, 1},
     {&__pyx_n_s_HanabiHistoryItem, __pyx_k_HanabiHistoryItem, sizeof(__pyx_k_HanabiHistoryItem), 0, 0, 1, 1},
     {&__pyx_n_s_HanabiHistoryItem___reduce_cytho, __pyx_k_HanabiHistoryItem___reduce_cytho, sizeof(__pyx_k_HanabiHistoryItem___reduce_cytho), 0, 0, 1, 1},
     {&__pyx_n_s_HanabiHistoryItem___setstate_cyt, __pyx_k_HanabiHistoryItem___setstate_cyt, sizeof(__pyx_k_HanabiHistoryItem___setstate_cyt), 0, 0, 1, 1},
@@ -21084,6 +23925,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_REVEAL_COLOR, __pyx_k_REVEAL_COLOR, sizeof(__pyx_k_REVEAL_COLOR), 0, 0, 1, 1},
     {&__pyx_n_s_REVEAL_RANK, __pyx_k_REVEAL_RANK, sizeof(__pyx_k_REVEAL_RANK), 0, 0, 1, 1},
     {&__pyx_n_s_SEER, __pyx_k_SEER, sizeof(__pyx_k_SEER), 0, 0, 1, 1},
+    {&__pyx_kp_u_Serialization_failed_GameToJSON, __pyx_k_Serialization_failed_GameToJSON, sizeof(__pyx_k_Serialization_failed_GameToJSON), 0, 1, 0, 0},
     {&__pyx_kp_u_Serialization_failed_GameToJson, __pyx_k_Serialization_failed_GameToJson, sizeof(__pyx_k_Serialization_failed_GameToJson), 0, 1, 0, 0},
     {&__pyx_kp_u_Serialization_failed_HistoryItem, __pyx_k_Serialization_failed_HistoryItem, sizeof(__pyx_k_Serialization_failed_HistoryItem), 0, 1, 0, 0},
     {&__pyx_kp_u_Serialization_failed_MoveToJSON, __pyx_k_Serialization_failed_MoveToJSON, sizeof(__pyx_k_Serialization_failed_MoveToJSON), 0, 1, 0, 0},
@@ -21093,8 +23935,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_kp_u_Unsupported_move, __pyx_k_Unsupported_move, sizeof(__pyx_k_Unsupported_move), 0, 1, 0, 0},
     {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
     {&__pyx_n_u_XX, __pyx_k_XX, sizeof(__pyx_k_XX), 0, 1, 0, 1},
-    {&__pyx_n_s__113, __pyx_k__113, sizeof(__pyx_k__113), 0, 0, 1, 1},
-    {&__pyx_n_s__12, __pyx_k__12, sizeof(__pyx_k__12), 0, 0, 1, 1},
+    {&__pyx_n_s__13, __pyx_k__13, sizeof(__pyx_k__13), 0, 0, 1, 1},
+    {&__pyx_n_s__132, __pyx_k__132, sizeof(__pyx_k__132), 0, 0, 1, 1},
     {&__pyx_kp_u__3, __pyx_k__3, sizeof(__pyx_k__3), 0, 1, 0, 0},
     {&__pyx_n_u_action_type, __pyx_k_action_type, sizeof(__pyx_k_action_type), 0, 1, 0, 1},
     {&__pyx_n_s_apply_move, __pyx_k_apply_move, sizeof(__pyx_k_apply_move), 0, 0, 1, 1},
@@ -21110,6 +23952,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_c_move, __pyx_k_c_move, sizeof(__pyx_k_c_move), 0, 0, 1, 1},
     {&__pyx_n_s_c_movelist, __pyx_k_c_movelist, sizeof(__pyx_k_c_movelist), 0, 0, 1, 1},
     {&__pyx_n_s_c_state, __pyx_k_c_state, sizeof(__pyx_k_c_state), 0, 0, 1, 1},
+    {&__pyx_n_s_c_string, __pyx_k_c_string, sizeof(__pyx_k_c_string), 0, 0, 1, 1},
     {&__pyx_n_s_card_index, __pyx_k_card_index, sizeof(__pyx_k_card_index), 0, 0, 1, 1},
     {&__pyx_n_u_card_index, __pyx_k_card_index, sizeof(__pyx_k_card_index), 0, 1, 0, 1},
     {&__pyx_n_s_card_index_2, __pyx_k_card_index_2, sizeof(__pyx_k_card_index_2), 0, 0, 1, 1},
@@ -21158,6 +24001,8 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_genexpr, __pyx_k_genexpr, sizeof(__pyx_k_genexpr), 0, 0, 1, 1},
     {&__pyx_n_s_get_deal_specific_move, __pyx_k_get_deal_specific_move, sizeof(__pyx_k_get_deal_specific_move), 0, 0, 1, 1},
     {&__pyx_n_s_get_discard_move, __pyx_k_get_discard_move, sizeof(__pyx_k_get_discard_move), 0, 0, 1, 1},
+    {&__pyx_n_s_get_move, __pyx_k_get_move, sizeof(__pyx_k_get_move), 0, 0, 1, 1},
+    {&__pyx_n_s_get_move_uid, __pyx_k_get_move_uid, sizeof(__pyx_k_get_move_uid), 0, 0, 1, 1},
     {&__pyx_n_s_get_play_move, __pyx_k_get_play_move, sizeof(__pyx_k_get_play_move), 0, 0, 1, 1},
     {&__pyx_n_s_get_return_move, __pyx_k_get_return_move, sizeof(__pyx_k_get_return_move), 0, 0, 1, 1},
     {&__pyx_n_s_get_reveal_color_move, __pyx_k_get_reveal_color_move, sizeof(__pyx_k_get_reveal_color_move), 0, 0, 1, 1},
@@ -21178,6 +24023,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_is_coroutine, __pyx_k_is_coroutine, sizeof(__pyx_k_is_coroutine), 0, 0, 1, 1},
     {&__pyx_n_s_is_terminal, __pyx_k_is_terminal, sizeof(__pyx_k_is_terminal), 0, 0, 1, 1},
     {&__pyx_kp_u_isenabled, __pyx_k_isenabled, sizeof(__pyx_k_isenabled), 0, 1, 0, 0},
+    {&__pyx_n_s_items, __pyx_k_items, sizeof(__pyx_k_items), 0, 0, 1, 1},
     {&__pyx_n_s_json, __pyx_k_json, sizeof(__pyx_k_json), 0, 0, 1, 1},
     {&__pyx_n_s_json_game, __pyx_k_json_game, sizeof(__pyx_k_json_game), 0, 0, 1, 1},
     {&__pyx_n_s_json_game_result, __pyx_k_json_game_result, sizeof(__pyx_k_json_game_result), 0, 0, 1, 1},
@@ -21188,6 +24034,9 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_life_tokens, __pyx_k_life_tokens, sizeof(__pyx_k_life_tokens), 0, 0, 1, 1},
     {&__pyx_n_s_loads, __pyx_k_loads, sizeof(__pyx_k_loads), 0, 0, 1, 1},
     {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+    {&__pyx_n_s_max_information_tokens, __pyx_k_max_information_tokens, sizeof(__pyx_k_max_information_tokens), 0, 0, 1, 1},
+    {&__pyx_n_s_max_life_tokens, __pyx_k_max_life_tokens, sizeof(__pyx_k_max_life_tokens), 0, 0, 1, 1},
+    {&__pyx_n_s_max_moves, __pyx_k_max_moves, sizeof(__pyx_k_max_moves), 0, 0, 1, 1},
     {&__pyx_n_s_metaclass, __pyx_k_metaclass, sizeof(__pyx_k_metaclass), 0, 0, 1, 1},
     {&__pyx_n_s_module, __pyx_k_module, sizeof(__pyx_k_module), 0, 0, 1, 1},
     {&__pyx_n_s_move, __pyx_k_move, sizeof(__pyx_k_move), 0, 0, 1, 1},
@@ -21195,16 +24044,23 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_move_history, __pyx_k_move_history, sizeof(__pyx_k_move_history), 0, 0, 1, 1},
     {&__pyx_n_s_move_is_legal, __pyx_k_move_is_legal, sizeof(__pyx_k_move_is_legal), 0, 0, 1, 1},
     {&__pyx_n_s_move_type, __pyx_k_move_type, sizeof(__pyx_k_move_type), 0, 0, 1, 1},
+    {&__pyx_n_s_move_uid, __pyx_k_move_uid, sizeof(__pyx_k_move_uid), 0, 0, 1, 1},
     {&__pyx_n_s_moves, __pyx_k_moves, sizeof(__pyx_k_moves), 0, 0, 1, 1},
     {&__pyx_n_s_mro_entries, __pyx_k_mro_entries, sizeof(__pyx_k_mro_entries), 0, 0, 1, 1},
     {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
     {&__pyx_n_s_name_2, __pyx_k_name_2, sizeof(__pyx_k_name_2), 0, 0, 1, 1},
+    {&__pyx_n_s_new_initial_state, __pyx_k_new_initial_state, sizeof(__pyx_k_new_initial_state), 0, 0, 1, 1},
     {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+    {&__pyx_n_s_num_cards, __pyx_k_num_cards, sizeof(__pyx_k_num_cards), 0, 0, 1, 1},
+    {&__pyx_n_s_num_colors, __pyx_k_num_colors, sizeof(__pyx_k_num_colors), 0, 0, 1, 1},
     {&__pyx_n_s_num_moves, __pyx_k_num_moves, sizeof(__pyx_k_num_moves), 0, 0, 1, 1},
     {&__pyx_n_s_num_players, __pyx_k_num_players, sizeof(__pyx_k_num_players), 0, 0, 1, 1},
+    {&__pyx_n_s_num_ranks, __pyx_k_num_ranks, sizeof(__pyx_k_num_ranks), 0, 0, 1, 1},
     {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
+    {&__pyx_n_s_observation_type, __pyx_k_observation_type, sizeof(__pyx_k_observation_type), 0, 0, 1, 1},
     {&__pyx_n_s_other, __pyx_k_other, sizeof(__pyx_k_other), 0, 0, 1, 1},
-    {&__pyx_n_s_param_list, __pyx_k_param_list, sizeof(__pyx_k_param_list), 0, 0, 1, 1},
+    {&__pyx_n_s_parameter_string, __pyx_k_parameter_string, sizeof(__pyx_k_parameter_string), 0, 0, 1, 1},
+    {&__pyx_n_s_params, __pyx_k_params, sizeof(__pyx_k_params), 0, 0, 1, 1},
     {&__pyx_n_s_parent_game, __pyx_k_parent_game, sizeof(__pyx_k_parent_game), 0, 0, 1, 1},
     {&__pyx_n_s_pid, __pyx_k_pid, sizeof(__pyx_k_pid), 0, 0, 1, 1},
     {&__pyx_n_s_pile_size, __pyx_k_pile_size, sizeof(__pyx_k_pile_size), 0, 0, 1, 1},
@@ -21238,6 +24094,7 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
     {&__pyx_n_s_state, __pyx_k_state, sizeof(__pyx_k_state), 0, 0, 1, 1},
     {&__pyx_n_s_staticmethod, __pyx_k_staticmethod, sizeof(__pyx_k_staticmethod), 0, 0, 1, 1},
     {&__pyx_n_s_str, __pyx_k_str, sizeof(__pyx_k_str), 0, 0, 1, 1},
+    {&__pyx_n_s_string, __pyx_k_string, sizeof(__pyx_k_string), 0, 0, 1, 1},
     {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
     {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
     {&__pyx_n_s_super, __pyx_k_super, sizeof(__pyx_k_super), 0, 0, 1, 1},
@@ -21258,17 +24115,17 @@ static int __Pyx_CreateStringTabAndInitStrings(void) {
 }
 /* #### Code section: cached_builtins ### */
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 81, __pyx_L1_error)
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 210, __pyx_L1_error)
-  __pyx_builtin_AssertionError = __Pyx_GetBuiltinName(__pyx_n_s_AssertionError); if (!__pyx_builtin_AssertionError) __PYX_ERR(0, 30, __pyx_L1_error)
-  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) __PYX_ERR(0, 52, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_builtin_AssertionError = __Pyx_GetBuiltinName(__pyx_n_s_AssertionError); if (!__pyx_builtin_AssertionError) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_builtin_StopIteration = __Pyx_GetBuiltinName(__pyx_n_s_StopIteration); if (!__pyx_builtin_StopIteration) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 52, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_NotImplemented = __Pyx_GetBuiltinName(__pyx_n_s_NotImplemented); if (!__pyx_builtin_NotImplemented) __PYX_ERR(0, 282, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 370, __pyx_L1_error)
-  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 444, __pyx_L1_error)
-  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 521, __pyx_L1_error)
+  __pyx_builtin_NotImplemented = __Pyx_GetBuiltinName(__pyx_n_s_NotImplemented); if (!__pyx_builtin_NotImplemented) __PYX_ERR(0, 283, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 371, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 519, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -21279,250 +24136,261 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cython_lib/cyhanabi.pyx":262
+  /* "cython_lib/cyhanabi.pyx":263
  *         cdef char* json_str = MoveToJson(self._move)
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: MoveToJSON returned NULL.")             # <<<<<<<<<<<<<<
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_MoveToJSON); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 262, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_MoveToJSON); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 263, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "cython_lib/cyhanabi.pyx":273
+  /* "cython_lib/cyhanabi.pyx":274
  *         if not MoveFromJson(json_str.encode('ascii'), c_move):
  *             free(c_move)
  *             raise ValueError("Failed to deserialize HanabiMove from JSON")             # <<<<<<<<<<<<<<
  *         return HanabiMove.from_ptr(c_move)
  * 
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiMove); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiMove); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 274, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "cython_lib/cyhanabi.pyx":390
+  /* "cython_lib/cyhanabi.pyx":391
  *         cdef char* json_str = HistoryItemToJson(self._item)
  *         if json_str == NULL:
  *             raise ValueError("Serialization failed: HistoryItemToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         py_json = json_str.decode('utf-8')
  *         DeleteString(json_str)
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_HistoryItem); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_HistoryItem); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 391, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "cython_lib/cyhanabi.pyx":401
+  /* "cython_lib/cyhanabi.pyx":402
  *         if not HistoryItemFromJson(json_str.encode('ascii'), c_item):
  *             free(c_item)
  *             raise ValueError("Failed to deserialize HanabiHistoryItem from JSON")             # <<<<<<<<<<<<<<
  *         return HanabiHistoryItem.from_ptr(c_item)
  * 
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiHist); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 401, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiHist); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 402, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "cython_lib/cyhanabi.pyx":457
+  /* "cython_lib/cyhanabi.pyx":458
  *             CopyState(c_state, instance._state)
  *         else:
  *             raise ValueError("Invalid parameters")             # <<<<<<<<<<<<<<
  * 
  *         # Initialize other members
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Invalid_parameters); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 457, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Invalid_parameters); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 458, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "cython_lib/cyhanabi.pyx":615
+  /* "cython_lib/cyhanabi.pyx":607
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:
  *             raise ValueError("Serialization failed: StateToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         json_state_result = json_state.decode('utf-8')
  *         DeleteString(json_state)
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_StateToJson); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 615, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_StateToJson); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 607, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "cython_lib/cyhanabi.pyx":621
+  /* "cython_lib/cyhanabi.pyx":613
  *         cdef char* json_game = GameToJson(self._game)
  *         if json_game == NULL:
  *             raise ValueError("Serialization failed: GameToJson returned NULL.")             # <<<<<<<<<<<<<<
  *         json_game_result = json_game.decode('utf-8')
  *         DeleteString(json_game)
  */
-  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_GameToJson); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 621, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_GameToJson); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 613, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "cython_lib/cyhanabi.pyx":631
+  /* "cython_lib/cyhanabi.pyx":623
  *         combined_json = json.loads(json_str)
  *         if 'HanabiGame' not in combined_json or 'HanabiState' not in combined_json:
  *             raise ValueError("JSON must contain both 'HanabiGame' and 'HanabiState' fields.")             # <<<<<<<<<<<<<<
  * 
  *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_JSON_must_contain_both_HanabiGam); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 631, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_kp_u_JSON_must_contain_both_HanabiGam); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 623, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "cython_lib/cyhanabi.pyx":638
+  /* "cython_lib/cyhanabi.pyx":630
  *         if not GameFromJson(combined_json['HanabiGame'].encode('ascii'), c_game):
  *             free(c_game)
  *             raise ValueError("Failed to deserialize HanabiGame from JSON")             # <<<<<<<<<<<<<<
  * 
  *         cdef pyhanabi_state_t* c_state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
  */
-  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiGame); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 638, __pyx_L1_error)
+  __pyx_tuple__10 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiGame); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 630, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "cython_lib/cyhanabi.pyx":647
+  /* "cython_lib/cyhanabi.pyx":639
  *             free(c_state)
  *             free(c_game)
  *             raise ValueError("Failed to deserialize HanabiState from JSON")             # <<<<<<<<<<<<<<
  * 
  *         return HanabiState.create(None, c_state, c_game)
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiStat); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 647, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_u_Failed_to_deserialize_HanabiStat); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 639, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "cython_lib/cyhanabi.pyx":18
+  /* "cython_lib/cyhanabi.pyx":777
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ *             raise ValueError("Serialization failed: GameToJSON returned NULL")             # <<<<<<<<<<<<<<
+ *         string = c_string.decode('utf-8')
+ *         DeleteString(c_string)
+ */
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_u_Serialization_failed_GameToJSON); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 777, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+
+  /* "cython_lib/cyhanabi.pyx":19
  * 
  * 
  * def color_idx_to_char(color_idx):             # <<<<<<<<<<<<<<
  *     """Helper function for converting color index to a character.
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_n_s_color_idx); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color_idx_to_char, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_n_s_color_idx); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color_idx_to_char, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 19, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":37
+  /* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
  *     """Helper function for converting color character to index.
  * 
  */
-  __pyx_tuple__15 = PyTuple_Pack(3, __pyx_n_s_color_char, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(0, 37, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
-  __pyx_codeobj__16 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__15, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color_char_to_idx, 37, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__16)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_tuple__16 = PyTuple_Pack(3, __pyx_n_s_color_char, __pyx_n_s_genexpr, __pyx_n_s_genexpr); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color_char_to_idx, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 38, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":81
+  /* "cython_lib/cyhanabi.pyx":82
  * 
  * 
  * class HanabiCard(object):             # <<<<<<<<<<<<<<
  *   """Hanabi card, with a color and a rank.
  * 
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__18);
   __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_builtin_object); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "cython_lib/cyhanabi.pyx":87
+  /* "cython_lib/cyhanabi.pyx":88
  *   """
  * 
  *   def __init__(self, color, rank):             # <<<<<<<<<<<<<<
  *     """A simple HanabiCard object.
  * 
  */
-  __pyx_tuple__19 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_color, __pyx_n_s_rank); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(0, 87, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
-  __pyx_codeobj__20 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_init, 87, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__20)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_tuple__20 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_color, __pyx_n_s_rank); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_codeobj__21 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_init, 88, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__21)) __PYX_ERR(0, 88, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":98
+  /* "cython_lib/cyhanabi.pyx":99
  *     self._rank = rank
  * 
  *   def color(self):             # <<<<<<<<<<<<<<
  *     return self._color
  * 
  */
-  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(0, 98, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 98, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 99, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
+  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 99, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 99, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":101
+  /* "cython_lib/cyhanabi.pyx":102
  *     return self._color
  * 
  *   def rank(self):             # <<<<<<<<<<<<<<
  *     return self._rank
  * 
  */
-  __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 101, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 102, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":104
+  /* "cython_lib/cyhanabi.pyx":105
  *     return self._rank
  * 
  *   def __str__(self):             # <<<<<<<<<<<<<<
  *     if self.valid():
  *       return COLOR_CHAR[self._color] + str(self._rank + 1)
  */
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_str, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_str, 105, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 105, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":110
+  /* "cython_lib/cyhanabi.pyx":111
  *       return "XX"
  * 
  *   def __repr__(self):             # <<<<<<<<<<<<<<
  *     return self.__str__()
  * 
  */
-  __pyx_codeobj__25 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_repr, 110, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__25)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_repr, 111, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 111, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":113
+  /* "cython_lib/cyhanabi.pyx":114
  *     return self.__str__()
  * 
  *   def __eq__(self, other):             # <<<<<<<<<<<<<<
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  */
-  __pyx_tuple__26 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__26)) __PYX_ERR(0, 113, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__26);
-  __Pyx_GIVEREF(__pyx_tuple__26);
-  __pyx_codeobj__27 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__26, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_eq, 113, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__27)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_other); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__27);
+  __Pyx_GIVEREF(__pyx_tuple__27);
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_eq, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 114, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":116
+  /* "cython_lib/cyhanabi.pyx":117
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  *   def valid(self):             # <<<<<<<<<<<<<<
  *     return self._color >= 0 and self._rank >= 0
  * 
  */
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_valid, 116, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_valid, 117, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 117, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":119
+  /* "cython_lib/cyhanabi.pyx":120
  *     return self._color >= 0 and self._rank >= 0
  * 
  *   def to_dict(self):             # <<<<<<<<<<<<<<
  *     """Serialize to dict.
  * 
  */
-  __pyx_codeobj__29 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 119, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__29)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 120, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 120, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":169
+  /* "cython_lib/cyhanabi.pyx":170
  *         return self.__str__()
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
  *         return {"color": color_idx_to_char(self.color()), "rank": self.rank()}
  * 
  */
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 169, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 170, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(0, 170, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__31 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__31)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__32 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__32)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -21530,167 +24398,167 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_tuple__32 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__32)) __PYX_ERR(1, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__32);
-  __Pyx_GIVEREF(__pyx_tuple__32);
-  __pyx_codeobj__33 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__33)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_tuple__33 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_pyx_state); if (unlikely(!__pyx_tuple__33)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__33);
+  __Pyx_GIVEREF(__pyx_tuple__33);
+  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(1, 3, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":195
+  /* "cython_lib/cyhanabi.pyx":196
  *         return instance
  * 
  *     def type(self):             # <<<<<<<<<<<<<<
  *         return HanabiMoveType(self._type)
  * 
  */
-  __pyx_codeobj__34 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_type_2, 195, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__34)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_type_2, 196, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 196, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":198
+  /* "cython_lib/cyhanabi.pyx":199
  *         return HanabiMoveType(self._type)
  * 
  *     def card_index(self):             # <<<<<<<<<<<<<<
  *         return self._card_index
  * 
  */
-  __pyx_codeobj__35 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_index, 198, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__35)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_index, 199, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 199, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":201
+  /* "cython_lib/cyhanabi.pyx":202
  *         return self._card_index
  * 
  *     def target_offset(self):             # <<<<<<<<<<<<<<
  *         return self._target_offset
  * 
  */
-  __pyx_codeobj__36 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_target_offset, 201, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__36)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_target_offset, 202, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 202, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":204
+  /* "cython_lib/cyhanabi.pyx":205
  *         return self._target_offset
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
  *         return self._color
  * 
  */
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 204, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 205, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 205, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":207
+  /* "cython_lib/cyhanabi.pyx":208
  *         return self._color
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
  *         return self._rank
  * 
  */
-  __pyx_codeobj__38 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 207, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__38)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 208, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 208, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":210
+  /* "cython_lib/cyhanabi.pyx":211
  *         return self._rank
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_discard_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_tuple__39 = PyTuple_Pack(2, __pyx_n_s_card_index, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__39)) __PYX_ERR(0, 210, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__39);
-  __Pyx_GIVEREF(__pyx_tuple__39);
-  __pyx_codeobj__40 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_discard_move, 210, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__40)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_tuple__40 = PyTuple_Pack(2, __pyx_n_s_card_index, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__40)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_discard_move, 211, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) __PYX_ERR(0, 211, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":218
+  /* "cython_lib/cyhanabi.pyx":219
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_return_move(int card_index, int player):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_tuple__41 = PyTuple_Pack(3, __pyx_n_s_card_index, __pyx_n_s_player, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__41)) __PYX_ERR(0, 218, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__41);
-  __Pyx_GIVEREF(__pyx_tuple__41);
-  __pyx_codeobj__42 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__41, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_return_move, 218, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__42)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_tuple__42 = PyTuple_Pack(3, __pyx_n_s_card_index, __pyx_n_s_player, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__42)) __PYX_ERR(0, 219, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_return_move, 219, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 219, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":226
+  /* "cython_lib/cyhanabi.pyx":227
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_play_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__39, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_play_move, 226, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_codeobj__44 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_play_move, 227, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__44)) __PYX_ERR(0, 227, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":234
+  /* "cython_lib/cyhanabi.pyx":235
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_reveal_color_move(int target_offset, int color):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_tuple__44 = PyTuple_Pack(3, __pyx_n_s_target_offset, __pyx_n_s_color, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__44)) __PYX_ERR(0, 234, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__44);
-  __Pyx_GIVEREF(__pyx_tuple__44);
-  __pyx_codeobj__45 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__44, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_reveal_color_move, 234, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__45)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_tuple__45 = PyTuple_Pack(3, __pyx_n_s_target_offset, __pyx_n_s_color, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__45)) __PYX_ERR(0, 235, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__45);
+  __Pyx_GIVEREF(__pyx_tuple__45);
+  __pyx_codeobj__46 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__45, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_reveal_color_move, 235, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__46)) __PYX_ERR(0, 235, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":242
+  /* "cython_lib/cyhanabi.pyx":243
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_reveal_rank_move(int target_offset, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_tuple__46 = PyTuple_Pack(3, __pyx_n_s_target_offset, __pyx_n_s_rank, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 242, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__46);
-  __Pyx_GIVEREF(__pyx_tuple__46);
-  __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_reveal_rank_move, 242, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __pyx_tuple__47 = PyTuple_Pack(3, __pyx_n_s_target_offset, __pyx_n_s_rank, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__47)) __PYX_ERR(0, 243, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__47);
+  __Pyx_GIVEREF(__pyx_tuple__47);
+  __pyx_codeobj__48 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__47, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_reveal_rank_move, 243, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__48)) __PYX_ERR(0, 243, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":250
+  /* "cython_lib/cyhanabi.pyx":251
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_deal_specific_move(int card_index, int player, int color, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_tuple__48 = PyTuple_Pack(5, __pyx_n_s_card_index, __pyx_n_s_player, __pyx_n_s_color, __pyx_n_s_rank, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 250, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__48);
-  __Pyx_GIVEREF(__pyx_tuple__48);
-  __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_deal_specific_move, 250, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_tuple__49 = PyTuple_Pack(5, __pyx_n_s_card_index, __pyx_n_s_player, __pyx_n_s_color, __pyx_n_s_rank, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__49)) __PYX_ERR(0, 251, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__49);
+  __Pyx_GIVEREF(__pyx_tuple__49);
+  __pyx_codeobj__50 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__49, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_deal_specific_move, 251, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__50)) __PYX_ERR(0, 251, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":258
+  /* "cython_lib/cyhanabi.pyx":259
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         """Serialize move to JSON."""
  *         cdef char* json_str = MoveToJson(self._move)
  */
-  __pyx_tuple__50 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_json_str, __pyx_n_s_py_json); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 258, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__50);
-  __Pyx_GIVEREF(__pyx_tuple__50);
-  __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 258, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_tuple__51 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_json_str, __pyx_n_s_py_json); if (unlikely(!__pyx_tuple__51)) __PYX_ERR(0, 259, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__51);
+  __Pyx_GIVEREF(__pyx_tuple__51);
+  __pyx_codeobj__52 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__51, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 259, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__52)) __PYX_ERR(0, 259, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":267
+  /* "cython_lib/cyhanabi.pyx":268
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         """Deserialize move from JSON."""
  */
-  __pyx_tuple__52 = PyTuple_Pack(3, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__52)) __PYX_ERR(0, 267, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__52);
-  __Pyx_GIVEREF(__pyx_tuple__52);
-  __pyx_codeobj__53 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__52, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__53)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_tuple__53 = PyTuple_Pack(3, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__53)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__53);
+  __Pyx_GIVEREF(__pyx_tuple__53);
+  __pyx_codeobj__54 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__53, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 268, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__54)) __PYX_ERR(0, 268, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":305
+  /* "cython_lib/cyhanabi.pyx":306
  *             self._move = NULL
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
  *         move_type = self.type()
  *         move_dict = {}
  */
-  __pyx_tuple__54 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_move_type, __pyx_n_s_move_dict); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 305, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__54);
-  __Pyx_GIVEREF(__pyx_tuple__54);
-  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__54, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 305, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 305, __pyx_L1_error)
+  __pyx_tuple__55 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_move_type, __pyx_n_s_move_dict); if (unlikely(!__pyx_tuple__55)) __PYX_ERR(0, 306, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__55);
+  __Pyx_GIVEREF(__pyx_tuple__55);
+  __pyx_codeobj__56 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__55, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_dict, 306, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__56)) __PYX_ERR(0, 306, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__56 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__56)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -21698,122 +24566,122 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_codeobj__57 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__57)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_codeobj__58 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__58)) __PYX_ERR(1, 3, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":343
+  /* "cython_lib/cyhanabi.pyx":344
  *         return instance
  * 
  *     def move(self):             # <<<<<<<<<<<<<<
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         HistoryItemMove(self._item, c_move)
  */
-  __pyx_tuple__58 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__58)) __PYX_ERR(0, 343, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__58);
-  __Pyx_GIVEREF(__pyx_tuple__58);
-  __pyx_codeobj__59 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__58, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move, 343, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__59)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __pyx_tuple__59 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c_move); if (unlikely(!__pyx_tuple__59)) __PYX_ERR(0, 344, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__59);
+  __Pyx_GIVEREF(__pyx_tuple__59);
+  __pyx_codeobj__60 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__59, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move, 344, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__60)) __PYX_ERR(0, 344, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":348
+  /* "cython_lib/cyhanabi.pyx":349
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def player(self):             # <<<<<<<<<<<<<<
  *         return HistoryItemPlayer(self._item)
  * 
  */
-  __pyx_codeobj__60 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_player, 348, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__60)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_player, 349, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 349, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":351
+  /* "cython_lib/cyhanabi.pyx":352
  *         return HistoryItemPlayer(self._item)
  * 
  *     def scored(self):             # <<<<<<<<<<<<<<
  *         """Play move succeeded in placing card on fireworks."""
  *         return <bint>HistoryItemScored(self._item)
  */
-  __pyx_codeobj__61 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_scored, 351, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__61)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_codeobj__62 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_scored, 352, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__62)) __PYX_ERR(0, 352, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":355
+  /* "cython_lib/cyhanabi.pyx":356
  *         return <bint>HistoryItemScored(self._item)
  * 
  *     def information_token(self):             # <<<<<<<<<<<<<<
  *         """Play/Discard move increased the number of information tokens."""
  *         return <bint>HistoryItemInformationToken(self._item)
  */
-  __pyx_codeobj__62 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_information_token, 355, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__62)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_information_token, 356, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 356, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":359
+  /* "cython_lib/cyhanabi.pyx":360
  *         return <bint>HistoryItemInformationToken(self._item)
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
  *         """Color index of card that was Played/Discarded."""
  *         return HistoryItemColor(self._item)
  */
-  __pyx_codeobj__63 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 359, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__63)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_codeobj__64 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_color, 360, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__64)) __PYX_ERR(0, 360, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":363
+  /* "cython_lib/cyhanabi.pyx":364
  *         return HistoryItemColor(self._item)
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
  *         """Rank index of card that was Played/Discarded."""
  *         return HistoryItemRank(self._item)
  */
-  __pyx_codeobj__64 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 363, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__64)) __PYX_ERR(0, 363, __pyx_L1_error)
+  __pyx_codeobj__65 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_rank, 364, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__65)) __PYX_ERR(0, 364, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":367
+  /* "cython_lib/cyhanabi.pyx":368
  *         return HistoryItemRank(self._item)
  * 
  *     def card_info_revealed(self):             # <<<<<<<<<<<<<<
  *         cdef int bitmask = HistoryItemRevealBitmask(self._item)
  *         revealed = []
  */
-  __pyx_tuple__65 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_bitmask, __pyx_n_s_revealed, __pyx_n_s_i); if (unlikely(!__pyx_tuple__65)) __PYX_ERR(0, 367, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__65);
-  __Pyx_GIVEREF(__pyx_tuple__65);
-  __pyx_codeobj__66 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__65, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_info_revealed, 367, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__66)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __pyx_tuple__66 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_bitmask, __pyx_n_s_revealed, __pyx_n_s_i); if (unlikely(!__pyx_tuple__66)) __PYX_ERR(0, 368, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__66);
+  __Pyx_GIVEREF(__pyx_tuple__66);
+  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_info_revealed, 368, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 368, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":375
+  /* "cython_lib/cyhanabi.pyx":376
  *         return revealed
  * 
  *     def card_info_newly_revealed(self):             # <<<<<<<<<<<<<<
  *         cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)
  *         revealed = []
  */
-  __pyx_codeobj__67 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__65, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_info_newly_revealed, 375, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__67)) __PYX_ERR(0, 375, __pyx_L1_error)
+  __pyx_codeobj__68 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__66, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_info_newly_revealed, 376, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__68)) __PYX_ERR(0, 376, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":383
+  /* "cython_lib/cyhanabi.pyx":384
  *         return revealed
  * 
  *     def deal_to_player(self):             # <<<<<<<<<<<<<<
  *         return HistoryItemDealToPlayer(self._item)
  * 
  */
-  __pyx_codeobj__68 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_to_player, 383, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__68)) __PYX_ERR(0, 383, __pyx_L1_error)
+  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_to_player, 384, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 384, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":386
+  /* "cython_lib/cyhanabi.pyx":387
  *         return HistoryItemDealToPlayer(self._item)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         """Serialize history item to JSON."""
  *         cdef char* json_str = HistoryItemToJson(self._item)
  */
-  __pyx_codeobj__69 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 386, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__69)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __pyx_codeobj__70 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__51, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 387, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__70)) __PYX_ERR(0, 387, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":395
+  /* "cython_lib/cyhanabi.pyx":396
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         """Deserialize history item from JSON."""
  */
-  __pyx_tuple__70 = PyTuple_Pack(3, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_c_item); if (unlikely(!__pyx_tuple__70)) __PYX_ERR(0, 395, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__70);
-  __Pyx_GIVEREF(__pyx_tuple__70);
-  __pyx_codeobj__71 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__70, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 395, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__71)) __PYX_ERR(0, 395, __pyx_L1_error)
+  __pyx_tuple__71 = PyTuple_Pack(3, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_c_item); if (unlikely(!__pyx_tuple__71)) __PYX_ERR(0, 396, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__71);
+  __Pyx_GIVEREF(__pyx_tuple__71);
+  __pyx_codeobj__72 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__71, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 396, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__72)) __PYX_ERR(0, 396, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__72 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__72)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__73 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__73)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -21821,269 +24689,269 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_codeobj__73 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__73)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(1, 3, __pyx_L1_error)
 
   /* "cython_lib/cyhanabi.pyx":489
  *             raise ValueError("Invalid parameters")
  * 
  *     def copy(self):             # <<<<<<<<<<<<<<
- *         """Returns a copy of the state."""
  *         return HanabiState.create(None, self._state, NULL)
+ * 
  */
-  __pyx_codeobj__74 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_copy, 489, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__74)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_codeobj__75 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_copy, 489, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__75)) __PYX_ERR(0, 489, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":496
+  /* "cython_lib/cyhanabi.pyx":495
  *     #    return HanabiObservation.create(self._state, self._game, player)
  * 
  *     def apply_move(self, HanabiMove move):             # <<<<<<<<<<<<<<
  *         StateApplyMove(self._state, move._move)
  * 
  */
-  __pyx_tuple__75 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_move); if (unlikely(!__pyx_tuple__75)) __PYX_ERR(0, 496, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__75);
-  __Pyx_GIVEREF(__pyx_tuple__75);
-  __pyx_codeobj__76 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_apply_move, 496, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__76)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_tuple__76 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_move); if (unlikely(!__pyx_tuple__76)) __PYX_ERR(0, 495, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__76);
+  __Pyx_GIVEREF(__pyx_tuple__76);
+  __pyx_codeobj__77 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__76, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_apply_move, 495, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__77)) __PYX_ERR(0, 495, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":499
+  /* "cython_lib/cyhanabi.pyx":498
  *         StateApplyMove(self._state, move._move)
  * 
  *     def turns_to_play(self):             # <<<<<<<<<<<<<<
  *         return StateTurnsToPlay(self._state)
  * 
  */
-  __pyx_codeobj__77 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_turns_to_play, 499, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__77)) __PYX_ERR(0, 499, __pyx_L1_error)
+  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_turns_to_play, 498, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 498, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":502
+  /* "cython_lib/cyhanabi.pyx":501
  *         return StateTurnsToPlay(self._state)
  * 
  *     def cur_player(self):             # <<<<<<<<<<<<<<
  *         return StateCurPlayer(self._state)
  * 
  */
-  __pyx_codeobj__78 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_cur_player, 502, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__78)) __PYX_ERR(0, 502, __pyx_L1_error)
+  __pyx_codeobj__79 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_cur_player, 501, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__79)) __PYX_ERR(0, 501, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":505
+  /* "cython_lib/cyhanabi.pyx":504
  *         return StateCurPlayer(self._state)
  * 
  *     def deck_size(self):             # <<<<<<<<<<<<<<
  *         return StateDeckSize(self._state)
  * 
  */
-  __pyx_codeobj__79 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deck_size, 505, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__79)) __PYX_ERR(0, 505, __pyx_L1_error)
+  __pyx_codeobj__80 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deck_size, 504, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__80)) __PYX_ERR(0, 504, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":508
+  /* "cython_lib/cyhanabi.pyx":507
  *         return StateDeckSize(self._state)
  * 
  *     def discard_pile(self):             # <<<<<<<<<<<<<<
  *         discards = []
  *         cdef int pile_size = StateDiscardPileSize(self._state)
  */
-  __pyx_tuple__80 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_discards, __pyx_n_s_pile_size, __pyx_n_s_index); if (unlikely(!__pyx_tuple__80)) __PYX_ERR(0, 508, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__80);
-  __Pyx_GIVEREF(__pyx_tuple__80);
-  __pyx_codeobj__81 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__80, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_discard_pile, 508, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__81)) __PYX_ERR(0, 508, __pyx_L1_error)
+  __pyx_tuple__81 = PyTuple_Pack(4, __pyx_n_s_self, __pyx_n_s_discards, __pyx_n_s_pile_size, __pyx_n_s_index); if (unlikely(!__pyx_tuple__81)) __PYX_ERR(0, 507, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__81);
+  __Pyx_GIVEREF(__pyx_tuple__81);
+  __pyx_codeobj__82 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__81, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_discard_pile, 507, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__82)) __PYX_ERR(0, 507, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":517
+  /* "cython_lib/cyhanabi.pyx":515
  *         return discards
  * 
  *     def fireworks(self):             # <<<<<<<<<<<<<<
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  */
-  __pyx_tuple__82 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c); if (unlikely(!__pyx_tuple__82)) __PYX_ERR(0, 517, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__82);
-  __Pyx_GIVEREF(__pyx_tuple__82);
-  __pyx_codeobj__83 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__82, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_fireworks, 517, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__83)) __PYX_ERR(0, 517, __pyx_L1_error)
+  __pyx_tuple__83 = PyTuple_Pack(2, __pyx_n_s_self, __pyx_n_s_c); if (unlikely(!__pyx_tuple__83)) __PYX_ERR(0, 515, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__83);
+  __Pyx_GIVEREF(__pyx_tuple__83);
+  __pyx_codeobj__84 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__83, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_fireworks, 515, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__84)) __PYX_ERR(0, 515, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":520
+  /* "cython_lib/cyhanabi.pyx":518
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  *     def progress(self):             # <<<<<<<<<<<<<<
  *         return sum(self.fireworks())
  * 
  */
-  __pyx_codeobj__84 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_progress, 520, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__84)) __PYX_ERR(0, 520, __pyx_L1_error)
+  __pyx_codeobj__85 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_progress, 518, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__85)) __PYX_ERR(0, 518, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":523
+  /* "cython_lib/cyhanabi.pyx":521
  *         return sum(self.fireworks())
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
  *         if self.life_tokens() == 0:
  *             return 0
  */
-  __pyx_codeobj__85 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_score, 523, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__85)) __PYX_ERR(0, 523, __pyx_L1_error)
+  __pyx_codeobj__86 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_score, 521, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__86)) __PYX_ERR(0, 521, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":528
+  /* "cython_lib/cyhanabi.pyx":526
  *         return self.progress()
  * 
  *     def deal_random_card(self):             # <<<<<<<<<<<<<<
  *         StateDealCard(self._state)
  * 
  */
-  __pyx_codeobj__86 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_random_card, 528, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__86)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __pyx_codeobj__87 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_random_card, 526, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__87)) __PYX_ERR(0, 526, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":531
+  /* "cython_lib/cyhanabi.pyx":529
  *         StateDealCard(self._state)
  * 
  *     def deal_specific_card(self, color, rank, card_index):             # <<<<<<<<<<<<<<
  *         assert self.cur_player() == CHANCE_PLAYER_ID
  *         move = HanabiMove.get_deal_specific_move(color, rank, card_index)
  */
-  __pyx_tuple__87 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_color, __pyx_n_s_rank, __pyx_n_s_card_index, __pyx_n_s_move); if (unlikely(!__pyx_tuple__87)) __PYX_ERR(0, 531, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__87);
-  __Pyx_GIVEREF(__pyx_tuple__87);
-  __pyx_codeobj__88 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__87, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_specific_card, 531, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__88)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_tuple__88 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_color, __pyx_n_s_rank, __pyx_n_s_card_index, __pyx_n_s_move); if (unlikely(!__pyx_tuple__88)) __PYX_ERR(0, 529, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__88);
+  __Pyx_GIVEREF(__pyx_tuple__88);
+  __pyx_codeobj__89 = (PyObject*)__Pyx_PyCode_New(4, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__88, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_deal_specific_card, 529, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__89)) __PYX_ERR(0, 529, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":536
+  /* "cython_lib/cyhanabi.pyx":534
  *         self.apply_move(move)
  * 
  *     def remove_knowledge(self, player, card_index):             # <<<<<<<<<<<<<<
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  */
-  __pyx_tuple__89 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index); if (unlikely(!__pyx_tuple__89)) __PYX_ERR(0, 536, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__89);
-  __Pyx_GIVEREF(__pyx_tuple__89);
-  __pyx_codeobj__90 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__89, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_remove_knowledge, 536, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__90)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __pyx_tuple__90 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_player, __pyx_n_s_card_index); if (unlikely(!__pyx_tuple__90)) __PYX_ERR(0, 534, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__90);
+  __Pyx_GIVEREF(__pyx_tuple__90);
+  __pyx_codeobj__91 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__90, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_remove_knowledge, 534, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__91)) __PYX_ERR(0, 534, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":539
+  /* "cython_lib/cyhanabi.pyx":537
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  *     def player_hands(self):             # <<<<<<<<<<<<<<
  *         hand_list = []
  *         cdef int pid, hand_size, i
  */
-  __pyx_tuple__91 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_hand_list, __pyx_n_s_pid, __pyx_n_s_hand_size, __pyx_n_s_i, __pyx_n_s_c_card, __pyx_n_s_player_hand); if (unlikely(!__pyx_tuple__91)) __PYX_ERR(0, 539, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__91);
-  __Pyx_GIVEREF(__pyx_tuple__91);
-  __pyx_codeobj__92 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__91, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_player_hands, 539, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__92)) __PYX_ERR(0, 539, __pyx_L1_error)
+  __pyx_tuple__92 = PyTuple_Pack(7, __pyx_n_s_self, __pyx_n_s_hand_list, __pyx_n_s_pid, __pyx_n_s_hand_size, __pyx_n_s_i, __pyx_n_s_c_card, __pyx_n_s_player_hand); if (unlikely(!__pyx_tuple__92)) __PYX_ERR(0, 537, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__92);
+  __Pyx_GIVEREF(__pyx_tuple__92);
+  __pyx_codeobj__93 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 7, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__92, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_player_hands, 537, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__93)) __PYX_ERR(0, 537, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":557
+  /* "cython_lib/cyhanabi.pyx":551
  *         return hand_list
  * 
  *     def information_tokens(self):             # <<<<<<<<<<<<<<
  *         return StateInformationTokens(self._state)
  * 
  */
-  __pyx_codeobj__93 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_information_tokens, 557, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__93)) __PYX_ERR(0, 557, __pyx_L1_error)
+  __pyx_codeobj__94 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_information_tokens, 551, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__94)) __PYX_ERR(0, 551, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":560
+  /* "cython_lib/cyhanabi.pyx":554
  *         return StateInformationTokens(self._state)
  * 
  *     def end_of_game_status(self):             # <<<<<<<<<<<<<<
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  */
-  __pyx_codeobj__94 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_end_of_game_status, 560, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__94)) __PYX_ERR(0, 560, __pyx_L1_error)
+  __pyx_codeobj__95 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_end_of_game_status, 554, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__95)) __PYX_ERR(0, 554, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":563
+  /* "cython_lib/cyhanabi.pyx":557
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  *     def is_terminal(self):             # <<<<<<<<<<<<<<
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  */
-  __pyx_codeobj__95 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_is_terminal, 563, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__95)) __PYX_ERR(0, 563, __pyx_L1_error)
+  __pyx_codeobj__96 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_is_terminal, 557, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__96)) __PYX_ERR(0, 557, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":566
+  /* "cython_lib/cyhanabi.pyx":560
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  *     def legal_moves(self):             # <<<<<<<<<<<<<<
  *         if self.is_terminal():
  *             return []
  */
-  __pyx_tuple__96 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_c_movelist, __pyx_n_s_num_moves, __pyx_n_s_moves, __pyx_n_s_c_move, __pyx_n_s_i); if (unlikely(!__pyx_tuple__96)) __PYX_ERR(0, 566, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__96);
-  __Pyx_GIVEREF(__pyx_tuple__96);
-  __pyx_codeobj__97 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__96, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_legal_moves, 566, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__97)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_tuple__97 = PyTuple_Pack(6, __pyx_n_s_self, __pyx_n_s_c_movelist, __pyx_n_s_num_moves, __pyx_n_s_moves, __pyx_n_s_c_move, __pyx_n_s_i); if (unlikely(!__pyx_tuple__97)) __PYX_ERR(0, 560, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__97);
+  __Pyx_GIVEREF(__pyx_tuple__97);
+  __pyx_codeobj__98 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 6, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__97, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_legal_moves, 560, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__98)) __PYX_ERR(0, 560, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":585
+  /* "cython_lib/cyhanabi.pyx":577
  *         return moves
  * 
  *     def move_is_legal(self, HanabiMove move):             # <<<<<<<<<<<<<<
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  */
-  __pyx_codeobj__98 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__75, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move_is_legal, 585, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__98)) __PYX_ERR(0, 585, __pyx_L1_error)
+  __pyx_codeobj__99 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__76, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move_is_legal, 577, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__99)) __PYX_ERR(0, 577, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":588
+  /* "cython_lib/cyhanabi.pyx":580
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  *     def card_playable_on_fireworks(self, color, rank):             # <<<<<<<<<<<<<<
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  */
-  __pyx_codeobj__99 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__19, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_playable_on_fireworks, 588, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__99)) __PYX_ERR(0, 588, __pyx_L1_error)
+  __pyx_codeobj__100 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_card_playable_on_fireworks, 580, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__100)) __PYX_ERR(0, 580, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":591
+  /* "cython_lib/cyhanabi.pyx":583
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  *     def life_tokens(self):             # <<<<<<<<<<<<<<
  *         return StateLifeTokens(self._state)
  * 
  */
-  __pyx_codeobj__100 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_life_tokens, 591, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__100)) __PYX_ERR(0, 591, __pyx_L1_error)
+  __pyx_codeobj__101 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_life_tokens, 583, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__101)) __PYX_ERR(0, 583, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":594
+  /* "cython_lib/cyhanabi.pyx":586
  *         return StateLifeTokens(self._state)
  * 
  *     def num_players(self):             # <<<<<<<<<<<<<<
  *         return StateNumPlayers(self._state)
  * 
  */
-  __pyx_codeobj__101 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_players, 594, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__101)) __PYX_ERR(0, 594, __pyx_L1_error)
+  __pyx_codeobj__102 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_players, 586, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__102)) __PYX_ERR(0, 586, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":597
+  /* "cython_lib/cyhanabi.pyx":589
  *         return StateNumPlayers(self._state)
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
  *         return StateScore(self._state)
  * 
  */
-  __pyx_codeobj__102 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_score, 597, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__102)) __PYX_ERR(0, 597, __pyx_L1_error)
+  __pyx_codeobj__103 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_score, 589, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__103)) __PYX_ERR(0, 589, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":600
+  /* "cython_lib/cyhanabi.pyx":592
  *         return StateScore(self._state)
  * 
  *     def move_history(self):             # <<<<<<<<<<<<<<
  *         history = []
  *         cdef int history_len = StateLenMoveHistory(self._state)
  */
-  __pyx_tuple__103 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_history, __pyx_n_s_history_len, __pyx_n_s_c_history_item, __pyx_n_s_i); if (unlikely(!__pyx_tuple__103)) __PYX_ERR(0, 600, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__103);
-  __Pyx_GIVEREF(__pyx_tuple__103);
-  __pyx_codeobj__104 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__103, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move_history, 600, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__104)) __PYX_ERR(0, 600, __pyx_L1_error)
+  __pyx_tuple__104 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_history, __pyx_n_s_history_len, __pyx_n_s_c_history_item, __pyx_n_s_i); if (unlikely(!__pyx_tuple__104)) __PYX_ERR(0, 592, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__104);
+  __Pyx_GIVEREF(__pyx_tuple__104);
+  __pyx_codeobj__105 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__104, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_move_history, 592, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__105)) __PYX_ERR(0, 592, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":612
+  /* "cython_lib/cyhanabi.pyx":604
  *         return history
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:
  */
-  __pyx_tuple__105 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_json_state, __pyx_n_s_json_state_result, __pyx_n_s_json_game, __pyx_n_s_json_game_result); if (unlikely(!__pyx_tuple__105)) __PYX_ERR(0, 612, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__105);
-  __Pyx_GIVEREF(__pyx_tuple__105);
-  __pyx_codeobj__106 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__105, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 612, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__106)) __PYX_ERR(0, 612, __pyx_L1_error)
+  __pyx_tuple__106 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_json_state, __pyx_n_s_json_state_result, __pyx_n_s_json_game, __pyx_n_s_json_game_result); if (unlikely(!__pyx_tuple__106)) __PYX_ERR(0, 604, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__106);
+  __Pyx_GIVEREF(__pyx_tuple__106);
+  __pyx_codeobj__107 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__106, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 604, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__107)) __PYX_ERR(0, 604, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":627
+  /* "cython_lib/cyhanabi.pyx":619
  *         return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         combined_json = json.loads(json_str)
  */
-  __pyx_tuple__107 = PyTuple_Pack(5, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_combined_json, __pyx_n_s_c_game, __pyx_n_s_c_state); if (unlikely(!__pyx_tuple__107)) __PYX_ERR(0, 627, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__107);
-  __Pyx_GIVEREF(__pyx_tuple__107);
-  __pyx_codeobj__108 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__107, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 627, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__108)) __PYX_ERR(0, 627, __pyx_L1_error)
+  __pyx_tuple__108 = PyTuple_Pack(5, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_combined_json, __pyx_n_s_c_game, __pyx_n_s_c_state); if (unlikely(!__pyx_tuple__108)) __PYX_ERR(0, 619, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__108);
+  __Pyx_GIVEREF(__pyx_tuple__108);
+  __pyx_codeobj__109 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__108, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 619, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__109)) __PYX_ERR(0, 619, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__109 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__109)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__110 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__110)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -22091,14 +24959,158 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_codeobj__110 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__110)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_codeobj__111 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__111)) __PYX_ERR(1, 3, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":724
+ *             self._game = NULL
+ * 
+ *     def new_initial_state(self):             # <<<<<<<<<<<<<<
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ */
+  __pyx_codeobj__112 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_new_initial_state, 724, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__112)) __PYX_ERR(0, 724, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":727
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ *     def num_players(self):             # <<<<<<<<<<<<<<
+ *         return NumPlayers(self._game)
+ * 
+ */
+  __pyx_codeobj__113 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_players, 727, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__113)) __PYX_ERR(0, 727, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":730
+ *         return NumPlayers(self._game)
+ * 
+ *     def num_colors(self):             # <<<<<<<<<<<<<<
+ *         return NumColors(self._game)
+ * 
+ */
+  __pyx_codeobj__114 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_colors, 730, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__114)) __PYX_ERR(0, 730, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":733
+ *         return NumColors(self._game)
+ * 
+ *     def num_ranks(self):             # <<<<<<<<<<<<<<
+ *         return NumRanks(self._game)
+ * 
+ */
+  __pyx_codeobj__115 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_ranks, 733, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__115)) __PYX_ERR(0, 733, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":736
+ *         return NumRanks(self._game)
+ * 
+ *     def hand_size(self):             # <<<<<<<<<<<<<<
+ *         return HandSize(self._game)
+ * 
+ */
+  __pyx_codeobj__116 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_hand_size, 736, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__116)) __PYX_ERR(0, 736, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":739
+ *         return HandSize(self._game)
+ * 
+ *     def max_information_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxInformationTokens(self._game)
+ * 
+ */
+  __pyx_codeobj__117 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_max_information_tokens, 739, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__117)) __PYX_ERR(0, 739, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":742
+ *         return MaxInformationTokens(self._game)
+ * 
+ *     def max_life_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxLifeTokens(self._game)
+ * 
+ */
+  __pyx_codeobj__118 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_max_life_tokens, 742, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__118)) __PYX_ERR(0, 742, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":745
+ *         return MaxLifeTokens(self._game)
+ * 
+ *     def max_moves(self):             # <<<<<<<<<<<<<<
+ *         return MaxMoves(self._game)
+ * 
+ */
+  __pyx_codeobj__119 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_max_moves, 745, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__119)) __PYX_ERR(0, 745, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":748
+ *         return MaxMoves(self._game)
+ * 
+ *     def observation_type(self):             # <<<<<<<<<<<<<<
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ */
+  __pyx_codeobj__120 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_observation_type, 748, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__120)) __PYX_ERR(0, 748, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":751
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ *     def num_cards(self, int color, int rank):             # <<<<<<<<<<<<<<
+ *         return NumCards(self._game, color, rank)
+ * 
+ */
+  __pyx_codeobj__121 = (PyObject*)__Pyx_PyCode_New(3, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__20, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_num_cards, 751, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__121)) __PYX_ERR(0, 751, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":754
+ *         return NumCards(self._game, color, rank)
+ * 
+ *     def get_move_uid(self, HanabiMove move):             # <<<<<<<<<<<<<<
+ *         if move is None or move._move == NULL:
+ *             return 0
+ */
+  __pyx_codeobj__122 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__76, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_move_uid, 754, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__122)) __PYX_ERR(0, 754, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":759
+ *         return GetMoveUid(self._game, move._move)
+ * 
+ *     def get_move(self, int move_uid):             # <<<<<<<<<<<<<<
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:
+ */
+  __pyx_tuple__123 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_move_uid, __pyx_n_s_move); if (unlikely(!__pyx_tuple__123)) __PYX_ERR(0, 759, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__123);
+  __Pyx_GIVEREF(__pyx_tuple__123);
+  __pyx_codeobj__124 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__123, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_get_move, 759, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__124)) __PYX_ERR(0, 759, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":766
+ *         return HanabiMove.from_ptr(move)
+ * 
+ *     def parameter_string(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:
+ */
+  __pyx_tuple__125 = PyTuple_Pack(3, __pyx_n_s_self, __pyx_n_s_c_string, __pyx_n_s_string); if (unlikely(!__pyx_tuple__125)) __PYX_ERR(0, 766, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__125);
+  __Pyx_GIVEREF(__pyx_tuple__125);
+  __pyx_codeobj__126 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__125, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_parameter_string, 766, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__126)) __PYX_ERR(0, 766, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":774
+ *         return string
+ * 
+ *     def to_json(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ */
+  __pyx_codeobj__127 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__125, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_to_json, 774, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__127)) __PYX_ERR(0, 774, __pyx_L1_error)
+
+  /* "cython_lib/cyhanabi.pyx":782
+ *         return string
+ * 
+ *     @classmethod             # <<<<<<<<<<<<<<
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ */
+  __pyx_tuple__128 = PyTuple_Pack(3, __pyx_n_s_cls, __pyx_n_s_json_str, __pyx_n_s_c_game); if (unlikely(!__pyx_tuple__128)) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__128);
+  __Pyx_GIVEREF(__pyx_tuple__128);
+  __pyx_codeobj__129 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__128, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cython_lib_cyhanabi_pyx, __pyx_n_s_from_json, 782, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__129)) __PYX_ERR(0, 782, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_codeobj__111 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__111)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__130 = (PyObject*)__Pyx_PyCode_New(1, 0, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_reduce_cython, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__130)) __PYX_ERR(1, 1, __pyx_L1_error)
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -22106,7 +25118,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_codeobj__112 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__32, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__112)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_codeobj__131 = (PyObject*)__Pyx_PyCode_New(2, 0, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__33, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_setstate_cython, 3, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__131)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -22190,15 +25202,15 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_10cython_lib_8cyhanabi_HanabiCardKnowledge.rank = (PyObject *(*)(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiCardKnowledge *))__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank;
   __pyx_vtable_10cython_lib_8cyhanabi_HanabiCardKnowledge.rank_plausible = (PyObject *(*)(struct __pyx_obj_10cython_lib_8cyhanabi_HanabiCardKnowledge *, PyObject *))__pyx_f_10cython_lib_8cyhanabi_19HanabiCardKnowledge_rank_plausible;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiCardKnowledge_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge)) __PYX_ERR(0, 128, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiCardKnowledge_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiCardKnowledge_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge)) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiCardKnowledge_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge = &__pyx_type_10cython_lib_8cyhanabi_HanabiCardKnowledge;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge->tp_print = 0;
@@ -22208,26 +25220,26 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiCardKnowledge, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiCardKnowledge, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   #endif
   __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiMove = &__pyx_vtable_10cython_lib_8cyhanabi_HanabiMove;
   __pyx_vtable_10cython_lib_8cyhanabi_HanabiMove.from_ptr = (PyObject *(*)(pyhanabi_move_t *))__pyx_f_10cython_lib_8cyhanabi_10HanabiMove_from_ptr;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiMove_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove)) __PYX_ERR(0, 173, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiMove_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiMove_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove)) __PYX_ERR(0, 174, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiMove_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove = &__pyx_type_10cython_lib_8cyhanabi_HanabiMove;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove->tp_print = 0;
@@ -22239,7 +25251,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_UPDATE_DESCRIPTOR_DOC
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, "__hash__"); if (unlikely(!wrapper)) __PYX_ERR(0, 173, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, "__hash__"); if (unlikely(!wrapper)) __PYX_ERR(0, 174, __pyx_L1_error)
     if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
       __pyx_wrapperbase_10cython_lib_8cyhanabi_10HanabiMove_28__hash__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_10cython_lib_8cyhanabi_10HanabiMove_28__hash__.doc = __pyx_doc_10cython_lib_8cyhanabi_10HanabiMove_28__hash__;
@@ -22247,26 +25259,26 @@ static int __Pyx_modinit_type_init_code(void) {
     }
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiMove, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiMove, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiMove) < 0) __PYX_ERR(0, 174, __pyx_L1_error)
   #endif
   __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiHistoryItem = &__pyx_vtable_10cython_lib_8cyhanabi_HanabiHistoryItem;
   __pyx_vtable_10cython_lib_8cyhanabi_HanabiHistoryItem.from_ptr = (PyObject *(*)(pyhanabi_history_item_t *))__pyx_f_10cython_lib_8cyhanabi_17HanabiHistoryItem_from_ptr;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiHistoryItem_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem)) __PYX_ERR(0, 331, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiHistoryItem_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiHistoryItem_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem)) __PYX_ERR(0, 332, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiHistoryItem_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem = &__pyx_type_10cython_lib_8cyhanabi_HanabiHistoryItem;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem->tp_print = 0;
@@ -22276,26 +25288,26 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiHistoryItem, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiHistoryItem, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 331, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
   #endif
   __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiState = &__pyx_vtable_10cython_lib_8cyhanabi_HanabiState;
   __pyx_vtable_10cython_lib_8cyhanabi_HanabiState.create = (struct __pyx_obj_10cython_lib_8cyhanabi_HanabiState *(*)(PyObject *, pyhanabi_state_t *, pyhanabi_game_t *))__pyx_f_10cython_lib_8cyhanabi_11HanabiState_create;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi_HanabiState = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiState_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiState)) __PYX_ERR(0, 421, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiState_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi_HanabiState = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiState_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiState)) __PYX_ERR(0, 422, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiState_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiState = &__pyx_type_10cython_lib_8cyhanabi_HanabiState;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiState->tp_print = 0;
@@ -22305,34 +25317,26 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_10cython_lib_8cyhanabi_HanabiState->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  #if CYTHON_UPDATE_DESCRIPTOR_DOC
-  {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, "__init__"); if (unlikely(!wrapper)) __PYX_ERR(0, 421, __pyx_L1_error)
-    if (__Pyx_IS_TYPE(wrapper, &PyWrapperDescr_Type)) {
-      __pyx_wrapperbase_10cython_lib_8cyhanabi_11HanabiState_2__init__ = *((PyWrapperDescrObject *)wrapper)->d_base;
-      __pyx_wrapperbase_10cython_lib_8cyhanabi_11HanabiState_2__init__.doc = __pyx_doc_10cython_lib_8cyhanabi_11HanabiState_2__init__;
-      ((PyWrapperDescrObject *)wrapper)->d_base = &__pyx_wrapperbase_10cython_lib_8cyhanabi_11HanabiState_2__init__;
-    }
-  }
-  #endif
-  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiState, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiState, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 421, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiState) < 0) __PYX_ERR(0, 422, __pyx_L1_error)
   #endif
+  __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiGame = &__pyx_vtable_10cython_lib_8cyhanabi_HanabiGame;
+  __pyx_vtable_10cython_lib_8cyhanabi_HanabiGame.from_ptr = (PyObject *(*)(pyhanabi_game_t *))__pyx_f_10cython_lib_8cyhanabi_10HanabiGame_from_ptr;
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiGame_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame)) __PYX_ERR(0, 676, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiGame_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 676, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi_HanabiGame_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame)) __PYX_ERR(0, 668, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi_HanabiGame_spec, __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame = &__pyx_type_10cython_lib_8cyhanabi_HanabiGame;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 676, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame->tp_print = 0;
@@ -22342,20 +25346,24 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame->tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #endif
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiGame, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 676, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_vtabptr_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
   #if !CYTHON_COMPILING_IN_LIMITED_API
-  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 676, __pyx_L1_error)
+  if (__Pyx_MergeVtables(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
+  #endif
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_HanabiGame, (PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
+  #if !CYTHON_COMPILING_IN_LIMITED_API
+  if (__Pyx_setup_reduce((PyObject *) __pyx_ptype_10cython_lib_8cyhanabi_HanabiGame) < 0) __PYX_ERR(0, 668, __pyx_L1_error)
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx)) __PYX_ERR(0, 37, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx_spec, __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx)) __PYX_ERR(0, 38, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx_spec, __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx = &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct__color_char_to_idx->tp_print = 0;
@@ -22366,15 +25374,15 @@ static int __Pyx_modinit_type_init_code(void) {
   }
   #endif
   #if CYTHON_USE_TYPE_SPECS
-  __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr)) __PYX_ERR(0, 51, __pyx_L1_error)
-  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr_spec, __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr = (PyTypeObject *) __Pyx_PyType_FromModuleAndSpec(__pyx_m, &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr_spec, NULL); if (unlikely(!__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr)) __PYX_ERR(0, 52, __pyx_L1_error)
+  if (__Pyx_fix_up_extension_type_from_spec(&__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr_spec, __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
   #else
   __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr = &__pyx_type_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr;
   #endif
   #if !CYTHON_COMPILING_IN_LIMITED_API
   #endif
   #if !CYTHON_USE_TYPE_SPECS
-  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (__Pyx_PyType_Ready(__pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr) < 0) __PYX_ERR(0, 52, __pyx_L1_error)
   #endif
   #if PY_MAJOR_VERSION < 3
   __pyx_ptype_10cython_lib_8cyhanabi___pyx_scope_struct_1_genexpr->tp_print = 0;
@@ -22730,7 +25738,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_enum, __pyx_t_2) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":14
+  /* "cython_lib/cyhanabi.pyx":15
  * from cyhanabi cimport MoveToJson, MoveFromJson, GameToJson, GameFromJson, HistoryItemFromJson, HistoryItemToJson, StateToJson, StateFromJson
  * 
  * cdef char[5] COLOR_CHAR = [b"R", b"Y", b"G", b"W", b"B"]             # <<<<<<<<<<<<<<
@@ -22744,7 +25752,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_3[4] = 'B';
   memcpy(&(__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[0]), __pyx_t_3, sizeof(__pyx_v_10cython_lib_8cyhanabi_COLOR_CHAR[0]) * (5));
 
-  /* "cython_lib/cyhanabi.pyx":15
+  /* "cython_lib/cyhanabi.pyx":16
  * 
  * cdef char[5] COLOR_CHAR = [b"R", b"Y", b"G", b"W", b"B"]
  * cdef int CHANCE_PLAYER_ID = -1             # <<<<<<<<<<<<<<
@@ -22753,432 +25761,432 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_v_10cython_lib_8cyhanabi_CHANCE_PLAYER_ID = -1;
 
-  /* "cython_lib/cyhanabi.pyx":18
+  /* "cython_lib/cyhanabi.pyx":19
  * 
  * 
  * def color_idx_to_char(color_idx):             # <<<<<<<<<<<<<<
  *     """Helper function for converting color index to a character.
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_1color_idx_to_char, 0, __pyx_n_s_color_idx_to_char, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_1color_idx_to_char, 0, __pyx_n_s_color_idx_to_char, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__15)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_color_idx_to_char, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_color_idx_to_char, __pyx_t_2) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":37
+  /* "cython_lib/cyhanabi.pyx":38
  * 
  * 
  * def color_char_to_idx(color_char):             # <<<<<<<<<<<<<<
  *     """Helper function for converting color character to index.
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_3color_char_to_idx, 0, __pyx_n_s_color_char_to_idx, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__16)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_3color_char_to_idx, 0, __pyx_n_s_color_char_to_idx, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__17)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_color_char_to_idx, __pyx_t_2) < 0) __PYX_ERR(0, 37, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_color_char_to_idx, __pyx_t_2) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":56
+  /* "cython_lib/cyhanabi.pyx":57
  * 
  * 
  * class HanabiMoveType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     """Move types, consistent with hanabi_lib/hanabi_move.h."""
  *     INVALID = 0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_enum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_enum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_4);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error);
   __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PEP560_update_bases(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PEP560_update_bases(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_CalculateMetaclass(NULL, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CalculateMetaclass(NULL, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_Py3MetaclassPrepare(__pyx_t_5, __pyx_t_4, __pyx_n_s_HanabiMoveType, __pyx_n_s_HanabiMoveType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_kp_s_Move_types_consistent_with_hanab); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_Py3MetaclassPrepare(__pyx_t_5, __pyx_t_4, __pyx_n_s_HanabiMoveType, __pyx_n_s_HanabiMoveType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_kp_s_Move_types_consistent_with_hanab); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (__pyx_t_4 != __pyx_t_2) {
-    if (unlikely((PyDict_SetItemString(__pyx_t_6, "__orig_bases__", __pyx_t_2) < 0))) __PYX_ERR(0, 56, __pyx_L1_error)
+    if (unlikely((PyDict_SetItemString(__pyx_t_6, "__orig_bases__", __pyx_t_2) < 0))) __PYX_ERR(0, 57, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":58
+  /* "cython_lib/cyhanabi.pyx":59
  * class HanabiMoveType(enum.IntEnum):
  *     """Move types, consistent with hanabi_lib/hanabi_move.h."""
  *     INVALID = 0             # <<<<<<<<<<<<<<
  *     PLAY = 1
  *     DISCARD = 2
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_INVALID, __pyx_int_0) < 0) __PYX_ERR(0, 58, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_INVALID, __pyx_int_0) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":59
+  /* "cython_lib/cyhanabi.pyx":60
  *     """Move types, consistent with hanabi_lib/hanabi_move.h."""
  *     INVALID = 0
  *     PLAY = 1             # <<<<<<<<<<<<<<
  *     DISCARD = 2
  *     REVEAL_COLOR = 3
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_PLAY, __pyx_int_1) < 0) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_PLAY, __pyx_int_1) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":60
+  /* "cython_lib/cyhanabi.pyx":61
  *     INVALID = 0
  *     PLAY = 1
  *     DISCARD = 2             # <<<<<<<<<<<<<<
  *     REVEAL_COLOR = 3
  *     REVEAL_RANK = 4
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DISCARD, __pyx_int_2) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DISCARD, __pyx_int_2) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":61
+  /* "cython_lib/cyhanabi.pyx":62
  *     PLAY = 1
  *     DISCARD = 2
  *     REVEAL_COLOR = 3             # <<<<<<<<<<<<<<
  *     REVEAL_RANK = 4
  *     DEAL = 5
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_REVEAL_COLOR, __pyx_int_3) < 0) __PYX_ERR(0, 61, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_REVEAL_COLOR, __pyx_int_3) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":62
+  /* "cython_lib/cyhanabi.pyx":63
  *     DISCARD = 2
  *     REVEAL_COLOR = 3
  *     REVEAL_RANK = 4             # <<<<<<<<<<<<<<
  *     DEAL = 5
  *     RETURN = 6
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_REVEAL_RANK, __pyx_int_4) < 0) __PYX_ERR(0, 62, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_REVEAL_RANK, __pyx_int_4) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":63
+  /* "cython_lib/cyhanabi.pyx":64
  *     REVEAL_COLOR = 3
  *     REVEAL_RANK = 4
  *     DEAL = 5             # <<<<<<<<<<<<<<
  *     RETURN = 6
  *     DEAL_SPECIFIC = 7
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DEAL, __pyx_int_5) < 0) __PYX_ERR(0, 63, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DEAL, __pyx_int_5) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":64
+  /* "cython_lib/cyhanabi.pyx":65
  *     REVEAL_RANK = 4
  *     DEAL = 5
  *     RETURN = 6             # <<<<<<<<<<<<<<
  *     DEAL_SPECIFIC = 7
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_RETURN, __pyx_int_6) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_RETURN, __pyx_int_6) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":65
+  /* "cython_lib/cyhanabi.pyx":66
  *     DEAL = 5
  *     RETURN = 6
  *     DEAL_SPECIFIC = 7             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DEAL_SPECIFIC, __pyx_int_7) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_6, __pyx_n_s_DEAL_SPECIFIC, __pyx_int_7) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":56
+  /* "cython_lib/cyhanabi.pyx":57
  * 
  * 
  * class HanabiMoveType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     """Move types, consistent with hanabi_lib/hanabi_move.h."""
  *     INVALID = 0
  */
-  __pyx_t_2 = __Pyx_Py3ClassCreate(__pyx_t_5, __pyx_n_s_HanabiMoveType, __pyx_t_4, __pyx_t_6, NULL, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3ClassCreate(__pyx_t_5, __pyx_n_s_HanabiMoveType, __pyx_t_4, __pyx_t_6, NULL, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiMoveType, __pyx_t_2) < 0) __PYX_ERR(0, 56, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiMoveType, __pyx_t_2) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":68
+  /* "cython_lib/cyhanabi.pyx":69
  * 
  * 
  * class AgentObservationType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     MINIMAL = 0
  *     CARD_KNOWLEDGE = 1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_enum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_enum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_5);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5)) __PYX_ERR(0, 68, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5)) __PYX_ERR(0, 69, __pyx_L1_error);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PEP560_update_bases(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PEP560_update_bases(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_CalculateMetaclass(NULL, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CalculateMetaclass(NULL, __pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_6, __pyx_t_5, __pyx_n_s_AgentObservationType, __pyx_n_s_AgentObservationType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Py3MetaclassPrepare(__pyx_t_6, __pyx_t_5, __pyx_n_s_AgentObservationType, __pyx_n_s_AgentObservationType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (__pyx_t_5 != __pyx_t_4) {
-    if (unlikely((PyDict_SetItemString(__pyx_t_2, "__orig_bases__", __pyx_t_4) < 0))) __PYX_ERR(0, 68, __pyx_L1_error)
+    if (unlikely((PyDict_SetItemString(__pyx_t_2, "__orig_bases__", __pyx_t_4) < 0))) __PYX_ERR(0, 69, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":69
+  /* "cython_lib/cyhanabi.pyx":70
  * 
  * class AgentObservationType(enum.IntEnum):
  *     MINIMAL = 0             # <<<<<<<<<<<<<<
  *     CARD_KNOWLEDGE = 1
  *     SEER = 2
  */
-  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_MINIMAL, __pyx_int_0) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_MINIMAL, __pyx_int_0) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":70
+  /* "cython_lib/cyhanabi.pyx":71
  * class AgentObservationType(enum.IntEnum):
  *     MINIMAL = 0
  *     CARD_KNOWLEDGE = 1             # <<<<<<<<<<<<<<
  *     SEER = 2
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_CARD_KNOWLEDGE, __pyx_int_1) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_CARD_KNOWLEDGE, __pyx_int_1) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":71
+  /* "cython_lib/cyhanabi.pyx":72
  *     MINIMAL = 0
  *     CARD_KNOWLEDGE = 1
  *     SEER = 2             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_SEER, __pyx_int_2) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_2, __pyx_n_s_SEER, __pyx_int_2) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":68
+  /* "cython_lib/cyhanabi.pyx":69
  * 
  * 
  * class AgentObservationType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     MINIMAL = 0
  *     CARD_KNOWLEDGE = 1
  */
-  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_6, __pyx_n_s_AgentObservationType, __pyx_t_5, __pyx_t_2, NULL, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3ClassCreate(__pyx_t_6, __pyx_n_s_AgentObservationType, __pyx_t_5, __pyx_t_2, NULL, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AgentObservationType, __pyx_t_4) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_AgentObservationType, __pyx_t_4) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":74
+  /* "cython_lib/cyhanabi.pyx":75
  * 
  * 
  * class HanabiEndOfGameType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     NOT_FINISHED = 0
  *     OUT_OF_LIFE_TOKENS = 1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_enum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_enum); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_IntEnum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_GIVEREF(__pyx_t_6);
-  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6)) __PYX_ERR(0, 74, __pyx_L1_error);
+  if (__Pyx_PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error);
   __pyx_t_6 = 0;
-  __pyx_t_6 = __Pyx_PEP560_update_bases(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PEP560_update_bases(__pyx_t_5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_6, __pyx_n_s_HanabiEndOfGameType, __pyx_n_s_HanabiEndOfGameType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_6, __pyx_n_s_HanabiEndOfGameType, __pyx_n_s_HanabiEndOfGameType, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (__pyx_t_6 != __pyx_t_5) {
-    if (unlikely((PyDict_SetItemString(__pyx_t_4, "__orig_bases__", __pyx_t_5) < 0))) __PYX_ERR(0, 74, __pyx_L1_error)
+    if (unlikely((PyDict_SetItemString(__pyx_t_4, "__orig_bases__", __pyx_t_5) < 0))) __PYX_ERR(0, 75, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":75
+  /* "cython_lib/cyhanabi.pyx":76
  * 
  * class HanabiEndOfGameType(enum.IntEnum):
  *     NOT_FINISHED = 0             # <<<<<<<<<<<<<<
  *     OUT_OF_LIFE_TOKENS = 1
  *     OUT_OF_CARDS = 2
  */
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_NOT_FINISHED, __pyx_int_0) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_NOT_FINISHED, __pyx_int_0) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":76
+  /* "cython_lib/cyhanabi.pyx":77
  * class HanabiEndOfGameType(enum.IntEnum):
  *     NOT_FINISHED = 0
  *     OUT_OF_LIFE_TOKENS = 1             # <<<<<<<<<<<<<<
  *     OUT_OF_CARDS = 2
  *     COMPLETED_FIREWORKS = 3
  */
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_OUT_OF_LIFE_TOKENS, __pyx_int_1) < 0) __PYX_ERR(0, 76, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_OUT_OF_LIFE_TOKENS, __pyx_int_1) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":77
+  /* "cython_lib/cyhanabi.pyx":78
  *     NOT_FINISHED = 0
  *     OUT_OF_LIFE_TOKENS = 1
  *     OUT_OF_CARDS = 2             # <<<<<<<<<<<<<<
  *     COMPLETED_FIREWORKS = 3
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_OUT_OF_CARDS, __pyx_int_2) < 0) __PYX_ERR(0, 77, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_OUT_OF_CARDS, __pyx_int_2) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":78
+  /* "cython_lib/cyhanabi.pyx":79
  *     OUT_OF_LIFE_TOKENS = 1
  *     OUT_OF_CARDS = 2
  *     COMPLETED_FIREWORKS = 3             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_COMPLETED_FIREWORKS, __pyx_int_3) < 0) __PYX_ERR(0, 78, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_COMPLETED_FIREWORKS, __pyx_int_3) < 0) __PYX_ERR(0, 79, __pyx_L1_error)
 
-  /* "cython_lib/cyhanabi.pyx":74
+  /* "cython_lib/cyhanabi.pyx":75
  * 
  * 
  * class HanabiEndOfGameType(enum.IntEnum):             # <<<<<<<<<<<<<<
  *     NOT_FINISHED = 0
  *     OUT_OF_LIFE_TOKENS = 1
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType, __pyx_t_6, __pyx_t_4, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_HanabiEndOfGameType, __pyx_t_6, __pyx_t_4, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiEndOfGameType, __pyx_t_5) < 0) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiEndOfGameType, __pyx_t_5) < 0) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":81
+  /* "cython_lib/cyhanabi.pyx":82
  * 
  * 
  * class HanabiCard(object):             # <<<<<<<<<<<<<<
  *   """Hanabi card, with a color and a rank.
  * 
  */
-  __pyx_t_6 = __Pyx_PEP560_update_bases(__pyx_tuple__18); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PEP560_update_bases(__pyx_tuple__19); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CalculateMetaclass(NULL, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_6, __pyx_n_s_HanabiCard, __pyx_n_s_HanabiCard, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_kp_s_Hanabi_card_with_a_color_and_a_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_2, __pyx_t_6, __pyx_n_s_HanabiCard, __pyx_n_s_HanabiCard, (PyObject *) NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_kp_s_Hanabi_card_with_a_color_and_a_r); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__pyx_t_6 != __pyx_tuple__18) {
-    if (unlikely((PyDict_SetItemString(__pyx_t_4, "__orig_bases__", __pyx_tuple__18) < 0))) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (__pyx_t_6 != __pyx_tuple__19) {
+    if (unlikely((PyDict_SetItemString(__pyx_t_4, "__orig_bases__", __pyx_tuple__19) < 0))) __PYX_ERR(0, 82, __pyx_L1_error)
   }
 
-  /* "cython_lib/cyhanabi.pyx":87
+  /* "cython_lib/cyhanabi.pyx":88
  *   """
  * 
  *   def __init__(self, color, rank):             # <<<<<<<<<<<<<<
  *     """A simple HanabiCard object.
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_1__init__, 0, __pyx_n_s_HanabiCard___init, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_1__init__, 0, __pyx_n_s_HanabiCard___init, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__21)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_init, __pyx_t_5) < 0) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":98
+  /* "cython_lib/cyhanabi.pyx":99
  *     self._rank = rank
  * 
  *   def color(self):             # <<<<<<<<<<<<<<
  *     return self._color
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_3color, 0, __pyx_n_s_HanabiCard_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_3color, 0, __pyx_n_s_HanabiCard_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_color, __pyx_t_5) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_color, __pyx_t_5) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":101
+  /* "cython_lib/cyhanabi.pyx":102
  *     return self._color
  * 
  *   def rank(self):             # <<<<<<<<<<<<<<
  *     return self._rank
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_5rank, 0, __pyx_n_s_HanabiCard_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__23)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_5rank, 0, __pyx_n_s_HanabiCard_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_rank, __pyx_t_5) < 0) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_rank, __pyx_t_5) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":104
+  /* "cython_lib/cyhanabi.pyx":105
  *     return self._rank
  * 
  *   def __str__(self):             # <<<<<<<<<<<<<<
  *     if self.valid():
  *       return COLOR_CHAR[self._color] + str(self._rank + 1)
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_7__str__, 0, __pyx_n_s_HanabiCard___str, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_7__str__, 0, __pyx_n_s_HanabiCard___str, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_str, __pyx_t_5) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_str, __pyx_t_5) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":110
+  /* "cython_lib/cyhanabi.pyx":111
  *       return "XX"
  * 
  *   def __repr__(self):             # <<<<<<<<<<<<<<
  *     return self.__str__()
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_9__repr__, 0, __pyx_n_s_HanabiCard___repr, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__25)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 110, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_9__repr__, 0, __pyx_n_s_HanabiCard___repr, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_repr, __pyx_t_5) < 0) __PYX_ERR(0, 110, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_repr, __pyx_t_5) < 0) __PYX_ERR(0, 111, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":113
+  /* "cython_lib/cyhanabi.pyx":114
  *     return self.__str__()
  * 
  *   def __eq__(self, other):             # <<<<<<<<<<<<<<
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_11__eq__, 0, __pyx_n_s_HanabiCard___eq, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__27)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_11__eq__, 0, __pyx_n_s_HanabiCard___eq, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_eq, __pyx_t_5) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_eq, __pyx_t_5) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":116
+  /* "cython_lib/cyhanabi.pyx":117
  *     return self._color == other.color() and self._rank == other.rank()
  * 
  *   def valid(self):             # <<<<<<<<<<<<<<
  *     return self._color >= 0 and self._rank >= 0
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_13valid, 0, __pyx_n_s_HanabiCard_valid, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_13valid, 0, __pyx_n_s_HanabiCard_valid, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_valid, __pyx_t_5) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_valid, __pyx_t_5) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":119
+  /* "cython_lib/cyhanabi.pyx":120
  *     return self._color >= 0 and self._rank >= 0
  * 
  *   def to_dict(self):             # <<<<<<<<<<<<<<
  *     """Serialize to dict.
  * 
  */
-  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_15to_dict, 0, __pyx_n_s_HanabiCard_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__29)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiCard_15to_dict, 0, __pyx_n_s_HanabiCard_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_to_dict, __pyx_t_5) < 0) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (__Pyx_SetNameInClass(__pyx_t_4, __pyx_n_s_to_dict, __pyx_t_5) < 0) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":81
+  /* "cython_lib/cyhanabi.pyx":82
  * 
  * 
  * class HanabiCard(object):             # <<<<<<<<<<<<<<
  *   """Hanabi card, with a color and a rank.
  * 
  */
-  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_HanabiCard, __pyx_t_6, __pyx_t_4, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_Py3ClassCreate(__pyx_t_2, __pyx_n_s_HanabiCard, __pyx_t_6, __pyx_t_4, NULL, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiCard, __pyx_t_5) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HanabiCard, __pyx_t_5) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":169
+  /* "cython_lib/cyhanabi.pyx":170
  *         return self.__str__()
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
  *         return {"color": color_idx_to_char(self.color()), "rank": self.rank()}
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_7to_dict, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_7to_dict, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge, __pyx_n_s_to_dict, __pyx_t_6) < 0) __PYX_ERR(0, 169, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge, __pyx_n_s_to_dict, __pyx_t_6) < 0) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiCardKnowledge);
 
@@ -23187,7 +26195,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_9__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge___reduce_cyt, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__31)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_9__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge___reduce_cyt, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__32)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_6) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -23198,246 +26206,246 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_11__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge___setstate_c, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__33)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_19HanabiCardKnowledge_11__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiCardKnowledge___setstate_c, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_6) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":195
+  /* "cython_lib/cyhanabi.pyx":196
  *         return instance
  * 
  *     def type(self):             # <<<<<<<<<<<<<<
  *         return HanabiMoveType(self._type)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_3type, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_type, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__34)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_3type, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_type, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_type_2, __pyx_t_6) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_type_2, __pyx_t_6) < 0) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":198
+  /* "cython_lib/cyhanabi.pyx":199
  *         return HanabiMoveType(self._type)
  * 
  *     def card_index(self):             # <<<<<<<<<<<<<<
  *         return self._card_index
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_5card_index, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_card_index, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__35)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 198, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_5card_index, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_card_index, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_card_index, __pyx_t_6) < 0) __PYX_ERR(0, 198, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_card_index, __pyx_t_6) < 0) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":201
+  /* "cython_lib/cyhanabi.pyx":202
  *         return self._card_index
  * 
  *     def target_offset(self):             # <<<<<<<<<<<<<<
  *         return self._target_offset
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_7target_offset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_target_offset, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__36)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 201, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_7target_offset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_target_offset, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_target_offset, __pyx_t_6) < 0) __PYX_ERR(0, 201, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_target_offset, __pyx_t_6) < 0) __PYX_ERR(0, 202, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":204
+  /* "cython_lib/cyhanabi.pyx":205
  *         return self._target_offset
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
  *         return self._color
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_9color, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__37)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_9color, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_color, __pyx_t_6) < 0) __PYX_ERR(0, 204, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_color, __pyx_t_6) < 0) __PYX_ERR(0, 205, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":207
+  /* "cython_lib/cyhanabi.pyx":208
  *         return self._color
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
  *         return self._rank
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_11rank, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__38)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 207, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_11rank, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__39)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_rank, __pyx_t_6) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_rank, __pyx_t_6) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":210
+  /* "cython_lib/cyhanabi.pyx":211
  *         return self._rank
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_discard_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_13get_discard_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_discard_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__40)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_13get_discard_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_discard_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__41)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move, __pyx_t_6) < 0) __PYX_ERR(0, 210, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move, __pyx_t_6) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move, __pyx_t_2) < 0) __PYX_ERR(0, 210, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_discard_move, __pyx_t_2) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":218
+  /* "cython_lib/cyhanabi.pyx":219
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_return_move(int card_index, int player):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_15get_return_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_return_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__42)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_15get_return_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_return_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move, __pyx_t_2) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move, __pyx_t_2) < 0) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move, __pyx_t_6) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_return_move, __pyx_t_6) < 0) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":226
+  /* "cython_lib/cyhanabi.pyx":227
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_play_move(int card_index):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_17get_play_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_play_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__43)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_17get_play_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_play_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__44)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move, __pyx_t_6) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move, __pyx_t_6) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move, __pyx_t_2) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_play_move, __pyx_t_2) < 0) __PYX_ERR(0, 227, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":234
+  /* "cython_lib/cyhanabi.pyx":235
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_reveal_color_move(int target_offset, int color):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_19get_reveal_color_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_reveal_color_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__45)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_19get_reveal_color_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_reveal_color_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__46)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move, __pyx_t_2) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move, __pyx_t_2) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move, __pyx_t_6) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_color_move, __pyx_t_6) < 0) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":242
+  /* "cython_lib/cyhanabi.pyx":243
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_reveal_rank_move(int target_offset, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_21get_reveal_rank_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_reveal_rank_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__47)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_21get_reveal_rank_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_reveal_rank_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__48)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move, __pyx_t_6) < 0) __PYX_ERR(0, 242, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move, __pyx_t_6) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move, __pyx_t_2) < 0) __PYX_ERR(0, 242, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_reveal_rank_move, __pyx_t_2) < 0) __PYX_ERR(0, 243, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":250
+  /* "cython_lib/cyhanabi.pyx":251
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def get_deal_specific_move(int card_index, int player, int color, int rank):
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_23get_deal_specific_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_deal_specific_mov, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_23get_deal_specific_move, __Pyx_CYFUNCTION_STATICMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_get_deal_specific_mov, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__50)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move, __pyx_t_2) < 0) __PYX_ERR(0, 250, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move, __pyx_t_2) < 0) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 250, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move, __pyx_t_6) < 0) __PYX_ERR(0, 250, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_get_deal_specific_move, __pyx_t_6) < 0) __PYX_ERR(0, 251, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":258
+  /* "cython_lib/cyhanabi.pyx":259
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         """Serialize move to JSON."""
  *         cdef char* json_str = MoveToJson(self._move)
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_25to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 258, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_25to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__52)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_to_json, __pyx_t_6) < 0) __PYX_ERR(0, 258, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_to_json, __pyx_t_6) < 0) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":267
+  /* "cython_lib/cyhanabi.pyx":268
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         """Deserialize move from JSON."""
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_27from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__53)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_27from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__54)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
-  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 267, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
-  /* "cython_lib/cyhanabi.pyx":305
+  /* "cython_lib/cyhanabi.pyx":306
  *             self._move = NULL
  * 
  *     def to_dict(self):             # <<<<<<<<<<<<<<
  *         move_type = self.type()
  *         move_dict = {}
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_39to_dict, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__55)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 305, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_39to_dict, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove_to_dict, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__56)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_to_dict, __pyx_t_2) < 0) __PYX_ERR(0, 305, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove, __pyx_n_s_to_dict, __pyx_t_2) < 0) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiMove);
 
@@ -23446,7 +26454,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_41__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__56)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_41__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__57)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23457,159 +26465,159 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_43__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__57)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiMove_43__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiMove___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__58)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cython_lib/cyhanabi.pyx":343
+  /* "cython_lib/cyhanabi.pyx":344
  *         return instance
  * 
  *     def move(self):             # <<<<<<<<<<<<<<
  *         cdef pyhanabi_move_t* c_move = <pyhanabi_move_t*> malloc(sizeof(pyhanabi_move_t))
  *         HistoryItemMove(self._item, c_move)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_3move, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__59)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_3move, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__60)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_move, __pyx_t_2) < 0) __PYX_ERR(0, 343, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_move, __pyx_t_2) < 0) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":348
+  /* "cython_lib/cyhanabi.pyx":349
  *         return HanabiMove.from_ptr(c_move)
  * 
  *     def player(self):             # <<<<<<<<<<<<<<
  *         return HistoryItemPlayer(self._item)
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_5player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__60)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_5player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__61)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 349, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_player, __pyx_t_2) < 0) __PYX_ERR(0, 348, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_player, __pyx_t_2) < 0) __PYX_ERR(0, 349, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":351
+  /* "cython_lib/cyhanabi.pyx":352
  *         return HistoryItemPlayer(self._item)
  * 
  *     def scored(self):             # <<<<<<<<<<<<<<
  *         """Play move succeeded in placing card on fireworks."""
  *         return <bint>HistoryItemScored(self._item)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_7scored, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_scored, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__61)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_7scored, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_scored, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__62)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_scored, __pyx_t_2) < 0) __PYX_ERR(0, 351, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_scored, __pyx_t_2) < 0) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":355
+  /* "cython_lib/cyhanabi.pyx":356
  *         return <bint>HistoryItemScored(self._item)
  * 
  *     def information_token(self):             # <<<<<<<<<<<<<<
  *         """Play/Discard move increased the number of information tokens."""
  *         return <bint>HistoryItemInformationToken(self._item)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_9information_token, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_information_to, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__62)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_9information_token, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_information_to, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__63)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_information_token, __pyx_t_2) < 0) __PYX_ERR(0, 355, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_information_token, __pyx_t_2) < 0) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":359
+  /* "cython_lib/cyhanabi.pyx":360
  *         return <bint>HistoryItemInformationToken(self._item)
  * 
  *     def color(self):             # <<<<<<<<<<<<<<
  *         """Color index of card that was Played/Discarded."""
  *         return HistoryItemColor(self._item)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_11color, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__63)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_11color, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_color, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__64)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 360, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_color, __pyx_t_2) < 0) __PYX_ERR(0, 359, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_color, __pyx_t_2) < 0) __PYX_ERR(0, 360, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":363
+  /* "cython_lib/cyhanabi.pyx":364
  *         return HistoryItemColor(self._item)
  * 
  *     def rank(self):             # <<<<<<<<<<<<<<
  *         """Rank index of card that was Played/Discarded."""
  *         return HistoryItemRank(self._item)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_13rank, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__64)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 363, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_13rank, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_rank, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__65)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_rank, __pyx_t_2) < 0) __PYX_ERR(0, 363, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_rank, __pyx_t_2) < 0) __PYX_ERR(0, 364, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":367
+  /* "cython_lib/cyhanabi.pyx":368
  *         return HistoryItemRank(self._item)
  * 
  *     def card_info_revealed(self):             # <<<<<<<<<<<<<<
  *         cdef int bitmask = HistoryItemRevealBitmask(self._item)
  *         revealed = []
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_15card_info_revealed, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_card_info_reve, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__66)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_15card_info_revealed, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_card_info_reve, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__67)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_card_info_revealed, __pyx_t_2) < 0) __PYX_ERR(0, 367, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_card_info_revealed, __pyx_t_2) < 0) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":375
+  /* "cython_lib/cyhanabi.pyx":376
  *         return revealed
  * 
  *     def card_info_newly_revealed(self):             # <<<<<<<<<<<<<<
  *         cdef int bitmask = HistoryItemNewlyRevealedBitmask(self._item)
  *         revealed = []
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_17card_info_newly_revealed, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_card_info_newl, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__67)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 375, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_17card_info_newly_revealed, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_card_info_newl, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__68)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 376, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_card_info_newly_revealed, __pyx_t_2) < 0) __PYX_ERR(0, 375, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_card_info_newly_revealed, __pyx_t_2) < 0) __PYX_ERR(0, 376, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":383
+  /* "cython_lib/cyhanabi.pyx":384
  *         return revealed
  * 
  *     def deal_to_player(self):             # <<<<<<<<<<<<<<
  *         return HistoryItemDealToPlayer(self._item)
  * 
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_19deal_to_player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_deal_to_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__68)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 383, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_19deal_to_player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_deal_to_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__69)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 384, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_deal_to_player, __pyx_t_2) < 0) __PYX_ERR(0, 383, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_deal_to_player, __pyx_t_2) < 0) __PYX_ERR(0, 384, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":386
+  /* "cython_lib/cyhanabi.pyx":387
  *         return HistoryItemDealToPlayer(self._item)
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         """Serialize history item to JSON."""
  *         cdef char* json_str = HistoryItemToJson(self._item)
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_21to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__69)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_21to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__70)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_to_json, __pyx_t_2) < 0) __PYX_ERR(0, 386, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_to_json, __pyx_t_2) < 0) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
-  /* "cython_lib/cyhanabi.pyx":395
+  /* "cython_lib/cyhanabi.pyx":396
  *         return py_json
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         """Deserialize history item from JSON."""
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_23from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__71)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 395, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_23from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__72)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 395, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
-  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 395, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 395, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 395, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 396, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiHistoryItem);
 
@@ -23618,7 +26626,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_31__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem___reduce_cytho, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__72)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_31__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem___reduce_cytho, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__73)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_6) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -23629,7 +26637,7 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_33__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem___setstate_cyt, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__73)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_17HanabiHistoryItem_33__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiHistoryItem___setstate_cyt, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__74)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_6) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -23638,332 +26646,332 @@ if (!__Pyx_RefNanny) {
  *             raise ValueError("Invalid parameters")
  * 
  *     def copy(self):             # <<<<<<<<<<<<<<
- *         """Returns a copy of the state."""
  *         return HanabiState.create(None, self._state, NULL)
+ * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_copy, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__74)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 489, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_5copy, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_copy, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__75)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 489, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_copy, __pyx_t_6) < 0) __PYX_ERR(0, 489, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":496
+  /* "cython_lib/cyhanabi.pyx":495
  *     #    return HanabiObservation.create(self._state, self._game, player)
  * 
  *     def apply_move(self, HanabiMove move):             # <<<<<<<<<<<<<<
  *         StateApplyMove(self._state, move._move)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_7apply_move, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_apply_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__76)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_7apply_move, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_apply_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__77)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 495, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_apply_move, __pyx_t_6) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_apply_move, __pyx_t_6) < 0) __PYX_ERR(0, 495, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":499
+  /* "cython_lib/cyhanabi.pyx":498
  *         StateApplyMove(self._state, move._move)
  * 
  *     def turns_to_play(self):             # <<<<<<<<<<<<<<
  *         return StateTurnsToPlay(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_9turns_to_play, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_turns_to_play, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__77)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 499, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_9turns_to_play, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_turns_to_play, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__78)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 498, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_turns_to_play, __pyx_t_6) < 0) __PYX_ERR(0, 499, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_turns_to_play, __pyx_t_6) < 0) __PYX_ERR(0, 498, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":502
+  /* "cython_lib/cyhanabi.pyx":501
  *         return StateTurnsToPlay(self._state)
  * 
  *     def cur_player(self):             # <<<<<<<<<<<<<<
  *         return StateCurPlayer(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_11cur_player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_cur_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__78)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 502, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_11cur_player, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_cur_player, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__79)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 501, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_cur_player, __pyx_t_6) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_cur_player, __pyx_t_6) < 0) __PYX_ERR(0, 501, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":505
+  /* "cython_lib/cyhanabi.pyx":504
  *         return StateCurPlayer(self._state)
  * 
  *     def deck_size(self):             # <<<<<<<<<<<<<<
  *         return StateDeckSize(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_13deck_size, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deck_size, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__79)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 505, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_13deck_size, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deck_size, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__80)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 504, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deck_size, __pyx_t_6) < 0) __PYX_ERR(0, 505, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deck_size, __pyx_t_6) < 0) __PYX_ERR(0, 504, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":508
+  /* "cython_lib/cyhanabi.pyx":507
  *         return StateDeckSize(self._state)
  * 
  *     def discard_pile(self):             # <<<<<<<<<<<<<<
  *         discards = []
  *         cdef int pile_size = StateDiscardPileSize(self._state)
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_15discard_pile, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_discard_pile, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__81)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 508, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_15discard_pile, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_discard_pile, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__82)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 507, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_discard_pile, __pyx_t_6) < 0) __PYX_ERR(0, 508, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_discard_pile, __pyx_t_6) < 0) __PYX_ERR(0, 507, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":517
+  /* "cython_lib/cyhanabi.pyx":515
  *         return discards
  * 
  *     def fireworks(self):             # <<<<<<<<<<<<<<
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_17fireworks, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_fireworks, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__83)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 517, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_17fireworks, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_fireworks, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__84)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 515, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_fireworks, __pyx_t_6) < 0) __PYX_ERR(0, 517, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_fireworks, __pyx_t_6) < 0) __PYX_ERR(0, 515, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":520
+  /* "cython_lib/cyhanabi.pyx":518
  *         return [StateFireworks(self._state, c) for c in range(5)]
  * 
  *     def progress(self):             # <<<<<<<<<<<<<<
  *         return sum(self.fireworks())
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_19progress, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_progress, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__84)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 520, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_19progress, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_progress, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__85)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 518, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_progress, __pyx_t_6) < 0) __PYX_ERR(0, 520, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_progress, __pyx_t_6) < 0) __PYX_ERR(0, 518, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":523
+  /* "cython_lib/cyhanabi.pyx":521
  *         return sum(self.fireworks())
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
  *         if self.life_tokens() == 0:
  *             return 0
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_21score, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_score, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__85)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 523, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_21score, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_score, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__86)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 521, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_score, __pyx_t_6) < 0) __PYX_ERR(0, 523, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_score, __pyx_t_6) < 0) __PYX_ERR(0, 521, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":528
+  /* "cython_lib/cyhanabi.pyx":526
  *         return self.progress()
  * 
  *     def deal_random_card(self):             # <<<<<<<<<<<<<<
  *         StateDealCard(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_23deal_random_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deal_random_card, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__86)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_23deal_random_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deal_random_card, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__87)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deal_random_card, __pyx_t_6) < 0) __PYX_ERR(0, 528, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deal_random_card, __pyx_t_6) < 0) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":531
+  /* "cython_lib/cyhanabi.pyx":529
  *         StateDealCard(self._state)
  * 
  *     def deal_specific_card(self, color, rank, card_index):             # <<<<<<<<<<<<<<
  *         assert self.cur_player() == CHANCE_PLAYER_ID
  *         move = HanabiMove.get_deal_specific_move(color, rank, card_index)
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_25deal_specific_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deal_specific_card, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__88)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_25deal_specific_card, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_deal_specific_card, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__89)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 529, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deal_specific_card, __pyx_t_6) < 0) __PYX_ERR(0, 531, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_deal_specific_card, __pyx_t_6) < 0) __PYX_ERR(0, 529, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":536
+  /* "cython_lib/cyhanabi.pyx":534
  *         self.apply_move(move)
  * 
  *     def remove_knowledge(self, player, card_index):             # <<<<<<<<<<<<<<
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_27remove_knowledge, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_remove_knowledge, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__90)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_27remove_knowledge, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_remove_knowledge, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__91)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_remove_knowledge, __pyx_t_6) < 0) __PYX_ERR(0, 536, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_remove_knowledge, __pyx_t_6) < 0) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":539
+  /* "cython_lib/cyhanabi.pyx":537
  *         StateRemoveKnowledge(self._state, player, card_index)
  * 
  *     def player_hands(self):             # <<<<<<<<<<<<<<
  *         hand_list = []
  *         cdef int pid, hand_size, i
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_29player_hands, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_player_hands, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__92)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 539, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_29player_hands, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_player_hands, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__93)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 537, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_player_hands, __pyx_t_6) < 0) __PYX_ERR(0, 539, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_player_hands, __pyx_t_6) < 0) __PYX_ERR(0, 537, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":557
+  /* "cython_lib/cyhanabi.pyx":551
  *         return hand_list
  * 
  *     def information_tokens(self):             # <<<<<<<<<<<<<<
  *         return StateInformationTokens(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_31information_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_information_tokens, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__93)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 557, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_31information_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_information_tokens, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__94)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_information_tokens, __pyx_t_6) < 0) __PYX_ERR(0, 557, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_information_tokens, __pyx_t_6) < 0) __PYX_ERR(0, 551, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":560
+  /* "cython_lib/cyhanabi.pyx":554
  *         return StateInformationTokens(self._state)
  * 
  *     def end_of_game_status(self):             # <<<<<<<<<<<<<<
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_33end_of_game_status, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_end_of_game_status, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__94)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 560, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_33end_of_game_status, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_end_of_game_status, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__95)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 554, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_end_of_game_status, __pyx_t_6) < 0) __PYX_ERR(0, 560, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_end_of_game_status, __pyx_t_6) < 0) __PYX_ERR(0, 554, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":563
+  /* "cython_lib/cyhanabi.pyx":557
  *         return HanabiEndOfGameType(StateEndOfGameStatus(self._state))
  * 
  *     def is_terminal(self):             # <<<<<<<<<<<<<<
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_35is_terminal, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_is_terminal, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__95)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 563, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_35is_terminal, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_is_terminal, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__96)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_is_terminal, __pyx_t_6) < 0) __PYX_ERR(0, 563, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_is_terminal, __pyx_t_6) < 0) __PYX_ERR(0, 557, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":566
+  /* "cython_lib/cyhanabi.pyx":560
  *         return (StateEndOfGameStatus(self._state) != HanabiEndOfGameType.NOT_FINISHED)
  * 
  *     def legal_moves(self):             # <<<<<<<<<<<<<<
  *         if self.is_terminal():
  *             return []
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_37legal_moves, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_legal_moves, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__97)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_37legal_moves, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_legal_moves, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__98)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 560, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_legal_moves, __pyx_t_6) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_legal_moves, __pyx_t_6) < 0) __PYX_ERR(0, 560, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":585
+  /* "cython_lib/cyhanabi.pyx":577
  *         return moves
  * 
  *     def move_is_legal(self, HanabiMove move):             # <<<<<<<<<<<<<<
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_39move_is_legal, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_move_is_legal, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__98)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 585, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_39move_is_legal, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_move_is_legal, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__99)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 577, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_move_is_legal, __pyx_t_6) < 0) __PYX_ERR(0, 585, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_move_is_legal, __pyx_t_6) < 0) __PYX_ERR(0, 577, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":588
+  /* "cython_lib/cyhanabi.pyx":580
  *         return <bint>MoveIsLegal(self._state, move._move)
  * 
  *     def card_playable_on_fireworks(self, color, rank):             # <<<<<<<<<<<<<<
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_41card_playable_on_fireworks, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_card_playable_on_fir, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__99)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 588, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_41card_playable_on_fireworks, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_card_playable_on_fir, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__100)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 580, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_card_playable_on_fireworks, __pyx_t_6) < 0) __PYX_ERR(0, 588, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_card_playable_on_fireworks, __pyx_t_6) < 0) __PYX_ERR(0, 580, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":591
+  /* "cython_lib/cyhanabi.pyx":583
  *         return <bint>CardPlayableOnFireworks(self._state, color, rank)
  * 
  *     def life_tokens(self):             # <<<<<<<<<<<<<<
  *         return StateLifeTokens(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_43life_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_life_tokens, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__100)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 591, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_43life_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_life_tokens, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__101)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 583, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_life_tokens, __pyx_t_6) < 0) __PYX_ERR(0, 591, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_life_tokens, __pyx_t_6) < 0) __PYX_ERR(0, 583, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":594
+  /* "cython_lib/cyhanabi.pyx":586
  *         return StateLifeTokens(self._state)
  * 
  *     def num_players(self):             # <<<<<<<<<<<<<<
  *         return StateNumPlayers(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_45num_players, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_num_players, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__101)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 594, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_45num_players, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_num_players, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__102)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 586, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_num_players, __pyx_t_6) < 0) __PYX_ERR(0, 594, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_num_players, __pyx_t_6) < 0) __PYX_ERR(0, 586, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":597
+  /* "cython_lib/cyhanabi.pyx":589
  *         return StateNumPlayers(self._state)
  * 
  *     def score(self):             # <<<<<<<<<<<<<<
  *         return StateScore(self._state)
  * 
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_47score, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_score, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__102)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 597, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_47score, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_score, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__103)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 589, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_score, __pyx_t_6) < 0) __PYX_ERR(0, 597, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_score, __pyx_t_6) < 0) __PYX_ERR(0, 589, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":600
+  /* "cython_lib/cyhanabi.pyx":592
  *         return StateScore(self._state)
  * 
  *     def move_history(self):             # <<<<<<<<<<<<<<
  *         history = []
  *         cdef int history_len = StateLenMoveHistory(self._state)
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_49move_history, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_move_history, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__104)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 600, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_49move_history, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_move_history, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__105)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 592, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_move_history, __pyx_t_6) < 0) __PYX_ERR(0, 600, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_move_history, __pyx_t_6) < 0) __PYX_ERR(0, 592, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":612
+  /* "cython_lib/cyhanabi.pyx":604
  *         return history
  * 
  *     def to_json(self):             # <<<<<<<<<<<<<<
  *         cdef char* json_state = StateToJson(self._state)
  *         if json_state == NULL:
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_51to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__106)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 612, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_51to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__107)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 604, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_to_json, __pyx_t_6) < 0) __PYX_ERR(0, 612, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_to_json, __pyx_t_6) < 0) __PYX_ERR(0, 604, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
-  /* "cython_lib/cyhanabi.pyx":627
+  /* "cython_lib/cyhanabi.pyx":619
  *         return json.dumps({"HanabiGame": json_game_result, "HanabiState": json_state_result})
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_json(cls, str json_str):
  *         combined_json = json.loads(json_str)
  */
-  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_53from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__108)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 627, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_53from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__109)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 619, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 627, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 619, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
-  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 627, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_6, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 619, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 627, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 619, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 627, __pyx_L1_error)
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiState, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 619, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiState);
 
@@ -23972,7 +26980,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_61__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__109)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_61__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__110)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -23983,20 +26991,223 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_63__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__110)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_11HanabiState_63__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiState___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__111)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "cython_lib/cyhanabi.pyx":724
+ *             self._game = NULL
+ * 
+ *     def new_initial_state(self):             # <<<<<<<<<<<<<<
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_7new_initial_state, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_new_initial_state, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__112)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 724, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_new_initial_state, __pyx_t_2) < 0) __PYX_ERR(0, 724, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":727
+ *         return HanabiState.create(self, NULL, NULL)
+ * 
+ *     def num_players(self):             # <<<<<<<<<<<<<<
+ *         return NumPlayers(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_9num_players, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_num_players, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__113)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 727, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_num_players, __pyx_t_2) < 0) __PYX_ERR(0, 727, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":730
+ *         return NumPlayers(self._game)
+ * 
+ *     def num_colors(self):             # <<<<<<<<<<<<<<
+ *         return NumColors(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_11num_colors, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_num_colors, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__114)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 730, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_num_colors, __pyx_t_2) < 0) __PYX_ERR(0, 730, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":733
+ *         return NumColors(self._game)
+ * 
+ *     def num_ranks(self):             # <<<<<<<<<<<<<<
+ *         return NumRanks(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_13num_ranks, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_num_ranks, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__115)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 733, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_num_ranks, __pyx_t_2) < 0) __PYX_ERR(0, 733, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":736
+ *         return NumRanks(self._game)
+ * 
+ *     def hand_size(self):             # <<<<<<<<<<<<<<
+ *         return HandSize(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_15hand_size, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_hand_size, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__116)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 736, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_hand_size, __pyx_t_2) < 0) __PYX_ERR(0, 736, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":739
+ *         return HandSize(self._game)
+ * 
+ *     def max_information_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxInformationTokens(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_17max_information_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_max_information_token, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__117)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 739, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_max_information_tokens, __pyx_t_2) < 0) __PYX_ERR(0, 739, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":742
+ *         return MaxInformationTokens(self._game)
+ * 
+ *     def max_life_tokens(self):             # <<<<<<<<<<<<<<
+ *         return MaxLifeTokens(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_19max_life_tokens, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_max_life_tokens, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__118)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 742, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_max_life_tokens, __pyx_t_2) < 0) __PYX_ERR(0, 742, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":745
+ *         return MaxLifeTokens(self._game)
+ * 
+ *     def max_moves(self):             # <<<<<<<<<<<<<<
+ *         return MaxMoves(self._game)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_21max_moves, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_max_moves, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__119)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 745, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_max_moves, __pyx_t_2) < 0) __PYX_ERR(0, 745, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":748
+ *         return MaxMoves(self._game)
+ * 
+ *     def observation_type(self):             # <<<<<<<<<<<<<<
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_23observation_type, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_observation_type, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__120)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 748, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_observation_type, __pyx_t_2) < 0) __PYX_ERR(0, 748, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":751
+ *         return AgentObservationType(ObservationType(self._game))
+ * 
+ *     def num_cards(self, int color, int rank):             # <<<<<<<<<<<<<<
+ *         return NumCards(self._game, color, rank)
+ * 
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_25num_cards, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_num_cards, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__121)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 751, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_num_cards, __pyx_t_2) < 0) __PYX_ERR(0, 751, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":754
+ *         return NumCards(self._game, color, rank)
+ * 
+ *     def get_move_uid(self, HanabiMove move):             # <<<<<<<<<<<<<<
+ *         if move is None or move._move == NULL:
+ *             return 0
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_27get_move_uid, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_get_move_uid, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__122)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 754, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_get_move_uid, __pyx_t_2) < 0) __PYX_ERR(0, 754, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":759
+ *         return GetMoveUid(self._game, move._move)
+ * 
+ *     def get_move(self, int move_uid):             # <<<<<<<<<<<<<<
+ *         cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+ *         if move == NULL:
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_29get_move, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_get_move, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__124)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 759, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_get_move, __pyx_t_2) < 0) __PYX_ERR(0, 759, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":766
+ *         return HanabiMove.from_ptr(move)
+ * 
+ *     def parameter_string(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameParamString(self._game)
+ *         if c_string == NULL:
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_31parameter_string, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_parameter_string, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__126)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 766, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_parameter_string, __pyx_t_2) < 0) __PYX_ERR(0, 766, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":774
+ *         return string
+ * 
+ *     def to_json(self):             # <<<<<<<<<<<<<<
+ *         cdef char* c_string = GameToJson(self._game)
+ *         if c_string == NULL:
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_33to_json, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_to_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__127)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 774, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_to_json, __pyx_t_2) < 0) __PYX_ERR(0, 774, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+
+  /* "cython_lib/cyhanabi.pyx":782
+ *         return string
+ * 
+ *     @classmethod             # <<<<<<<<<<<<<<
+ *     def from_json(cls, str json_str):
+ *         cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+ */
+  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_35from_json, __Pyx_CYFUNCTION_CLASSMETHOD | __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame_from_json, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__129)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_from_json, __pyx_t_2) < 0) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
+  __Pyx_GetNameInClass(__pyx_t_2, (PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_from_json); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_SetItemOnTypeDict((PyObject *)__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame, __pyx_n_s_from_json, __pyx_t_6) < 0) __PYX_ERR(0, 782, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  PyType_Modified(__pyx_ptype_10cython_lib_8cyhanabi_HanabiGame);
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  * def __setstate_cython__(self, __pyx_state):
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_5__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__111)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_2) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_37__reduce_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame___reduce_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__130)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_reduce_cython, __pyx_t_6) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
   /* "(tree fragment)":3
  * def __reduce_cython__(self):
@@ -24004,20 +27215,20 @@ if (!__Pyx_RefNanny) {
  * def __setstate_cython__(self, __pyx_state):             # <<<<<<<<<<<<<<
  *     raise TypeError, "no default __reduce__ due to non-trivial __cinit__"
  */
-  __pyx_t_2 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_7__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__112)); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 3, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_2) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_10cython_lib_8cyhanabi_10HanabiGame_39__setstate_cython__, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_HanabiGame___setstate_cython, NULL, __pyx_n_s_cython_lib_cyhanabi, __pyx_d, ((PyObject *)__pyx_codeobj__131)); if (unlikely(!__pyx_t_6)) __PYX_ERR(1, 3, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_setstate_cython, __pyx_t_6) < 0) __PYX_ERR(1, 3, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
   /* "cython_lib/cyhanabi.pyx":1
  * import json             # <<<<<<<<<<<<<<
  * import enum
  * from cpython.bool cimport bool
  */
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_6) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
   /*--- Wrapped vars code ---*/
 
@@ -25853,78 +29064,20 @@ static void __Pyx_WriteUnraisable(const char *name, int clineno,
 #endif
 }
 
-/* FixUpExtensionType */
-#if CYTHON_USE_TYPE_SPECS
-static int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec, PyTypeObject *type) {
-#if PY_VERSION_HEX > 0x030900B1 || CYTHON_COMPILING_IN_LIMITED_API
-    CYTHON_UNUSED_VAR(spec);
-    CYTHON_UNUSED_VAR(type);
-#else
-    const PyType_Slot *slot = spec->slots;
-    while (slot && slot->slot && slot->slot != Py_tp_members)
-        slot++;
-    if (slot && slot->slot == Py_tp_members) {
-        int changed = 0;
-#if !(PY_VERSION_HEX <= 0x030900b1 && CYTHON_COMPILING_IN_CPYTHON)
-        const
-#endif
-            PyMemberDef *memb = (PyMemberDef*) slot->pfunc;
-        while (memb && memb->name) {
-            if (memb->name[0] == '_' && memb->name[1] == '_') {
-#if PY_VERSION_HEX < 0x030900b1
-                if (strcmp(memb->name, "__weaklistoffset__") == 0) {
-                    assert(memb->type == T_PYSSIZET);
-                    assert(memb->flags == READONLY);
-                    type->tp_weaklistoffset = memb->offset;
-                    changed = 1;
-                }
-                else if (strcmp(memb->name, "__dictoffset__") == 0) {
-                    assert(memb->type == T_PYSSIZET);
-                    assert(memb->flags == READONLY);
-                    type->tp_dictoffset = memb->offset;
-                    changed = 1;
-                }
-#if CYTHON_METH_FASTCALL
-                else if (strcmp(memb->name, "__vectorcalloffset__") == 0) {
-                    assert(memb->type == T_PYSSIZET);
-                    assert(memb->flags == READONLY);
-#if PY_VERSION_HEX >= 0x030800b4
-                    type->tp_vectorcall_offset = memb->offset;
-#else
-                    type->tp_print = (printfunc) memb->offset;
-#endif
-                    changed = 1;
-                }
-#endif
-#else
-                if ((0));
-#endif
-#if PY_VERSION_HEX <= 0x030900b1 && CYTHON_COMPILING_IN_CPYTHON
-                else if (strcmp(memb->name, "__module__") == 0) {
-                    PyObject *descr;
-                    assert(memb->type == T_OBJECT);
-                    assert(memb->flags == 0 || memb->flags == READONLY);
-                    descr = PyDescr_NewMember(type, memb);
-                    if (unlikely(!descr))
-                        return -1;
-                    if (unlikely(PyDict_SetItem(type->tp_dict, PyDescr_NAME(descr), descr) < 0)) {
-                        Py_DECREF(descr);
-                        return -1;
-                    }
-                    Py_DECREF(descr);
-                    changed = 1;
-                }
-#endif
-            }
-            memb++;
-        }
-        if (changed)
-            PyType_Modified(type);
+/* IterFinish */
+static CYTHON_INLINE int __Pyx_IterFinish(void) {
+    PyObject* exc_type;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    exc_type = __Pyx_PyErr_CurrentExceptionType();
+    if (unlikely(exc_type)) {
+        if (unlikely(!__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration)))
+            return -1;
+        __Pyx_PyErr_Clear();
+        return 0;
     }
-#endif
     return 0;
 }
-#endif
 
 /* PyObjectGetMethod */
 static int __Pyx_PyObject_GetMethod(PyObject *obj, PyObject *name, PyObject **method) {
@@ -26042,6 +29195,340 @@ static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name
 bad:
     return result;
 }
+
+/* RaiseNeedMoreValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* RaiseTooManyValuesToUnpack */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+}
+
+/* UnpackItemEndCheck */
+static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
+    if (unlikely(retval)) {
+        Py_DECREF(retval);
+        __Pyx_RaiseTooManyValuesError(expected);
+        return -1;
+    }
+    return __Pyx_IterFinish();
+}
+
+/* RaiseNoneIterError */
+static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+}
+
+/* UnpackTupleError */
+static void __Pyx_UnpackTupleError(PyObject *t, Py_ssize_t index) {
+    if (t == Py_None) {
+      __Pyx_RaiseNoneNotIterableError();
+    } else if (PyTuple_GET_SIZE(t) < index) {
+      __Pyx_RaiseNeedMoreValuesError(PyTuple_GET_SIZE(t));
+    } else {
+      __Pyx_RaiseTooManyValuesError(index);
+    }
+}
+
+/* UnpackTuple2 */
+static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
+        PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2, int decref_tuple) {
+    PyObject *value1 = NULL, *value2 = NULL;
+#if CYTHON_COMPILING_IN_PYPY
+    value1 = PySequence_ITEM(tuple, 0);  if (unlikely(!value1)) goto bad;
+    value2 = PySequence_ITEM(tuple, 1);  if (unlikely(!value2)) goto bad;
+#else
+    value1 = PyTuple_GET_ITEM(tuple, 0);  Py_INCREF(value1);
+    value2 = PyTuple_GET_ITEM(tuple, 1);  Py_INCREF(value2);
+#endif
+    if (decref_tuple) {
+        Py_DECREF(tuple);
+    }
+    *pvalue1 = value1;
+    *pvalue2 = value2;
+    return 0;
+#if CYTHON_COMPILING_IN_PYPY
+bad:
+    Py_XDECREF(value1);
+    Py_XDECREF(value2);
+    if (decref_tuple) { Py_XDECREF(tuple); }
+    return -1;
+#endif
+}
+static int __Pyx_unpack_tuple2_generic(PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2,
+                                       int has_known_size, int decref_tuple) {
+    Py_ssize_t index;
+    PyObject *value1 = NULL, *value2 = NULL, *iter = NULL;
+    iternextfunc iternext;
+    iter = PyObject_GetIter(tuple);
+    if (unlikely(!iter)) goto bad;
+    if (decref_tuple) { Py_DECREF(tuple); tuple = NULL; }
+    iternext = __Pyx_PyObject_GetIterNextFunc(iter);
+    value1 = iternext(iter); if (unlikely(!value1)) { index = 0; goto unpacking_failed; }
+    value2 = iternext(iter); if (unlikely(!value2)) { index = 1; goto unpacking_failed; }
+    if (!has_known_size && unlikely(__Pyx_IternextUnpackEndCheck(iternext(iter), 2))) goto bad;
+    Py_DECREF(iter);
+    *pvalue1 = value1;
+    *pvalue2 = value2;
+    return 0;
+unpacking_failed:
+    if (!has_known_size && __Pyx_IterFinish() == 0)
+        __Pyx_RaiseNeedMoreValuesError(index);
+bad:
+    Py_XDECREF(iter);
+    Py_XDECREF(value1);
+    Py_XDECREF(value2);
+    if (decref_tuple) { Py_XDECREF(tuple); }
+    return -1;
+}
+
+/* dict_iter */
+#if CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION >= 3
+#include <string.h>
+#endif
+static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* iterable, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_source_is_dict) {
+    is_dict = is_dict || likely(PyDict_CheckExact(iterable));
+    *p_source_is_dict = is_dict;
+    if (is_dict) {
+#if !CYTHON_COMPILING_IN_PYPY
+        *p_orig_length = PyDict_Size(iterable);
+        Py_INCREF(iterable);
+        return iterable;
+#elif PY_MAJOR_VERSION >= 3
+        static PyObject *py_items = NULL, *py_keys = NULL, *py_values = NULL;
+        PyObject **pp = NULL;
+        if (method_name) {
+            const char *name = PyUnicode_AsUTF8(method_name);
+            if (strcmp(name, "iteritems") == 0) pp = &py_items;
+            else if (strcmp(name, "iterkeys") == 0) pp = &py_keys;
+            else if (strcmp(name, "itervalues") == 0) pp = &py_values;
+            if (pp) {
+                if (!*pp) {
+                    *pp = PyUnicode_FromString(name + 4);
+                    if (!*pp)
+                        return NULL;
+                }
+                method_name = *pp;
+            }
+        }
+#endif
+    }
+    *p_orig_length = 0;
+    if (method_name) {
+        PyObject* iter;
+        iterable = __Pyx_PyObject_CallMethod0(iterable, method_name);
+        if (!iterable)
+            return NULL;
+#if !CYTHON_COMPILING_IN_PYPY
+        if (PyTuple_CheckExact(iterable) || PyList_CheckExact(iterable))
+            return iterable;
+#endif
+        iter = PyObject_GetIter(iterable);
+        Py_DECREF(iterable);
+        return iter;
+    }
+    return PyObject_GetIter(iterable);
+}
+static CYTHON_INLINE int __Pyx_dict_iter_next(
+        PyObject* iter_obj, CYTHON_NCP_UNUSED Py_ssize_t orig_length, CYTHON_NCP_UNUSED Py_ssize_t* ppos,
+        PyObject** pkey, PyObject** pvalue, PyObject** pitem, int source_is_dict) {
+    PyObject* next_item;
+#if !CYTHON_COMPILING_IN_PYPY
+    if (source_is_dict) {
+        PyObject *key, *value;
+        if (unlikely(orig_length != PyDict_Size(iter_obj))) {
+            PyErr_SetString(PyExc_RuntimeError, "dictionary changed size during iteration");
+            return -1;
+        }
+        if (unlikely(!PyDict_Next(iter_obj, ppos, &key, &value))) {
+            return 0;
+        }
+        if (pitem) {
+            PyObject* tuple = PyTuple_New(2);
+            if (unlikely(!tuple)) {
+                return -1;
+            }
+            Py_INCREF(key);
+            Py_INCREF(value);
+            PyTuple_SET_ITEM(tuple, 0, key);
+            PyTuple_SET_ITEM(tuple, 1, value);
+            *pitem = tuple;
+        } else {
+            if (pkey) {
+                Py_INCREF(key);
+                *pkey = key;
+            }
+            if (pvalue) {
+                Py_INCREF(value);
+                *pvalue = value;
+            }
+        }
+        return 1;
+    } else if (PyTuple_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyTuple_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyTuple_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else if (PyList_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyList_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyList_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else
+#endif
+    {
+        next_item = PyIter_Next(iter_obj);
+        if (unlikely(!next_item)) {
+            return __Pyx_IterFinish();
+        }
+    }
+    if (pitem) {
+        *pitem = next_item;
+    } else if (pkey && pvalue) {
+        if (__Pyx_unpack_tuple2(next_item, pkey, pvalue, source_is_dict, source_is_dict, 1))
+            return -1;
+    } else if (pkey) {
+        *pkey = next_item;
+    } else {
+        *pvalue = next_item;
+    }
+    return 1;
+}
+
+/* SwapException */
+#if CYTHON_FAST_THREAD_STATE
+static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_value = exc_info->exc_value;
+    exc_info->exc_value = *value;
+    if (tmp_value == NULL || tmp_value == Py_None) {
+        Py_XDECREF(tmp_value);
+        tmp_value = NULL;
+        tmp_type = NULL;
+        tmp_tb = NULL;
+    } else {
+        tmp_type = (PyObject*) Py_TYPE(tmp_value);
+        Py_INCREF(tmp_type);
+        #if CYTHON_COMPILING_IN_CPYTHON
+        tmp_tb = ((PyBaseExceptionObject*) tmp_value)->traceback;
+        Py_XINCREF(tmp_tb);
+        #else
+        tmp_tb = PyException_GetTraceback(tmp_value);
+        #endif
+    }
+  #elif CYTHON_USE_EXC_INFO_STACK
+    _PyErr_StackItem *exc_info = tstate->exc_info;
+    tmp_type = exc_info->exc_type;
+    tmp_value = exc_info->exc_value;
+    tmp_tb = exc_info->exc_traceback;
+    exc_info->exc_type = *type;
+    exc_info->exc_value = *value;
+    exc_info->exc_traceback = *tb;
+  #else
+    tmp_type = tstate->exc_type;
+    tmp_value = tstate->exc_value;
+    tmp_tb = tstate->exc_traceback;
+    tstate->exc_type = *type;
+    tstate->exc_value = *value;
+    tstate->exc_traceback = *tb;
+  #endif
+    *type = tmp_type;
+    *value = tmp_value;
+    *tb = tmp_tb;
+}
+#else
+static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb) {
+    PyObject *tmp_type, *tmp_value, *tmp_tb;
+    PyErr_GetExcInfo(&tmp_type, &tmp_value, &tmp_tb);
+    PyErr_SetExcInfo(*type, *value, *tb);
+    *type = tmp_type;
+    *value = tmp_value;
+    *tb = tmp_tb;
+}
+#endif
+
+/* FixUpExtensionType */
+#if CYTHON_USE_TYPE_SPECS
+static int __Pyx_fix_up_extension_type_from_spec(PyType_Spec *spec, PyTypeObject *type) {
+#if PY_VERSION_HEX > 0x030900B1 || CYTHON_COMPILING_IN_LIMITED_API
+    CYTHON_UNUSED_VAR(spec);
+    CYTHON_UNUSED_VAR(type);
+#else
+    const PyType_Slot *slot = spec->slots;
+    while (slot && slot->slot && slot->slot != Py_tp_members)
+        slot++;
+    if (slot && slot->slot == Py_tp_members) {
+        int changed = 0;
+#if !(PY_VERSION_HEX <= 0x030900b1 && CYTHON_COMPILING_IN_CPYTHON)
+        const
+#endif
+            PyMemberDef *memb = (PyMemberDef*) slot->pfunc;
+        while (memb && memb->name) {
+            if (memb->name[0] == '_' && memb->name[1] == '_') {
+#if PY_VERSION_HEX < 0x030900b1
+                if (strcmp(memb->name, "__weaklistoffset__") == 0) {
+                    assert(memb->type == T_PYSSIZET);
+                    assert(memb->flags == READONLY);
+                    type->tp_weaklistoffset = memb->offset;
+                    changed = 1;
+                }
+                else if (strcmp(memb->name, "__dictoffset__") == 0) {
+                    assert(memb->type == T_PYSSIZET);
+                    assert(memb->flags == READONLY);
+                    type->tp_dictoffset = memb->offset;
+                    changed = 1;
+                }
+#if CYTHON_METH_FASTCALL
+                else if (strcmp(memb->name, "__vectorcalloffset__") == 0) {
+                    assert(memb->type == T_PYSSIZET);
+                    assert(memb->flags == READONLY);
+#if PY_VERSION_HEX >= 0x030800b4
+                    type->tp_vectorcall_offset = memb->offset;
+#else
+                    type->tp_print = (printfunc) memb->offset;
+#endif
+                    changed = 1;
+                }
+#endif
+#else
+                if ((0));
+#endif
+#if PY_VERSION_HEX <= 0x030900b1 && CYTHON_COMPILING_IN_CPYTHON
+                else if (strcmp(memb->name, "__module__") == 0) {
+                    PyObject *descr;
+                    assert(memb->type == T_OBJECT);
+                    assert(memb->flags == 0 || memb->flags == READONLY);
+                    descr = PyDescr_NewMember(type, memb);
+                    if (unlikely(!descr))
+                        return -1;
+                    if (unlikely(PyDict_SetItem(type->tp_dict, PyDescr_NAME(descr), descr) < 0)) {
+                        Py_DECREF(descr);
+                        return -1;
+                    }
+                    Py_DECREF(descr);
+                    changed = 1;
+                }
+#endif
+            }
+            memb++;
+        }
+        if (changed)
+            PyType_Modified(type);
+    }
+#endif
+    return 0;
+}
+#endif
 
 /* ValidateBasesTuple */
 #if CYTHON_COMPILING_IN_CPYTHON || CYTHON_COMPILING_IN_LIMITED_API || CYTHON_USE_TYPE_SPECS
@@ -26680,7 +30167,7 @@ static PyObject *__Pyx_ImportDottedModule_WalkParts(PyObject *module, PyObject *
 #endif
 static PyObject *__Pyx__ImportDottedModule(PyObject *name, PyObject *parts_tuple) {
 #if PY_MAJOR_VERSION < 3
-    PyObject *module, *from_list, *star = __pyx_n_s__12;
+    PyObject *module, *from_list, *star = __pyx_n_s__13;
     CYTHON_UNUSED_VAR(parts_tuple);
     from_list = PyList_New(1);
     if (unlikely(!from_list))
@@ -29692,7 +33179,7 @@ __Pyx_PyType_GetName(PyTypeObject* tp)
     if (unlikely(name == NULL) || unlikely(!PyUnicode_Check(name))) {
         PyErr_Clear();
         Py_XDECREF(name);
-        name = __Pyx_NewRef(__pyx_n_s__113);
+        name = __Pyx_NewRef(__pyx_n_s__132);
     }
     return name;
 }
@@ -29811,60 +33298,6 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
         return __Pyx_inner_PyErr_GivenExceptionMatches2(err, exc_type1, exc_type2);
     }
     return (PyErr_GivenExceptionMatches(err, exc_type1) || PyErr_GivenExceptionMatches(err, exc_type2));
-}
-#endif
-
-/* SwapException */
-#if CYTHON_FAST_THREAD_STATE
-static CYTHON_INLINE void __Pyx__ExceptionSwap(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-  #if CYTHON_USE_EXC_INFO_STACK && PY_VERSION_HEX >= 0x030B00a4
-    _PyErr_StackItem *exc_info = tstate->exc_info;
-    tmp_value = exc_info->exc_value;
-    exc_info->exc_value = *value;
-    if (tmp_value == NULL || tmp_value == Py_None) {
-        Py_XDECREF(tmp_value);
-        tmp_value = NULL;
-        tmp_type = NULL;
-        tmp_tb = NULL;
-    } else {
-        tmp_type = (PyObject*) Py_TYPE(tmp_value);
-        Py_INCREF(tmp_type);
-        #if CYTHON_COMPILING_IN_CPYTHON
-        tmp_tb = ((PyBaseExceptionObject*) tmp_value)->traceback;
-        Py_XINCREF(tmp_tb);
-        #else
-        tmp_tb = PyException_GetTraceback(tmp_value);
-        #endif
-    }
-  #elif CYTHON_USE_EXC_INFO_STACK
-    _PyErr_StackItem *exc_info = tstate->exc_info;
-    tmp_type = exc_info->exc_type;
-    tmp_value = exc_info->exc_value;
-    tmp_tb = exc_info->exc_traceback;
-    exc_info->exc_type = *type;
-    exc_info->exc_value = *value;
-    exc_info->exc_traceback = *tb;
-  #else
-    tmp_type = tstate->exc_type;
-    tmp_value = tstate->exc_value;
-    tmp_tb = tstate->exc_traceback;
-    tstate->exc_type = *type;
-    tstate->exc_value = *value;
-    tstate->exc_traceback = *tb;
-  #endif
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
-}
-#else
-static CYTHON_INLINE void __Pyx_ExceptionSwap(PyObject **type, PyObject **value, PyObject **tb) {
-    PyObject *tmp_type, *tmp_value, *tmp_tb;
-    PyErr_GetExcInfo(&tmp_type, &tmp_value, &tmp_tb);
-    PyErr_SetExcInfo(*type, *value, *tb);
-    *type = tmp_type;
-    *value = tmp_value;
-    *tb = tmp_tb;
 }
 #endif
 

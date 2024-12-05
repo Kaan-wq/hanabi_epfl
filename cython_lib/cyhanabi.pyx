@@ -2,6 +2,7 @@ import json
 import enum
 from cpython.bool cimport bool
 from libc.stdlib cimport malloc, free
+from libc.string cimport memcpy, strdup
 from cyhanabi cimport DeleteString
 from cyhanabi cimport pyhanabi_card_t, CardValid
 from cyhanabi cimport pyhanabi_card_knowledge_t, CardKnowledgeToString, ColorWasHinted, KnownColor, ColorIsPlausible, RankWasHinted, KnownRank, RankIsPlausible
@@ -476,7 +477,6 @@ cdef class HanabiState(object):
         return instance
 
     def __init__(self, game=None, state=None, parent_game=None):
-        """Python constructor that calls the factory method."""
         if state is None and game is not None:
             self = HanabiState.create(game, NULL, NULL)
         elif state is not None and parent_game is not None:
@@ -487,7 +487,6 @@ cdef class HanabiState(object):
             raise ValueError("Invalid parameters")
     
     def copy(self):
-        """Returns a copy of the state."""
         return HanabiState.create(None, self._state, NULL)
 
     #def observation(self, int player):
@@ -508,7 +507,6 @@ cdef class HanabiState(object):
     def discard_pile(self):
         discards = []
         cdef int pile_size = StateDiscardPileSize(self._state)
-        
         for index in range(pile_size):
             StateGetDiscard(self._state, index, self._discard_pool)
             discards.append(HanabiCard(self._discard_pool.color, self._discard_pool.rank))
@@ -540,15 +538,11 @@ cdef class HanabiState(object):
         hand_list = []
         cdef int pid, hand_size, i
         cdef pyhanabi_card_t* c_card
-        
         for pid in range(self._num_players):
             player_hand = []
             hand_size = StateGetHandSize(self._state, pid)
             for i in range(hand_size):
-                # Cast the stored integer back to a pointer
                 c_card = <pyhanabi_card_t*><size_t>self._card_pool[pid * self._max_hand_size + i]
-                if c_card == NULL:
-                    continue
                 StateGetHandCard(self._state, pid, i, c_card)
                 player_hand.append(HanabiCard(c_card.color, c_card.rank))
             hand_list.append(player_hand)
@@ -567,8 +561,6 @@ cdef class HanabiState(object):
         if self.is_terminal():
             return []
         cdef void* c_movelist = StateLegalMoves(self._state)
-        if c_movelist == NULL:
-            return []
         cdef int num_moves = NumMoves(c_movelist)
         moves = []
         cdef pyhanabi_move_t* c_move
@@ -673,11 +665,124 @@ cdef class HanabiState(object):
         self._card_pool.clear()
 
 
-cdef class HanabiGame(object):
+cdef class HanabiGame:
     cdef pyhanabi_game_t* _game
 
     def __cinit__(self):
         self._game = NULL
 
-    def __init__(self, list param_list=None):
-        self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+    @staticmethod
+    cdef from_ptr(pyhanabi_game_t* game):
+        cdef HanabiGame instance = HanabiGame()
+        instance._game = game
+        return instance
+
+    def __init__(self, dict params=None):
+        cdef:
+            int param_count, i = 0
+            const char** c_array
+            bytes key_bytes, value_bytes
+            
+        if params is None:
+            self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+            if self._game == NULL:
+                raise MemoryError()
+            NewDefaultGame(self._game)
+            return
+
+        param_count = len(params) * 2
+        c_array = <const char**>malloc(param_count * sizeof(const char*))
+        if c_array == NULL:
+            raise MemoryError()
+
+        try:
+            for key, value in params.items():
+                key_bytes = str(key).encode('ascii')
+                value_bytes = str(value).encode('ascii')
+                
+                c_array[i] = strdup(<const char*>key_bytes)
+                c_array[i+1] = strdup(<const char*>value_bytes)
+                if c_array[i] == NULL or c_array[i+1] == NULL:
+                    raise MemoryError()
+                i += 2
+
+            self._game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+            if self._game == NULL:
+                raise MemoryError()
+            NewGame(self._game, param_count, c_array)
+        finally:
+            for j in range(i):
+                if c_array[j] != NULL:
+                    free(<void*>c_array[j])
+            free(c_array)
+
+    def __dealloc__(self):
+        if self._game != NULL:
+            DeleteGame(self._game)
+            self._game = NULL
+
+    def new_initial_state(self):
+        return HanabiState.create(self, NULL, NULL)
+
+    def num_players(self): 
+        return NumPlayers(self._game)
+
+    def num_colors(self): 
+        return NumColors(self._game)
+
+    def num_ranks(self): 
+        return NumRanks(self._game)
+
+    def hand_size(self): 
+        return HandSize(self._game)
+
+    def max_information_tokens(self): 
+        return MaxInformationTokens(self._game)
+
+    def max_life_tokens(self): 
+        return MaxLifeTokens(self._game)
+
+    def max_moves(self): 
+        return MaxMoves(self._game)
+
+    def observation_type(self):
+        return AgentObservationType(ObservationType(self._game))
+
+    def num_cards(self, int color, int rank):
+        return NumCards(self._game, color, rank)
+
+    def get_move_uid(self, HanabiMove move):
+        if move is None or move._move == NULL:
+            return 0
+        return GetMoveUid(self._game, move._move)
+
+    def get_move(self, int move_uid):
+        cdef pyhanabi_move_t* move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+        if move == NULL:
+            raise MemoryError()
+        GetMoveByUid(self._game, move_uid, move)
+        return HanabiMove.from_ptr(move)
+
+    def parameter_string(self):
+        cdef char* c_string = GameParamString(self._game)
+        if c_string == NULL:
+            return ""
+        string = c_string.decode('utf-8')
+        DeleteString(c_string)
+        return string
+
+    def to_json(self):
+        cdef char* c_string = GameToJson(self._game)
+        if c_string == NULL:
+            raise ValueError("Serialization failed: GameToJSON returned NULL")
+        string = c_string.decode('utf-8')
+        DeleteString(c_string)
+        return string
+
+    @classmethod
+    def from_json(cls, str json_str):
+        cdef pyhanabi_game_t* c_game = <pyhanabi_game_t*>malloc(sizeof(pyhanabi_game_t))
+        if not GameFromJson(json_str.encode('ascii'), c_game):
+            free(c_game)
+            raise ValueError("Failed to deserialize HanabiGame from JSON")
+        return HanabiGame.from_ptr(c_game)
