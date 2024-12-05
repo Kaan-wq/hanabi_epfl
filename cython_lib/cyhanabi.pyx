@@ -754,35 +754,38 @@ cdef class HanabiGame:
         return HanabiGame.from_ptr(c_game)
 
 
-class HanabiObservation(object):
-    def __init__(self, state, game, player):
-        self._observation = ffi.new("pyhanabi_observation_t*")
-        self._game = game
-        NewObservation(state, player, self._observation)
+cdef class HanabiObservation:
+    cdef pyhanabi_observation_t* _observation
+    cdef pyhanabi_game_t* _game
+    cdef int _max_hand_size
+    cdef list _knowledge_pool
 
+    def __cinit__(self):
+        self._observation = NULL
+        self._game = NULL
         self._max_hand_size = 5
-        self._knowledge_pool = [
-            ffi.new("pyhanabi_card_knowledge_t*")
-            for _ in range(self.num_players() * self._max_hand_size)
-        ]
+        self._knowledge_pool = []
 
-    def __str__(self):
-        c_string = ObsToString(self._observation)
-        string = encode_ffi_string(c_string)
-        DeleteString(c_string)
-        return string
+    @staticmethod
+    cdef HanabiObservation create(pyhanabi_state_t* state, pyhanabi_game_t* game, int player):
+        cdef HanabiObservation instance = HanabiObservation()
+        
+        instance._observation = <pyhanabi_observation_t*>malloc(sizeof(pyhanabi_observation_t))
+        if instance._observation == NULL:
+            raise MemoryError()
+        
+        instance._game = game
 
-    def __repr__(self):
-        return self.__str__()
-
-    def __del__(self):
-        if self._observation is not None:
-        DeleteObservation(self._observation)
-        self._observation = None
-        del self
-
-    def observation(self):
-        return self._observation
+        NewObservation(state, player, instance._observation)
+        
+        cdef pyhanabi_card_knowledge_t* knowledge
+        cdef int num_players = ObsNumPlayers(instance._observation)
+        for i in range(num_players * instance._max_hand_size):
+            knowledge = <pyhanabi_card_knowledge_t*>malloc(sizeof(pyhanabi_card_knowledge_t))
+            if knowledge == NULL:
+                raise MemoryError()
+            instance._knowledge_pool.append(<size_t>knowledge)
+        return instance
 
     def cur_player_offset(self):
         return ObsCurPlayerOffset(self._observation)
@@ -792,55 +795,71 @@ class HanabiObservation(object):
 
     def observed_hands(self):
         hand_list = []
-        c_card = ffi.new("pyhanabi_card_t*")
-        for pid in range(self.num_players()):
-            player_hand = []
-            hand_size = ObsGetHandSize(self._observation, pid)
-            for i in range(hand_size):
-                ObsGetHandCard(self._observation, pid, i, c_card)
-                player_hand.append(HanabiCard(c_card.color, c_card.rank))
-            hand_list.append(player_hand)
+        cdef pyhanabi_card_t* c_card
+        cdef int pid, hand_size, i
+        c_card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
+        if c_card == NULL:
+            raise MemoryError()
+        try:
+            for pid in range(self.num_players()):
+                player_hand = []
+                hand_size = ObsGetHandSize(self._observation, pid)
+                for i in range(hand_size):
+                    ObsGetHandCard(self._observation, pid, i, c_card)
+                    player_hand.append(HanabiCard(c_card.color, c_card.rank))
+                hand_list.append(player_hand)
+        finally:
+            free(c_card)
         return hand_list
 
     def card_knowledge(self):
-        num_players = self.num_players()
-        return [
-            [
-                HanabiCardKnowledge(self._get_c_knowledge(pid, i))
-                for i in range(ObsGetHandSize(self._observation, pid))
-            ]
-            for pid in range(num_players)
-        ]
-
-    def _get_c_knowledge(self, pid, i):
-        c_knowledge = self._knowledge_pool[pid * self._max_hand_size + i]
-        ObsGetHandCardKnowledge(self._observation, pid, i, c_knowledge)
-        return c_knowledge
+        cdef:
+            int num_players = self.num_players()
+            int pid, i, hand_size
+            pyhanabi_card_knowledge_t* c_knowledge
+        knowledge_list = []
+        for pid in range(num_players):
+            player_knowledge = []
+            hand_size = ObsGetHandSize(self._observation, pid)
+            for i in range(hand_size):
+                c_knowledge = <pyhanabi_card_knowledge_t*><size_t>self._knowledge_pool[pid * self._max_hand_size + i]
+                ObsGetHandCardKnowledge(self._observation, pid, i, c_knowledge)
+                player_knowledge.append(HanabiCardKnowledge.from_ptr(c_knowledge))
+            knowledge_list.append(player_knowledge)
+        return knowledge_list
 
     def discard_pile(self):
-        discards = []
-        c_card = ffi.new("pyhanabi_card_t*")
-        for index in range(ObsDiscardPileSize(self._observation)):
-            ObsGetDiscard(self._observation, index, c_card)
-            discards.append(HanabiCard(c_card.color, c_card.rank))
+        cdef:
+            pyhanabi_card_t* c_card = <pyhanabi_card_t*>malloc(sizeof(pyhanabi_card_t))
+            int pile_size = ObsDiscardPileSize(self._observation)
+            list discards = []
+        if c_card == NULL:
+            raise MemoryError()
+        try:
+            for index in range(pile_size):
+                ObsGetDiscard(self._observation, index, c_card)
+                discards.append(HanabiCard(c_card.color, c_card.rank))
+        finally:
+            free(c_card)
         return discards
 
     def fireworks(self):
-        firework_list = []
-        num_colors = NumColors(self._game)
-        for c in range(num_colors):
-            firework_list.append(ObsFireworks(self._observation, c))
-        return firework_list
+        return [ObsFireworks(self._observation, c) for c in range(NumColors(self._game))]
 
     def deck_size(self):
         return ObsDeckSize(self._observation)
 
     def last_moves(self):
-        history_items = []
-        for i in range(ObsNumLastMoves(self._observation)):
-            history_item = ffi.new("pyhanabi_history_item_t*")
+        cdef:
+            int num_moves = ObsNumLastMoves(self._observation)
+            pyhanabi_history_item_t* history_item
+            list history_items = []
+        for i in range(num_moves):
+            history_item = <pyhanabi_history_item_t*>malloc(sizeof(pyhanabi_history_item_t))
+            if history_item == NULL:
+                raise MemoryError()
             ObsGetLastMove(self._observation, i, history_item)
-            history_items.append(HanabiHistoryItem(history_item))
+            history_items.append(HanabiHistoryItem.from_ptr(history_item))
         return history_items
 
     def information_tokens(self):
@@ -850,12 +869,36 @@ class HanabiObservation(object):
         return ObsLifeTokens(self._observation)
 
     def legal_moves(self):
-        num_legal_moves = ObsNumLegalMoves(self._observation)
-        moves = [ffi.new("pyhanabi_move_t*") for _ in range(num_legal_moves)]
+        cdef:
+            int num_legal_moves = ObsNumLegalMoves(self._observation)
+            pyhanabi_move_t* move
+            list moves = []
         for i in range(num_legal_moves):
-            ObsGetLegalMove(self._observation, i, moves[i])
-            moves[i] = HanabiMove(moves[i])
+            move = <pyhanabi_move_t*>malloc(sizeof(pyhanabi_move_t))
+            if move == NULL:
+                raise MemoryError()
+            ObsGetLegalMove(self._observation, i, move)
+            moves.append(HanabiMove.from_ptr(move))
         return moves
 
-    def card_playable_on_fireworks(self, color, rank):
-        return ObsCardPlayableOnFireworks(self._observation, color, rank)
+    def card_playable_on_fireworks(self, int color, int rank):
+        return <bint>ObsCardPlayableOnFireworks(self._observation, color, rank)
+
+    def __str__(self):
+        cdef char* c_string = ObsToString(self._observation)
+        if c_string == NULL:
+            return ""
+        string = c_string.decode('utf-8')
+        DeleteString(c_string)
+        return string
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __dealloc__(self):
+        if self._observation != NULL:
+            DeleteObservation(self._observation)
+            self._observation = NULL
+        for knowledge in self._knowledge_pool:
+            free(<pyhanabi_card_knowledge_t*>knowledge)
+        self._knowledge_pool.clear()
