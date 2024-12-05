@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8.11)
+cmake_minimum_required (VERSION 3.30.5)
 project (hanabi_epfl)
 
 set(CMAKE_C_FLAGS "-O2 -std=c++11 -march=native -fPIC")

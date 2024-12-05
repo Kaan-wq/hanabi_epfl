@@ -14,7 +14,7 @@
 					"jsonFile" : "directory-.-Debug-62a6b7723e725d973091.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "2.8.11"
+						"string" : "3.30.5"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -28,7 +28,7 @@
 					"jsonFile" : "directory-hanabi_lib-Debug-c62afccc07818df46d11.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "2.8.11"
+						"string" : "3.30.5"
 					},
 					"parentIndex" : 0,
 					"projectIndex" : 0,

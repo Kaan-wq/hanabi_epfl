@@ -1192,18 +1192,6 @@
 			],
 			"type" : "PATH",
 			"value" : "/usr/local/share/cmake/nlohmann_json"
-		},
-		{
-			"name" : "pyhanabi_LIB_DEPENDS",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Dependencies for the target"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "general;hanabi;"
 		}
 	],
 	"kind" : "cache",
