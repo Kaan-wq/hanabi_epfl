@@ -154,3 +154,13 @@ cdef extern from "pyhanabi.h":
     cdef bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item)
     cdef char* StateToJson(pyhanabi_state_t* state)
     cdef bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game)
+
+
+cdef class HanabiCardKnowledge:
+    cdef pyhanabi_card_knowledge_t* _knowledge
+    @staticmethod
+    cdef from_ptr(pyhanabi_card_knowledge_t* knowledge)
+    cdef color(self)
+    cdef color_plausible(self, color_index)
+    cdef rank(self)
+    cdef rank_plausible(self, rank_index)

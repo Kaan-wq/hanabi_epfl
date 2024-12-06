@@ -2,6 +2,7 @@ from math import sqrt, log
 from collections import defaultdict
 import ray
 from pyhanabi import HanabiState, HanabiMove
+#from cython_lib.cyhanabi import HanabiState, HanabiMove
 from agents.mcts import mcts_env
 from agents.mcts.mcts_node import MCTS_Node
 from agents.rule_based.rule_based_agents import VanDenBerghAgent

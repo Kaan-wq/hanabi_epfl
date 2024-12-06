@@ -93,9 +93,6 @@ class HanabiCard(object):
 
 
 cdef class HanabiCardKnowledge(object):
-    """Cython wrapper for C++ HanabiCardKnowledge class."""
-    cdef pyhanabi_card_knowledge_t* _knowledge
-
     def __cinit__(self):
         self._knowledge = NULL
 

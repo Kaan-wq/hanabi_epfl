@@ -3,6 +3,7 @@ cimport numpy as cnp
 from pyhanabi import HanabiCard
 from libc.stdlib cimport rand
 from cython import boundscheck, wraparound
+#from cython_lib.cyhanabi cimport HanabiCardKnowledge
 
 cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
 cdef char[5] CHAR_COLOR_STRINGS
@@ -55,7 +56,7 @@ cdef class MCTS_Sampler:
         list discard_pile,
         list fireworks,
         card_knowledge=None,
-        additional_cards=None,
+        list additional_cards=None,
     ):
         if additional_cards is None:
             additional_cards = []
@@ -124,7 +125,7 @@ cdef class MCTS_Sampler:
         cdef object sampled_card
         if valid_cards:
             sampled_card = valid_cards[rand() % len(valid_cards)]
-            return HanabiCard(sampled_card.color(), sampled_card.rank())
+            return HanabiCard(sampled_card._color, sampled_card._rank)
         else:
             return None
 
@@ -227,7 +228,7 @@ cdef class HanabiDeck:
     cdef void remove_by_cython_cards(self, list cards):
         cdef object card
         for card in cards:
-            self.remove_card(card.color(), card.rank())
+            self.remove_card(card._color, card._rank)
 
     @boundscheck(False)
     @wraparound(False)
