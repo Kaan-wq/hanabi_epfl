@@ -4,18 +4,6 @@ from pyhanabi import HanabiCard
 from libc.stdlib cimport rand
 from cython import boundscheck, wraparound
 
-cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
-cdef char[5] CHAR_COLOR_STRINGS
-for i in range(5):
-    CHAR_COLOR_STRINGS[i] = COLOR_CHAR[i]
-
-@boundscheck(False)
-@wraparound(False)
-cdef inline object color_idx_to_char(int color_idx):
-    if color_idx == -1:
-        return None
-    else:
-        return CHAR_COLOR_STRINGS[color_idx]
 
 # Updated memoryview declarations
 cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([
@@ -45,8 +33,6 @@ cdef class MCTS_Sampler:
     def __cinit__(self):
         self.deck = HanabiDeck()
 
-    @boundscheck(False)
-    @wraparound(False)
     cpdef list sample_hand(
         self,
         int player,
@@ -96,8 +82,6 @@ cdef class MCTS_Sampler:
 
         return sampled_hand
 
-    @boundscheck(False)
-    @wraparound(False)
     cpdef object sample_card(
         self,
         int player,
@@ -128,8 +112,6 @@ cdef class MCTS_Sampler:
         else:
             return None
 
-    @boundscheck(False)
-    @wraparound(False)
     cpdef list valid_cards(
         self,
         int player,
@@ -175,8 +157,6 @@ cdef class HanabiDeck:
         else:
             self.reset_deck()
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef list get_deck(self):
         cdef list deck_list = []
         cdef int i, j, count
@@ -188,8 +168,6 @@ cdef class HanabiDeck:
 
         return deck_list
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef list get_hanabi_deck(self):
         cdef list deck_list = []
         cdef int i, j, count
@@ -201,8 +179,6 @@ cdef class HanabiDeck:
 
         return deck_list
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_knowledge(self, card_knowledge):
         cdef int color, rank, card_idx
         cdef bint color_plausible, rank_plausible
@@ -215,22 +191,16 @@ cdef class HanabiDeck:
                     self.total_count -= self.card_count[card_idx]
                     self.card_count[card_idx] = 0
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_cards(self, list cards):
         cdef object card
         for card in cards:
             self.remove_card(card.color(), card.rank())
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_cython_cards(self, list cards):
         cdef object card
         for card in cards:
             self.remove_card(card._color, card._rank)
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):
         cdef int other_player, idx
         cdef object card
@@ -242,8 +212,6 @@ cdef class HanabiDeck:
                     continue
                 self.remove_card(card.color(), card.rank())
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
         cdef int idx
         cdef object card
@@ -252,8 +220,6 @@ cdef class HanabiDeck:
                 continue
             self.remove_card(card.color(), card.rank())
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void remove_by_fireworks(self, list fireworks):
         cdef int color, firework, idx, start_idx, end_idx
         cdef int fireworks_len = len(fireworks)
@@ -267,14 +233,10 @@ cdef class HanabiDeck:
                         self.card_count[idx] -= 1
                         self.total_count -= 1
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef void reset_deck(self):
         self.card_count = INIT_DECK.copy()
         self.total_count = 50
 
-    @boundscheck(False)
-    @wraparound(False)
     cdef inline void remove_card(self, int color, int rank):
         cdef int card_idx = color * self.num_ranks + rank
         if self.card_count[card_idx] == 0:
