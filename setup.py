@@ -57,6 +57,6 @@ setup(
             "infer_types": True,
         },
     ),
-    packages=["cython_lib", "agents.mcts.cython.sampler", "agents.mcts.cython.node"],s
+    packages=["cython_lib", "agents.mcts.cython.sampler", "agents.mcts.cython.node"],
     zip_safe=False,
 )
