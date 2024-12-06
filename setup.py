@@ -28,19 +28,6 @@ extensions = [
         language="c++",  # Specify that we're using C++
         extra_compile_args=["-O3", "-march=native", "-std=c++11","-ffast-math", "-funroll-loops"],
     ),
-    Extension(
-        "agents.mcts.cython.cyhanabi",
-        ["agents/mcts/cython/cyhanabi.pyx"],
-        include_dirs=[
-            numpy.get_include(),
-            ".",  # For finding pyhanabi.h
-            "hanabi_lib",  # For finding hanabi library headers
-        ],
-        libraries=["pyhanabi"],  # Link against the existing C++ library
-        library_dirs=["."],  # Where to find the library
-        language="c++",  # Specify that we're using C++
-        extra_compile_args=["-O3", "-march=native", "-std=c++11","-ffast-math", "-funroll-loops"],
-    ),
 ]
 
 setup(
