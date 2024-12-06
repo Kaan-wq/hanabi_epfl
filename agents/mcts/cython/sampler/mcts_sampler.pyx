@@ -161,7 +161,6 @@ cdef class HanabiDeck:
         cdef int i, j, count, pos = 0
         cdef int max_idx = self.num_colors * self.num_ranks
         cdef int card_color, card_rank
-
         for i in range(max_idx):
             count = self.card_count[i]
             if count > 0:
