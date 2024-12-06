@@ -2,10 +2,8 @@ import numpy as np
 cimport numpy as cnp
 from pyhanabi import HanabiCard
 from libc.stdlib cimport rand
-from cython import boundscheck, wraparound
 
 
-# Updated memoryview declarations
 cdef cnp.int8_t[:, :] PRECOMPUTED_CARDS = np.array([
     [color, rank]
     for color in range(5)
@@ -158,25 +156,35 @@ cdef class HanabiDeck:
             self.reset_deck()
 
     cdef list get_deck(self):
-        cdef list deck_list = []
-        cdef int i, j, count
+        cdef int total = self.total_count
+        cdef list deck_list = [None] * total
+        cdef int i, j, count, pos = 0
+        cdef int max_idx = self.num_colors * self.num_ranks
+        cdef int card_color, card_rank
 
-        for i in range(self.num_colors * self.num_ranks):
+        for i in range(max_idx):
             count = self.card_count[i]
-            for j in range(count):
-                deck_list.append(CythonCard(PRECOMPUTED_CARDS[i, 0], PRECOMPUTED_CARDS[i, 1]))
-
+            if count > 0:
+                card_color = PRECOMPUTED_CARDS[i, 0]
+                card_rank = PRECOMPUTED_CARDS[i, 1]
+                for j in range(count):
+                    deck_list[pos] = CythonCard(card_color, card_rank)
+                    pos += 1
         return deck_list
 
     cdef list get_hanabi_deck(self):
-        cdef list deck_list = []
-        cdef int i, j, count
-
-        for i in range(self.num_colors * self.num_ranks):
+        cdef int total = self.total_count
+        cdef list deck_list = [None] * total
+        cdef int i, j, count, pos = 0
+        cdef int max_idx = self.num_colors * self.num_ranks
+        cdef object card
+        for i in range(max_idx):
             count = self.card_count[i]
-            for j in range(count):
-                deck_list.append(PRECOMPUTED_HANABI_CARDS[i])
-
+            if count > 0:
+                card = PRECOMPUTED_HANABI_CARDS[i]
+                for j in range(count):
+                    deck_list[pos] = card
+                    pos += 1
         return deck_list
 
     cdef void remove_by_knowledge(self, card_knowledge):
@@ -192,37 +200,48 @@ cdef class HanabiDeck:
                     self.card_count[card_idx] = 0
 
     cdef void remove_by_cards(self, list cards):
+        cdef int c_len = len(cards)
+        cdef int i
         cdef object card
-        for card in cards:
+        for i in range(c_len):
+            card = cards[i]
             self.remove_card(card.color(), card.rank())
 
     cdef void remove_by_cython_cards(self, list cards):
-        cdef object card
-        for card in cards:
+        cdef int c_len = len(cards)
+        cdef int i
+        cdef CythonCard card
+        for i in range(c_len):
+            card = cards[i]
             self.remove_card(card._color, card._rank)
 
     cdef void remove_by_hands(self, int player, list hands, int card_index=-1):
-        cdef int other_player, idx
+        cdef int num_players = len(hands)
+        cdef int other_player, hand_size, idx
         cdef object card
-        for other_player in range(len(hands)):
+        for other_player in range(num_players):
             if other_player == player and card_index == -1:
                 continue
-            for idx, card in enumerate(hands[other_player]):
+            hand_size = len(hands[other_player])
+            for idx in range(hand_size):
                 if other_player == player and idx == card_index:
                     continue
+                card = hands[other_player][idx]
                 self.remove_card(card.color(), card.rank())
 
     cdef void remove_by_own_hand(self, int player, list hands, int card_index):
+        cdef int hand_size = len(hands[player])
         cdef int idx
         cdef object card
-        for idx, card in enumerate(hands[player]):
+        for idx in range(hand_size):
             if idx == card_index:
                 continue
+            card = hands[player][idx]
             self.remove_card(card.color(), card.rank())
 
     cdef void remove_by_fireworks(self, list fireworks):
-        cdef int color, firework, idx, start_idx, end_idx
         cdef int fireworks_len = len(fireworks)
+        cdef int color, firework, idx, start_idx, end_idx
         for color in range(fireworks_len):
             firework = <int>fireworks[color]
             if firework > 0:
