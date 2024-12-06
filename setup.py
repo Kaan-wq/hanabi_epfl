@@ -6,14 +6,7 @@ extensions = [
     Extension(
         "agents.mcts.cython.sampler.mcts_sampler",
         ["agents/mcts/cython/sampler/mcts_sampler.pyx"],
-        include_dirs=[
-            numpy.get_include(), 
-            ".",  # For finding pyhanabi.h
-            "hanabi_lib",  # For finding hanabi library headers
-        ],
-        libraries=["pyhanabi"],  # Link against the existing C++ library
-        library_dirs=["."],  # Where to find the library
-        language="c++",  # Specify that we're using C++
+        include_dirs=[numpy.get_include()],
         extra_compile_args=["-O3", "-march=native", "-ffast-math", "-funroll-loops"],
     ), 
     Extension(
