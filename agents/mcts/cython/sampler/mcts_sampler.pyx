@@ -3,7 +3,6 @@ cimport numpy as cnp
 from pyhanabi import HanabiCard
 from libc.stdlib cimport rand
 from cython import boundscheck, wraparound
-from cython_lib.cyhanabi import HanabiCardKnowledge
 
 cdef char[5] COLOR_CHAR = [b'R', b'Y', b'G', b'W', b'B']
 cdef char[5] CHAR_COLOR_STRINGS
