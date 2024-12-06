@@ -1,5 +1,3 @@
-# mcts_sampler.pyi
-
 import random
 import numpy as np
 from pyhanabi import HanabiCard
