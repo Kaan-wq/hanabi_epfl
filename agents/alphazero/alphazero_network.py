@@ -100,18 +100,17 @@ def train_network(
     total_loss = 0.0
 
     for states, policies, values, weights in dataloader:
-        states, policies, weights = (
+        states, policies, values, weights = (
             states.to(device),
             policies.to(device),
+            values.to(device),
             weights.to(device),
         )
 
         optimizer.zero_grad()
         policy_logits = network(states)
         policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
-
-        policy_losses = -torch.sum(policies * policy_log_probs, dim=1)
-        policy_loss = torch.mean(policy_losses * weights)
+        policy_loss = torch.mean(-torch.sum(policies * policy_log_probs, dim=1) * weights)
 
         # Value loss (if value head is added)
         # value_loss = self.criterion_value(value.squeeze(-1), value_targets)
@@ -121,7 +120,8 @@ def train_network(
         policy_loss.backward()
         optimizer.step()
 
-        replay_buffer.update_priorities(indices, policy_losses.detach().cpu().numpy())
+        priorities = ((values + 1) / 2) ** 2
+        replay_buffer.update_priorities(indices, priorities.detach().cpu().numpy())
         total_loss += policy_loss.item()
 
     return total_loss / len(dataloader)
@@ -185,7 +185,7 @@ def collect_alphazero_data(
                 torch.tensor(state, dtype=torch.float32),
                 torch.tensor(policy, dtype=torch.float32),
                 torch.tensor(z, dtype=torch.float32),
-                torch.tensor(root_policy, dtype=torch.float32),
+                root_policy.clone().detach() if torch.is_tensor(root_policy) else torch.tensor(root_policy, dtype=torch.float32),
             )
             for state, policy, value, root_policy in zip(*data)
         ]

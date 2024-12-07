@@ -163,7 +163,7 @@ class Runner(object):
                         self.network,
                         self.optimizer,
                         self.device, 
-                        batch_size=1024
+                        batch_size=128
                     )
                     # Save the model
                     torch.save(self.network.state_dict(), "saved_models/policy_model_200.pth")

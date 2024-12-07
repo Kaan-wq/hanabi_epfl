@@ -17,7 +17,7 @@ class PrioritizedReplayBuffer:
         storage_mode: str = "hybrid",
         file_path: Optional[str] = None,
         load_existing: bool = False,
-        alpha: float = 0.6,  # Priority exponent
+        alpha: float = 0.7,  # Priority exponent
         beta: float = 0.4,  # Importance sampling
         log_level: int = logging.INFO,
     ):
