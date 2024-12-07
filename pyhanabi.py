@@ -806,9 +806,12 @@ class HanabiState(object):
     return self.__str__()
 
   def __del__(self):
-    if self._state is not None:
-      lib.DeleteState(self._state)
-      self._state = None
+    try:
+      if self._state is not None and lib is not None:
+        lib.DeleteState(self._state)
+        self._state = None
+    except:
+      pass
     del self
 
 
@@ -875,9 +878,12 @@ class HanabiGame(object):
     return self._game
 
   def __del__(self):
-    if self._game is not None:
-      lib.DeleteGame(self._game)
-      self._game = None
+    try:
+      if self._game is not None and lib is not None:
+        lib.DeleteGame(self._game)
+        self._game = None
+    except:
+      pass
     del self
 
   def parameter_string(self):
@@ -1131,10 +1137,13 @@ class ObservationEncoder(object):
     lib.NewObservationEncoder(self._encoder, self._game, enc_type)
 
   def __del__(self):
-    if self._encoder is not None:
-      lib.DeleteObservationEncoder(self._encoder)
-      self._encoder = None
-      self._game = None
+    try:
+      if self._encoder is not None and lib is not None:
+        lib.DeleteObservationEncoder(self._encoder)
+        self._encoder = None
+        self._game = None
+    except:
+      pass
     del self
 
   def shape(self):
