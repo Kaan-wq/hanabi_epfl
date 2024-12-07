@@ -94,7 +94,7 @@ class HanabiCard(object):
 
 cdef class HanabiCardKnowledge(object):
     cdef pyhanabi_card_knowledge_t* _knowledge
-    
+
     def __cinit__(self):
         self._knowledge = NULL
 
@@ -402,7 +402,6 @@ cdef class HanabiState(object):
 
     @staticmethod
     cdef HanabiState create(object game, pyhanabi_state_t* c_state, pyhanabi_game_t* c_game):
-        """Factory method to create HanabiState."""
         # Instantiate state
         cdef HanabiState instance = HanabiState()
         instance._state = <pyhanabi_state_t*>malloc(sizeof(pyhanabi_state_t))
@@ -445,9 +444,9 @@ cdef class HanabiState(object):
         if state is None and game is not None:
             self = HanabiState.create(game, NULL, NULL)
         elif state is not None and parent_game is not None:
-            self = HanabiState.create(None, <pyhanabi_state_t*>state, <pyhanabi_game_t*>parent_game)
+            self = HanabiState.create(None, <pyhanabi_state_t*><size_t>state, <pyhanabi_game_t*><size_t>parent_game)
         elif state is not None:
-            self = HanabiState.create(None, <pyhanabi_state_t*>state, NULL)
+            self = HanabiState.create(None, <pyhanabi_state_t*><size_t>state, NULL)
         else:
             raise ValueError("Invalid parameters")
     
@@ -603,7 +602,8 @@ cdef class HanabiState(object):
             free(c_game)
             raise ValueError("Failed to deserialize HanabiState from JSON")
 
-        return HanabiState.create(None, c_state, c_game)
+        cdef HanabiState instance = HanabiState(state=<size_t>c_state, parent_game=<size_t>c_game)
+        return instance
 
     def __str__(self):
         cdef char* c_string = StateToString(self._state)

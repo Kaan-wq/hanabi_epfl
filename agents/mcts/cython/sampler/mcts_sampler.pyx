@@ -155,7 +155,7 @@ cdef class HanabiDeck:
         else:
             self.reset_deck()
 
-    cdef list get_deck(self):
+    cdef inline list get_deck(self):
         cdef int total = self.total_count
         cdef list deck_list = [None] * total
         cdef int i, j, count, pos = 0
@@ -171,7 +171,7 @@ cdef class HanabiDeck:
                     pos += 1
         return deck_list
 
-    cdef list get_hanabi_deck(self):
+    cdef inline list get_hanabi_deck(self):
         cdef int total = self.total_count
         cdef list deck_list = [None] * total
         cdef int i, j, count, pos = 0
@@ -251,7 +251,7 @@ cdef class HanabiDeck:
                         self.card_count[idx] -= 1
                         self.total_count -= 1
 
-    cdef void reset_deck(self):
+    cdef inline void reset_deck(self):
         self.card_count = INIT_DECK.copy()
         self.total_count = 50
 
