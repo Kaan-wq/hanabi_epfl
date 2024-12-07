@@ -369,7 +369,7 @@ class PMCTS_Agent(MCTS_Agent):
 
 
 
-@ray.remote(num_cpus=0.5)
+@ray.remote(num_cpus=1)
 class MCTS_Worker:
     def __init__(self, config, max_rollout_num):
         self.agent = MCTS_Agent(config)
