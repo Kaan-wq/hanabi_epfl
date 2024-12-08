@@ -72,7 +72,7 @@ class Runner(object):
                 self.optimizer,
                 self.criterion_value,
                 self.num_actions
-            ) = initialize_training_components(self.environment, self.device, from_pretrained="saved_models/policy_model_200.pth")
+            ) = initialize_training_components(self.environment, self.device)
             # ,from_pretrained="saved_models/policy_model_200.pth"
 
     def run(self):
@@ -166,7 +166,7 @@ class Runner(object):
                         batch_size=128
                     )
                     # Save the model
-                    torch.save(self.network.state_dict(), "saved_models/policy_model_200.pth")
+                    torch.save(self.network.state_dict(), "saved_models/policy_model_400.pth")
 
                 if latest_loss is not None:
                     losses.append(latest_loss)
