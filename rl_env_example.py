@@ -142,6 +142,25 @@ class Runner(object):
                         current_player_action
                     )
 
+                    action_score = (
+                        sum(v for k, v in observation["fireworks"].items())
+                        if observation["life_tokens"] > 0
+                        else 0
+                    )
+
+                    # Train the network after each action
+                    if self.requires_training:
+                        collect_alphazero_data(agents, self.replay_buffer, action_score)
+                        latest_loss = train_network(
+                            self.replay_buffer,
+                            self.network,
+                            self.optimizer,
+                            self.device, 
+                            batch_size=128
+                        )
+                        # Save the model
+                        torch.save(self.network.state_dict(), "saved_models/policy_model_100.pth")
+
                 final_score = (
                     sum(v for k, v in observation["fireworks"].items())
                     if observation["life_tokens"] > 0
@@ -155,18 +174,6 @@ class Runner(object):
 
                 if self.mcts_data:
                     collect_mcts_data(agents, self.replay_buffer, final_score)
-
-                if self.requires_training:
-                    collect_alphazero_data(agents, self.replay_buffer, final_score)
-                    latest_loss = train_network(
-                        self.replay_buffer,
-                        self.network,
-                        self.optimizer,
-                        self.device, 
-                        batch_size=128
-                    )
-                    # Save the model
-                    torch.save(self.network.state_dict(), "saved_models/policy_model_400.pth")
 
                 if latest_loss is not None:
                     losses.append(latest_loss)
