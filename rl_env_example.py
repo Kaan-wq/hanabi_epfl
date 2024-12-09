@@ -66,7 +66,7 @@ class Runner(object):
         self.requires_training = requires_training(self.agent_classes)
         if self.requires_training:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/alphazero100.jsonl")
+            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/alphazero.jsonl")
             (
                 self.network,
                 self.optimizer,
