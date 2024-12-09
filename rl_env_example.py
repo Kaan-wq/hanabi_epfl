@@ -66,7 +66,7 @@ class Runner(object):
         self.requires_training = requires_training(self.agent_classes)
         if self.requires_training:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/alphazero.jsonl")
+            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/alphazero100.jsonl")
             (
                 self.network,
                 self.optimizer,
@@ -142,25 +142,6 @@ class Runner(object):
                         current_player_action
                     )
 
-                    action_score = (
-                        sum(v for k, v in observation["fireworks"].items())
-                        if observation["life_tokens"] > 0
-                        else 0
-                    )
-
-                    # Train the network after each action
-                    if self.requires_training:
-                        collect_alphazero_data(agents, self.replay_buffer, action_score)
-                        latest_loss = train_network(
-                            self.replay_buffer,
-                            self.network,
-                            self.optimizer,
-                            self.device, 
-                            batch_size=128
-                        )
-                        # Save the model
-                        torch.save(self.network.state_dict(), "saved_models/policy_model_100.pth")
-
                 final_score = (
                     sum(v for k, v in observation["fireworks"].items())
                     if observation["life_tokens"] > 0
@@ -169,11 +150,22 @@ class Runner(object):
 
                 scores.append(final_score)
                 avg_score = np.mean(scores)
-
                 latest_loss = None
 
                 if self.mcts_data:
                     collect_mcts_data(agents, self.replay_buffer, final_score)
+
+                if self.requires_training:
+                    collect_alphazero_data(agents, self.replay_buffer, final_score)
+                    latest_loss = train_network(
+                        self.replay_buffer,
+                        self.network,
+                        self.optimizer,
+                        self.device, 
+                        batch_size=128
+                    )
+                    # Save the model
+                    torch.save(self.network.state_dict(), "saved_models/policy_model_100.pth")
 
                 if latest_loss is not None:
                     losses.append(latest_loss)
