@@ -7,7 +7,8 @@ import torch
 from tqdm import tqdm
 
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
-from agents.alphazero.alphazero_buffer import configure_replay_buffer, configure_quality_buffer
+from agents.alphazero.alphazero_buffer import (configure_quality_buffer,
+                                               configure_replay_buffer)
 from agents.alphazero.alphazero_network import (collect_alphazero_data,
                                                 collect_mcts_data,
                                                 initialize_training_components,
@@ -137,7 +138,12 @@ class Runner(object):
 
                         if isinstance(
                             agent,
-                            (MCTS_Agent, PMCTS_Agent, AlphaZero_Agent, AlphaZeroP_Agent),
+                            (
+                                MCTS_Agent,
+                                PMCTS_Agent,
+                                AlphaZero_Agent,
+                                AlphaZeroP_Agent,
+                            ),
                         ):
                             action = agent.act(observation, self.environment.state)
                         else:
@@ -183,9 +189,11 @@ class Runner(object):
                     if loss_dict is not None:
                         latest_policy_loss = loss_dict["policy_loss"]
                         latest_value_loss = loss_dict["value_loss"]
-                        latest_policy_contrib = loss_dict["effective_policy_contribution"]
+                        latest_policy_contrib = loss_dict[
+                            "effective_policy_contribution"
+                        ]
                         latest_value_contrib = loss_dict["effective_value_contribution"]
-                        
+
                         policy_losses.append(latest_policy_loss)
                         value_losses.append(latest_value_loss)
                         policy_contributions.append(latest_policy_contrib)
@@ -220,10 +228,20 @@ class Runner(object):
 
         # Print final statistics with contributions
         print("\nLoss History (value : contribution):")
-        print("Policy Losses:", [f"{loss:.4f} ({contrib:.1%})" 
-              for loss, contrib in zip(policy_losses, policy_contributions)])
-        print("Value Losses:", [f"{loss:.4f} ({contrib:.1%})" 
-              for loss, contrib in zip(value_losses, value_contributions)])
+        print(
+            "Policy Losses:",
+            [
+                f"{loss:.4f} ({contrib:.1%})"
+                for loss, contrib in zip(policy_losses, policy_contributions)
+            ],
+        )
+        print(
+            "Value Losses:",
+            [
+                f"{loss:.4f} ({contrib:.1%})"
+                for loss, contrib in zip(value_losses, value_contributions)
+            ],
+        )
 
         print(f"\nScores: {scores}")
         print(f"Average Score: {avg_score}")

@@ -13,52 +13,54 @@ from torch.utils.data import DataLoader, Dataset
 class SimpleNetwork(nn.Module):
     def __init__(self, num_actions, obs_shape, hidden_sizes=[512, 256, 256]):
         super(SimpleNetwork, self).__init__()
-        
+
         # Improved shared backbone
         backbone_layers = []
         prev_size = obs_shape
-        
+
         for hidden_size in hidden_sizes:
-            backbone_layers.extend([
-                nn.Linear(prev_size, hidden_size),
-                nn.GELU(),
-            ])
+            backbone_layers.extend(
+                [
+                    nn.Linear(prev_size, hidden_size),
+                    nn.GELU(),
+                ]
+            )
             prev_size = hidden_size
-            
+
         self.backbone = nn.Sequential(*backbone_layers)
-        
+
         # Policy head
         self.policy_head = nn.Sequential(
             nn.Linear(hidden_sizes[-1], hidden_sizes[-1]),
             nn.GELU(),
-            nn.Linear(hidden_sizes[-1], num_actions)
+            nn.Linear(hidden_sizes[-1], num_actions),
         )
-        
+
         # Value head
         self.value_head = nn.Sequential(
             nn.Linear(hidden_sizes[-1], hidden_sizes[-1] // 2),
             nn.GELU(),
             nn.Linear(hidden_sizes[-1] // 2, 1),
-            nn.Tanh()  # Bound values between -1 and 1
+            nn.Tanh(),  # Bound values between -1 and 1
         )
-        
+
         # Initialize weights
         self._init_weights()
-    
+
     def _init_weights(self):
         """Initialize weights using He initialization"""
         for module in self.modules():
             if isinstance(module, nn.Linear):
-                nn.init.kaiming_normal_(module.weight, nonlinearity='relu')
+                nn.init.kaiming_normal_(module.weight, nonlinearity="relu")
                 if module.bias is not None:
                     nn.init.zeros_(module.bias)
-    
+
     def forward(self, x):
         shared_features = self.backbone(x)
         policy_logits = self.policy_head(shared_features)
         value = self.value_head(shared_features)
         return policy_logits, value
-   
+
 
 class AlphaZeroDataset(Dataset):
     def __init__(self, training_data, weights=None):
@@ -97,7 +99,7 @@ def train_network(
     value_loss_weight=10.0,
 ):
     """Train the network using data from the replay buffer, including both policy and value heads."""
-    
+
     if len(replay_buffer) < batch_size:
         return None
 
@@ -118,24 +120,27 @@ def train_network(
         )
 
         optimizer.zero_grad()
-        
+
         # Forward pass through both heads
         policy_logits, predicted_values = network(states)
-        
+
         # Policy loss calculation
         policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
-        policy_loss = torch.mean(-torch.sum(policies * policy_log_probs, dim=1) * weights)
-        
+        policy_loss = torch.mean(
+            -torch.sum(policies * policy_log_probs, dim=1) * weights
+        )
+
         # Value loss calculation with increased weight
-        value_loss = torch.mean(nn.functional.mse_loss(
-            predicted_values.squeeze(-1), 
-            values,
-            reduction='none'
-        ) * weights)
+        value_loss = torch.mean(
+            nn.functional.mse_loss(
+                predicted_values.squeeze(-1), values, reduction="none"
+            )
+            * weights
+        )
 
         # Combined loss with weighting
         loss = policy_loss + value_loss_weight * value_loss
-        
+
         loss.backward()
         optimizer.step()
 
@@ -144,7 +149,7 @@ def train_network(
         value_errors = torch.abs(predicted_values.squeeze(-1) - values)
         priorities = (policy_errors + value_loss_weight * value_errors).detach()
         replay_buffer.update_priorities(indices, priorities.cpu().numpy())
-        
+
         # Track losses
         total_policy_loss += policy_loss.item()
         total_value_loss += value_loss.item()
@@ -157,11 +162,12 @@ def train_network(
     avg_total_loss = total_loss / num_batches
 
     return {
-        'policy_loss': avg_policy_loss,
-        'value_loss': avg_value_loss,
-        'total_loss': avg_total_loss,
-        'effective_policy_contribution': avg_policy_loss / avg_total_loss,
-        'effective_value_contribution': (value_loss_weight * avg_value_loss) / avg_total_loss,
+        "policy_loss": avg_policy_loss,
+        "value_loss": avg_value_loss,
+        "total_loss": avg_total_loss,
+        "effective_policy_contribution": avg_policy_loss / avg_total_loss,
+        "effective_value_contribution": (value_loss_weight * avg_value_loss)
+        / avg_total_loss,
     }
 
 
@@ -223,7 +229,11 @@ def collect_alphazero_data(
                 torch.tensor(state, dtype=torch.float32),
                 torch.tensor(policy, dtype=torch.float32),
                 torch.tensor(z, dtype=torch.float32),
-                root_policy.clone().detach() if torch.is_tensor(root_policy) else torch.tensor(root_policy, dtype=torch.float32),
+                (
+                    root_policy.clone().detach()
+                    if torch.is_tensor(root_policy)
+                    else torch.tensor(root_policy, dtype=torch.float32)
+                ),
             )
             for state, policy, value, root_policy in zip(*data)
         ]
