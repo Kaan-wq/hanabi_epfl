@@ -71,11 +71,10 @@ class Runner(object):
         self.requires_training = requires_training(self.agent_classes)
         if self.requires_training:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.replay_buffer = configure_quality_buffer(
+            self.replay_buffer = configure_replay_buffer(
                 capacity=10000,
                 storage_mode="hybrid",
                 file_path="experiments/policies/alphazero.jsonl",
-                mcts_data_path="experiments/policies/mcts.jsonl",
             )
             (self.network, self.optimizer, self.criterion_value, self.num_actions) = (
                 initialize_training_components(self.environment, self.device, lr=1e-4, from_pretrained="saved_models/alphazero_model_100.pth")
@@ -158,6 +157,18 @@ class Runner(object):
                     observations, reward, done, unused_info = self.environment.step(
                         current_player_action
                     )
+
+                    # Train at each step if required
+                    if self.requires_training:
+                        loss_dict = train_network(
+                            self.replay_buffer,
+                            self.network,
+                            self.optimizer,
+                            self.device,
+                            batch_size=128,
+                            value_loss_weight=10.0,
+                        )
+
 
                 final_score = (
                     sum(v for k, v in observation["fireworks"].items())
