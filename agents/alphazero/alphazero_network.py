@@ -11,44 +11,52 @@ from torch.utils.data import DataLoader, Dataset
 
 
 class SimpleNetwork(nn.Module):
-    def __init__(self, num_actions, obs_shape, hidden_size=256):
+    def __init__(self, num_actions, obs_shape, hidden_sizes=[512, 256, 256]):
         super(SimpleNetwork, self).__init__()
-
-        # Shared layers
-        self.fc_shared = nn.Sequential(
-            nn.Linear(obs_shape, hidden_size),
-            nn.LayerNorm(hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, hidden_size),
-            nn.LayerNorm(hidden_size),
-            nn.ReLU(),
-        )
-
+        
+        # Improved shared backbone
+        backbone_layers = []
+        prev_size = obs_shape
+        
+        for hidden_size in hidden_sizes:
+            backbone_layers.extend([
+                nn.Linear(prev_size, hidden_size),
+                nn.GELU(),
+            ])
+            prev_size = hidden_size
+            
+        self.backbone = nn.Sequential(*backbone_layers)
+        
         # Policy head
         self.policy_head = nn.Sequential(
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, num_actions),
+            nn.Linear(hidden_sizes[-1], hidden_sizes[-1]),
+            nn.GELU(),
+            nn.Linear(hidden_sizes[-1], num_actions)
         )
-
+        
         # Value head
         self.value_head = nn.Sequential(
-            nn.Linear(hidden_size, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, 1),
-            nn.Tanh(),
+            nn.Linear(hidden_sizes[-1], hidden_sizes[-1] // 2),
+            nn.GELU(),
+            nn.Linear(hidden_sizes[-1] // 2, 1),
+            nn.Tanh()  # Bound values between -1 and 1
         )
-
+        
+        # Initialize weights
+        self._init_weights()
+    
+    def _init_weights(self):
+        """Initialize weights using He initialization"""
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.kaiming_normal_(module.weight, nonlinearity='relu')
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+    
     def forward(self, x):
-        # Shared layers
-        x = self.fc_shared(x)
-
-        # Policy head
-        policy_logits = self.policy_head(x)
-
-        # Value head
-        value = self.value_head(x)
-
+        shared_features = self.backbone(x)
+        policy_logits = self.policy_head(shared_features)
+        value = self.value_head(shared_features)
         return policy_logits, value
 
 
@@ -245,4 +253,3 @@ def collect_mcts_data(
 # ======================================================================
 
 # Hyperparameter tuning
-# Training after each action

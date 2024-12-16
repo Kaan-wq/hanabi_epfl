@@ -155,6 +155,15 @@ class Runner(object):
                         current_player_action
                     )
 
+                    if self.requires_training:
+                        loss_dict = train_network(
+                            self.replay_buffer,
+                            self.network,
+                            self.optimizer,
+                            self.device,
+                            batch_size=128,
+                        )
+
                 final_score = (
                     sum(v for k, v in observation["fireworks"].items())
                     if observation["life_tokens"] > 0
@@ -187,7 +196,7 @@ class Runner(object):
 
                     # Save the model
                     torch.save(
-                        self.network.state_dict(), "saved_models/policy_model_50.pth"
+                        self.network.state_dict(), "saved_models/policy_model_100a.pth"
                     )
 
                 pbar.set_postfix(
