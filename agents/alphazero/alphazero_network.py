@@ -47,9 +47,9 @@ class SimpleNetwork(nn.Module):
         policy_logits = self.policy_head(x)
 
         # Value head
-        # value = self.value_head(x)
+        value = self.value_head(x)
 
-        return policy_logits  # , value
+        return policy_logits, value
 
 
 class AlphaZeroDataset(Dataset):
@@ -87,9 +87,8 @@ def train_network(
     device,
     batch_size=128,
 ):
-    """Train the network using data from the replay buffer."""
-
-    batch_size = batch_size
+    """Train the network using data from the replay buffer, including both policy and value heads."""
+    
     if len(replay_buffer) < batch_size:
         return None
 
@@ -97,6 +96,8 @@ def train_network(
     dataloader = prepare_data(batch_data, batch_size, weights)
 
     network.train()
+    total_policy_loss = 0.0
+    total_value_loss = 0.0
     total_loss = 0.0
 
     for states, policies, values, weights in dataloader:
@@ -108,23 +109,45 @@ def train_network(
         )
 
         optimizer.zero_grad()
-        policy_logits = network(states)
+        
+        # Forward pass through both heads
+        policy_logits, predicted_values = network(states)
+        
+        # Policy loss calculation
         policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
         policy_loss = torch.mean(-torch.sum(policies * policy_log_probs, dim=1) * weights)
+        
+        # Value loss calculation
+        value_loss = torch.mean(nn.functional.mse_loss(
+            predicted_values.squeeze(-1), 
+            values,
+            reduction='none'
+        ) * weights)
 
-        # Value loss (if value head is added)
-        # value_loss = self.criterion_value(value.squeeze(-1), value_targets)
-        # Total loss
-        # loss = policy_loss + value_loss
-
-        policy_loss.backward()
+        # Combined loss with weighting
+        loss = policy_loss + value_loss
+        
+        loss.backward()
         optimizer.step()
 
-        priorities = ((values + 1) / 2) ** 2
-        replay_buffer.update_priorities(indices, priorities.detach().cpu().numpy())
-        total_loss += policy_loss.item()
+        # Update priorities based on combined loss
+        priorities = torch.abs(predicted_values.squeeze(-1) - values).detach()
+        replay_buffer.update_priorities(indices, priorities.cpu().numpy())
+        
+        # Track losses
+        total_policy_loss += policy_loss.item()
+        total_value_loss += value_loss.item()
+        total_loss += loss.item()
 
-    return total_loss / len(dataloader)
+    avg_policy_loss = total_policy_loss / len(dataloader)
+    avg_value_loss = total_value_loss / len(dataloader)
+    avg_total_loss = total_loss / len(dataloader)
+
+    return {
+        'policy_loss': avg_policy_loss,
+        'value_loss': avg_value_loss,
+        'total_loss': avg_total_loss
+    }
 
 
 # ========================= Helper Functions =========================

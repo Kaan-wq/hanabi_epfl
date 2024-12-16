@@ -6,13 +6,13 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from agents.alphazero.alphazero_buffer import configure_replay_buffer
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
+from agents.alphazero.alphazero_buffer import configure_replay_buffer
 from agents.alphazero.alphazero_network import (collect_alphazero_data,
                                                 collect_mcts_data,
                                                 initialize_training_components,
-                                                requires_training,
                                                 requires_mcts_data,
+                                                requires_training,
                                                 train_network)
 from agents.human_agent import HumanAgent
 from agents.mcts.mcts_agent import MCTS_Agent, PMCTS_Agent
@@ -59,26 +59,32 @@ class Runner(object):
         # Initialize data collection components if required
         self.mcts_data = requires_mcts_data(self.agent_classes, record_data=False)
         if self.mcts_data:
-            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/mcts.jsonl")
+            self.replay_buffer = configure_replay_buffer(
+                capacity=10000,
+                storage_mode="hybrid",
+                file_path="experiments/policies/mcts.jsonl",
+            )
             self.num_actions = self.environment.num_moves()
 
         # Initialize training components if required
         self.requires_training = requires_training(self.agent_classes)
         if self.requires_training:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.replay_buffer = configure_replay_buffer(capacity=10000, storage_mode="hybrid", file_path="experiments/policies/alphazero.jsonl")
-            (
-                self.network,
-                self.optimizer,
-                self.criterion_value,
-                self.num_actions
-            ) = initialize_training_components(self.environment, self.device)
+            self.replay_buffer = configure_replay_buffer(
+                capacity=10000,
+                storage_mode="hybrid",
+                file_path="experiments/policies/alphazero.jsonl",
+            )
+            (self.network, self.optimizer, self.criterion_value, self.num_actions) = (
+                initialize_training_components(self.environment, self.device)
+            )
             # ,from_pretrained="saved_models/policy_model_200.pth"
 
     def run(self):
         """Run episodes."""
         scores = []
-        losses = []
+        policy_losses = []
+        value_losses = []
         agents = []
 
         for i, agent_class in enumerate(self.agent_classes):
@@ -89,9 +95,11 @@ class Runner(object):
             ):
                 self.agent_config["network"] = self.network
                 self.agent_config["num_actions"] = self.num_actions
-            elif self.mcts_data and issubclass(
-                agent_class, (MCTS_Agent, PMCTS_Agent)
-            ) and not issubclass(agent_class, (AlphaZero_Agent, AlphaZeroP_Agent)):
+            elif (
+                self.mcts_data
+                and issubclass(agent_class, (MCTS_Agent, PMCTS_Agent))
+                and not issubclass(agent_class, (AlphaZero_Agent, AlphaZeroP_Agent))
+            ):
                 self.agent_config["num_actions"] = self.num_actions
                 self.agent_config["collect_data"] = True
                 self.agent_config.pop("network", None)
@@ -109,7 +117,12 @@ class Runner(object):
             ncols=190,
         ) as pbar:
             pbar.set_postfix(
-                {"Avg Score": "N/A", "Score": "N/A", "Avg Loss": "N/A", "Loss": "N/A"}
+                {
+                    "Avg Score": "N/A",
+                    "Score": "N/A",
+                    "Policy Loss": "N/A",
+                    "Value Loss": "N/A",
+                }
             )
             for episode in range(self.flags["num_episodes"]):
                 done = False
@@ -150,36 +163,47 @@ class Runner(object):
 
                 scores.append(final_score)
                 avg_score = np.mean(scores)
-                latest_loss = None
+                latest_policy_loss = "N/A"
+                latest_value_loss = "N/A"
 
                 if self.mcts_data:
                     collect_mcts_data(agents, self.replay_buffer, final_score)
 
                 if self.requires_training:
                     collect_alphazero_data(agents, self.replay_buffer, final_score)
-                    latest_loss = train_network(
+                    loss_dict = train_network(
                         self.replay_buffer,
                         self.network,
                         self.optimizer,
-                        self.device, 
-                        batch_size=128
+                        self.device,
+                        batch_size=128,
                     )
-                    # Save the model
-                    torch.save(self.network.state_dict(), "saved_models/policy_model_100.pth")
 
-                if latest_loss is not None:
-                    losses.append(latest_loss)
-                    avg_loss = np.mean(losses)
-                else:
-                    latest_loss = "N/A"
-                    avg_loss = "N/A"
+                    if loss_dict is not None:
+                        latest_policy_loss = loss_dict["policy_loss"]
+                        latest_value_loss = loss_dict["value_loss"]
+                        policy_losses.append(latest_policy_loss)
+                        value_losses.append(latest_value_loss)
+
+                    # Save the model
+                    torch.save(
+                        self.network.state_dict(), "saved_models/policy_model_100.pth"
+                    )
 
                 pbar.set_postfix(
                     {
                         "Avg Score": f"{avg_score:.2f}",
                         "Score": final_score,
-                        "Avg Loss": f"{avg_loss:.4f}" if avg_loss != "N/A" else "N/A",
-                        "Loss": f"{latest_loss:.4f}" if latest_loss != "N/A" else "N/A",
+                        "Policy Loss": (
+                            f"{latest_policy_loss:.4f}"
+                            if latest_policy_loss != "N/A"
+                            else "N/A"
+                        ),
+                        "Value Loss": (
+                            f"{latest_value_loss:.4f}"
+                            if latest_value_loss != "N/A"
+                            else "N/A"
+                        ),
                     }
                 )
                 pbar.update(1)
@@ -188,8 +212,8 @@ class Runner(object):
         std_dev = np.std(scores)
         std_error = std_dev / np.sqrt(len(scores))
 
-        print("\nLosses: ", [f"{loss:.2f}" for loss in losses])
-        print("Average Loss: ", np.mean(losses) if losses else "N/A")
+        print("\nPolicy Losses:", [f"{loss:.4f}" for loss in policy_losses])
+        print("Value Losses:", [f"{loss:.4f}" for loss in value_losses])
 
         print(f"\nScores: {scores}")
         print(f"Average Score: {avg_score}")
