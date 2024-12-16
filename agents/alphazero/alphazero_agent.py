@@ -133,6 +133,9 @@ class AlphaZero_Agent(MCTS_Agent):
             policy_logits, value = self.network(obs_tensor)
             policy = F.softmax(policy_logits, dim=1).squeeze(0)
 
+        # Assign the value to the node
+        node.value = value.item()
+
         if node == self.root_node:
             self.root_policy = policy
 
@@ -166,8 +169,7 @@ class AlphaZero_Agent(MCTS_Agent):
             else:
                 return  # No legal moves available
 
-        # Expand the node by adding all valid child nodes and value
-        node.value = value.item()
+        # Expand the node by adding all valid child nodes
         self.children[node] = set()
         for move in moves:
             action_idx = self.environment.game.get_move_uid(move)

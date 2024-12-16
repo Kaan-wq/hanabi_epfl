@@ -244,7 +244,5 @@ def collect_mcts_data(
 
 # ======================================================================
 
-# KL divergence loss
-# Value head
 # Hyperparameter tuning
 # Training after each action
