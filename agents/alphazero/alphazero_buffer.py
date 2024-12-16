@@ -143,9 +143,6 @@ class QualityPrioritizedBuffer(PrioritizedReplayBuffer):
 
         # Only add data if it's better than threshold
         if value >= self.value_threshold:
-            print(
-                f"Adding value {value:.3f} to buffer (threshold: {self.value_threshold:.3f})"
-            )
             # Find worst performing samples to replace if buffer is full
             if len(self.buffer) >= self.capacity:
                 worst_indices = np.argsort(self.values)[: len(data)]
