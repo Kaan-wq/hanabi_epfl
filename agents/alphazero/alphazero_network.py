@@ -58,7 +58,7 @@ class SimpleNetwork(nn.Module):
         policy_logits = self.policy_head(shared_features)
         value = self.value_head(shared_features)
         return policy_logits, value
-
+   
 
 class AlphaZeroDataset(Dataset):
     def __init__(self, training_data, weights=None):

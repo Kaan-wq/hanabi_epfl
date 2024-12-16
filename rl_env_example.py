@@ -7,7 +7,7 @@ import torch
 from tqdm import tqdm
 
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
-from agents.alphazero.alphazero_buffer import configure_replay_buffer
+from agents.alphazero.alphazero_buffer import configure_replay_buffer, configure_quality_buffer
 from agents.alphazero.alphazero_network import (collect_alphazero_data,
                                                 collect_mcts_data,
                                                 initialize_training_components,
@@ -57,7 +57,7 @@ class Runner(object):
         ]
 
         # Initialize data collection components if required
-        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=True)
+        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=False)
         if self.mcts_data:
             self.replay_buffer = configure_replay_buffer(
                 capacity=10000,
@@ -70,10 +70,11 @@ class Runner(object):
         self.requires_training = requires_training(self.agent_classes)
         if self.requires_training:
             self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-            self.replay_buffer = configure_replay_buffer(
+            self.replay_buffer = configure_quality_buffer(
                 capacity=10000,
                 storage_mode="hybrid",
                 file_path="experiments/policies/alphazero.jsonl",
+                mcts_data_path="experiments/policies/mcts.jsonl",
             )
             (self.network, self.optimizer, self.criterion_value, self.num_actions) = (
                 initialize_training_components(self.environment, self.device, lr=1e-4)

@@ -134,7 +134,7 @@ class AlphaZero_Agent(MCTS_Agent):
             policy = F.softmax(policy_logits, dim=1).squeeze(0)
 
         # Assign the value to the node
-        node.value = value.item()
+        node.value = (value.item() + 1) * 12.5 # Rescale value to [0, 25]
 
         if node == self.root_node:
             self.root_policy = policy
