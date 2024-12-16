@@ -201,7 +201,7 @@ class Runner(object):
 
                     # Save the model
                     torch.save(
-                        self.network.state_dict(), "saved_models/policy_model_100.pth"
+                        self.network.state_dict(), "saved_models/alphazero_model_100.pth"
                     )
 
                 pbar.set_postfix(
