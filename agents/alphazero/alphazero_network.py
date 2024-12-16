@@ -247,10 +247,9 @@ def collect_mcts_data(
             (
                 torch.tensor(state, dtype=torch.float32),
                 torch.tensor(policy, dtype=torch.float32),
-                torch.tensor(value, dtype=torch.float32),
                 torch.tensor(z, dtype=torch.float32),
             )
-            for state, policy, value in zip(*data)
+            for state, policy in zip(*data)
         ]
 
         replay_buffer.add(processed_data)
