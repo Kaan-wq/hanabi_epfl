@@ -229,13 +229,10 @@ class MCTS_Agent(Agent):
         # Get visit counts for child nodes
         visit_counts = np.zeros(self.num_actions)
 
-        value_counts = np.zeros(self.num_actions)
-
         for child in self.children[node]:
             move = child.initial_move()
             action_idx = self.environment.game.get_move_uid(move)
             visit_counts[action_idx] = self.N[child]
-            value_counts[action_idx] = self.Q[child] / self.N[child] if self.N[child] > 0 else 0
 
         # Normalize visit counts to get policy targets
         sum_counts = np.sum(visit_counts)
@@ -244,14 +241,7 @@ class MCTS_Agent(Agent):
         else:
             policy_targets = np.ones_like(visit_counts) / len(visit_counts)
 
-        # Normalize value counts to get value target
-        sum_values = np.sum(value_counts)
-        if sum_values > 0:
-            value_targets = value_counts / sum_values
-        else:
-            value_targets = np.ones_like(value_counts) / len(value_counts)
-
-        self.training_data.append((state_vector, policy_targets, value_targets))
+        self.training_data.append((state_vector, policy_targets))
 
 
 class PMCTS_Agent(MCTS_Agent):
@@ -337,18 +327,12 @@ class PMCTS_Agent(MCTS_Agent):
         state_vector = self.environment.vectorized_observation(observation['pyhanabi'])
 
         visit_counts = np.zeros(self.num_actions, dtype=np.float64)
-        value_counts = np.zeros(self.num_actions, dtype=np.float64)
-
         move_jsons = list(merged_root_children_stats.keys())
         Ns = np.array([merged_root_children_stats[move_json]['N'] for move_json in move_jsons], dtype=np.float64)
-        Qs = np.array([merged_root_children_stats[move_json]['Q'] for move_json in move_jsons], dtype=np.float64)
 
         moves = [HanabiMove.from_json(move_json) for move_json in move_jsons]
         action_indices = [self.environment.game.get_move_uid(move) for move in moves]
         visit_counts[action_indices] = Ns
-
-        with np.errstate(divide='ignore', invalid='ignore'):
-            value_counts[action_indices] = np.divide(Qs, Ns, where=Ns != 0)
 
         # Normalize visit counts to get policy targets
         sum_counts = np.sum(visit_counts)
@@ -357,15 +341,8 @@ class PMCTS_Agent(MCTS_Agent):
         else:
             policy_targets = np.ones_like(visit_counts) / len(visit_counts)
 
-        # Normalize value counts to get value target
-        sum_values = np.sum(value_counts)
-        if sum_values > 0:
-            value_targets = value_counts / sum_values
-        else:
-            value_targets = np.ones_like(value_counts) / len(value_counts)
-
         # Record the training data
-        self.training_data.append((state_vector, policy_targets, value_targets))
+        self.training_data.append((state_vector, policy_targets))
 
 
 

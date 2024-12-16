@@ -57,7 +57,7 @@ class Runner(object):
         ]
 
         # Initialize data collection components if required
-        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=False)
+        self.mcts_data = requires_mcts_data(self.agent_classes, record_data=True)
         if self.mcts_data:
             self.replay_buffer = configure_replay_buffer(
                 capacity=10000,
@@ -76,7 +76,7 @@ class Runner(object):
                 file_path="experiments/policies/alphazero.jsonl",
             )
             (self.network, self.optimizer, self.criterion_value, self.num_actions) = (
-                initialize_training_components(self.environment, self.device)
+                initialize_training_components(self.environment, self.device, lr=1e-4)
             )
             # ,from_pretrained="saved_models/policy_model_200.pth"
 
@@ -85,6 +85,8 @@ class Runner(object):
         scores = []
         policy_losses = []
         value_losses = []
+        policy_contributions = []
+        value_contributions = []
         agents = []
 
         for i, agent_class in enumerate(self.agent_classes):
@@ -134,12 +136,7 @@ class Runner(object):
 
                         if isinstance(
                             agent,
-                            (
-                                MCTS_Agent,
-                                PMCTS_Agent,
-                                AlphaZero_Agent,
-                                AlphaZeroP_Agent,
-                            ),
+                            (MCTS_Agent, PMCTS_Agent, AlphaZero_Agent, AlphaZeroP_Agent),
                         ):
                             action = agent.act(observation, self.environment.state)
                         else:
@@ -155,15 +152,6 @@ class Runner(object):
                         current_player_action
                     )
 
-                    if self.requires_training:
-                        loss_dict = train_network(
-                            self.replay_buffer,
-                            self.network,
-                            self.optimizer,
-                            self.device,
-                            batch_size=128,
-                        )
-
                 final_score = (
                     sum(v for k, v in observation["fireworks"].items())
                     if observation["life_tokens"] > 0
@@ -174,6 +162,8 @@ class Runner(object):
                 avg_score = np.mean(scores)
                 latest_policy_loss = "N/A"
                 latest_value_loss = "N/A"
+                latest_policy_contrib = "N/A"
+                latest_value_contrib = "N/A"
 
                 if self.mcts_data:
                     collect_mcts_data(agents, self.replay_buffer, final_score)
@@ -186,17 +176,23 @@ class Runner(object):
                         self.optimizer,
                         self.device,
                         batch_size=128,
+                        value_loss_weight=10.0,
                     )
 
                     if loss_dict is not None:
                         latest_policy_loss = loss_dict["policy_loss"]
                         latest_value_loss = loss_dict["value_loss"]
+                        latest_policy_contrib = loss_dict["effective_policy_contribution"]
+                        latest_value_contrib = loss_dict["effective_value_contribution"]
+                        
                         policy_losses.append(latest_policy_loss)
                         value_losses.append(latest_value_loss)
+                        policy_contributions.append(latest_policy_contrib)
+                        value_contributions.append(latest_value_contrib)
 
                     # Save the model
                     torch.save(
-                        self.network.state_dict(), "saved_models/policy_model_100a.pth"
+                        self.network.state_dict(), "saved_models/policy_model_100.pth"
                     )
 
                 pbar.set_postfix(
@@ -204,12 +200,12 @@ class Runner(object):
                         "Avg Score": f"{avg_score:.2f}",
                         "Score": final_score,
                         "Policy Loss": (
-                            f"{latest_policy_loss:.4f}"
+                            f"{latest_policy_loss:.4f} ({latest_policy_contrib:.1%})"
                             if latest_policy_loss != "N/A"
                             else "N/A"
                         ),
                         "Value Loss": (
-                            f"{latest_value_loss:.4f}"
+                            f"{latest_value_loss:.4f} ({latest_value_contrib:.1%})"
                             if latest_value_loss != "N/A"
                             else "N/A"
                         ),
@@ -221,8 +217,12 @@ class Runner(object):
         std_dev = np.std(scores)
         std_error = std_dev / np.sqrt(len(scores))
 
-        print("\nPolicy Losses:", [f"{loss:.4f}" for loss in policy_losses])
-        print("Value Losses:", [f"{loss:.4f}" for loss in value_losses])
+        # Print final statistics with contributions
+        print("\nLoss History (value : contribution):")
+        print("Policy Losses:", [f"{loss:.4f} ({contrib:.1%})" 
+              for loss, contrib in zip(policy_losses, policy_contributions)])
+        print("Value Losses:", [f"{loss:.4f} ({contrib:.1%})" 
+              for loss, contrib in zip(value_losses, value_contributions)])
 
         print(f"\nScores: {scores}")
         print(f"Average Score: {avg_score}")

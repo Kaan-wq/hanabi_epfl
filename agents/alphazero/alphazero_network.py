@@ -94,6 +94,7 @@ def train_network(
     optimizer: optim.Optimizer,
     device,
     batch_size=128,
+    value_loss_weight=10.0,
 ):
     """Train the network using data from the replay buffer, including both policy and value heads."""
     
@@ -125,7 +126,7 @@ def train_network(
         policy_log_probs = nn.functional.log_softmax(policy_logits, dim=1)
         policy_loss = torch.mean(-torch.sum(policies * policy_log_probs, dim=1) * weights)
         
-        # Value loss calculation
+        # Value loss calculation with increased weight
         value_loss = torch.mean(nn.functional.mse_loss(
             predicted_values.squeeze(-1), 
             values,
@@ -133,13 +134,15 @@ def train_network(
         ) * weights)
 
         # Combined loss with weighting
-        loss = policy_loss + value_loss
+        loss = policy_loss + value_loss_weight * value_loss
         
         loss.backward()
         optimizer.step()
 
-        # Update priorities based on combined loss
-        priorities = torch.abs(predicted_values.squeeze(-1) - values).detach()
+        # Update priorities based on both policy and value errors
+        policy_errors = -torch.sum(policies * policy_log_probs, dim=1)
+        value_errors = torch.abs(predicted_values.squeeze(-1) - values)
+        priorities = (policy_errors + value_loss_weight * value_errors).detach()
         replay_buffer.update_priorities(indices, priorities.cpu().numpy())
         
         # Track losses
@@ -147,14 +150,18 @@ def train_network(
         total_value_loss += value_loss.item()
         total_loss += loss.item()
 
-    avg_policy_loss = total_policy_loss / len(dataloader)
-    avg_value_loss = total_value_loss / len(dataloader)
-    avg_total_loss = total_loss / len(dataloader)
+    # Calculate averages
+    num_batches = len(dataloader)
+    avg_policy_loss = total_policy_loss / num_batches
+    avg_value_loss = total_value_loss / num_batches
+    avg_total_loss = total_loss / num_batches
 
     return {
         'policy_loss': avg_policy_loss,
         'value_loss': avg_value_loss,
-        'total_loss': avg_total_loss
+        'total_loss': avg_total_loss,
+        'effective_policy_contribution': avg_policy_loss / avg_total_loss,
+        'effective_value_contribution': (value_loss_weight * avg_value_loss) / avg_total_loss,
     }
 
 
