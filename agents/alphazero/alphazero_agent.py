@@ -24,7 +24,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
         self.training_data = []
 
-        self.max_rollout_num = 200
+        self.max_rollout_num = 400
         self.max_simulation_steps = 0
         self.max_depth = 60
         self.exploration_weight = 2.5
