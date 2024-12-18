@@ -212,7 +212,7 @@ class Runner(object):
 
                     # Save the model
                     torch.save(
-                        self.network.state_dict(), "saved_models/alphazero_model_200.pth"
+                        self.network.state_dict(), "saved_models/alphazero_model_400.pth"
                     )
 
                 pbar.set_postfix(
