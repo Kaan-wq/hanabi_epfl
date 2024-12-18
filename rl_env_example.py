@@ -87,6 +87,7 @@ class Runner(object):
         policy_losses = []
         value_losses = []
         policy_contributions = []
+        
         value_contributions = []
         agents = []
 
