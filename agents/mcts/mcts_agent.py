@@ -39,7 +39,7 @@ class MCTS_Agent(Agent):
             Ruleset.play_probably_safe_late_factory(0.4, 5),
             Ruleset.discard_most_confident,
         ])
-        #self.rules = None
+        self.rules = None
 
         self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
         self.determine_type = mcts_env.DetermineType.RESTORE
