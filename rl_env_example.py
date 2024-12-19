@@ -7,8 +7,7 @@ import torch
 from tqdm import tqdm
 
 from agents.alphazero.alphazero_agent import AlphaZero_Agent, AlphaZeroP_Agent
-from agents.alphazero.alphazero_buffer import (configure_quality_buffer,
-                                               configure_replay_buffer)
+from agents.alphazero.alphazero_buffer import configure_replay_buffer
 from agents.alphazero.alphazero_network import (collect_alphazero_data,
                                                 collect_mcts_data,
                                                 initialize_training_components,

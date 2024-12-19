@@ -31,6 +31,7 @@ class PrioritizedReplayBuffer:
 
         self.buffer: List[Any] = []
         self.priorities = np.zeros(capacity, dtype=np.float32)
+        self.values = np.zeros(capacity, dtype=np.float32)
         self.pos = 0
 
         self.file_path = file_path or os.path.join("saved_data", "replay_buffer.jsonl")
@@ -49,19 +50,44 @@ class PrioritizedReplayBuffer:
         except IOError as e:
             self.logger.error(f"Failed to prepare file storage: {e}")
 
+    def _get_value_from_data(self, item: Tuple) -> float:
+        """Extract value score from data tuple.
+        Assumes item is (state, policy, value, root_policy)."""
+        try:
+            value = item[2]
+            # Convert to float if it's a tensor
+            if torch.is_tensor(value):
+                return float(value.item())
+            return float(value)
+        except (IndexError, AttributeError) as e:
+            self.logger.warning(f"Could not extract value from item: {e}")
+            return 0.0
+        
+    def _find_lowest_value_index(self) -> int:
+        """Find the index of the item with the lowest value score."""
+        return int(np.argmin(self.values[:len(self.buffer)]))
+
     def add(self, data: List[Any]) -> None:
-        """Add new experiences to the buffer."""
+        """Add new experiences to the buffer, replacing lowest value items when full."""
         for item in data:
+            current_value = self._get_value_from_data(item)
+            
             if len(self.buffer) < self.capacity:
                 self.buffer.append(item)
+                self.values[self.pos] = current_value
+                self.priorities[self.pos] = (
+                    self.priorities.max() if len(self.buffer) > 1 else 1.0
+                )
+                self.pos = (self.pos + 1) % self.capacity
             else:
-                self.buffer[self.pos] = item
+                lowest_value_idx = self._find_lowest_value_index()
+                if current_value >= self.values[lowest_value_idx]:
+                    self.buffer[lowest_value_idx] = item
+                    self.values[lowest_value_idx] = current_value
+                    self.priorities[lowest_value_idx] = self.priorities.max()
+                    self.pos = (lowest_value_idx + 1) % self.capacity
 
-            self.priorities[self.pos] = (
-                self.priorities.max() if len(self.buffer) > 1 else 1.0
-            )
-            self.pos = (self.pos + 1) % self.capacity
-
+        # Save to file if needed
         if self.storage_mode in ["file", "hybrid"]:
             self._save_to_file(data)
 
@@ -126,61 +152,6 @@ class PrioritizedReplayBuffer:
             self._prepare_file_storage()
 
 
-class QualityPrioritizedBuffer(PrioritizedReplayBuffer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.values = []  # Track value/score for each entry
-        self.value_threshold = float("-inf")  # Dynamic threshold
-
-    def add(self, data: List[Any], value: float = None) -> None:
-        """Add new experiences if they meet quality threshold."""
-        if value is None:
-            value = self._extract_value_from_data(data[0])
-
-        # Update threshold if buffer is not empty
-        if self.values:
-            self.value_threshold = np.mean(self.values)
-
-        # Only add data if it's better than threshold
-        if value >= self.value_threshold:
-            # Find worst performing samples to replace if buffer is full
-            if len(self.buffer) >= self.capacity:
-                worst_indices = np.argsort(self.values)[: len(data)]
-                for idx, item in zip(worst_indices, data):
-                    self.buffer[idx] = item
-                    self.values[idx] = value
-                    self.priorities[idx] = self.priorities.max()
-            else:
-                # Add new data
-                for item in data:
-                    self.buffer.append(item)
-                    self.values.append(value)
-                    self.priorities[self.pos] = (
-                        self.priorities.max() if len(self.buffer) > 1 else 1.0
-                    )
-                    self.pos = (self.pos + 1) % self.capacity
-
-            if self.storage_mode in ["file", "hybrid"]:
-                self._save_to_file(data)
-
-    def _extract_value_from_data(self, data_point):
-        """Extract value from a data point (assuming it's in the last position)."""
-        return data_point[2] if len(data_point) >= 3 else 0.0
-
-    def load_mcts_data(self, file_path: str) -> None:
-        """Load initial MCTS data."""
-        try:
-            with open(file_path, "r") as f:
-                for line in f:
-                    data = json.loads(line)
-                    value = self._extract_value_from_data(data[0])
-                    self.add(data, value)
-            print(f"Loaded {len(self.buffer)} experiences from MCTS data")
-            print(f"Initial value threshold: {self.value_threshold:.3f}")
-        except FileNotFoundError:
-            print(f"No MCTS data found at {file_path}")
-
-
 def configure_replay_buffer(
     capacity: int = 10000,
     storage_mode: str = "hybrid",
@@ -198,28 +169,3 @@ def configure_replay_buffer(
         alpha=alpha,
         beta=beta,
     )
-
-
-def configure_quality_buffer(
-    capacity: int = 10000,
-    storage_mode: str = "hybrid",
-    file_path: str = "saved_data/replay_buffer.jsonl",
-    mcts_data_path: str = None,
-    load_existing: bool = False,
-    alpha: float = 0.6,
-    beta: float = 0.4,
-) -> QualityPrioritizedBuffer:
-    """Create a configured quality-based prioritized replay buffer."""
-    buffer = QualityPrioritizedBuffer(
-        capacity=capacity,
-        storage_mode=storage_mode,
-        file_path=file_path,
-        load_existing=load_existing,
-        alpha=alpha,
-        beta=beta,
-    )
-
-    if mcts_data_path:
-        buffer.load_mcts_data(mcts_data_path)
-
-    return buffer
