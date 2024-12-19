@@ -121,7 +121,7 @@ class AlphaZero_Agent(MCTS_Agent):
 
             node = self.uct_select(node)
 
-    def mcts_expand(self, node, observation, from_rules=True):
+    def mcts_expand(self, node, observation):
         """Expand the `node` with all possible children, assigning their policy and value."""
         if node in self.children:
             return
@@ -140,7 +140,7 @@ class AlphaZero_Agent(MCTS_Agent):
             self.root_policy = policy
 
         # Determine legal moves
-        moves = node.find_children(observation) if from_rules else self.environment.state.legal_moves()
+        moves = node.find_children(observation)
         if not moves:
             return  # No moves to expand
 

@@ -77,7 +77,7 @@ class Runner(object):
                 file_path="experiments/policies/alphazero.jsonl",
             )
             (self.network, self.optimizer, self.criterion_value, self.num_actions) = (
-                initialize_training_components(self.environment, self.device, lr=1e-5, from_pretrained="saved_models/alphazero_model_100.pth")
+                initialize_training_components(self.environment, self.device, lr=1e-4)
             )
             # ,from_pretrained="saved_models/policy_model_200.pth"
 
@@ -212,7 +212,7 @@ class Runner(object):
 
                     # Save the model
                     torch.save(
-                        self.network.state_dict(), "saved_models/alphazero_model_100a.pth"
+                        self.network.state_dict(), "saved_models/alphazero_model_100-NR.pth"
                     )
 
                 pbar.set_postfix(
