@@ -23,12 +23,12 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_rollout_num = config.get("max_rollout_num", 50)
-        self.max_simulation_steps = config.get("max_simulation_steps", 3)
-        self.max_depth = config.get("max_depth", 60)
-        self.exploration_weight = config.get("exploration_weight", 2.5)
+        self.max_rollout_num = 400
+        self.max_simulation_steps = 3
+        self.max_depth = 60
+        self.exploration_weight = 2.5
 
-        self.rules = config.get("rules", [
+        self.rules = [
             Ruleset.tell_most_information_factory(True),
             Ruleset.tell_anyone_useful_card,
             Ruleset.tell_dispensable_factory(8),
@@ -38,8 +38,8 @@ class MCTS_Agent(Agent):
             Ruleset.play_probably_safe_factory(0.7, False),
             Ruleset.play_probably_safe_late_factory(0.4, 5),
             Ruleset.discard_most_confident,
-        ])
-        self.rules = None
+        ]
+        #self.rules = None
 
         self.agents = [VanDenBerghAgent(config) for _ in range(config["players"])]
         self.determine_type = mcts_env.DetermineType.RESTORE
