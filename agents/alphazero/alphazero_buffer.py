@@ -31,7 +31,6 @@ class PrioritizedReplayBuffer:
 
         self.buffer: List[Any] = []
         self.priorities = np.zeros(capacity, dtype=np.float32)
-        self.values = np.zeros(capacity, dtype=np.float32)
         self.pos = 0
 
         self.file_path = file_path or os.path.join("saved_data", "replay_buffer.jsonl")
@@ -50,44 +49,19 @@ class PrioritizedReplayBuffer:
         except IOError as e:
             self.logger.error(f"Failed to prepare file storage: {e}")
 
-    def _get_value_from_data(self, item: Tuple) -> float:
-        """Extract value score from data tuple.
-        Assumes item is (state, policy, value, root_policy)."""
-        try:
-            value = item[2]
-            # Convert to float if it's a tensor
-            if torch.is_tensor(value):
-                return float(value.item())
-            return float(value)
-        except (IndexError, AttributeError) as e:
-            self.logger.warning(f"Could not extract value from item: {e}")
-            return 0.0
-        
-    def _find_lowest_value_index(self) -> int:
-        """Find the index of the item with the lowest value score."""
-        return int(np.argmin(self.values[:len(self.buffer)]))
-
     def add(self, data: List[Any]) -> None:
-        """Add new experiences to the buffer, replacing lowest value items when full."""
+        """Add new experiences to the buffer."""
         for item in data:
-            current_value = self._get_value_from_data(item)
-            
             if len(self.buffer) < self.capacity:
                 self.buffer.append(item)
-                self.values[self.pos] = current_value
-                self.priorities[self.pos] = (
-                    self.priorities.max() if len(self.buffer) > 1 else 1.0
-                )
-                self.pos = (self.pos + 1) % self.capacity
             else:
-                lowest_value_idx = self._find_lowest_value_index()
-                if current_value >= self.values[lowest_value_idx]:
-                    self.buffer[lowest_value_idx] = item
-                    self.values[lowest_value_idx] = current_value
-                    self.priorities[lowest_value_idx] = self.priorities.max()
-                    self.pos = (lowest_value_idx + 1) % self.capacity
+                self.buffer[self.pos] = item
 
-        # Save to file if needed
+            self.priorities[self.pos] = (
+                self.priorities.max() if len(self.buffer) > 1 else 1.0
+            )
+            self.pos = (self.pos + 1) % self.capacity
+
         if self.storage_mode in ["file", "hybrid"]:
             self._save_to_file(data)
 
