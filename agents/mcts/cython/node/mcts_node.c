@@ -4,8 +4,10 @@
 {
     "distutils": {
         "extra_compile_args": [
-            "-O2",
-            "-march=native"
+            "-O3",
+            "-march=native",
+            "-ffast-math",
+            "-funroll-loops"
         ],
         "include_dirs": [
             "/Users/kaanucar/anaconda3/envs/hanabi/lib/python3.11/site-packages/numpy/core/include"

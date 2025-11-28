@@ -1,10 +1,10 @@
 from enum import IntEnum
 import random
-import cython
 
-from ..sampler.mcts_sampler import MCTS_Sampler
+from agents.mcts.cython.sampler.mcts_sampler import MCTS_Sampler
 from pyhanabi import HanabiMove, HanabiMoveType, AgentObservationType, CHANCE_PLAYER_ID, try_cdef, try_load
 from rl_env import HanabiEnv
+
 
 class DetermineType(IntEnum):
     """Move types, consistent with hanabi_lib/hanabi_move.h."""
@@ -12,19 +12,15 @@ class DetermineType(IntEnum):
     REPLACE = 1
     NONE = 2
 
+
 class ScoreType(IntEnum):
     """Move types, consistent with hanabi_lib/hanabi_move.h."""
     SCORE = 0
     REGRET = 1
     PROGRESS = 2
 
-cdef class MCTS_Env(HanabiEnv):
-    cdef public int mcts_player
-    cdef public int determine_type
-    cdef public int score_type
-    cdef public object remember_hand
-    cdef public MCTS_Sampler sampler
 
+class MCTS_Env(HanabiEnv):
     def __init__(self, config):
         self.mcts_player = config["mcts_player"]
         self.determine_type = config["determine_type"]
@@ -33,14 +29,7 @@ cdef class MCTS_Env(HanabiEnv):
         self.sampler = MCTS_Sampler()
         super().__init__(config)
 
-    def reset(self, observations):
-        self.record_moves.reset(observations)
-
     def step(self, action):
-        cdef object move
-        cdef int action_player
-        cdef object actioned_card = None
-
         if isinstance(action, dict):
             move = self._build_move(action)
         elif isinstance(action, int):
@@ -50,73 +39,81 @@ cdef class MCTS_Env(HanabiEnv):
         else:
             raise ValueError("Expected action as dict or int, got: {}".format(action))
 
+        actioned_card = None
         action_player = self.state.cur_player()
 
-        if move.type() == HanabiMoveType.DISCARD or move.type() == HanabiMoveType.PLAY:
-            actioned_card = self.state.player_hands()[self.state.cur_player()][move.card_index()]
+        # On play or discard, note the card
+        if (
+            move.type() == HanabiMoveType.DISCARD
+            or move.type() == HanabiMoveType.PLAY
+        ):
+            actioned_card = self.state.player_hands()[self.state.cur_player()][
+                move.card_index()
+            ]
 
+        # Apply the move
         self.state.apply_move(move)
 
+        # Deal a new card if a chance node
         while self.state.cur_player() == CHANCE_PLAYER_ID:
             self.state.deal_random_card()
 
-        if self.determine_type == DetermineType.RESTORE and action_player != self.mcts_player:
-            self.restore_hand(action_player, self.remember_hand, actioned_card, move.card_index())
-
+        # Restore hand of other players
+        if (
+            self.determine_type == DetermineType.RESTORE
+            and action_player != self.mcts_player
+        ):
+            self.restore_hand(
+                action_player, self.remember_hand, actioned_card, move.card_index()
+            )
+        
+        # Remember and replace hand of other players
         if self.determine_type != DetermineType.NONE and self.state.cur_player() != self.mcts_player:
             self.remember_hand = self.state.player_hands()[self.state.cur_player()]
             self.replace_hand(self.state.cur_player())
 
         observations = self._make_observation_all_players()
-        self.record_moves.update(move, observations["player_observations"][action_player], action_player, 0)
         reward = self.reward()
         done = self.state.is_terminal()
         info = {}
 
         return (observations, reward, done, info)
 
-    def game_stats(self):
-        return self.record_moves.game_stats
+    def reward(self):
+        """Custom reward function for use during RIS-MCTS rollouts
+        This is therefore not the same as the overall game score
+        """
 
-    def player_stats(self):
-        return self.record_moves.player_stats
-
-    def regret(self):
-        return self.record_moves.regret()
-
-    cpdef double reward(self):
         if self.score_type == ScoreType.PROGRESS:
             return self.progress()
-        elif self.score_type == ScoreType.REGRET:
-            return self.progress() - self.regret()
         else:
             return self.score()
 
-    cpdef return_hand(self, int player):
-        cdef int hand_size = len(self.state.player_hands()[player])
-        cdef int card_index
-        cdef object return_move
+    def return_hand(self, player):
+        """Return all cards from a player's hand to the deck
+        Note: a return move retains card knowledge in each spot"""
 
-        for card_index in range(hand_size):
+        hand_size = len(self.state.player_hands()[player])
+        for _ in range(hand_size):
+            # Return card in the furthest left position, cards always shift left
             return_move = HanabiMove.get_return_move(card_index=0, player=player)
             self.state.apply_move(return_move)
 
-    cpdef replace_hand(self, int player):
-        cdef int hand_size = len(self.state.player_hands()[player])
-        cdef object temp_observation = self.state.observation(player)
-        cdef object card_knowledge = temp_observation.card_knowledge()[0]
-        cdef list replacement_hand
-        cdef int card_index
-        cdef object card
-        cdef object deal_specific_move
+    def replace_hand(self, player):
+        '''Replace a player's hand with a new one sampled from the deck. Card knowledge is retained.'''
 
+        hand_size = len(self.state.player_hands()[player])
+        temp_observation = self.state.observation(player)
+        card_knowledge = temp_observation.card_knowledge()[0]
         self.return_hand(player)
-        replacement_hand = self.sampler.sample_hand(player, 
-                                                    hand_size, 
-                                                    self.state.player_hands(), 
-                                                    self.state.discard_pile(), 
-                                                    self.state.fireworks(), 
-                                                    card_knowledge)
+        replacement_hand = self.sampler.sample_hand(
+            player, 
+            hand_size, 
+            self.state.player_hands(), 
+            self.state.discard_pile(), 
+            self.state.fireworks(), 
+            card_knowledge
+        )
 
         for card_index in range(len(replacement_hand)):
             card = replacement_hand[card_index]
@@ -124,18 +121,22 @@ cdef class MCTS_Env(HanabiEnv):
                 card_index, player, card.color(), card.rank()
             )
             self.state.apply_move(deal_specific_move)
-    
-    cpdef restore_hand(self, int player, object remember_hand, object removed_card=None, int removed_card_index=-1):
-        cdef object temp_observation = self.state.observation(player)
-        cdef object card_knowledge = temp_observation.card_knowledge()[0]
-        cdef int hand_size = len(self.state.player_hands()[player])
-        cdef int card_index = 0
-        cdef int remember_card_index
-        cdef object card
-        cdef list additional_cards, valid_cards
-        cdef object deal_specific_move
 
+    def restore_hand(
+        self, player, remember_hand, removed_card=None, removed_card_index=-1
+    ):
+        """As best as possible, restore player's current hand as closely as possible to a remembered one
+        remember_hand: A hand to match (usually remembered before a redeterminisation)
+        removed_card: This card was played or discarded. Used to resolve intra-hand conflict.
+        removed_card_index: This card was played or discarded. Used to skip over it.
+        """
+
+        temp_observation = self.state.observation(player)
+        card_knowledge = temp_observation.card_knowledge()[0]
+        hand_size = len(self.state.player_hands()[player])
         self.return_hand(player)
+
+        card_index = 0
 
         for remember_card_index in range(len(remember_hand)):
             if remember_card_index == removed_card_index:
@@ -143,7 +144,7 @@ cdef class MCTS_Env(HanabiEnv):
 
             card = remember_hand[remember_card_index]
 
-            if removed_card is not None and card == removed_card:
+            if removed_card and card == removed_card:
                 additional_cards = [
                     remember_hand[i]
                     for i in range(remember_card_index + 1, len(remember_hand))
@@ -159,13 +160,7 @@ cdef class MCTS_Env(HanabiEnv):
                     additional_cards,
                 )
 
-                card_in_valid = False
-                for c in valid_cards:
-                    if c == card:
-                        card_in_valid = True
-                        break
-
-                if not card_in_valid:
+                if not any(c == card for c in valid_cards):
                     if len(valid_cards) > 0:
                         card = random.choice(valid_cards)
                     else:
@@ -200,6 +195,7 @@ cdef class MCTS_Env(HanabiEnv):
             )
             self.state.apply_move(deal_specific_move)
 
+
 def make(
     environment_name="Hanabi-Full",
     num_players=2,
@@ -208,12 +204,29 @@ def make(
     score_type=0,
     pyhanabi_path=None,
 ):
+    """Make an environment.
+
+    Args:
+      environment_name: str, Name of the environment to instantiate.
+      num_players: int, Number of players in this game.
+      pyhanabi_path: str, absolute path to header files for c code linkage.
+
+    Returns:
+      env: An `Environment` object.
+
+    Raises:
+      ValueError: Unknown environment name.
+    """
+
     if pyhanabi_path is not None:
         prefixes = (pyhanabi_path,)
         assert try_cdef(prefixes=prefixes), "cdef failed to load"
         assert try_load(prefixes=prefixes), "library failed to load"
 
-    if environment_name == "Hanabi-Full" or environment_name == "Hanabi-Full-CardKnowledge":
+    if (
+        environment_name == "Hanabi-Full"
+        or environment_name == "Hanabi-Full-CardKnowledge"
+    ):
         return MCTS_Env(
             config={
                 "colors": 5,

@@ -108,12 +108,14 @@ class MCTS_Env(HanabiEnv):
         temp_observation = self.state.observation(player)
         card_knowledge = temp_observation.card_knowledge()[0]
         self.return_hand(player)
-        replacement_hand = self.sampler.sample_hand(player, 
-                                                    hand_size, 
-                                                    self.state.player_hands(), 
-                                                    self.state.discard_pile(), 
-                                                    self.state.fireworks(), 
-                                                    card_knowledge)
+        replacement_hand = self.sampler.sample_hand(
+            player, 
+            hand_size, 
+            self.state.player_hands(), 
+            self.state.discard_pile(), 
+            self.state.fireworks(), 
+            card_knowledge
+        )
 
         for card_index in range(len(replacement_hand)):
             card = replacement_hand[card_index]

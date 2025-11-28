@@ -2,8 +2,8 @@ from math import sqrt, log
 from collections import defaultdict
 import ray
 from pyhanabi import HanabiState, HanabiMove
-from agents.mcts import mcts_env
-from agents.mcts.mcts_node import MCTS_Node
+from agents.mcts.cython.env import mcts_env
+from agents.mcts.cython.node.mcts_node import MCTS_Node
 from agents.rule_based.rule_based_agents import VanDenBerghAgent
 from agents.rule_based.ruleset import Ruleset
 from rl_env import Agent
@@ -23,7 +23,7 @@ class MCTS_Agent(Agent):
         self.root_state = None
         self.player_id = config["player_id"]
 
-        self.max_rollout_num = 400
+        self.max_rollout_num = 50
         self.max_simulation_steps = 3
         self.max_depth = 60
         self.exploration_weight = 2.5

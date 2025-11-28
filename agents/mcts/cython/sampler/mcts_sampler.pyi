@@ -1,7 +1,4 @@
-import random
-import numpy as np
 from pyhanabi import HanabiCard
-#cimport numpy as cnp
 
 # Precomputed cards and initial deck configuration
 PRECOMPUTED_CARDS: list[HanabiCard]

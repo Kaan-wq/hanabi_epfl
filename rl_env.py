@@ -71,7 +71,7 @@ class HanabiEnv(Environment):
   """
 
   def __init__(self, config):
-    r"""Creates an environment with the given game configuration.
+    """Creates an environment with the given game configuration.
 
     Args:
       config: dict, With parameters for the game. Config takes the following
