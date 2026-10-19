@@ -13,9 +13,10 @@
 // limitations under the License.
 
 #include "hanabi_hand.h"
-#include <iostream>
+
 #include <algorithm>
 #include <cassert>
+#include <iostream>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
@@ -50,7 +51,7 @@ std::string HanabiHand::CardKnowledge::ToString() const {
   std::string result;
   result = result + (ColorHinted() ? ColorIndexToChar(Color()) : 'X') +
            (RankHinted() ? RankIndexToChar(Rank()) : 'X') + '|';
-  //MB: if it goes over there is a memory leak
+  // MB: if it goes over there is a memory leak
   assert(color_.Range() <= 8);
 
   for (int c = 0; c < color_.Range(); ++c) {
@@ -67,31 +68,27 @@ std::string HanabiHand::CardKnowledge::ToString() const {
   return result;
 }
 
-HanabiHand::HanabiHand(const HanabiHand& hand, bool hide_cards,
-                       bool hide_knowledge) {
+HanabiHand::HanabiHand(const HanabiHand& hand, bool hide_cards, bool hide_knowledge) {
   if (hide_cards) {
     cards_.resize(hand.cards_.size(), HanabiCard());
   } else {
     cards_ = hand.cards_;
   }
   if (hide_knowledge && !hand.cards_.empty()) {
-    card_knowledge_.resize(hand.cards_.size(),
-                           CardKnowledge(hand.card_knowledge_[0].NumColors(),
-                                         hand.card_knowledge_[0].NumRanks()));
+    card_knowledge_.resize(hand.cards_.size(), CardKnowledge(hand.card_knowledge_[0].NumColors(),
+                                                             hand.card_knowledge_[0].NumRanks()));
   } else {
     card_knowledge_ = hand.card_knowledge_;
   }
 }
 
-void HanabiHand::AddCard(HanabiCard card,
-                         const CardKnowledge& initial_knowledge) {
+void HanabiHand::AddCard(HanabiCard card, const CardKnowledge& initial_knowledge) {
   REQUIRE(card.IsValid());
   cards_.push_back(card);
   card_knowledge_.push_back(initial_knowledge);
 }
 
-void HanabiHand::RemoveFromHand(int card_index,
-                                std::vector<HanabiCard>* discard_pile) {
+void HanabiHand::RemoveFromHand(int card_index, std::vector<HanabiCard>* discard_pile) {
   if (discard_pile != nullptr) {
     discard_pile->push_back(cards_[card_index]);
   }
@@ -99,11 +96,11 @@ void HanabiHand::RemoveFromHand(int card_index,
   card_knowledge_.erase(card_knowledge_.begin() + card_index);
 }
 
-void HanabiHand::InsertCard(HanabiCard card,int card_index) {
+void HanabiHand::InsertCard(HanabiCard card, int card_index) {
   // MB: No reset of card knowledge and insertion of card into hand
   // MB: The choise of Insert
   REQUIRE(card.IsValid());
-  cards_.insert(cards_.begin()+card_index,card);
+  cards_.insert(cards_.begin() + card_index, card);
 }
 
 void HanabiHand::ReturnFromHand(int card_index) {
@@ -114,12 +111,12 @@ void HanabiHand::ReturnFromHand(int card_index) {
 }
 
 void HanabiHand::RemoveKnowledge(int card_index, const CardKnowledge& initial_knowledge) {
-    // Stand alone: Remove card knowledge only
-    // (use case: eg. used ReturnCard because we thought we wanted to retain knowledge.
-    // but we now realise we want to remove it instead
-    card_knowledge_.erase(card_knowledge_.begin() + card_index);
-    // Similar to cards, we insert the default knowledge in
-    card_knowledge_.insert(card_knowledge_.begin()+card_index,initial_knowledge);
+  // Stand alone: Remove card knowledge only
+  // (use case: eg. used ReturnCard because we thought we wanted to retain knowledge.
+  // but we now realise we want to remove it instead
+  card_knowledge_.erase(card_knowledge_.begin() + card_index);
+  // Similar to cards, we insert the default knowledge in
+  card_knowledge_.insert(card_knowledge_.begin() + card_index, initial_knowledge);
 }
 
 uint8_t HanabiHand::RevealColor(const int color) {
@@ -158,8 +155,7 @@ std::string HanabiHand::ToString() const {
   std::string result;
   assert(cards_.size() == card_knowledge_.size());
   for (int i = 0; i < cards_.size(); ++i) {
-    result +=
-        cards_[i].ToString() + " || " + card_knowledge_[i].ToString() + '\n';
+    result += cards_[i].ToString() + " || " + card_knowledge_[i].ToString() + '\n';
   }
   return result;
 }
@@ -169,17 +165,17 @@ std::string HanabiHand::ToString() const {
 =================================================================================*/
 
 json HanabiHand::ValueKnowledge::toJSON() const {
-    json j;
-    j["value"] = value_;
-    j["value_plausible"] = value_plausible_;
-    return j;
+  json j;
+  j["value"] = value_;
+  j["value_plausible"] = value_plausible_;
+  return j;
 }
 
 HanabiHand::ValueKnowledge HanabiHand::ValueKnowledge::fromJSON(const json& j) {
-    ValueKnowledge vk(j.at("value_plausible").size());
-    vk.value_ = j.at("value").get<int>();
-    vk.value_plausible_ = j.at("value_plausible").get<std::vector<bool>>();
-    return vk;
+  ValueKnowledge vk(j.at("value_plausible").size());
+  vk.value_ = j.at("value").get<int>();
+  vk.value_plausible_ = j.at("value_plausible").get<std::vector<bool>>();
+  return vk;
 }
 
 /*=================================================================================
@@ -187,18 +183,18 @@ HanabiHand::ValueKnowledge HanabiHand::ValueKnowledge::fromJSON(const json& j) {
 =================================================================================*/
 
 json HanabiHand::CardKnowledge::toJSON() const {
-    json j;
-    j["color"] = color_.toJSON();
-    j["rank"] = rank_.toJSON();
-    return j;
+  json j;
+  j["color"] = color_.toJSON();
+  j["rank"] = rank_.toJSON();
+  return j;
 }
 
 HanabiHand::CardKnowledge HanabiHand::CardKnowledge::fromJSON(const json& j) {
-    CardKnowledge ck(j.at("color").at("value_plausible").size(),
-                    j.at("rank").at("value_plausible").size());
-    ck.color_ = ValueKnowledge::fromJSON(j.at("color"));
-    ck.rank_ = ValueKnowledge::fromJSON(j.at("rank"));
-    return ck;
+  CardKnowledge ck(j.at("color").at("value_plausible").size(),
+                   j.at("rank").at("value_plausible").size());
+  ck.color_ = ValueKnowledge::fromJSON(j.at("color"));
+  ck.rank_ = ValueKnowledge::fromJSON(j.at("rank"));
+  return ck;
 }
 
 /*=================================================================================
@@ -206,39 +202,39 @@ HanabiHand::CardKnowledge HanabiHand::CardKnowledge::fromJSON(const json& j) {
 =================================================================================*/
 
 json HanabiHand::toJSON() const {
-    json j;
+  json j;
 
-    // Serialize cards
-    j["cards"] = json::array();
-    for (const auto& card : cards_) {
-        j["cards"].push_back(card.toJSON());
-    }
+  // Serialize cards
+  j["cards"] = json::array();
+  for (const auto& card : cards_) {
+    j["cards"].push_back(card.toJSON());
+  }
 
-    // Serialize card knowledge
-    j["card_knowledge"] = json::array();
-    for (const auto& ck : card_knowledge_) {
-        j["card_knowledge"].push_back(ck.toJSON());
-    }
+  // Serialize card knowledge
+  j["card_knowledge"] = json::array();
+  for (const auto& ck : card_knowledge_) {
+    j["card_knowledge"].push_back(ck.toJSON());
+  }
 
-    return j;
+  return j;
 }
 
 HanabiHand HanabiHand::fromJSON(const json& j) {
-    HanabiHand hand;
+  HanabiHand hand;
 
-    // Deserialize cards
-    hand.cards_.clear();
-    for (const auto& card_json : j.at("cards")) {
-        hand.cards_.push_back(HanabiCard::fromJSON(card_json));
-    }
+  // Deserialize cards
+  hand.cards_.clear();
+  for (const auto& card_json : j.at("cards")) {
+    hand.cards_.push_back(HanabiCard::fromJSON(card_json));
+  }
 
-    // Deserialize card knowledge
-    hand.card_knowledge_.clear();
-    for (const auto& ck_json : j.at("card_knowledge")) {
-        hand.card_knowledge_.push_back(CardKnowledge::fromJSON(ck_json));
-    }
+  // Deserialize card knowledge
+  hand.card_knowledge_.clear();
+  for (const auto& ck_json : j.at("card_knowledge")) {
+    hand.card_knowledge_.push_back(CardKnowledge::fromJSON(ck_json));
+  }
 
-    return hand;
+  return hand;
 }
 
 }  // namespace hanabi_learning_env

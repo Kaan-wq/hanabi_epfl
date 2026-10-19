@@ -15,8 +15,8 @@
 #ifndef __HANABI_CARD_H__
 #define __HANABI_CARD_H__
 
-#include <string>
 #include <nlohmann/json.hpp>
+#include <string>
 
 namespace hanabi_learning_env {
 

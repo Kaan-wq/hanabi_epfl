@@ -162,7 +162,8 @@ int ObsCurPlayerOffset(pyhanabi_observation_t* observation);
 int ObsNumPlayers(pyhanabi_observation_t* observation);
 int ObsGetHandSize(pyhanabi_observation_t* observation, int pid);
 void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_t* card);
-void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_knowledge_t* knowledge);
+void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
+                             pyhanabi_card_knowledge_t* knowledge);
 int ObsDiscardPileSize(pyhanabi_observation_t* observation);
 void ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card);
 int ObsFireworks(pyhanabi_observation_t* observation, int color);
@@ -176,10 +177,12 @@ void ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_mo
 bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int color, int rank);
 
 /* ObservationEncoder functions. */
-void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game, int type);
+void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game,
+                           int type);
 void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder);
 char* ObservationShape(pyhanabi_observation_encoder_t* encoder);
-char* EncodeObservation(pyhanabi_observation_encoder_t* encoder, pyhanabi_observation_t* observation);
+char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
+                        pyhanabi_observation_t* observation);
 
 /* Serialization + Deserialization functions. */
 char* MoveToJson(pyhanabi_move_t* move);

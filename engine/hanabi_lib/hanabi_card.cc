@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "hanabi_card.h"
+
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 #include "util.h"
@@ -33,16 +34,16 @@ std::string HanabiCard::ToString() const {
 // ===== Serialization + Deserialization =====
 
 json HanabiCard::toJSON() const {
-    json j;
-    j["color"] = color_;
-    j["rank"] = rank_;
-    return j;
+  json j;
+  j["color"] = color_;
+  j["rank"] = rank_;
+  return j;
 }
 
 HanabiCard HanabiCard::fromJSON(const json& j) {
-    int color = j.at("color").get<int>();
-    int rank = j.at("rank").get<int>();
-    return HanabiCard(color, rank);
+  int color = j.at("color").get<int>();
+  int rank = j.at("rank").get<int>();
+  return HanabiCard(color, rank);
 }
 
 // ===========================================

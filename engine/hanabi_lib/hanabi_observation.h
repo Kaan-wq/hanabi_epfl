@@ -15,9 +15,9 @@
 #ifndef __HANABI_OBSERVATION_H__
 #define __HANABI_OBSERVATION_H__
 
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_game.h"
@@ -37,7 +37,7 @@ class HanabiObservation {
   HanabiObservation(const HanabiState& state, int observing_player);
 
   std::string ToString() const;
-  
+
   // ========= Serialization + Deserialization =========
   nlohmann::json toJSON() const;
   static HanabiObservation fromJSON(const nlohmann::json& j);
@@ -58,9 +58,7 @@ class HanabiObservation {
   // (that is, last_moves[0] is the most recent move.)
   // Move targets are relative to observing_player not acting_player.
   // Note that the deal moves are included in this vector.
-  const std::vector<HanabiHistoryItem>& LastMoves() const {
-    return last_moves_;
-  }
+  const std::vector<HanabiHistoryItem>& LastMoves() const { return last_moves_; }
   int InformationTokens() const { return information_tokens_; }
   int LifeTokens() const { return life_tokens_; }
   const std::vector<HanabiMove>& LegalMoves() const { return legal_moves_; }
@@ -72,7 +70,7 @@ class HanabiObservation {
   }
 
  private:
-  int cur_player_offset_;  // offset of current_player from observing_player
+  int cur_player_offset_;                 // offset of current_player from observing_player
   std::vector<HanabiHand> hands_;         // observing player is element 0
   std::vector<HanabiCard> discard_pile_;  // back is most recent discard
   std::vector<int> fireworks_;

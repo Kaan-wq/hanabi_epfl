@@ -6,12 +6,11 @@
 #include <cstdint>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <random>
 #include <stdexcept>
 #include <string>
 #include <vector>
-
-#include <nlohmann/json.hpp>
 
 #include "parity_trace.h"
 
@@ -34,9 +33,8 @@ hle::HanabiMove ChooseMove(const hle::HanabiState& state, std::mt19937* rng) {
   std::vector<hle::HanabiMove> not_bad;
   for (const auto& move : legal) {
     const bool is_play = move.MoveType() == hle::HanabiMove::kPlay;
-    const bool playable =
-        is_play && state.CardPlayableOnFireworks(cards[move.CardIndex()].Color(),
-                                                 cards[move.CardIndex()].Rank());
+    const bool playable = is_play && state.CardPlayableOnFireworks(cards[move.CardIndex()].Color(),
+                                                                   cards[move.CardIndex()].Rank());
     if (playable) good_plays.push_back(move);
     if (!is_play || playable) not_bad.push_back(move);
   }
@@ -75,13 +73,13 @@ nlohmann::json RecordGame(const hp::Variant& variant, int seed, int start_player
     steps.push_back(step);
   }
   const hp::StepDigest final_digest = hp::DigestState(state, encoder);
-  return {{"seed", seed},
-          {"start_player", start_player},
-          {"steps", steps},
-          {"final_score", state.Score()},
-          {"end_status", static_cast<int>(state.EndOfGameStatus())},
-          {"final_digest",
-           {final_digest.state, final_digest.observations, final_digest.encodings}}};
+  return {
+      {"seed", seed},
+      {"start_player", start_player},
+      {"steps", steps},
+      {"final_score", state.Score()},
+      {"end_status", static_cast<int>(state.EndOfGameStatus())},
+      {"final_digest", {final_digest.state, final_digest.observations, final_digest.encodings}}};
 }
 
 }  // namespace
@@ -104,7 +102,8 @@ int main(int argc, char** argv) {
       const int seed = static_cast<int>(v) * kSeedsPerVariantStride + g;
       games.push_back(RecordGame(variant, seed, g % num_players));
     }
-    root["variants"].push_back({{"name", variant.name}, {"params", variant.params}, {"games", games}});
+    root["variants"].push_back(
+        {{"name", variant.name}, {"params", variant.params}, {"games", games}});
   }
 
   std::ofstream out(argv[2]);

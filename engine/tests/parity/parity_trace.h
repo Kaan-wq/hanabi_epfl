@@ -110,15 +110,10 @@ inline std::vector<Variant> GoldenVariants() {
   std::vector<Variant> variants;
   for (int players = 2; players <= 5; ++players) {
     const std::string p = std::to_string(players);
-    variants.push_back({"full_card_knowledge_p" + p,
-                        {{"players", p}, {"observation_type", "1"}},
-                        8});
-    variants.push_back({"full_minimal_p" + p,
-                        {{"players", p}, {"observation_type", "0"}},
-                        2});
-    variants.push_back({"full_seer_p" + p,
-                        {{"players", p}, {"observation_type", "2"}},
-                        2});
+    variants.push_back(
+        {"full_card_knowledge_p" + p, {{"players", p}, {"observation_type", "1"}}, 8});
+    variants.push_back({"full_minimal_p" + p, {{"players", p}, {"observation_type", "0"}}, 2});
+    variants.push_back({"full_seer_p" + p, {{"players", p}, {"observation_type", "2"}}, 2});
     variants.push_back({"small_p" + p,
                         {{"players", p},
                          {"colors", "2"},

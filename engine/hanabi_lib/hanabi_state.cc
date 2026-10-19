@@ -13,13 +13,15 @@
 // limitations under the License.
 
 #include "hanabi_state.h"
-#include <iostream>
+
 #include <algorithm>
 #include <cassert>
-#include <sstream>
+#include <iostream>
 #include <nlohmann/json.hpp>
+#include <sstream>
 using json = nlohmann::json;
 #include <numeric>
+
 #include "util.h"
 
 namespace hanabi_learning_env {
@@ -70,8 +72,8 @@ HanabiCard HanabiState::HanabiDeck::DealCard(std::mt19937* rng) {
   if (Empty()) {
     return HanabiCard();
   }
-  std::discrete_distribution<std::mt19937::result_type> dist(
-      card_count_.begin(), card_count_.end());
+  std::discrete_distribution<std::mt19937::result_type> dist(card_count_.begin(),
+                                                             card_count_.end());
   int index = dist(*rng);
   assert(card_count_[index] > 0);
   --card_count_[index];
@@ -88,13 +90,13 @@ HanabiCard HanabiState::HanabiDeck::DealCard(int color, int rank) {
   assert(card_count_[index] > 0);
   --card_count_[index];
   --total_count_;
-  //std::cout<<"After DealCard count of that card colorrank ";
-  //std::cout<<color;
-  //std::cout<<rank;
-  //std::cout<<" index ";
-  //std::cout<<index;
-  //std::cout<<" was ";
-  //std::cout<<card_count_[index];
+  // std::cout<<"After DealCard count of that card colorrank ";
+  // std::cout<<color;
+  // std::cout<<rank;
+  // std::cout<<" index ";
+  // std::cout<<index;
+  // std::cout<<" was ";
+  // std::cout<<card_count_[index];
   return HanabiCard(IndexToColor(index), IndexToRank(index));
 }
 
@@ -104,13 +106,13 @@ void HanabiState::HanabiDeck::ReturnCard(int color, int rank) {
   int index = CardToIndex(color, rank);
   card_count_[index] += 1;
   total_count_ += 1;
-  //std::cout<<"After ReturnCard, count of that card colorrank ";
-  //std::cout<<color;
-  //std::cout<<rank;
-  //std::cout<<" index ";
-  //std::cout<<index;
-  //std::cout<<" was ";
-  //std::cout<<card_count_[index];
+  // std::cout<<"After ReturnCard, count of that card colorrank ";
+  // std::cout<<color;
+  // std::cout<<rank;
+  // std::cout<<" index ";
+  // std::cout<<index;
+  // std::cout<<" was ";
+  // std::cout<<card_count_[index];
 }
 
 HanabiState::HanabiState(const HanabiGame* parent_game, int start_player)
@@ -118,8 +120,7 @@ HanabiState::HanabiState(const HanabiGame* parent_game, int start_player)
       deck_(*parent_game),
       hands_(parent_game->NumPlayers()),
       cur_player_(kChancePlayerId),
-      next_non_chance_player_(start_player >= 0 &&
-                                      start_player < parent_game->NumPlayers()
+      next_non_chance_player_(start_player >= 0 && start_player < parent_game->NumPlayers()
                                   ? start_player
                                   : parent_game->GetSampledStartPlayer()),
       information_tokens_(parent_game->MaxInformationTokens()),
@@ -128,19 +129,17 @@ HanabiState::HanabiState(const HanabiGame* parent_game, int start_player)
       turns_to_play_(parent_game->NumPlayers()) {}
 
 void HanabiState::RemoveKnowledge(int player, int card_index) {
-    // MB: Define the default card knowledge structure
-    HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(),
-                                      ParentGame()->NumRanks());
-    hands_[player].RemoveKnowledge(card_index, card_knowledge);
+  // MB: Define the default card knowledge structure
+  HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(), ParentGame()->NumRanks());
+  hands_[player].RemoveKnowledge(card_index, card_knowledge);
 }
 
 void HanabiState::AdvanceToNextPlayer(bool stayOnPlayer) {
-
   if (!deck_.Empty() && PlayerToDeal() >= 0) {
     cur_player_ = kChancePlayerId;
-  } else if (stayOnPlayer == true){
-    //MB: Expression neccesary to ensure modulo wraps -1 > 2 (C++ % implementation)
-    cur_player_ = ((next_non_chance_player_-1) + hands_.size()) % hands_.size();
+  } else if (stayOnPlayer == true) {
+    // MB: Expression neccesary to ensure modulo wraps -1 > 2 (C++ % implementation)
+    cur_player_ = ((next_non_chance_player_ - 1) + hands_.size()) % hands_.size();
   } else {
     cur_player_ = next_non_chance_player_;
     next_non_chance_player_ = (cur_player_ + 1) % hands_.size();
@@ -184,8 +183,7 @@ bool HanabiState::HintingIsLegal(HanabiMove move) const {
   if (InformationTokens() <= 0) {
     return false;
   }
-  if (move.TargetOffset() < 1 ||
-      move.TargetOffset() >= ParentGame()->NumPlayers()) {
+  if (move.TargetOffset() < 1 || move.TargetOffset() >= ParentGame()->NumPlayers()) {
     return false;
   }
   return true;
@@ -210,17 +208,17 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
         return false;
       }
       break;
-    //MB: Copy of Deal for now
+    // MB: Copy of Deal for now
     case HanabiMove::kDealSpecific:
       if (cur_player_ != kChancePlayerId) {
         return false;
       }
       if (deck_.CardCount(move.Color(), move.Rank()) == 0) {
-        std::cout<<"MB Error: Card color ";
-        std::cout<<move.Color();
-        std::cout<<" rank ";
-        std::cout<<move.Rank();
-        std::cout<<" tried to be dealt specifically but it's not in core deck";
+        std::cout << "MB Error: Card color ";
+        std::cout << move.Color();
+        std::cout << " rank ";
+        std::cout << move.Rank();
+        std::cout << " tried to be dealt specifically but it's not in core deck";
         return false;
       }
       break;
@@ -248,9 +246,7 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
       }
       const auto& cards = HandByOffset(move.TargetOffset()).Cards();
       if (!std::any_of(cards.begin(), cards.end(),
-                       [move](const HanabiCard& card) {
-                         return card.Color() == move.Color();
-                       })) {
+                       [move](const HanabiCard& card) { return card.Color() == move.Color(); })) {
         return false;
       }
       break;
@@ -261,9 +257,7 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
       }
       const auto& cards = HandByOffset(move.TargetOffset()).Cards();
       if (!std::any_of(cards.begin(), cards.end(),
-                       [move](const HanabiCard& card) {
-                         return card.Rank() == move.Rank();
-                       })) {
+                       [move](const HanabiCard& card) { return card.Rank() == move.Rank(); })) {
         return false;
       }
       break;
@@ -276,35 +270,34 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
 
 void HanabiState::ApplyMove(HanabiMove move) {
   REQUIRE(MoveIsLegal(move));
-  //MB: DealSpecific and Return can happen freely. Others mean it is now end game turns.
-  if (deck_.Empty() && move.MoveType() != HanabiMove::kDealSpecific && move.MoveType()!= HanabiMove::kReturn) {
+  // MB: DealSpecific and Return can happen freely. Others mean it is now end game turns.
+  if (deck_.Empty() && move.MoveType() != HanabiMove::kDealSpecific &&
+      move.MoveType() != HanabiMove::kReturn) {
     --turns_to_play_;
   }
-  // MB: Do we really want a RETURN or DEALSPECFIC move to add to history? Might have to deal with this in history
+  // MB: Do we really want a RETURN or DEALSPECFIC move to add to history? Might have to deal with
+  // this in history
   HanabiHistoryItem history(move);
   history.player = cur_player_;
   switch (move.MoveType()) {
     case HanabiMove::kDeal: {
-        //MB: Usuallly, deal returns an empty card
-        history.deal_to_player = PlayerToDeal();
-        HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(),
-                                      ParentGame()->NumRanks());
-        if (parent_game_->ObservationType() == HanabiGame::kSeer){
-          card_knowledge.ApplyIsColorHint(move.Color());
-          card_knowledge.ApplyIsRankHint(move.Rank());
-        }
-        hands_[history.deal_to_player].AddCard(
-            deck_.DealCard(move.Color(), move.Rank()),
-            card_knowledge);
+      // MB: Usuallly, deal returns an empty card
+      history.deal_to_player = PlayerToDeal();
+      HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(), ParentGame()->NumRanks());
+      if (parent_game_->ObservationType() == HanabiGame::kSeer) {
+        card_knowledge.ApplyIsColorHint(move.Color());
+        card_knowledge.ApplyIsRankHint(move.Rank());
       }
-      break;
+      hands_[history.deal_to_player].AddCard(deck_.DealCard(move.Color(), move.Rank()),
+                                             card_knowledge);
+    } break;
     case HanabiMove::kDealSpecific: {
-        //MB: Important note: TargetOffset is bastardised here; really its just the absolute player id dealt to
-        history.deal_to_player = move.TargetOffset();
-        hands_[history.deal_to_player].InsertCard(
-            deck_.DealCard(move.Color(), move.Rank()), move.CardIndex());
-      }
-      break;
+      // MB: Important note: TargetOffset is bastardised here; really its just the absolute player
+      // id dealt to
+      history.deal_to_player = move.TargetOffset();
+      hands_[history.deal_to_player].InsertCard(deck_.DealCard(move.Color(), move.Rank()),
+                                                move.CardIndex());
+    } break;
     case HanabiMove::kDiscard:
       history.information_token = IncrementInformationTokens();
       history.color = hands_[cur_player_].Cards()[move.CardIndex()].Color();
@@ -312,12 +305,12 @@ void HanabiState::ApplyMove(HanabiMove move) {
       hands_[cur_player_].RemoveFromHand(move.CardIndex(), &discard_pile_);
       break;
     case HanabiMove::kReturn:
-      //MB: Return bastardises framework and uses TargetOffset to specify which hand to remove from
+      // MB: Return bastardises framework and uses TargetOffset to specify which hand to remove from
       history.player = move.TargetOffset();
       history.color = hands_[history.player].Cards()[move.CardIndex()].Color();
       history.rank = hands_[history.player].Cards()[move.CardIndex()].Rank();
-      deck_.ReturnCard(hands_[history.player].Cards()[move.CardIndex()].Color()
-                      ,hands_[history.player].Cards()[move.CardIndex()].Rank());
+      deck_.ReturnCard(hands_[history.player].Cards()[move.CardIndex()].Color(),
+                       hands_[history.player].Cards()[move.CardIndex()].Rank());
       hands_[history.player].ReturnFromHand(move.CardIndex());
       break;
     case HanabiMove::kPlay:
@@ -325,28 +318,24 @@ void HanabiState::ApplyMove(HanabiMove move) {
       history.rank = hands_[cur_player_].Cards()[move.CardIndex()].Rank();
       std::tie(history.scored, history.information_token) =
           AddToFireworks(hands_[cur_player_].Cards()[move.CardIndex()]);
-      hands_[cur_player_].RemoveFromHand(
-          move.CardIndex(), history.scored ? nullptr : &discard_pile_);
+      hands_[cur_player_].RemoveFromHand(move.CardIndex(),
+                                         history.scored ? nullptr : &discard_pile_);
       break;
     case HanabiMove::kRevealColor:
       DecrementInformationTokens();
-      history.reveal_bitmask =
-          HandColorBitmask(*HandByOffset(move.TargetOffset()), move.Color());
-      history.newly_revealed_bitmask =
-          HandByOffset(move.TargetOffset())->RevealColor(move.Color());
+      history.reveal_bitmask = HandColorBitmask(*HandByOffset(move.TargetOffset()), move.Color());
+      history.newly_revealed_bitmask = HandByOffset(move.TargetOffset())->RevealColor(move.Color());
       break;
     case HanabiMove::kRevealRank:
       DecrementInformationTokens();
-      history.reveal_bitmask =
-          HandRankBitmask(*HandByOffset(move.TargetOffset()), move.Rank());
-      history.newly_revealed_bitmask =
-          HandByOffset(move.TargetOffset())->RevealRank(move.Rank());
+      history.reveal_bitmask = HandRankBitmask(*HandByOffset(move.TargetOffset()), move.Rank());
+      history.newly_revealed_bitmask = HandByOffset(move.TargetOffset())->RevealRank(move.Rank());
       break;
     default:
       std::abort();  // Should not be possible.
   }
   move_history_.push_back(history);
-  //MB WARNING: DealSpecific skips this step.
+  // MB WARNING: DealSpecific skips this step.
   AdvanceToNextPlayer(move.MoveType() == HanabiMove::kDealSpecific);
 }
 
@@ -386,8 +375,7 @@ bool HanabiState::CardPlayableOnFireworks(int color, int rank) const {
   return rank == fireworks_[color];
 }
 
-std::pair<std::vector<HanabiMove>, std::vector<double>>
-HanabiState::ChanceOutcomes() const {
+std::pair<std::vector<HanabiMove>, std::vector<double>> HanabiState::ChanceOutcomes() const {
   std::pair<std::vector<HanabiMove>, std::vector<double>> rv;
   int max_outcome_uid = ParentGame()->MaxChanceOutcomes();
   for (int uid = 0; uid < max_outcome_uid; ++uid) {
@@ -457,22 +445,22 @@ HanabiState::EndOfGameType HanabiState::EndOfGameStatus() const {
 =================================================================================*/
 
 json HanabiState::HanabiDeck::toJSON() const {
-    json j;
-    j["card_count"] = card_count_;
-    j["total_count"] = total_count_;
-    j["num_ranks"] = num_ranks_;
-    return j;
+  json j;
+  j["card_count"] = card_count_;
+  j["total_count"] = total_count_;
+  j["num_ranks"] = num_ranks_;
+  return j;
 }
 
 void HanabiState::HanabiDeck::fromJSON(const json& j) {
-    // Ensure the JSON contains all necessary fields
-    assert(j.contains("card_count"));
-    assert(j.contains("total_count"));
-    assert(j.contains("num_ranks"));
+  // Ensure the JSON contains all necessary fields
+  assert(j.contains("card_count"));
+  assert(j.contains("total_count"));
+  assert(j.contains("num_ranks"));
 
-    card_count_ = j.at("card_count").get<std::vector<int>>();
-    total_count_ = j.at("total_count").get<int>();
-    num_ranks_ = j.at("num_ranks").get<int>();
+  card_count_ = j.at("card_count").get<std::vector<int>>();
+  total_count_ = j.at("total_count").get<int>();
+  num_ranks_ = j.at("num_ranks").get<int>();
 }
 
 /*=================================================================================
@@ -480,86 +468,86 @@ void HanabiState::HanabiDeck::fromJSON(const json& j) {
 =================================================================================*/
 
 json HanabiState::toJSON() const {
-    json j;
+  json j;
 
-    // Serialize deck
-    j["deck"] = deck_.toJSON();
+  // Serialize deck
+  j["deck"] = deck_.toJSON();
 
-    // Serialize discard_pile_
-    j["discard_pile"] = json::array();
-    for (const auto& card : discard_pile_) {
-        j["discard_pile"].push_back(card.toJSON());
-    }
+  // Serialize discard_pile_
+  j["discard_pile"] = json::array();
+  for (const auto& card : discard_pile_) {
+    j["discard_pile"].push_back(card.toJSON());
+  }
 
-    // Serialize hands_
-    j["hands"] = json::array();
-    for (const auto& hand : hands_) {
-        j["hands"].push_back(hand.toJSON());
-    }
+  // Serialize hands_
+  j["hands"] = json::array();
+  for (const auto& hand : hands_) {
+    j["hands"].push_back(hand.toJSON());
+  }
 
-    // Serialize move_history_
-    j["move_history"] = json::array();
-    for (const auto& history_item : move_history_) {
-        j["move_history"].push_back(history_item.toJSON());
-    }
+  // Serialize move_history_
+  j["move_history"] = json::array();
+  for (const auto& history_item : move_history_) {
+    j["move_history"].push_back(history_item.toJSON());
+  }
 
-    // Serialize other member variables
-    j["cur_player"] = cur_player_;
-    j["next_non_chance_player"] = next_non_chance_player_;
-    j["information_tokens"] = information_tokens_;
-    j["life_tokens"] = life_tokens_;
-    j["fireworks"] = fireworks_;
-    j["turns_to_play"] = turns_to_play_;
+  // Serialize other member variables
+  j["cur_player"] = cur_player_;
+  j["next_non_chance_player"] = next_non_chance_player_;
+  j["information_tokens"] = information_tokens_;
+  j["life_tokens"] = life_tokens_;
+  j["fireworks"] = fireworks_;
+  j["turns_to_play"] = turns_to_play_;
 
-    return j;
+  return j;
 }
 
 HanabiState HanabiState::fromJSON(const json& j, const HanabiGame* game) {
-    // Validate required fields
-    assert(j.contains("deck"));
-    assert(j.contains("discard_pile"));
-    assert(j.contains("hands"));
-    assert(j.contains("move_history"));
-    assert(j.contains("cur_player"));
-    assert(j.contains("next_non_chance_player"));
-    assert(j.contains("information_tokens"));
-    assert(j.contains("life_tokens"));
-    assert(j.contains("fireworks"));
-    assert(j.contains("turns_to_play"));
+  // Validate required fields
+  assert(j.contains("deck"));
+  assert(j.contains("discard_pile"));
+  assert(j.contains("hands"));
+  assert(j.contains("move_history"));
+  assert(j.contains("cur_player"));
+  assert(j.contains("next_non_chance_player"));
+  assert(j.contains("information_tokens"));
+  assert(j.contains("life_tokens"));
+  assert(j.contains("fireworks"));
+  assert(j.contains("turns_to_play"));
 
-    // Initialize a new HanabiState with the parent_game and default start_player
-    HanabiState state(game);
+  // Initialize a new HanabiState with the parent_game and default start_player
+  HanabiState state(game);
 
-    // Deserialize deck
-    state.deck_.fromJSON(j.at("deck"));
+  // Deserialize deck
+  state.deck_.fromJSON(j.at("deck"));
 
-    // Deserialize discard_pile_
-    state.discard_pile_.clear();
-    for (const auto& card_json : j.at("discard_pile")) {
-        state.discard_pile_.push_back(HanabiCard::fromJSON(card_json));
-    }
+  // Deserialize discard_pile_
+  state.discard_pile_.clear();
+  for (const auto& card_json : j.at("discard_pile")) {
+    state.discard_pile_.push_back(HanabiCard::fromJSON(card_json));
+  }
 
-    // Deserialize hands_
-    state.hands_.clear();
-    for (const auto& hand_json : j.at("hands")) {
-        state.hands_.emplace_back(HanabiHand::fromJSON(hand_json));
-    }
+  // Deserialize hands_
+  state.hands_.clear();
+  for (const auto& hand_json : j.at("hands")) {
+    state.hands_.emplace_back(HanabiHand::fromJSON(hand_json));
+  }
 
-    // Deserialize move_history_
-    state.move_history_.clear();
-    for (const auto& history_json : j.at("move_history")) {
-        state.move_history_.push_back(HanabiHistoryItem::fromJSON(history_json));
-    }
+  // Deserialize move_history_
+  state.move_history_.clear();
+  for (const auto& history_json : j.at("move_history")) {
+    state.move_history_.push_back(HanabiHistoryItem::fromJSON(history_json));
+  }
 
-    // Deserialize other member variables
-    state.cur_player_ = j.at("cur_player").get<int>();
-    state.next_non_chance_player_ = j.at("next_non_chance_player").get<int>();
-    state.information_tokens_ = j.at("information_tokens").get<int>();
-    state.life_tokens_ = j.at("life_tokens").get<int>();
-    state.fireworks_ = j.at("fireworks").get<std::vector<int>>();
-    state.turns_to_play_ = j.at("turns_to_play").get<int>();
+  // Deserialize other member variables
+  state.cur_player_ = j.at("cur_player").get<int>();
+  state.next_non_chance_player_ = j.at("next_non_chance_player").get<int>();
+  state.information_tokens_ = j.at("information_tokens").get<int>();
+  state.life_tokens_ = j.at("life_tokens").get<int>();
+  state.fireworks_ = j.at("fireworks").get<std::vector<int>>();
+  state.turns_to_play_ = j.at("turns_to_play").get<int>();
 
-    return state;
+  return state;
 }
 
 }  // namespace hanabi_learning_env

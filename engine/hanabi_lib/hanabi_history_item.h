@@ -16,8 +16,8 @@
 #define __HANABI_HISTORY_ITEM_H__
 
 #include <cstdint>
-#include <string>
 #include <nlohmann/json.hpp>
+#include <string>
 
 #include "hanabi_move.h"
 

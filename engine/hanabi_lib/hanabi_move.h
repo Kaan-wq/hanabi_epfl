@@ -16,8 +16,8 @@
 #define __HANABI_MOVE_H__
 
 #include <cstdint>
-#include <string>
 #include <nlohmann/json.hpp>
+#include <string>
 
 namespace hanabi_learning_env {
 
@@ -35,15 +35,14 @@ namespace hanabi_learning_env {
 class HanabiMove {
   // HanabiMove is small, and intended to be passed by value.
  public:
-  enum Type { kInvalid, kPlay, kDiscard, kRevealColor, kRevealRank, kDeal, kReturn, kDealSpecific};
+  enum Type { kInvalid, kPlay, kDiscard, kRevealColor, kRevealRank, kDeal, kReturn, kDealSpecific };
 
   // ========= Serialization + Deserialization =========
   nlohmann::json toJSON() const;
   static HanabiMove fromJSON(const nlohmann::json& j);
   // ===================================================
 
-  HanabiMove(Type move_type, int8_t card_index, int8_t target_offset,
-             int8_t color, int8_t rank)
+  HanabiMove(Type move_type, int8_t card_index, int8_t target_offset, int8_t color, int8_t rank)
       : move_type_(move_type),
         card_index_(card_index),
         target_offset_(target_offset),

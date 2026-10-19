@@ -45,9 +45,9 @@ inline int RunAll() {
 
 }  // namespace hanabi_test
 
-#define HANABI_TEST(name)                                                 \
-  static void name();                                                     \
-  static const hanabi_test::Registrar name##_registrar(#name, &name);     \
+#define HANABI_TEST(name)                                             \
+  static void name();                                                 \
+  static const hanabi_test::Registrar name##_registrar(#name, &name); \
   static void name()
 
 #define CHECK(condition)                                                              \
@@ -58,12 +58,12 @@ inline int RunAll() {
     }                                                                                 \
   } while (false)
 
-#define CHECK_EQ(a, b)                                                                  \
-  do {                                                                                  \
-    if (!((a) == (b))) {                                                                \
-      ++hanabi_test::FailureCount();                                                    \
+#define CHECK_EQ(a, b)                                                                   \
+  do {                                                                                   \
+    if (!((a) == (b))) {                                                                 \
+      ++hanabi_test::FailureCount();                                                     \
       std::cerr << __FILE__ << ':' << __LINE__ << ": CHECK_EQ(" #a ", " #b ") failed\n"; \
-    }                                                                                   \
+    }                                                                                    \
   } while (false)
 
 #endif  // HANABI_TESTS_CHECK_H_

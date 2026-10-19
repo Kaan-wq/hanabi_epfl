@@ -13,15 +13,16 @@
 // limitations under the License.
 
 #include "hanabi_move.h"
-#include "util.h"
 
 #include <nlohmann/json.hpp>
+
+#include "util.h"
 using json = nlohmann::json;
 
 namespace hanabi_learning_env {
 
 bool HanabiMove::operator==(const HanabiMove& other_move) const {
-  //MB: Check if two moves are the same? not quite sure
+  // MB: Check if two moves are the same? not quite sure
   if (MoveType() != other_move.MoveType()) {
     return false;
   }
@@ -29,14 +30,12 @@ bool HanabiMove::operator==(const HanabiMove& other_move) const {
     case kPlay:
     case kDiscard:
       return CardIndex() == other_move.CardIndex();
-     case kReturn:
+    case kReturn:
       return CardIndex() == other_move.CardIndex() && TargetOffset() == other_move.TargetOffset();
     case kRevealColor:
-      return TargetOffset() == other_move.TargetOffset() &&
-             Color() == other_move.Color();
+      return TargetOffset() == other_move.TargetOffset() && Color() == other_move.Color();
     case kRevealRank:
-      return TargetOffset() == other_move.TargetOffset() &&
-             Rank() == other_move.Rank();
+      return TargetOffset() == other_move.TargetOffset() && Rank() == other_move.Rank();
     case kDeal:
       return Color() == other_move.Color() && Rank() == other_move.Rank();
     case kDealSpecific:
@@ -51,7 +50,8 @@ std::string HanabiMove::ToString() const {
     case kPlay:
       return "(Play " + std::to_string(CardIndex()) + ")";
     case kReturn:
-      return "(Return " +  std::to_string(CardIndex()) + "from Player "+std::to_string(TargetOffset())+")";
+      return "(Return " + std::to_string(CardIndex()) + "from Player " +
+             std::to_string(TargetOffset()) + ")";
     case kDiscard:
       return "(Discard " + std::to_string(CardIndex()) + ")";
     case kRevealColor:
@@ -62,15 +62,13 @@ std::string HanabiMove::ToString() const {
              RankIndexToChar(Rank()) + ")";
     case kDeal:
       if (color_ >= 0) {
-        return std::string("(Deal ") + ColorIndexToChar(Color()) +
-               RankIndexToChar(Rank()) + ")";
+        return std::string("(Deal ") + ColorIndexToChar(Color()) + RankIndexToChar(Rank()) + ")";
       } else {
         return std::string("(Deal XX)");
       }
     case kDealSpecific:
       if (color_ >= 0) {
-        return std::string("(Deal ") + ColorIndexToChar(Color()) +
-               RankIndexToChar(Rank()) + ")";
+        return std::string("(Deal ") + ColorIndexToChar(Color()) + RankIndexToChar(Rank()) + ")";
       } else {
         return std::string("(Deal XX)");
       }
@@ -93,7 +91,7 @@ json HanabiMove::toJSON() const {
   j["target_offset"] = target_offset_;
   j["color"] = color_;
   j["rank"] = rank_;
-  
+
   return j;
 }
 
@@ -107,7 +105,7 @@ HanabiMove HanabiMove::fromJSON(const json& j) {
   int8_t target_offset = j["target_offset"];
   int8_t color = j["color"];
   int8_t rank = j["rank"];
-  
+
   return HanabiMove(move_type, card_index, target_offset, color, rank);
 }
 

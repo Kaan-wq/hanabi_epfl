@@ -13,15 +13,16 @@
 // limitations under the License.
 
 #include "hanabi_observation.h"
-#include "hanabi_card.h"
-#include "hanabi_hand.h"
-#include "hanabi_history_item.h"
-#include "hanabi_move.h"
-#include "hanabi_game.h"
 
 #include <algorithm>
 #include <cassert>
 #include <nlohmann/json.hpp>
+
+#include "hanabi_card.h"
+#include "hanabi_game.h"
+#include "hanabi_hand.h"
+#include "hanabi_history_item.h"
+#include "hanabi_move.h"
 using json = nlohmann::json;
 
 #include "util.h"
@@ -38,22 +39,19 @@ int PlayerToOffset(int pid, int observer_pid, int num_players) {
 
 // Switch members from absolute player indices to observer-relative offsets,
 // including player indices within the contained HanabiMove.
-void ChangeHistoryItemToObserverRelative(int observer_pid, int num_players,
-                                         bool show_cards,
+void ChangeHistoryItemToObserverRelative(int observer_pid, int num_players, bool show_cards,
                                          HanabiHistoryItem* item) {
   if (item->move.MoveType() == HanabiMove::kDeal) {
     assert(item->player < 0 && item->deal_to_player >= 0);
-    item->deal_to_player =
-        (item->deal_to_player - observer_pid + num_players) % num_players;
+    item->deal_to_player = (item->deal_to_player - observer_pid + num_players) % num_players;
     if (item->deal_to_player == 0 && !show_cards) {
       // Hide cards dealt to observer if they shouldn't be able to see them.
       item->move = HanabiMove(HanabiMove::kDeal, -1, -1, -1, -1);
     }
-  // MB: DealSpecific are treated differently
+    // MB: DealSpecific are treated differently
   } else if (item->move.MoveType() == HanabiMove::kDealSpecific) {
     assert(item->player < 0 && item->deal_to_player >= 0);
-    item->deal_to_player =
-        (item->deal_to_player - observer_pid + num_players) % num_players;
+    item->deal_to_player = (item->deal_to_player - observer_pid + num_players) % num_players;
     if (item->deal_to_player == 0 && !show_cards) {
       // Hide cards dealt to observer if they shouldn't be able to see them.
       item->move = HanabiMove(HanabiMove::kDealSpecific, -1, -1, -1, -1);
@@ -65,9 +63,9 @@ void ChangeHistoryItemToObserverRelative(int observer_pid, int num_players,
 }
 }  // namespace
 
-HanabiObservation::HanabiObservation(const HanabiState& state,
-                                     int observing_player)
-    : cur_player_offset_(PlayerToOffset(state.CurPlayer(), observing_player, state.ParentGame()->NumPlayers())),
+HanabiObservation::HanabiObservation(const HanabiState& state, int observing_player)
+    : cur_player_offset_(
+          PlayerToOffset(state.CurPlayer(), observing_player, state.ParentGame()->NumPlayers())),
       discard_pile_(state.DiscardPile()),
       fireworks_(state.Fireworks()),
       deck_size_(state.Deck().Size()),
@@ -81,21 +79,20 @@ HanabiObservation::HanabiObservation(const HanabiState& state,
   const bool show_cards = state.ParentGame()->ObservationType() == HanabiGame::kSeer;
   hands_.push_back(HanabiHand(state.Hands()[observing_player], !show_cards, hide_knowledge));
   for (int offset = 1; offset < state.ParentGame()->NumPlayers(); ++offset) {
-    hands_.push_back(HanabiHand(state.Hands()[(observing_player + offset) % state.ParentGame()->NumPlayers()], false, hide_knowledge));
+    hands_.push_back(
+        HanabiHand(state.Hands()[(observing_player + offset) % state.ParentGame()->NumPlayers()],
+                   false, hide_knowledge));
   }
 
   const auto& history = state.MoveHistory();
-  auto start = std::find_if(history.begin(), history.end(),
-                            [](const HanabiHistoryItem& item) {
-                              return item.player != kChancePlayerId;
-                            });
+  auto start = std::find_if(history.begin(), history.end(), [](const HanabiHistoryItem& item) {
+    return item.player != kChancePlayerId;
+  });
   std::reverse_iterator<decltype(start)> rend(start);
   for (auto it = history.rbegin(); it != rend; ++it) {
     last_moves_.push_back(*it);
-    ChangeHistoryItemToObserverRelative(observing_player,
-                                        state.ParentGame()->NumPlayers(),
-                                        show_cards,
-                                        &last_moves_.back());
+    ChangeHistoryItemToObserverRelative(observing_player, state.ParentGame()->NumPlayers(),
+                                        show_cards, &last_moves_.back());
     if (it->player == observing_player) {
       break;
     }
@@ -205,7 +202,7 @@ HanabiObservation HanabiObservation::fromJSON(const nlohmann::json& j) {
   for (const auto& item_json : j.at("last_moves")) {
     obs.last_moves_.push_back(HanabiHistoryItem::fromJSON(item_json));
   }
-  
+
   // Deserialize legal_moves_
   for (const auto& move_json : j.at("legal_moves")) {
     obs.legal_moves_.push_back(HanabiMove::fromJSON(move_json));

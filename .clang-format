@@ -1,0 +1,5 @@
+# Google style (upstream HLE's), with the same line length as our Python.
+BasedOnStyle: Google
+ColumnLimit: 100
+DerivePointerAlignment: false
+PointerAlignment: Left

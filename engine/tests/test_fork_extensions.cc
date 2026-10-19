@@ -83,7 +83,8 @@ HANABI_TEST(ReturnThenDealSpecificReplacesOneCard) {
   }
   CHECK(new_color >= 0);
 
-  state.ApplyMove(hle::HanabiMove(hle::HanabiMove::kReturn, 0, static_cast<int8_t>(player), -1, -1));
+  state.ApplyMove(
+      hle::HanabiMove(hle::HanabiMove::kReturn, 0, static_cast<int8_t>(player), -1, -1));
   CHECK_EQ(state.CurPlayer(), hle::kChancePlayerId);
   CHECK_EQ(state.Hands()[player].Cards().size(), hand_before.Cards().size() - 1);
   CHECK_EQ(state.Deck().Size(), deck_before + 1);
@@ -116,8 +117,8 @@ HANABI_TEST(RemoveKnowledgeResetsOnlyThatCard) {
   const int hinter = state.CurPlayer();
   const int target = (hinter + 1) % game.NumPlayers();
   const int color = state.Hands()[target].Cards()[0].Color();
-  state.ApplyMove(hle::HanabiMove(hle::HanabiMove::kRevealColor, -1, 1,
-                                  static_cast<int8_t>(color), -1));
+  state.ApplyMove(
+      hle::HanabiMove(hle::HanabiMove::kRevealColor, -1, 1, static_cast<int8_t>(color), -1));
   const auto knowledge_before = state.Hands()[target].Knowledge();
   CHECK(knowledge_before[0].ColorHinted());
 

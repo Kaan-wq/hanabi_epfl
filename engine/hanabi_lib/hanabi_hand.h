@@ -16,9 +16,9 @@
 #define __HANABI_HAND_H__
 
 #include <cstdint>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 
@@ -101,24 +101,22 @@ class HanabiHand {
   };
 
   HanabiHand() {}
-  HanabiHand(const HanabiHand& hand)
-      : cards_(hand.cards_), card_knowledge_(hand.card_knowledge_) {}
+  HanabiHand(const HanabiHand& hand) : cards_(hand.cards_), card_knowledge_(hand.card_knowledge_) {}
   // Copy hand. Hide cards (set to invalid) if hide_cards is true.
   // Hide card knowledge (set to unknown) if hide_knowledge is true.
   HanabiHand(const HanabiHand& hand, bool hide_cards, bool hide_knowledge);
   // Cards and corresponding card knowledge are always arranged from oldest to
   // newest, with the oldest card or knowledge at index 0.
   const std::vector<HanabiCard>& Cards() const { return cards_; }
-  const std::vector<CardKnowledge>& Knowledge() const {
-    return card_knowledge_;
-  }
+  const std::vector<CardKnowledge>& Knowledge() const { return card_knowledge_; }
   void AddCard(HanabiCard card, const CardKnowledge& initial_knowledge);
-  //MB: Insert card at specific position
+  // MB: Insert card at specific position
   void InsertCard(HanabiCard card, int card_index);
   // Remove card_index card from hand. Put in discard_pile if not nullptr
   // (pushes the card to the back of the discard_pile vector).
   void RemoveFromHand(int card_index, std::vector<HanabiCard>* discard_pile);
-  // MB: Remove card_index card from hand and put back in deck. Deck might not be able to access like this.
+  // MB: Remove card_index card from hand and put back in deck. Deck might not be able to access
+  // like this.
   void ReturnFromHand(int card_index);
   // Remove knowledge seperately
   void RemoveKnowledge(int card_index, const CardKnowledge& initial_knowledge);

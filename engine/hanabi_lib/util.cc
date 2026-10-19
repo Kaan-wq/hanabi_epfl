@@ -35,9 +35,8 @@ char RankIndexToChar(int rank) {
 }
 
 template <>
-int ParameterValue<int>(
-    const std::unordered_map<std::string, std::string>& params,
-    const std::string& key, int default_value) {
+int ParameterValue<int>(const std::unordered_map<std::string, std::string>& params,
+                        const std::string& key, int default_value) {
   auto iter = params.find(key);
   if (iter == params.end()) {
     return default_value;
@@ -47,9 +46,8 @@ int ParameterValue<int>(
 }
 
 template <>
-std::string ParameterValue<std::string>(
-    const std::unordered_map<std::string, std::string>& params,
-    const std::string& key, std::string default_value) {
+std::string ParameterValue<std::string>(const std::unordered_map<std::string, std::string>& params,
+                                        const std::string& key, std::string default_value) {
   auto iter = params.find(key);
   if (iter == params.end()) {
     return default_value;
@@ -59,9 +57,8 @@ std::string ParameterValue<std::string>(
 }
 
 template <>
-double ParameterValue<double>(
-    const std::unordered_map<std::string, std::string>& params,
-    const std::string& key, double default_value) {
+double ParameterValue<double>(const std::unordered_map<std::string, std::string>& params,
+                              const std::string& key, double default_value) {
   auto iter = params.find(key);
   if (iter == params.end()) {
     return default_value;
@@ -71,18 +68,14 @@ double ParameterValue<double>(
 }
 
 template <>
-bool ParameterValue<bool>(
-    const std::unordered_map<std::string, std::string>& params,
-    const std::string& key, bool default_value) {
+bool ParameterValue<bool>(const std::unordered_map<std::string, std::string>& params,
+                          const std::string& key, bool default_value) {
   auto iter = params.find(key);
   if (iter == params.end()) {
     return default_value;
   }
 
-  return (iter->second == "1" || iter->second == "true" ||
-                  iter->second == "True"
-              ? true
-              : false);
+  return (iter->second == "1" || iter->second == "true" || iter->second == "True" ? true : false);
 }
 
 }  // namespace hanabi_learning_env

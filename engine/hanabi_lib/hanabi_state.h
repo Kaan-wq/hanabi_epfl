@@ -15,10 +15,10 @@
 #ifndef __HANABI_STATE_H__
 #define __HANABI_STATE_H__
 
+#include <nlohmann/json.hpp>
 #include <random>
 #include <string>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_game.h"
@@ -41,9 +41,7 @@ class HanabiState {
     HanabiCard DealCard(std::mt19937* rng);
     int Size() const { return total_count_; }
     bool Empty() const { return total_count_ == 0; }
-    int CardCount(int color, int rank) const {
-      return card_count_[CardToIndex(color, rank)];
-    }
+    int CardCount(int color, int rank) const { return card_count_[CardToIndex(color, rank)]; }
 
     // ===== Serialization + Deserialization =====
     nlohmann::json toJSON() const;
@@ -51,9 +49,7 @@ class HanabiState {
     // ===========================================
 
    private:
-    int CardToIndex(int color, int rank) const {
-      return color * num_ranks_ + rank;
-    }
+    int CardToIndex(int color, int rank) const { return color * num_ranks_ + rank; }
     int IndexToColor(int index) const { return index / num_ranks_; }
     int IndexToRank(int index) const { return index % num_ranks_; }
 
@@ -95,8 +91,7 @@ class HanabiState {
   void ApplyRandomChance();
   // Get the valid chance moves, and associated probabilities.
   // Guaranteed that moves.size() == probabilities.size().
-  std::pair<std::vector<HanabiMove>, std::vector<double>> ChanceOutcomes()
-      const;
+  std::pair<std::vector<HanabiMove>, std::vector<double>> ChanceOutcomes() const;
   EndOfGameType EndOfGameStatus() const;
   bool IsTerminal() const { return EndOfGameStatus() != kNotFinished; }
   int Score() const;
@@ -105,7 +100,7 @@ class HanabiState {
   int CurPlayer() const { return cur_player_; }
   int LifeTokens() const { return life_tokens_; }
   int InformationTokens() const { return information_tokens_; }
-  int TurnsToPlay() const {return turns_to_play_; }
+  int TurnsToPlay() const { return turns_to_play_; }
 
   const std::vector<HanabiHand>& Hands() const { return hands_; }
   const std::vector<int>& Fireworks() const { return fireworks_; }
@@ -114,9 +109,7 @@ class HanabiState {
   // Get the discard pile (the element at the back is the most recent discard.)
   const std::vector<HanabiCard>& DiscardPile() const { return discard_pile_; }
   // Sequence of moves from beginning of game. Stored as <move, actor>.
-  const std::vector<HanabiHistoryItem>& MoveHistory() const {
-    return move_history_;
-  }
+  const std::vector<HanabiHistoryItem>& MoveHistory() const { return move_history_; }
 
   // ===== Serialization + Deserialization =====
   nlohmann::json toJSON() const;
@@ -133,9 +126,7 @@ class HanabiState {
   const HanabiHand& HandByOffset(int offset) const {
     return hands_[(cur_player_ + offset) % hands_.size()];
   }
-  HanabiHand* HandByOffset(int offset) {
-    return &hands_[(cur_player_ + offset) % hands_.size()];
-  }
+  HanabiHand* HandByOffset(int offset) { return &hands_[(cur_player_ + offset) % hands_.size()]; }
   void AdvanceToNextPlayer(bool stayOnPlayer);  // Set cur_player to next player to act.
   bool HintingIsLegal(HanabiMove move) const;
   int PlayerToDeal() const;  // -1 if no player needs a card.

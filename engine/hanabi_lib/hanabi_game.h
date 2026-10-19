@@ -15,11 +15,11 @@
 #ifndef __HANABI_GAME_H__
 #define __HANABI_GAME_H__
 
+#include <nlohmann/json.hpp>
 #include <random>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <nlohmann/json.hpp>
 
 #include "hanabi_card.h"
 #include "hanabi_move.h"
@@ -40,7 +40,7 @@ class HanabiGame {
   enum AgentObservationType { kMinimal = 0, kCardKnowledge = 1, kSeer = 2 };
 
   explicit HanabiGame(const std::unordered_map<std::string, std::string>& params);
-  
+
   // ========= Serialization + Deserialization =========
   nlohmann::json toJSON() const;
   static HanabiGame fromJSON(const nlohmann::json& j);
@@ -52,8 +52,8 @@ class HanabiGame {
   HanabiMove GetMove(int uid) const { return moves_[uid]; }
   // Get unique id for a move. Returns -1 for invalid move.
   int GetMoveUid(HanabiMove move) const;
-  int GetMoveUid(HanabiMove::Type move_type, int card_index, int target_offset,
-                 int color, int rank) const;
+  int GetMoveUid(HanabiMove::Type move_type, int card_index, int target_offset, int color,
+                 int rank) const;
   // Number of different chance outcomes.
   int MaxChanceOutcomes() const;
   // Get a chance-outcome HanabiMove by unique id.
@@ -63,8 +63,7 @@ class HanabiGame {
   // Randomly sample a random chance-outcome move from list of moves and
   // associated probability distribution.
   HanabiMove PickRandomChance(
-      const std::pair<std::vector<HanabiMove>, std::vector<double>>&
-          chance_outcomes) const;
+      const std::pair<std::vector<HanabiMove>, std::vector<double>>& chance_outcomes) const;
 
   std::unordered_map<std::string, std::string> Parameters() const;
   int MinPlayers() const { return 2; }

@@ -4,10 +4,9 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
-
-#include <nlohmann/json.hpp>
 
 #include "parity_trace.h"
 
@@ -61,8 +60,8 @@ std::string ReplayGame(const std::unordered_map<std::string, std::string>& varia
 
   if (!state.IsTerminal()) return "game did not end after the recorded moves";
   if (state.Score() != record.at("final_score").get<int>()) {
-    return "final score " + std::to_string(state.Score()) + " != " +
-           std::to_string(record.at("final_score").get<int>());
+    return "final score " + std::to_string(state.Score()) +
+           " != " + std::to_string(record.at("final_score").get<int>());
   }
   if (static_cast<int>(state.EndOfGameStatus()) != record.at("end_status").get<int>()) {
     return "end-of-game status differs";
@@ -92,8 +91,7 @@ int main(int argc, char** argv) {
   int games = 0;
   int failures = 0;
   for (const auto& variant : root.at("variants")) {
-    const auto params =
-        variant.at("params").get<std::unordered_map<std::string, std::string>>();
+    const auto params = variant.at("params").get<std::unordered_map<std::string, std::string>>();
     for (const auto& record : variant.at("games")) {
       ++games;
       const std::string error = ReplayGame(params, record);
