@@ -74,10 +74,8 @@ Conventions, the repository layout and the rules for changing the engine are in
 - **`EngineLoadError: Engine library libpyhanabi not found`**: build the engine
   (step 1 above).
 - **macOS linker error `unknown architecture` in a `.tbd` file**: the default SDK
-  is newer than the installed linker. Update the Command Line Tools, or point
-  `SDKROOT` at an older SDK before building, e.g.
-  `export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk`
-  (list the installed ones with `ls /Library/Developer/CommandLineTools/SDKs`).
+  is newer than the installed linker. Update the Command Line Tools
+  (`softwareupdate --list`), then reconfigure from a fresh `build/`.
 
 ## Results
 

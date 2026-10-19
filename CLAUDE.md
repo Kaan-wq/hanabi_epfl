@@ -36,7 +36,7 @@ ctest --test-dir build --output-on-failure     # engine tests, incl. parity test
 cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug && cmake --build build-debug \
   && ctest --test-dir build-debug              # tests under ASan + UBSan
 uv run clang-format -i engine/**/*.cc engine/**/*.h
-uv run clang-tidy -p build <files>             # static analysis (.clang-tidy)
+SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build <files>  # static analysis
 
 uv sync                          # install / update the environment
 uv run pytest                    # Python tests (-m "not slow" skips Ray/script tests)
@@ -106,7 +106,6 @@ Never leave the repo in a state where any of the above fail.
 ├── configs/                  # experiment configs (one YAML per experiment)
 ├── notebooks/                # analysis only, never imported by the package
 ├── saved_models/             # earlier AlphaZero checkpoints (state dicts)
-├── docker/                   # legacy remote-dev container
 └── docs/                     # report, slides, results/; papers/ is local-only
 ```
 
