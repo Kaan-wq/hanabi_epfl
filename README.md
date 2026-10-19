@@ -1,84 +1,93 @@
 # Solving Hanabi with MCTS and AlphaZero
 
-**Author:** Kaan Uçar  
+**Author:** Kaan Uçar
 **Supervisor:** Giulio Romanelli
 
-## Overview
+Agents for the cooperative card game Hanabi: re-determinizing information-set
+Monte Carlo Tree Search (MCTS), an AlphaZero-style variant guided by a
+policy/value network, and rule-based baselines from the literature. They run on
+our fork of DeepMind's [Hanabi Learning Environment](https://github.com/deepmind/hanabi-learning-environment)
+(see [engine/UPSTREAM.md](engine/UPSTREAM.md) and [engine/CHANGES.md](engine/CHANGES.md)).
 
-This project explores solving the cooperative card game Hanabi using Monte Carlo Tree Search (MCTS) and AlphaZero algorithms. Built upon Google's Hanabi Learning Environment, this research investigates the effectiveness of different AI approaches for mastering this challenging game of imperfect information and communication.
+The methodology, experiments and results are in the project report:
+**[docs/report.pdf](docs/report.pdf)**.
 
-## Project Report
+## Setup
 
-For detailed methodology, experiments, results, and analysis, please refer to the complete project report: **[Hanabi.pdf](./Hanabi.pdf)**
-
-## About the Environment
-
-> **Note:** This is not an officially supported Google product.
-
-The `hanabi_learning_environment` serves as a research platform for Hanabi experiments. The file `rl_env.py` provides an RL environment using an API similar to OpenAI Gym. A lower level game interface is provided in `pyhanabi.py` for non-RL methods like Monte Carlo tree search.
-
-## Getting Started
-
-### Installation
-
-#### Prerequisites
-
-**Linux (Debian/Ubuntu):**
+Requirements: a C++17 compiler, CMake ≥ 3.24 and [uv](https://docs.astral.sh/uv/).
+On macOS, `xcode-select --install` provides the compiler. nlohmann/json is used
+from the system if installed, otherwise CMake downloads it.
 
 ```bash
-sudo apt-get install g++            # if you don't already have a CXX compiler
-sudo apt-get install python-pip     # if you don't already have pip
+# 1. Build the engine (Python loads build/engine/libpyhanabi)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+ctest --test-dir build --output-on-failure
+
+# 2. Create the Python environment (Python 3.14)
+uv sync
 ```
 
-**macOS:**
+Rebuild the engine (`cmake --build build`) after changing anything in `engine/`.
+To use a library built elsewhere, set `HANABI_SEARCH_LIB=/path/to/libpyhanabi.dylib`.
+
+## Usage
+
+Every run is defined by one YAML file in [`configs/`](configs):
 
 ```bash
-xcode-select --install              # installs C++ compiler (clang++) and development tools
-# pip is included with Python/Anaconda installation
+# Play games and report mean score ± standard error
+uv run python scripts/play.py --config configs/vandenbergh_selfplay_2p.yaml --num-games 100
+uv run python scripts/play.py --config configs/mcts_vs_vandenbergh_3p.yaml --num-games 10
+
+# Play yourself against a bot in the terminal
+uv run python scripts/play.py --config configs/human_vs_vandenbergh_2p.yaml --num-games 1
+
+# Train AlphaZero by self-play; writes runs/<experiment>/<timestamp>_<seed>/
+uv run python scripts/train.py --config configs/alphazero_2p.yaml
+
+# Evaluate on the held-out evaluation seeds
+uv run python scripts/evaluate.py --config configs/alphazero_2p.yaml \
+    --checkpoint runs/alphazero_2p/<run>/model.pt --num-games 1000
 ```
 
-#### Build and Install
+Agent kinds: `rule_based` (policies `VanDenBergh`, `Piers`, `IGGI`, `Outer`,
+`Inner`, `Flawed`, `Mute`, `LegalRandom`), `mcts`, `alphazero` and `human`. Set
+`num_workers > 1` on an MCTS or AlphaZero agent to spread its rollouts over Ray
+worker processes. See [`src/hanabi_search/config.py`](src/hanabi_search/config.py)
+for every option and its default.
+
+## Development
 
 ```bash
-# Build the C++ library
-cmake .
-make
-
-# Install Python package and dependencies
-pip install -r requirements.txt     # required libraries to run the code
-pip install .                       # install the package (builds Cython extensions)
-python setup.py build_ext --inplace # copy compiled extensions to source directories
+uv run pytest                 # all tests; add -m "not slow" to skip Ray/script tests
+uv run ruff check . && uv run ruff format --check .
+uv run mypy                   # strict
+./build/engine/benchmarks/bench_engine
 ```
 
-### Running Examples
+Conventions, the repository layout and the rules for changing the engine are in
+[CLAUDE.md](CLAUDE.md).
 
-Basic examples:
+### Troubleshooting
 
-```bash
-pip install numpy                   # game_example.py uses numpy
-python examples/rl_env_example.py   # Runs RL episodes
-python examples/game_example.py     # Plays a game using the lower level interface
-```
+- **`EngineLoadError: Engine library libpyhanabi not found`**: build the engine
+  (step 1 above).
+- **macOS linker error `unknown architecture` in a `.tbd` file**: the default SDK
+  is newer than the installed linker. Update the Command Line Tools, or point
+  `SDKROOT` at an older SDK before building, e.g.
+  `export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.sdk`
+  (list the installed ones with `ls /Library/Developer/CommandLineTools/SDKs`).
 
-### MCTS Experiments
+## Results
 
-Run MCTS agents with different configurations:
+Experiment logs from the report are in [docs/results/](docs/results), analysis
+notebooks in [notebooks/](notebooks), and trained AlphaZero weights in
+[saved_models/](saved_models). The `alphazero_model_*.pth` files load into the
+current network; `policy_model_400.pth` and `noise_model.pth` come from an
+earlier architecture that is no longer in the code.
 
-```bash
-# 2-player PMCTS experiments
-python rl_env_example.py --players 2 --num_episodes 100 --agent PMCTS_Agent --agents PMCTS_Agent --mcts_types 00
+## License
 
-# 5-player MCTS experiments
-python rl_env_example.py --players 5 --num_episodes 10 --agent MCTS_Agent --agents MCTS_Agent --mcts_types 00000
-```
-
-## Research Focus
-
-This project specifically investigates:
-
-- Monte Carlo Tree Search implementations for incomplete information games
-- AlphaZero adaptations for cooperative games
-
----
-
-_Based on Google's Hanabi Learning Environment research platform_
+Apache-2.0 (see [LICENSE](LICENSE)). The engine is derived from DeepMind's Hanabi
+Learning Environment, also Apache-2.0.
