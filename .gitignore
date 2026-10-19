@@ -9,7 +9,7 @@ dist/
 .pytest_cache/
 
 # Native build output
-build/
+build*/
 *.so
 *.dylib
 *.dll
