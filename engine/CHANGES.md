@@ -8,6 +8,21 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-19: Fix `HanabiState::fromJSON` advancing the game's RNG
+
+`fromJSON` built its temporary state with the default start player. With
+`random_start_player` set, that sampled a start player from the game's RNG, so
+every deserialized state's game was one RNG draw ahead of the original, and the
+restored state dealt different cards. It now passes an explicit start player
+(the real one is read from the JSON afterwards).
+
+- Regression test: `StateFromJsonDoesNotAdvanceGameRng`.
+- Parity tests pass (they do not deserialize).
+- Benchmark: state JSON round-trip 11.2k / 8.5k / 8.0k / 6.8k per second for
+  2-5 players, unchanged within noise (was 11.3k / 8.5k / 8.0k / 6.9k).
+
+---
+
 ## 2026-10-19: Move into `engine/`, CMake build, parity tests, benchmark
 
 No game-logic changes.

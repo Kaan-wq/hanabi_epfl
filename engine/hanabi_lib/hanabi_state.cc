@@ -515,8 +515,9 @@ HanabiState HanabiState::fromJSON(const json& j, const HanabiGame* game) {
   assert(j.contains("fireworks"));
   assert(j.contains("turns_to_play"));
 
-  // Initialize a new HanabiState with the parent_game and default start_player
-  HanabiState state(game);
+  // Explicit start player: sampling one would consume the game's RNG. The real
+  // value is restored from "next_non_chance_player" below.
+  HanabiState state(game, 0);
 
   // Deserialize deck
   state.deck_.fromJSON(j.at("deck"));

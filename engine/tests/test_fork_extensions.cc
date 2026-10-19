@@ -131,6 +131,21 @@ HANABI_TEST(RemoveKnowledgeResetsOnlyThatCard) {
   }
 }
 
+HANABI_TEST(StateFromJsonDoesNotAdvanceGameRng) {
+  // Regression: fromJSON built a temporary state that sampled a start player,
+  // consuming the game's RNG whenever random_start_player was set.
+  const hle::HanabiGame game(std::unordered_map<std::string, std::string>{
+      {"players", "3"}, {"seed", "9"}, {"random_start_player", "true"}});
+  hle::HanabiState state(&game, 0);
+  Advance(&state, 5);
+  const nlohmann::json state_json = state.toJSON();
+  const nlohmann::json game_before = game.toJSON();
+
+  const hle::HanabiState restored = hle::HanabiState::fromJSON(state_json, &game);
+  CHECK(game.toJSON() == game_before);
+  CHECK_EQ(restored.ToString(), state.ToString());
+}
+
 HANABI_TEST(StateJsonRoundTripContinuesIdentically) {
   const hle::HanabiGame game = MakeGame(4, 5);
   for (int moves : {0, 5, 25, 60}) {
@@ -196,4 +211,4 @@ HANABI_TEST(MoveJsonRoundTripAllTypes) {
   }
 }
 
-int main() { return hanabi_test::RunAll(); }
+int main() { return hanabi_test::RunAll(); }  // NOLINT(bugprone-exception-escape)
