@@ -83,9 +83,7 @@ Conventions, the repository layout and the rules for changing the engine are in
 
 Experiment logs from the report are in [docs/results/](docs/results), analysis
 notebooks in [notebooks/](notebooks), and trained AlphaZero weights in
-[saved_models/](saved_models). The `alphazero_model_*.pth` files load into the
-current network; `policy_model_400.pth` and `noise_model.pth` come from an
-earlier architecture that is no longer in the code.
+[saved_models/](saved_models).
 
 ## License
 

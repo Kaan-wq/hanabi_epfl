@@ -3,6 +3,10 @@
 `engine/` is a hard fork of DeepMind's Hanabi Learning Environment (HLE). We do
 not merge from upstream; this file records where the code came from.
 
+The project started from Michael Brooks's (MBlogs) repository, itself built on
+HLE, which already contained the first RIS-MCTS additions (marked `MB:` in the
+code). The table below names the original HLE commit those changes were made on.
+
 | | |
 |---|---|
 | Repository | https://github.com/deepmind/hanabi-learning-environment |

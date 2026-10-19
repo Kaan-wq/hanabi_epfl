@@ -54,8 +54,9 @@ A state JSON round-trip costs about as much as 80 state copies.
 ## Before 2026-10: pre-existing fork changes (reconstructed)
 
 These predate this log. They were reconstructed by diffing against upstream
-`5df6a73`. Several carry `MB:` comments in the code; the author of those is not
-recorded.
+`5df6a73`. Most come from Michael Brooks (MBlogs), whose repository this project
+started from: he had begun adding RIS-MCTS support (re-determinization moves,
+knowledge removal). His changes carry `MB:` comments in the code.
 
 ### Re-determinization moves (for MCTS)
 Used by the MCTS agents to swap the hidden cards in a player's hand.
