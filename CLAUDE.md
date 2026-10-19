@@ -85,7 +85,7 @@ Never leave the repo in a state where any of the above fail.
 │       │   ├── observation_types.py  # TypedDicts for dict observations/actions
 │       │   ├── hanabi_env.py         # gym-like environment
 │       │   ├── determinized_env.py   # re-determinizing env for MCTS rollouts
-│       │   └── card_sampler.py       # hidden-card sampling (to move into the engine)
+│       │   └── hand_sampler.py       # hidden-hand sampling (wraps the engine's HandSampler)
 │       ├── agents/           # agent policies (one subpackage per family):
 │       │   ├── base.py, factory.py, human.py
 │       │   ├── rule_based/   #   ruleset.py, card_counting.py, agents.py

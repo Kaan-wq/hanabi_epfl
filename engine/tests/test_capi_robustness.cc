@@ -530,4 +530,46 @@ HANABI_TEST(ObservationFunctionsRejectBadArguments) {
   DeleteObservation(&obs);
 }
 
+HANABI_TEST(HandSamplingFunctionsRejectBadArguments) {
+  Fixture f;
+  std::vector<int32_t> counts(25, -1);
+  const auto candidates = [&](int player, int index, bool knowledge,
+                              const pyhanabi_card_t* excluded, int num_excluded, int size) {
+    return pyhanabi_state_candidate_counts(&f.state, player, index, knowledge, excluded,
+                                           num_excluded, counts.data(), size);
+  };
+  CHECK(candidates(1, 0, true, nullptr, 0, 25));
+  int total = 0;
+  for (int32_t count : counts) total += count;
+  CHECK_EQ(total, StateDeckSize(&f.state) + 1);  // The deck plus the card at position 0.
+
+  const pyhanabi_card_t bad_card = {5, 0};
+  CHECK(!candidates(-1, 0, true, nullptr, 0, 25));
+  CHECK(!candidates(kNumPlayers, 0, true, nullptr, 0, 25));
+  CHECK(!candidates(1, -1, false, nullptr, 0, 25));
+  CHECK(!candidates(1, 5, false, nullptr, 0, 25));  // Hand size is 5.
+  CHECK(!candidates(1, 0, true, nullptr, 0, 24));
+  CHECK(!candidates(1, 0, true, &bad_card, 1, 25));
+  CHECK(!candidates(1, 0, true, nullptr, -1, 25));
+
+  const std::string before = StateJson(f);
+  CHECK(!pyhanabi_state_resample_hand(&f.state, kNumPlayers, 1));
+  pyhanabi_card_t remembered[5];
+  for (int i = 0; i < 5; ++i) StateGetHandCard(&f.state, 1, i, &remembered[i]);
+  CHECK(!pyhanabi_state_restore_hand(&f.state, -1, remembered, 5, -1, -1, -1, 1));
+  CHECK(!pyhanabi_state_restore_hand(&f.state, 1, remembered, 6, -1, -1, -1, 1));
+  CHECK(!pyhanabi_state_restore_hand(&f.state, 1, remembered, 5, -1, -1, 5, 1));
+  CHECK(!pyhanabi_state_restore_hand(&f.state, 1, remembered, 5, 7, 0, 0, 1));
+  CHECK(!pyhanabi_state_restore_hand(&f.state, 1, &bad_card, 1, -1, -1, -1, 1));
+  CHECK_EQ(StateJson(f), before);
+
+  CHECK(pyhanabi_state_resample_hand(&f.state, 1, 1));
+  CHECK(pyhanabi_state_restore_hand(&f.state, 1, remembered, 5, -1, -1, -1, 1));
+  for (int i = 0; i < 5; ++i) {
+    pyhanabi_card_t card{};
+    StateGetHandCard(&f.state, 1, i, &card);
+    CHECK(card.color == remembered[i].color && card.rank == remembered[i].rank);
+  }
+}
+
 int main() { return hanabi_test::RunAll(); }

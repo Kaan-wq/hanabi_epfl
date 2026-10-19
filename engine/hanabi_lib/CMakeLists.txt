@@ -1,5 +1,6 @@
 add_library(hanabi STATIC
   canonical_encoders.cc
+  hand_sampler.cc
   hanabi_card.cc
   hanabi_game.cc
   hanabi_hand.cc

@@ -16,6 +16,7 @@
 
 #include "pyhanabi.h"
 
+#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
@@ -33,6 +34,7 @@ using json = nlohmann::json;
 #include "hanabi_lib/hanabi_move.h"
 #include "hanabi_lib/hanabi_observation.h"
 #include "hanabi_lib/hanabi_state.h"
+#include "hanabi_lib/hand_sampler.h"
 #include "hanabi_lib/observation_encoder.h"
 #include "hanabi_lib/util.h"
 
@@ -858,5 +860,72 @@ bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_
 }
 
 /* ============================= HanabiObservation ============================= */
+
+/*==============================================================================
+ *                  Hidden-hand sampling
+ *============================================================================*/
+
+bool pyhanabi_state_candidate_counts(const pyhanabi_state_t* state, int32_t player,
+                                     int32_t card_index, bool use_knowledge,
+                                     const pyhanabi_card_t* excluded, int32_t num_excluded,
+                                     int32_t* counts, int32_t counts_size) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  REQUIRE(counts != nullptr);
+  const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
+  const auto& game = *hanabi_state.ParentGame();
+  if (!InRange(player, hanabi_state.Hands().size()) || card_index < 0 ||
+      card_index >= game.HandSize() || num_excluded < 0 ||
+      counts_size != game.NumColors() * game.NumRanks()) {
+    return false;
+  }
+  REQUIRE(num_excluded == 0 || excluded != nullptr);
+  const auto& knowledge = hanabi_state.Hands()[player].Knowledge();
+  if (use_knowledge && !InRange(card_index, knowledge.size())) return false;
+  std::vector<hanabi_learning_env::HanabiCard> excluded_cards;
+  for (int32_t i = 0; i < num_excluded; ++i) {
+    if (!game.NumberCardInstances(excluded[i].color, excluded[i].rank)) return false;
+    excluded_cards.emplace_back(excluded[i].color, excluded[i].rank);
+  }
+  const std::vector<int> candidates = hanabi_learning_env::HandSampler::CandidateCounts(
+      hanabi_state, player, card_index, use_knowledge ? &knowledge[card_index] : nullptr,
+      excluded_cards);
+  std::copy(candidates.begin(), candidates.end(), counts);
+  return true;
+}
+
+bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint64_t seed) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  return hanabi_learning_env::HandSampler(seed).ResampleHand(
+      static_cast<hanabi_learning_env::HanabiState*>(state->state), player);
+}
+
+bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
+                                 const pyhanabi_card_t* remembered, int32_t num_remembered,
+                                 int32_t removed_color, int32_t removed_rank, int32_t removed_index,
+                                 uint64_t seed) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  auto* hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
+  const auto& game = *hanabi_state->ParentGame();
+  if (num_remembered < 0 || num_remembered > game.HandSize() || removed_index < -1 ||
+      removed_index >= num_remembered) {
+    return false;
+  }
+  REQUIRE(num_remembered == 0 || remembered != nullptr);
+  std::vector<hanabi_learning_env::HanabiCard> remembered_cards;
+  for (int32_t i = 0; i < num_remembered; ++i) {
+    if (!game.NumberCardInstances(remembered[i].color, remembered[i].rank)) return false;
+    remembered_cards.emplace_back(remembered[i].color, remembered[i].rank);
+  }
+  const bool has_removed_card = removed_color != -1 || removed_rank != -1;
+  if (has_removed_card && !game.NumberCardInstances(removed_color, removed_rank)) return false;
+  const hanabi_learning_env::HanabiCard removed_card =
+      has_removed_card ? hanabi_learning_env::HanabiCard(removed_color, removed_rank)
+                       : hanabi_learning_env::HanabiCard();
+  return hanabi_learning_env::HandSampler(seed).RestoreHand(hanabi_state, player, remembered_cards,
+                                                            removed_card, removed_index);
+}
 
 } /* extern "C" */

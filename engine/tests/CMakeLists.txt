@@ -16,3 +16,8 @@ add_executable(test_capi_robustness test_capi_robustness.cc)
 target_link_libraries(test_capi_robustness PRIVATE pyhanabi nlohmann_json::nlohmann_json)
 target_compile_options(test_capi_robustness PRIVATE ${HANABI_WARNINGS})
 add_test(NAME capi_robustness COMMAND test_capi_robustness)
+
+add_executable(test_hand_sampler test_hand_sampler.cc)
+target_link_libraries(test_hand_sampler PRIVATE hanabi)
+target_compile_options(test_hand_sampler PRIVATE ${HANABI_WARNINGS})
+add_test(NAME hand_sampler COMMAND test_hand_sampler)

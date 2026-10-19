@@ -9,13 +9,19 @@ closely as possible.
 import enum
 import random
 
-from hanabi_search.env.card_sampler import CardSampler, DeckShape
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import GameParams
 from hanabi_search.env.hanabi_env import HanabiEnv, StepResult
-from hanabi_search.env.moves import HanabiMove, HanabiMoveType
+from hanabi_search.env.hand_sampler import resample_hand, restore_hand
+from hanabi_search.env.moves import HanabiMoveType
 from hanabi_search.env.observation_types import Action
 from hanabi_search.exceptions import HanabiSearchError
+
+
+def _sampling_seed() -> int:
+    # Drawn from Python's generator, so seeding `random` (as each game does)
+    # makes rollouts reproducible.
+    return random.getrandbits(64)
 
 
 class DeterminizationType(enum.StrEnum):
@@ -56,7 +62,6 @@ class DeterminizedEnv(HanabiEnv):
         self.searching_player = searching_player
         self.determinization = determinization
         self.rollout_reward = rollout_reward
-        self.sampler = CardSampler(DeckShape.from_game(self.game))
         self._remembered_hand: list[HanabiCard] | None = None
 
     def step(self, action: Action) -> StepResult:
@@ -96,28 +101,9 @@ class DeterminizedEnv(HanabiEnv):
             return self.progress()
         return self.score()
 
-    def return_hand(self, player: int) -> None:
-        """Returns all of `player`'s cards to the deck, keeping their card knowledge."""
-        for _ in range(len(self.state.player_hands()[player])):
-            # Cards shift left after each return, so always return position 0.
-            self.state.apply_move(HanabiMove.get_return_move(card_index=0, player=player))
-
     def replace_hand(self, player: int) -> None:
         """Replaces `player`'s hand with one sampled from what they know."""
-        state = self.state
-        hand_size = len(state.player_hands()[player])
-        card_knowledge = state.observation(player).card_knowledge()[0]
-        self.return_hand(player)
-        new_hand = self.sampler.sample_hand(
-            player,
-            hand_size,
-            state.player_hands(),
-            state.discard_pile(),
-            state.fireworks(),
-            card_knowledge,
-        )
-        for card_index, card in enumerate(new_hand):
-            self._deal(card_index, player, card)
+        resample_hand(self.state, player, _sampling_seed())
 
     def restore_hand(
         self,
@@ -134,63 +120,11 @@ class DeterminizedEnv(HanabiEnv):
             removed_card: Card just played or discarded; resolves conflicts within the hand.
             removed_card_index: Position of that card in `remembered_hand`; skipped.
         """
-        state = self.state
-        card_knowledge = state.observation(player).card_knowledge()[0]
-        hand_size = len(state.player_hands()[player])
-        self.return_hand(player)
-
-        card_index = 0
-        for remembered_index, remembered_card in enumerate(remembered_hand):
-            if remembered_index == removed_card_index:
-                continue
-            card: HanabiCard | None = remembered_card
-            if removed_card and remembered_card == removed_card:
-                additional_cards = [
-                    remembered_hand[i]
-                    for i in range(remembered_index + 1, len(remembered_hand))
-                    if i != removed_card_index
-                ]
-                valid_cards = self.sampler.valid_cards(
-                    player,
-                    card_index,
-                    state.player_hands(),
-                    state.discard_pile(),
-                    state.fireworks(),
-                    card_knowledge,
-                    additional_cards,
-                )
-                if not any(valid == remembered_card for valid in valid_cards):
-                    if valid_cards:
-                        card = random.choice(valid_cards)
-                    else:
-                        state.remove_knowledge(player, card_index)
-                        card = self.sampler.sample_card(
-                            player,
-                            card_index,
-                            state.player_hands(),
-                            state.discard_pile(),
-                            state.fireworks(),
-                            None,
-                            additional_cards,
-                        )
-            self._deal(card_index, player, card)
-            card_index += 1
-
-        if hand_size > len(state.player_hands()[player]):
-            card = self.sampler.sample_card(
-                player,
-                card_index,
-                state.player_hands(),
-                state.discard_pile(),
-                state.fireworks(),
-                card_knowledge,
-            )
-            self._deal(card_index, player, card)
-
-    def _deal(self, card_index: int, player: int, card: HanabiCard | None) -> None:
-        if card is None:
-            raise HanabiSearchError(
-                f"No consistent card to deal to player {player} at {card_index}"
-            )
-        move = HanabiMove.get_deal_specific_move(card_index, player, card.color(), card.rank())
-        self.state.apply_move(move)
+        restore_hand(
+            self.state,
+            player,
+            remembered_hand,
+            removed_card,
+            removed_card_index,
+            _sampling_seed(),
+        )

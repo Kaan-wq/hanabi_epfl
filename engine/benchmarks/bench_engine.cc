@@ -16,6 +16,7 @@
 #include "hanabi_game.h"
 #include "hanabi_observation.h"
 #include "hanabi_state.h"
+#include "hand_sampler.h"
 
 namespace hle = hanabi_learning_env;
 
@@ -120,6 +121,25 @@ Result JsonRoundTrips(const hle::HanabiGame& game, const std::vector<hle::Hanabi
   return result;
 }
 
+// Re-determinizes the acting player's hand, as an MCTS rollout does before
+// every other player's turn. States are copied before timing.
+Result ResampleHands(const std::vector<hle::HanabiState>& states, int rounds) {
+  std::vector<hle::HanabiState> copies;
+  copies.reserve(states.size() * rounds);
+  for (int r = 0; r < rounds; ++r) copies.insert(copies.end(), states.begin(), states.end());
+  hle::HandSampler sampler(13);
+  Result result;
+  int64_t checksum = 0;
+  const auto start = Clock::now();
+  for (auto& state : copies) {
+    checksum += sampler.ResampleHand(&state, state.CurPlayer());
+    ++result.steps;
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
 void Report(const char* name, int players, const Result& result, const char* unit) {
   std::printf("%-22s %d players  %12.0f %s/s  (%lld in %.2fs)\n", name, players,
               static_cast<double>(result.steps) / result.seconds, unit,
@@ -141,6 +161,7 @@ int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a tool 
     const auto states = SampleStates(game, 2000);
     Report("state copy", players, CopyStates(states, 50), "copies");
     Report("state JSON round-trip", players, JsonRoundTrips(game, states), "trips");
+    Report("resample hand", players, ResampleHands(states, 10), "hands");
   }
   return 0;
 }

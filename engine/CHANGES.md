@@ -8,6 +8,48 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Hidden-hand sampling in the engine (`HandSampler`)
+
+Re-determinizing MCTS resampled other players' hands in Python
+(`src/hanabi_search/env/card_sampler.py`), with one C API call per returned and
+dealt card. It now runs in the engine: `hanabi_lib/hand_sampler.{h,cc}`.
+
+- Same algorithm as the Python version: card-by-card sampling from the cards
+  the player cannot see, filtered by their hints, restarting on a dead end;
+  restoring deals the remembered hand back and replaces a copy of the played
+  or discarded card if it is no longer available (forgetting the hints for
+  that card if nothing else fits). Hands are still swapped through return and
+  deal-specific moves, so the move history is unchanged.
+- Differences: a failed resample or restore leaves the state unchanged
+  (computed on a copy) and reports failure, where Python could loop forever
+  or stop half-dealt; resampling gives up after 10,000 restarts.
+- Randomness: each call takes a seed and uses SplitMix64, which is cheap to
+  seed and gives the same results on every platform. `DeterminizedEnv` draws
+  the seed from Python's `random`, so seeding a game still makes MCTS games
+  reproducible (`test_same_seeds_give_identical_mcts_games`). The game's RNG is
+  never used. MCTS games for a given seed differ from before, since the
+  random stream differs.
+- C API: `pyhanabi_state_candidate_counts` (cards that could be at a hand
+  position, into a caller-provided `int32_t` buffer), `pyhanabi_state_resample_hand`,
+  `pyhanabi_state_restore_hand`. Python: `candidate_counts`, `resample_hand`,
+  `restore_hand` in `env/hand_sampler.py`; `card_sampler.py` is removed.
+- Equivalence with the Python sampler, checked before removing it:
+  `candidate_counts` matched `valid_cards` in 4,880 of 4,880 comparisons
+  (2-5 players, random states, with and without hints and exclusions); hand
+  distributions over 10,000 rollout steps in 4 scenarios (54 hand positions)
+  differ from the old ones by at most 0.029 total variation, the same as two
+  runs of the old code with different seeds (max 0.031, mean 0.011 for both).
+- Tests: `tests/test_hand_sampler.cc` (8, including a frequency test of the
+  first sampled card and whole RESTORE rollouts for 2-5 players) and 1 new C
+  API test; all pass in Release and under ASan + UBSan.
+- Benchmark: new `resample hand` row, 762k / 632k / 651k / 573k hands/s for
+  2-5 players (the Python version did about 6k/s). Other rows unchanged
+  within noise (medians of 5-6 alternating runs, random games 0 to -2%).
+- End to end: MCTS (3 players, 50 rollouts per move, 12 fixed states, best of
+  5) went from 769 to 1,096 rollouts/s (+42%).
+
+---
+
 ## 2026-10-20: Status returns for bad arguments across the C API
 
 About 25 C API functions took an index, id or parameter without checking it:

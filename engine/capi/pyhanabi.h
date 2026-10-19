@@ -19,9 +19,11 @@
 
 /**
  * This is a pure C API to the C++ code.
- * All the declarations are loaded in pyhanabi.py.
+ * All the declarations are loaded in src/hanabi_search/env/_pyhanabi.py.
  * The set of functions below is referred to as the 'cdef' throughout the code.
  */
+
+#include <stdint.h>
 
 extern "C" {
 
@@ -249,6 +251,42 @@ bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item);
 
 char* StateToJson(pyhanabi_state_t* state);
 bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game);
+
+/* Hidden-hand sampling for re-determinizing MCTS (hanabi_lib/hand_sampler.h).
+ *
+ * Card buffers use pyhanabi_card_t; count buffers are int32_t[num_colors *
+ * num_ranks], indexed color * num_ranks + rank. The sampling functions draw
+ * from a generator seeded by their `seed` argument, never from the game's, so
+ * equal seeds give equal results on every platform. */
+
+/* Writes to `counts` how many copies of each card could be at position
+ * `card_index` (in [0, hand size)) of `player`'s hand given every other card
+ * in the state: the deck, plus the card now at that position if any, minus
+ * one copy per card in `excluded` (`num_excluded` cards; may be NULL if 0).
+ * With `use_knowledge`, cards the player's hints rule out at that position
+ * count 0 (the position must then hold card knowledge). Returns false if an
+ * argument is out of range or `counts_size` != num_colors * num_ranks. */
+bool pyhanabi_state_candidate_counts(const pyhanabi_state_t* state, int32_t player,
+                                     int32_t card_index, bool use_knowledge,
+                                     const pyhanabi_card_t* excluded, int32_t num_excluded,
+                                     int32_t* counts, int32_t counts_size);
+
+/* Replaces `player`'s hand with one sampled from what that player knows,
+ * through return and deal-specific moves. Returns false, leaving `state`
+ * unchanged, if `player` is out of range or no consistent hand is found. */
+bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint64_t seed);
+
+/* Restores `player`'s hand after they acted: deals back the `num_remembered`
+ * cards of `remembered` (their hand before acting) except position
+ * `removed_index` (-1 after a hint), then samples a card for the position
+ * left over. (`removed_color`, `removed_rank`) is the card they played or
+ * discarded (-1, -1 after a hint); a remembered copy of it that is no longer
+ * available is replaced by a sampled card. Returns false, leaving `state`
+ * unchanged, if an argument is out of range or no consistent hand is found. */
+bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
+                                 const pyhanabi_card_t* remembered, int32_t num_remembered,
+                                 int32_t removed_color, int32_t removed_rank, int32_t removed_index,
+                                 uint64_t seed);
 
 } /* extern "C" */
 
