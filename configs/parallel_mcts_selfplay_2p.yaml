@@ -1,0 +1,9 @@
+# MCTS self-play with rollouts spread over 8 Ray workers per agent, 2-player full game.
+name: parallel_mcts_selfplay_2p
+seed: 0
+game:
+  players: 2
+agents:
+  - kind: mcts
+    rollouts: 400
+    num_workers: 8

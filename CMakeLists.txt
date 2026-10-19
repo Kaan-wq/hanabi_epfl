@@ -37,9 +37,3 @@ if(HANABI_BUILD_TESTS)
 endif()
 
 add_subdirectory(engine)
-
-# When built as the Python package (scikit-build-core), ship the C API library
-# next to the cffi binding that loads it.
-if(SKBUILD)
-  install(TARGETS pyhanabi LIBRARY DESTINATION hanabi_search/env)
-endif()

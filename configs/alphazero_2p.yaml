@@ -1,0 +1,28 @@
+# AlphaZero self-play training, 2-player full game, from the 100-episode no-rules checkpoint.
+name: alphazero_2p
+seed: 0
+device: cpu
+game:
+  players: 2
+agents:
+  - kind: alphazero
+    rollouts: 100
+    max_depth: 60
+    exploration_weight: 2.5
+network:
+  hidden_sizes: [512, 256, 256]
+  checkpoint: saved_models/alphazero_model_100-NR.pth
+training:
+  num_episodes: 100
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  batch_size: 128
+  value_loss_weight: 10.0
+  train_every_step: true
+  replay_buffer:
+    capacity: 10000
+    alpha: 0.6
+    beta: 0.4
+evaluation:
+  num_games: 1000
+  seed: 1000000

@@ -1,3 +1,101 @@
+[project]
+name = "hanabi-search"
+version = "0.1.0"
+description = "MCTS and AlphaZero agents for Hanabi, on a fork of DeepMind's Hanabi Learning Environment"
+readme = "README.md"
+requires-python = ">=3.14"
+license = "Apache-2.0"
+authors = [{ name = "Kaan Uçar" }]
+dependencies = [
+    "cffi>=2.0",
+    "numpy>=2.3",
+    "pydantic>=2.11",
+    "pyyaml>=6.0",
+    "ray>=2.50",
+    "torch>=2.9",
+    "tqdm>=4.67",
+]
+
 [build-system]
-requires = ["setuptools", "wheel", "scikit-build", "cmake", "ninja", "Cython", "numpy"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build>=0.9,<0.14"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "clang-format==21.1.8",
+    "clang-tidy==21.1.6",
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+    "types-cffi>=2.1.0.20260827",
+    "types-pyyaml>=6.0.12.20260906",
+    "types-tqdm>=4.70.0.20260906",
+]
+
+# --------------------------------------------------------------------------- ruff
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = [
+  "E", "W",   # pycodestyle
+  "F",        # pyflakes
+  "I",        # isort
+  "N",        # pep8-naming
+  "UP",       # pyupgrade
+  "B",        # bugbear
+  "A",        # builtins shadowing
+  "C4",       # comprehensions
+  "SIM",      # simplify
+  "PTH",      # pathlib over os.path
+  "RET",      # return statements
+  "ARG",      # unused arguments
+  "ANN",      # annotations
+  "D",        # docstrings (Google convention)
+  "T20",      # no print()
+  "BLE",      # no blind except
+  "TID",      # tidy imports
+  "PL",       # pylint subset
+  "NPY",      # numpy
+  "PERF",     # performance anti-patterns
+  "RUF",
+]
+ignore = [
+  "D105",     # magic methods are self-explanatory
+  "D107",     # __init__ is documented on the class
+  "PLR0913",  # agents and envs legitimately take many parameters
+  "PLR0917",  # ... including positionally, mirroring the engine API
+  "PLR2004",  # small game constants read clearer inline
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/*" = ["T20"]
+"tests/*" = ["D", "ANN", "PLR2004", "ARG"]
+
+# --------------------------------------------------------------------------- mypy
+
+[tool.mypy]
+strict = true
+python_version = "3.14"
+files = ["src", "tests", "scripts"]
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+
+
+# --------------------------------------------------------------------------- pytest
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = ["--strict-markers", "--strict-config", "-ra"]
+markers = ["slow: long-running tests (deselect with -m 'not slow')"]
+filterwarnings = ["error"]

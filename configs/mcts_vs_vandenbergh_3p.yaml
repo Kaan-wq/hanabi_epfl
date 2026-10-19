@@ -1,0 +1,18 @@
+# Information-set MCTS in seat 0 with two Van den Bergh partners, 3-player full game.
+name: mcts_vs_vandenbergh_3p
+seed: 0
+game:
+  players: 3
+agents:
+  - kind: mcts
+    rollouts: 50
+    max_simulation_steps: 3
+    max_depth: 60
+    exploration_weight: 2.5
+    use_rules: true
+    determinization: restore
+    rollout_reward: score
+  - kind: rule_based
+    policy: VanDenBergh
+  - kind: rule_based
+    policy: VanDenBergh

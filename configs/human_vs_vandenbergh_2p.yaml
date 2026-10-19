@@ -1,0 +1,9 @@
+# Play against a Van den Bergh agent in the terminal (type BOT <name> to hand over your seat).
+name: human_vs_vandenbergh_2p
+seed: 0
+game:
+  players: 2
+agents:
+  - kind: human
+  - kind: rule_based
+    policy: VanDenBergh

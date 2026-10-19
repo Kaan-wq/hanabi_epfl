@@ -1,0 +1,8 @@
+# Rule-based baseline: two Van den Bergh agents in the 2-player full game.
+name: vandenbergh_selfplay_2p
+seed: 0
+game:
+  players: 2
+agents:
+  - kind: rule_based
+    policy: VanDenBergh
