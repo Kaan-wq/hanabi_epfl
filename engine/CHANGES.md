@@ -8,6 +8,62 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Reject bad input at the C API instead of crashing
+
+Malformed or out-of-range input could terminate the Python process or read
+outside the engine's arrays. Valid input behaves exactly as before.
+
+- **JSON loaders** (`{Move,Game,HistoryItem,State}FromJson`): every exception
+  is caught at the C API boundary and the function returns `false`. Before,
+  only `StateFromJson` caught; the other three terminated the process on any
+  bad input. A failed load leaves the handle's previous object untouched
+  (`MoveFromJson` used to delete it first and leave a dangling pointer).
+  `*ToJson` return `NULL` on failure.
+- **Field checks** (`fromJSON` in card, move, history item, hand, deck, game,
+  state; helpers in `hanabi_lib/json_checks.{h,cc}`): every field must be
+  present, of the right JSON type, and in range. Before, presence was checked
+  with `assert` (removed in Release), integers were silently truncated to
+  `int8_t`, and a missing key read through `operator[]` was undefined behavior.
+  - A state is checked against its game: number of hands, cards per hand,
+    card colors and ranks, card-knowledge shapes, deck shape and total, token
+    counts, fireworks, players and cards named in the move history. Whether
+    the cards add up to the full deck is not checked (decided: format only).
+  - A game's parameters are checked before the constructor runs, since it
+    aborts on invalid ones. It is now built from the JSON's typed fields;
+    `params` is stored as before. `cards_per_color`, `moves` and
+    `chance_outcomes` must match what the parameters produce, and `rng_state`
+    must parse.
+- **`MoveIsLegal`** returns `false` instead of reading out of bounds for:
+  - return moves with a player outside `[0, players)` or a negative card index;
+  - deal-specific moves with a bad player, an insert index outside
+    `[0, cards in hand]`, a full hand, or a color/rank outside the game;
+  - deal moves with a color/rank outside the game;
+  - play and discard moves with a negative card index, or on a chance turn.
+
+  Deal-specific moves no longer print to stdout when the card is not in the
+  deck.
+- Also: `-Wsign-compare` and `-Wdeprecated-copy` warnings fixed in the files
+  touched (defaulted copy assignment for `HanabiState` and `HanabiHand`).
+- Tests: `tests/test_capi_robustness.cc` (8 tests, through the C API). Run
+  against the previous engine, the first one terminates the process and the
+  legality tests hit a heap-buffer-overflow under ASan. All tests and the
+  parity test pass in Release and under ASan + UBSan.
+- Benchmark (median of 5 alternating runs, previous engine → this one; both
+  built with Command Line Tools 27.0, so higher than the table below):
+
+| Players | random games (steps/s) | + observation encode (steps/s) | state copy (/s) | state JSON round-trip (/s) |
+|---|---|---|---|---|
+| 2 | 1038k → 1056k | 412k → 419k | 2003k → 1995k | 11.9k → 11.8k |
+| 3 | 1022k → 1032k | 329k → 328k | 1431k → 1438k | 8.9k → 9.0k |
+| 4 | 1030k → 1032k | 311k → 310k | 1316k → 1294k | 8.5k → 8.6k |
+| 5 | 896k → 900k | 265k → 265k | 1078k → 1071k | 7.2k → 7.4k |
+
+  All within ±2%, i.e. no measurable change. A first version built the error
+  messages on every check and cost 6% on the JSON round-trip; they are now
+  built only on failure.
+
+---
+
 ## 2026-10-19: Fix `HanabiState::fromJSON` advancing the game's RNG
 
 `fromJSON` built its temporary state with the default start player. With
@@ -72,7 +128,7 @@ Used by the MCTS agents to swap the hidden cards in a player's hand.
   last moves; the canonical encoder skips their move-type bits instead of
   aborting (`canonical_encoders.cc`).
 - `MoveIsLegal` for `kDealSpecific` prints a diagnostic to stdout when the card
-  is not in the deck.
+  is not in the deck (removed 2026-10-20).
 - New helpers: `HanabiHand::InsertCard`, `HanabiHand::ReturnFromHand`,
   `HanabiDeck::ReturnCard`.
 

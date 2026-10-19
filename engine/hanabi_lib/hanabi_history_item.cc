@@ -11,13 +11,17 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_history_item.h"
 
 #include <cassert>
+#include <cstdint>
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+#include "json_checks.h"
 #include "util.h"
 
 namespace hanabi_learning_env {
@@ -91,16 +95,17 @@ json HanabiHistoryItem::toJSON() const {
 }
 
 HanabiHistoryItem HanabiHistoryItem::fromJSON(const json& j) {
-  HanabiHistoryItem item = HanabiHistoryItem(HanabiMove::fromJSON(j.at("move")));
+  HanabiHistoryItem item = HanabiHistoryItem(HanabiMove::fromJSON(JsonField(j, "move")));
 
-  item.player = j.at("player").get<int8_t>();
-  item.scored = j.at("scored").get<bool>();
-  item.information_token = j.at("information_token").get<bool>();
-  item.color = j.at("color").get<int8_t>();
-  item.rank = j.at("rank").get<int8_t>();
-  item.reveal_bitmask = j.at("reveal_bitmask").get<uint8_t>();
-  item.newly_revealed_bitmask = j.at("newly_revealed_bitmask").get<uint8_t>();
-  item.deal_to_player = j.at("deal_to_player").get<int8_t>();
+  item.player = static_cast<int8_t>(JsonInt(j, "player", INT8_MIN, INT8_MAX));
+  item.scored = JsonBool(j, "scored");
+  item.information_token = JsonBool(j, "information_token");
+  item.color = static_cast<int8_t>(JsonInt(j, "color", -1, kMaxNumColors - 1));
+  item.rank = static_cast<int8_t>(JsonInt(j, "rank", -1, kMaxNumRanks - 1));
+  item.reveal_bitmask = static_cast<uint8_t>(JsonInt(j, "reveal_bitmask", 0, UINT8_MAX));
+  item.newly_revealed_bitmask =
+      static_cast<uint8_t>(JsonInt(j, "newly_revealed_bitmask", 0, UINT8_MAX));
+  item.deal_to_player = static_cast<int8_t>(JsonInt(j, "deal_to_player", INT8_MIN, INT8_MAX));
 
   return item;
 }

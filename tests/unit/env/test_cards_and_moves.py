@@ -2,6 +2,7 @@ import pytest
 
 from hanabi_search.env import (
     HanabiCard,
+    HanabiHistoryItem,
     HanabiMove,
     HanabiMoveType,
     color_char_to_idx,
@@ -77,3 +78,24 @@ def test_move_json_round_trip_and_hash() -> None:
 def test_move_from_bad_json_raises() -> None:
     with pytest.raises(SerializationError):
         HanabiMove.from_json("{not json")
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        "{}",
+        '{"move_type": 1}',
+        '{"move_type": 99, "card_index": 0, "target_offset": -1, "color": -1, "rank": -1}',
+        '{"move_type": 1, "card_index": 1000, "target_offset": -1, "color": -1, "rank": -1}',
+    ],
+)
+def test_move_from_incomplete_or_out_of_range_json_raises(payload: str) -> None:
+    # Regression: valid JSON with missing fields used to terminate the process.
+    with pytest.raises(SerializationError):
+        HanabiMove.from_json(payload)
+
+
+@pytest.mark.parametrize("payload", ["{not json", "{}", '{"move": {}}'])
+def test_history_item_from_bad_json_raises(payload: str) -> None:
+    with pytest.raises(SerializationError):
+        HanabiHistoryItem.from_json(payload)

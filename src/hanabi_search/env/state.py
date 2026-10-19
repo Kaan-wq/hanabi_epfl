@@ -4,7 +4,7 @@ import enum
 import json
 from typing import Self
 
-from hanabi_search.env._pyhanabi import CData, card_values, ffi, json_arg, lib, take_string
+from hanabi_search.env._pyhanabi import CData, card_values, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
@@ -196,7 +196,7 @@ class HanabiState:
             raise SerializationError("JSON must contain 'HanabiGame' and 'HanabiState'")
         game = HanabiGame.from_json(payload["HanabiGame"])
         c_state = ffi.new("pyhanabi_state_t*")
-        if not lib.StateFromJson(json_arg(str(payload["HanabiState"])), c_state, game.c_game):
+        if not lib.StateFromJson(str(payload["HanabiState"]).encode(), c_state, game.c_game):
             raise SerializationError("Cannot deserialize HanabiState")
         # Only take ownership once the engine state exists, so __del__ never frees garbage.
         state = cls.__new__(cls)

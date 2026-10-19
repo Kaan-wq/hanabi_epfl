@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #ifndef __HANABI_HAND_H__
 #define __HANABI_HAND_H__
@@ -101,7 +103,8 @@ class HanabiHand {
   };
 
   HanabiHand() {}
-  HanabiHand(const HanabiHand& hand) : cards_(hand.cards_), card_knowledge_(hand.card_knowledge_) {}
+  HanabiHand(const HanabiHand& hand) = default;
+  HanabiHand& operator=(const HanabiHand& hand) = default;
   // Copy hand. Hide cards (set to invalid) if hide_cards is true.
   // Hide card knowledge (set to unknown) if hide_knowledge is true.
   HanabiHand(const HanabiHand& hand, bool hide_cards, bool hide_knowledge);

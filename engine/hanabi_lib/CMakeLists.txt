@@ -7,6 +7,7 @@ add_library(hanabi STATIC
   hanabi_move.cc
   hanabi_observation.cc
   hanabi_state.cc
+  json_checks.cc
   util.cc)
 
 # Headers are included both as "hanabi_state.h" (inside the library) and as

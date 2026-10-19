@@ -11,11 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_move.h"
 
+#include <cstdint>
 #include <nlohmann/json.hpp>
 
+#include "json_checks.h"
 #include "util.h"
 using json = nlohmann::json;
 
@@ -97,14 +101,13 @@ json HanabiMove::toJSON() const {
 
 // Deserialization
 HanabiMove HanabiMove::fromJSON(const json& j) {
-  // Deserialize enum type
-  Type move_type = static_cast<Type>(j["move_type"].get<int>());
-
-  // Deserialize simple types
-  int8_t card_index = j["card_index"];
-  int8_t target_offset = j["target_offset"];
-  int8_t color = j["color"];
-  int8_t rank = j["rank"];
+  // Ranges a move can hold in any game; ranges that depend on the game are
+  // checked by MoveIsLegal (and by HanabiState::fromJSON for move history).
+  Type move_type = static_cast<Type>(JsonInt(j, "move_type", kInvalid, kDealSpecific));
+  int card_index = JsonInt(j, "card_index", INT8_MIN, INT8_MAX);
+  int target_offset = JsonInt(j, "target_offset", INT8_MIN, INT8_MAX);
+  int color = JsonInt(j, "color", -1, kMaxNumColors - 1);
+  int rank = JsonInt(j, "rank", -1, kMaxNumRanks - 1);
 
   return HanabiMove(move_type, card_index, target_offset, color, rank);
 }

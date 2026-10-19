@@ -11,18 +11,26 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_state.h"
 
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include <iostream>
+#include <limits>
 #include <nlohmann/json.hpp>
-#include <sstream>
-using json = nlohmann::json;
 #include <numeric>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <utility>
 
+#include "json_checks.h"
 #include "util.h"
+using json = nlohmann::json;
 
 namespace hanabi_learning_env {
 
@@ -32,7 +40,7 @@ uint8_t HandColorBitmask(const HanabiHand& hand, int color) {
   uint8_t mask = 0;
   const auto& cards = hand.Cards();
   assert(cards.size() <= 8);  // More than 8 cards is not supported.
-  for (int i = 0; i < cards.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(cards.size()); ++i) {
     if (cards[i].Color() == color) {
       mask |= static_cast<uint8_t>(1) << i;
     }
@@ -45,7 +53,7 @@ uint8_t HandRankBitmask(const HanabiHand& hand, int rank) {
   uint8_t mask = 0;
   const auto& cards = hand.Cards();
   assert(cards.size() <= 8);  // More than 8 cards is not supported.
-  for (int i = 0; i < cards.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(cards.size()); ++i) {
     if (cards[i].Rank() == rank) {
       mask |= static_cast<uint8_t>(1) << i;
     }
@@ -55,7 +63,7 @@ uint8_t HandRankBitmask(const HanabiHand& hand, int rank) {
 }  // namespace
 
 HanabiState::HanabiDeck::HanabiDeck(const HanabiGame& game)
-    : card_count_(game.NumColors() * game.NumRanks(), 0),
+    : card_count_(static_cast<size_t>(game.NumColors()) * game.NumRanks(), 0),
       total_count_(0),
       num_ranks_(game.NumRanks()) {
   for (int color = 0; color < game.NumColors(); ++color) {
@@ -190,8 +198,8 @@ bool HanabiState::HintingIsLegal(HanabiMove move) const {
 }
 
 int HanabiState::PlayerToDeal() const {
-  for (int i = 0; i < hands_.size(); ++i) {
-    if (hands_[i].Cards().size() < ParentGame()->HandSize()) {
+  for (int i = 0; i < static_cast<int>(hands_.size()); ++i) {
+    if (static_cast<int>(hands_[i].Cards().size()) < ParentGame()->HandSize()) {
       return i;
     }
   }
@@ -204,39 +212,44 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
       if (cur_player_ != kChancePlayerId) {
         return false;
       }
-      if (deck_.CardCount(move.Color(), move.Rank()) == 0) {
+      if (!CardIsInGame(move.Color(), move.Rank()) ||
+          deck_.CardCount(move.Color(), move.Rank()) == 0) {
         return false;
       }
       break;
     // MB: Copy of Deal for now
-    case HanabiMove::kDealSpecific:
-      if (cur_player_ != kChancePlayerId) {
+    case HanabiMove::kDealSpecific: {
+      // TargetOffset is the absolute id of the player dealt to.
+      if (cur_player_ != kChancePlayerId || !IsPlayer(move.TargetOffset())) {
         return false;
       }
-      if (deck_.CardCount(move.Color(), move.Rank()) == 0) {
-        std::cout << "MB Error: Card color ";
-        std::cout << move.Color();
-        std::cout << " rank ";
-        std::cout << move.Rank();
-        std::cout << " tried to be dealt specifically but it's not in core deck";
+      const auto& hand = hands_[move.TargetOffset()];
+      if (hand.Cards().size() >= static_cast<size_t>(ParentGame()->HandSize()) ||
+          move.CardIndex() < 0 || move.CardIndex() > static_cast<int>(hand.Cards().size())) {
+        return false;
+      }
+      if (!CardIsInGame(move.Color(), move.Rank()) ||
+          deck_.CardCount(move.Color(), move.Rank()) == 0) {
         return false;
       }
       break;
+    }
     case HanabiMove::kDiscard:
       if (InformationTokens() >= ParentGame()->MaxInformationTokens()) {
         return false;
       }
-      if (move.CardIndex() >= hands_[cur_player_].Cards().size()) {
+      if (!IsPlayer(cur_player_) || !IsCardIndex(cur_player_, move.CardIndex())) {
         return false;
       }
       break;
     case HanabiMove::kReturn:
-      if (move.CardIndex() >= hands_[move.TargetOffset()].Cards().size()) {
+      // TargetOffset is the absolute id of the player whose card is returned.
+      if (!IsPlayer(move.TargetOffset()) || !IsCardIndex(move.TargetOffset(), move.CardIndex())) {
         return false;
       }
       break;
     case HanabiMove::kPlay:
-      if (move.CardIndex() >= hands_[cur_player_].Cards().size()) {
+      if (!IsPlayer(cur_player_) || !IsCardIndex(cur_player_, move.CardIndex())) {
         return false;
       }
       break;
@@ -403,7 +416,7 @@ std::string HanabiState::ToString() const {
     result += std::to_string(fireworks_[i]) + " ";
   }
   result += "\nHands:\n";
-  for (int i = 0; i < hands_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(hands_.size()); ++i) {
     if (i > 0) {
       result += "-----\n";
     }
@@ -414,7 +427,7 @@ std::string HanabiState::ToString() const {
   }
   result += "Deck size: " + std::to_string(Deck().Size()) + "\n";
   result += "Discards:";
-  for (int i = 0; i < discard_pile_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(discard_pile_.size()); ++i) {
     result += " " + discard_pile_[i].ToString();
   }
   return result;
@@ -453,14 +466,19 @@ json HanabiState::HanabiDeck::toJSON() const {
 }
 
 void HanabiState::HanabiDeck::fromJSON(const json& j) {
-  // Ensure the JSON contains all necessary fields
-  assert(j.contains("card_count"));
-  assert(j.contains("total_count"));
-  assert(j.contains("num_ranks"));
+  // This deck was built for the game, so its current shape is the expected one.
+  std::vector<int> card_count = JsonIntArray(j, "card_count", 0, std::numeric_limits<int>::max());
+  if (card_count.size() != card_count_.size()) {
+    throw std::invalid_argument("'card_count' does not match the game");
+  }
+  const int total_count = JsonInt(j, "total_count", 0, std::numeric_limits<int>::max());
+  if (std::accumulate(card_count.begin(), card_count.end(), int64_t{0}) != total_count) {
+    throw std::invalid_argument("'total_count' is not the sum of 'card_count'");
+  }
+  CheckRange(JsonInt(j, "num_ranks", 1, kMaxNumRanks), num_ranks_, num_ranks_, "'num_ranks'");
 
-  card_count_ = j.at("card_count").get<std::vector<int>>();
-  total_count_ = j.at("total_count").get<int>();
-  num_ranks_ = j.at("num_ranks").get<int>();
+  card_count_ = std::move(card_count);
+  total_count_ = total_count;
 }
 
 /*=================================================================================
@@ -503,50 +521,71 @@ json HanabiState::toJSON() const {
 }
 
 HanabiState HanabiState::fromJSON(const json& j, const HanabiGame* game) {
-  // Validate required fields
-  assert(j.contains("deck"));
-  assert(j.contains("discard_pile"));
-  assert(j.contains("hands"));
-  assert(j.contains("move_history"));
-  assert(j.contains("cur_player"));
-  assert(j.contains("next_non_chance_player"));
-  assert(j.contains("information_tokens"));
-  assert(j.contains("life_tokens"));
-  assert(j.contains("fireworks"));
-  assert(j.contains("turns_to_play"));
-
   // Explicit start player: sampling one would consume the game's RNG. The real
   // value is restored from "next_non_chance_player" below.
   HanabiState state(game, 0);
+  const int num_players = game->NumPlayers();
+  const int num_colors = game->NumColors();
+  const int num_ranks = game->NumRanks();
+  const int hand_size = game->HandSize();
 
-  // Deserialize deck
-  state.deck_.fromJSON(j.at("deck"));
+  // Field types and ranges are checked here; whether the cards add up to the
+  // deck (game consistency) is not.
+  const auto check_card = [&](const HanabiCard& card) {
+    CheckRange(card.Color(), 0, num_colors - 1, "card color");
+    CheckRange(card.Rank(), 0, num_ranks - 1, "card rank");
+  };
 
-  // Deserialize discard_pile_
+  state.deck_.fromJSON(JsonField(j, "deck"));
+
   state.discard_pile_.clear();
-  for (const auto& card_json : j.at("discard_pile")) {
+  for (const auto& card_json : JsonArray(j, "discard_pile")) {
     state.discard_pile_.push_back(HanabiCard::fromJSON(card_json));
+    check_card(state.discard_pile_.back());
   }
 
-  // Deserialize hands_
+  // A hand can hold fewer cards than knowledge entries: a return move removes
+  // the card but keeps its knowledge for the deal-specific move that follows.
   state.hands_.clear();
-  for (const auto& hand_json : j.at("hands")) {
+  for (const auto& hand_json : JsonArray(j, "hands")) {
     state.hands_.emplace_back(HanabiHand::fromJSON(hand_json));
+    const HanabiHand& hand = state.hands_.back();
+    const int num_cards = static_cast<int>(hand.Cards().size());
+    CheckRange(static_cast<int>(hand.Knowledge().size()), num_cards, hand_size,
+               "number of card knowledge entries");
+    for (const auto& card : hand.Cards()) {
+      check_card(card);
+    }
+    for (const auto& knowledge : hand.Knowledge()) {
+      CheckRange(knowledge.NumColors(), num_colors, num_colors, "card knowledge color range");
+      CheckRange(knowledge.NumRanks(), num_ranks, num_ranks, "card knowledge rank range");
+    }
   }
+  CheckRange(static_cast<int>(state.hands_.size()), num_players, num_players, "number of hands");
 
-  // Deserialize move_history_
   state.move_history_.clear();
-  for (const auto& history_json : j.at("move_history")) {
+  for (const auto& history_json : JsonArray(j, "move_history")) {
     state.move_history_.push_back(HanabiHistoryItem::fromJSON(history_json));
+    const HanabiHistoryItem& item = state.move_history_.back();
+    CheckRange(item.player, kChancePlayerId, num_players - 1, "history player");
+    CheckRange(item.deal_to_player, -1, num_players - 1, "history deal_to_player");
+    CheckRange(item.color, -1, num_colors - 1, "history color");
+    CheckRange(item.rank, -1, num_ranks - 1, "history rank");
+    CheckRange(item.move.CardIndex(), -1, hand_size, "history move card_index");
+    CheckRange(item.move.TargetOffset(), -1, num_players - 1, "history move target_offset");
+    CheckRange(item.move.Color(), -1, num_colors - 1, "history move color");
+    CheckRange(item.move.Rank(), -1, num_ranks - 1, "history move rank");
   }
 
-  // Deserialize other member variables
-  state.cur_player_ = j.at("cur_player").get<int>();
-  state.next_non_chance_player_ = j.at("next_non_chance_player").get<int>();
-  state.information_tokens_ = j.at("information_tokens").get<int>();
-  state.life_tokens_ = j.at("life_tokens").get<int>();
-  state.fireworks_ = j.at("fireworks").get<std::vector<int>>();
-  state.turns_to_play_ = j.at("turns_to_play").get<int>();
+  state.cur_player_ = JsonInt(j, "cur_player", kChancePlayerId, num_players - 1);
+  state.next_non_chance_player_ = JsonInt(j, "next_non_chance_player", 0, num_players - 1);
+  state.information_tokens_ = JsonInt(j, "information_tokens", 0, game->MaxInformationTokens());
+  state.life_tokens_ = JsonInt(j, "life_tokens", 0, game->MaxLifeTokens());
+  state.fireworks_ = JsonIntArray(j, "fireworks", 0, num_ranks);
+  CheckRange(static_cast<int>(state.fireworks_.size()), num_colors, num_colors,
+             "number of fireworks");
+  state.turns_to_play_ =
+      JsonInt(j, "turns_to_play", std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
 
   return state;
 }

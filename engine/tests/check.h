@@ -4,6 +4,7 @@
 #define HANABI_TESTS_CHECK_H_
 
 #include <cstdlib>
+#include <exception>
 #include <functional>
 #include <iostream>
 #include <string>
@@ -32,11 +33,16 @@ struct Registrar {
   }
 };
 
-// Runs every registered test; returns a process exit code.
+// Runs every registered test; returns a process exit code. A test that throws fails.
 inline int RunAll() {
   for (const auto& test : Registry()) {
     const int before = FailureCount();
-    test.body();
+    try {
+      test.body();
+    } catch (const std::exception& e) {
+      ++FailureCount();
+      std::cerr << test.name << " threw: " << e.what() << '\n';
+    }
     std::cout << (FailureCount() == before ? "[ OK ] " : "[FAIL] ") << test.name << '\n';
   }
   std::cout << Registry().size() << " tests, " << FailureCount() << " failed checks\n";

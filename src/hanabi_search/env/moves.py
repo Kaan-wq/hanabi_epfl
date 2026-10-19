@@ -3,7 +3,7 @@
 import enum
 from typing import Self
 
-from hanabi_search.env._pyhanabi import CData, ffi, json_arg, lib, take_string
+from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
 from hanabi_search.env.cards import color_idx_to_char
 from hanabi_search.env.observation_types import MoveDict
 from hanabi_search.exceptions import EngineCallError, SerializationError
@@ -132,7 +132,7 @@ class HanabiMove:
     def from_json(cls, json_str: str) -> Self:
         """Deserializes a move produced by `to_json`."""
         c_move = ffi.new("pyhanabi_move_t*")
-        if not lib.MoveFromJson(json_arg(json_str), c_move):
+        if not lib.MoveFromJson(json_str.encode(), c_move):
             raise SerializationError(f"Cannot deserialize HanabiMove from {json_str!r}")
         return cls(c_move)
 
@@ -256,7 +256,7 @@ class HanabiHistoryItem:
     def from_json(cls, json_str: str) -> Self:
         """Deserializes a history item produced by `to_json`."""
         c_item = ffi.new("pyhanabi_history_item_t*")
-        if not lib.HistoryItemFromJson(json_arg(json_str), c_item):
+        if not lib.HistoryItemFromJson(json_str.encode(), c_item):
             raise SerializationError(f"Cannot deserialize HanabiHistoryItem from {json_str!r}")
         return cls(c_item)
 

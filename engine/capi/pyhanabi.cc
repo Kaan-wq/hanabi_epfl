@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "pyhanabi.h"
 
@@ -32,6 +34,35 @@ using json = nlohmann::json;
 #include "hanabi_lib/hanabi_state.h"
 #include "hanabi_lib/observation_encoder.h"
 #include "hanabi_lib/util.h"
+
+namespace {
+
+// Serializes `object` into a malloc'd C string, or returns nullptr on failure.
+template <typename T>
+char* ToJsonString(const T& object) {
+  try {
+    return strdup(object.toJSON().dump().c_str());
+  } catch (const std::exception&) {
+    return nullptr;
+  }
+}
+
+// Builds a T from `json_str` with T::fromJSON(json, extra_args...) and, on
+// success, replaces the object `*handle` points to (deleting the old one).
+// On any error, leaves `*handle` untouched and returns false.
+template <typename T, typename... Args>
+bool ReplaceFromJson(const char* json_str, void** handle, const Args&... extra_args) {
+  try {
+    auto parsed = std::make_unique<T>(T::fromJSON(json::parse(json_str), extra_args...));
+    delete static_cast<T*>(*handle);
+    *handle = parsed.release();
+    return true;
+  } catch (const std::exception&) {
+    return false;
+  }
+}
+
+}  // namespace
 
 extern "C" {
 
@@ -733,7 +764,7 @@ void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_gam
           new hanabi_learning_env::CanonicalObservationEncoder(hanabi_game));
       break;
     default:
-      std::cerr << "Encoder type not recognized." << std::endl;
+      std::cerr << "Encoder type not recognized." << '\n';
       encoder->encoder = nullptr;
       std::abort();
   }
@@ -752,9 +783,9 @@ char* ObservationShape(pyhanabi_observation_encoder_t* encoder) {
   auto obs_enc = reinterpret_cast<hanabi_learning_env::ObservationEncoder*>(encoder->encoder);
   std::vector<int> shape = obs_enc->Shape();
   std::string shape_str = "";
-  for (int i = 0; i < shape.size(); i++) {
+  for (int i = 0; i < static_cast<int>(shape.size()); i++) {
     shape_str += std::to_string(shape[i]);
-    if (i != shape.size() - 1) {
+    if (i != static_cast<int>(shape.size()) - 1) {
       shape_str += ",";
     }
   }
@@ -771,9 +802,9 @@ char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
   auto obs = reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation);
   std::vector<int> encoding = obs_enc->Encode(*obs);
   std::string obs_str = "";
-  for (int i = 0; i < encoding.size(); i++) {
+  for (int i = 0; i < static_cast<int>(encoding.size()); i++) {
     obs_str += (encoding[i] ? "1" : "0");
-    if (i != encoding.size() - 1) {
+    if (i != static_cast<int>(encoding.size()) - 1) {
       obs_str += ",";
     }
   }
@@ -789,30 +820,13 @@ char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
 char* MoveToJson(pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
   REQUIRE(move->move != nullptr);
-
-  // Serialize the HanabiMove object to a JSON string
-  std::string json_str =
-      reinterpret_cast<hanabi_learning_env::HanabiMove*>(move->move)->toJSON().dump();
-
-  // Return a C string
-  return strdup(json_str.c_str());
+  return ToJsonString(*static_cast<hanabi_learning_env::HanabiMove*>(move->move));
 }
 
 bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
   REQUIRE(json_str != nullptr);
   REQUIRE(move != nullptr);
-
-  // Parse the JSON string
-  json j = json::parse(json_str);
-
-  if (move->move != nullptr) {
-    delete reinterpret_cast<hanabi_learning_env::HanabiMove*>(move->move);
-  }
-
-  // Deserialize the HanabiMove object
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::fromJSON(j));
-
-  return move->move != nullptr;
+  return ReplaceFromJson<hanabi_learning_env::HanabiMove>(json_str, &move->move);
 }
 
 /* ============================= HanabiGame ============================= */
@@ -820,30 +834,13 @@ bool MoveFromJson(const char* json_str, pyhanabi_move_t* move) {
 char* GameToJson(pyhanabi_game_t* game) {
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
-
-  // Serialize the HanabiGame object to a JSON string
-  std::string json_str =
-      reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game)->toJSON().dump();
-
-  // Return a C string
-  return strdup(json_str.c_str());
+  return ToJsonString(*static_cast<hanabi_learning_env::HanabiGame*>(game->game));
 }
 
 bool GameFromJson(const char* json_str, pyhanabi_game_t* game) {
   REQUIRE(json_str != nullptr);
   REQUIRE(game != nullptr);
-
-  // Parse the JSON string
-  json j = json::parse(json_str);
-
-  if (game->game != nullptr) {
-    delete reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
-  }
-
-  // Deserialize to HanabiGame object
-  game->game = new hanabi_learning_env::HanabiGame(hanabi_learning_env::HanabiGame::fromJSON(j));
-
-  return game->game != nullptr;
+  return ReplaceFromJson<hanabi_learning_env::HanabiGame>(json_str, &game->game);
 }
 
 /* ============================= HanabiHistoryItem ============================= */
@@ -851,31 +848,13 @@ bool GameFromJson(const char* json_str, pyhanabi_game_t* game) {
 char* HistoryItemToJson(pyhanabi_history_item_t* item) {
   REQUIRE(item != nullptr);
   REQUIRE(item->item != nullptr);
-
-  // Serialize the HanabiHistoryItem object to a JSON string
-  std::string json_str =
-      reinterpret_cast<hanabi_learning_env::HanabiHistoryItem*>(item->item)->toJSON().dump();
-
-  // Allocate and copy the JSON string to a C string
-  return strdup(json_str.c_str());
+  return ToJsonString(*static_cast<hanabi_learning_env::HanabiHistoryItem*>(item->item));
 }
 
 bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item) {
   REQUIRE(json_str != nullptr);
   REQUIRE(item != nullptr);
-
-  // Parse the JSON string
-  json j = json::parse(json_str);
-
-  if (item->item != nullptr) {
-    delete reinterpret_cast<hanabi_learning_env::HanabiHistoryItem*>(item->item);
-  }
-
-  // Deserialize to HanabiHistoryItem object
-  item->item = new hanabi_learning_env::HanabiHistoryItem(
-      hanabi_learning_env::HanabiHistoryItem::fromJSON(j));
-
-  return item->item != nullptr;
+  return ReplaceFromJson<hanabi_learning_env::HanabiHistoryItem>(json_str, &item->item);
 }
 
 /* ============================= HanabiState ============================= */
@@ -883,13 +862,7 @@ bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item) {
 char* StateToJson(pyhanabi_state_t* state) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-
-  // Serialize the HanabiState object to a JSON string
-  std::string json_str =
-      reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->toJSON().dump();
-
-  // Return a C string
-  return strdup(json_str.c_str());
+  return ToJsonString(*static_cast<hanabi_learning_env::HanabiState*>(state->state));
 }
 
 bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game) {
@@ -897,29 +870,8 @@ bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_
   REQUIRE(state != nullptr);
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
-
-  try {
-    hanabi_learning_env::HanabiGame* parent_game =
-        reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
-
-    if (parent_game == nullptr) {
-      return false;
-    }
-
-    // Deserialize the HanabiState from the JSON string using the parent game
-    hanabi_learning_env::HanabiState new_state =
-        hanabi_learning_env::HanabiState::fromJSON(json::parse(json_str), parent_game);
-
-    if (state->state != nullptr) {
-      delete reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state);
-      state->state = nullptr;
-    }
-
-    state->state = new hanabi_learning_env::HanabiState(new_state);
-    return state->state != nullptr;
-  } catch (const std::exception& e) {
-    return false;
-  }
+  const auto* parent_game = static_cast<const hanabi_learning_env::HanabiGame*>(game->game);
+  return ReplaceFromJson<hanabi_learning_env::HanabiState>(json_str, &state->state, parent_game);
 }
 
 /* ============================= HanabiObservation ============================= */

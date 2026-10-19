@@ -4,7 +4,7 @@ import enum
 from collections.abc import Mapping
 from typing import Self
 
-from hanabi_search.env._pyhanabi import CData, ffi, json_arg, lib, take_string
+from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
 from hanabi_search.env.moves import HanabiMove
 from hanabi_search.exceptions import SerializationError
 
@@ -129,7 +129,7 @@ class HanabiGame:
     def from_json(cls, json_str: str) -> Self:
         """Deserializes a game produced by `to_json`."""
         c_game = ffi.new("pyhanabi_game_t*")
-        if not lib.GameFromJson(json_arg(json_str), c_game):
+        if not lib.GameFromJson(json_str.encode(), c_game):
             raise SerializationError("Cannot deserialize HanabiGame")
         return cls._from_c_game(c_game)
 

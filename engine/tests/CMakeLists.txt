@@ -10,3 +10,9 @@ target_link_libraries(parity_test PRIVATE hanabi)
 target_compile_options(parity_test PRIVATE ${HANABI_WARNINGS})
 add_test(NAME parity_vs_upstream
          COMMAND parity_test ${CMAKE_CURRENT_SOURCE_DIR}/parity/golden_upstream_5df6a73.json)
+
+# Drives the C API with bad input; see the file comment.
+add_executable(test_capi_robustness test_capi_robustness.cc)
+target_link_libraries(test_capi_robustness PRIVATE pyhanabi nlohmann_json::nlohmann_json)
+target_compile_options(test_capi_robustness PRIVATE ${HANABI_WARNINGS})
+add_test(NAME capi_robustness COMMAND test_capi_robustness)

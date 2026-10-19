@@ -8,14 +8,13 @@ environment variable, this package directory, and the repository's CMake build
 directory (`build/engine/`).
 """
 
-import json
 import os
 from pathlib import Path
 from typing import Any, Protocol, cast
 
 from cffi import FFI
 
-from hanabi_search.exceptions import EngineLoadError, SerializationError
+from hanabi_search.exceptions import EngineLoadError
 
 type CData = FFI.CData
 
@@ -256,19 +255,3 @@ def card_values(c_card: CData) -> tuple[int, int]:
     """Returns (color, rank) of a `pyhanabi_card_t*`."""
     card = cast(_CardStruct, c_card)
     return int(card.color), int(card.rank)
-
-
-def json_arg(json_str: str) -> bytes:
-    """Validates JSON syntax and encodes it for an engine `*FromJson` call.
-
-    The engine's JSON parsers do not catch parse errors, which would terminate
-    the process; checking here turns them into exceptions.
-
-    Raises:
-        SerializationError: If `json_str` is not valid JSON.
-    """
-    try:
-        json.loads(json_str)
-    except json.JSONDecodeError as error:
-        raise SerializationError(f"Invalid JSON: {error}") from None
-    return json_str.encode("ascii")

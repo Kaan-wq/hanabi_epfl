@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #ifndef __PYHANABI_H__
 #define __PYHANABI_H__
@@ -132,6 +134,10 @@ int StateNumPlayers(pyhanabi_state_t* state);
 int StateScore(pyhanabi_state_t* state);
 int StateTurnsToPlay(pyhanabi_state_t* state);
 char* StateToString(pyhanabi_state_t* state);
+/* Returns whether `move` can be applied to `state` now. Any field values are
+ * accepted: out-of-range players, card indices, colors or ranks make the move
+ * illegal. Return and deal-specific moves take an absolute player id in
+ * TargetOffset. */
 bool MoveIsLegal(const pyhanabi_state_t* state, const pyhanabi_move_t* move);
 bool CardPlayableOnFireworks(const pyhanabi_state_t* state, int color, int rank);
 int StateLenMoveHistory(pyhanabi_state_t* state);
@@ -184,7 +190,21 @@ char* ObservationShape(pyhanabi_observation_encoder_t* encoder);
 char* EncodeObservation(pyhanabi_observation_encoder_t* encoder,
                         pyhanabi_observation_t* observation);
 
-/* Serialization + Deserialization functions. */
+/* Serialization + Deserialization functions.
+ *
+ * *ToJson: returns the object as a JSON string, or NULL on failure. The caller
+ * owns the string and frees it with DeleteString.
+ *
+ * *FromJson: parses `json_str` (a NUL-terminated string from the matching
+ * *ToJson) into a new object and stores it in the handle, deleting the object
+ * the handle held before (pass a zeroed handle to create a new one). The
+ * caller owns the new object and frees it with the matching Delete* function.
+ * Returns false, leaving the handle untouched, if the string is not valid
+ * JSON, a field is missing or has the wrong type, or a value is out of range
+ * (for a state: out of range for `game`). Whether a state's cards add up to
+ * the deck is not checked. Aborts if a pointer argument is NULL.
+ *
+ * StateFromJson: the new state refers to `game`, which must outlive it. */
 char* MoveToJson(pyhanabi_move_t* move);
 bool MoveFromJson(const char* json_str, pyhanabi_move_t* move);
 

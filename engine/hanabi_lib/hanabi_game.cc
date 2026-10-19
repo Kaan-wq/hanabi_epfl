@@ -11,13 +11,20 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_game.h"
 
+#include <limits>
 #include <nlohmann/json.hpp>
 #include <random>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <utility>
 
+#include "json_checks.h"
 #include "util.h"
 using json = nlohmann::json;
 
@@ -29,6 +36,16 @@ const int kDefaultPlayers = 2;
 const int kInformationTokens = 8;
 const int kLifeTokens = 3;
 const bool kDefaultRandomStart = false;
+
+// Copies of each card of the given rank, in a game with num_ranks ranks.
+int InstancesOfRank(int rank, int num_ranks) {
+  if (rank == 0) {
+    return 3;
+  } else if (rank == num_ranks - 1) {
+    return 1;
+  }
+  return 2;
+}
 }  // namespace
 
 HanabiGame::HanabiGame(const std::unordered_map<std::string, std::string>& params) {
@@ -127,12 +144,7 @@ int HanabiGame::NumberCardInstances(int color, int rank) const {
   if (color < 0 || color >= NumColors() || rank < 0 || rank >= NumRanks()) {
     return 0;
   }
-  if (rank == 0) {
-    return 3;
-  } else if (rank == NumRanks() - 1) {
-    return 1;
-  }
-  return 2;
+  return InstancesOfRank(rank, NumRanks());
 }
 
 int HanabiGame::GetSampledStartPlayer() const {
@@ -233,38 +245,70 @@ json HanabiGame::toJSON() const {
 
 // Deserialization
 HanabiGame HanabiGame::fromJSON(const nlohmann::json& j) {
+  // The constructor aborts on invalid parameters, so check them first.
+  const int num_players = JsonInt(j, "num_players", 2, 5);
+  const int num_colors = JsonInt(j, "num_colors", 1, kMaxNumColors);
+  const int num_ranks = JsonInt(j, "num_ranks", 1, kMaxNumRanks);
+  int cards_per_color = 0;
+  for (int rank = 0; rank < num_ranks; ++rank) {
+    cards_per_color += InstancesOfRank(rank, num_ranks);
+  }
+  CheckRange(JsonInt(j, "cards_per_color", 0, cards_per_color), cards_per_color, cards_per_color,
+             "'cards_per_color'");
+  const int hand_size = JsonInt(j, "hand_size", 1, cards_per_color * num_colors / num_players);
+  const int max_information_tokens =
+      JsonInt(j, "max_information_tokens", 0, std::numeric_limits<int>::max());
+  const int max_life_tokens = JsonInt(j, "max_life_tokens", 1, std::numeric_limits<int>::max());
+  const int seed =
+      JsonInt(j, "seed", std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+  const bool random_start_player = JsonBool(j, "random_start_player");
+  const int observation_type = JsonInt(j, "observation_type", kMinimal, kSeer);
+
   std::unordered_map<std::string, std::string> params;
-  for (auto it = j["params"].begin(); it != j["params"].end(); ++it) {
-    params[it.key()] = it.value();
+  const json& params_json = JsonField(j, "params");
+  if (!params_json.is_object()) {
+    throw std::invalid_argument("'params' must be an object");
+  }
+  for (auto it = params_json.begin(); it != params_json.end(); ++it) {
+    if (!it.value().is_string()) {
+      throw std::invalid_argument("'params' values must be strings");
+    }
+    params[it.key()] = it.value().get<std::string>();
   }
 
-  HanabiGame game(params);
+  // Built from the checked fields; "params" is only stored, as in the original.
+  HanabiGame game({{"players", std::to_string(num_players)},
+                   {"colors", std::to_string(num_colors)},
+                   {"ranks", std::to_string(num_ranks)},
+                   {"hand_size", std::to_string(hand_size)},
+                   {"max_information_tokens", std::to_string(max_information_tokens)},
+                   {"max_life_tokens", std::to_string(max_life_tokens)},
+                   {"seed", std::to_string(seed)},
+                   {"random_start_player", random_start_player ? "true" : "false"},
+                   {"observation_type", std::to_string(observation_type)}});
+  game.params_ = std::move(params);
+  game.seed_ = seed;
 
-  // Deserialize simple types
-  game.num_players_ = j["num_players"];
-  game.num_colors_ = j["num_colors"];
-  game.num_ranks_ = j["num_ranks"];
-  game.hand_size_ = j["hand_size"];
-  game.max_information_tokens_ = j["max_information_tokens"];
-  game.max_life_tokens_ = j["max_life_tokens"];
-  game.seed_ = j["seed"];
-  game.random_start_player_ = j["random_start_player"];
-  game.observation_type_ = static_cast<AgentObservationType>(j["observation_type"]);
-  game.cards_per_color_ = j["cards_per_color"];
+  // The move tables are derived from the parameters; they must match.
+  const auto check_moves = [](const json& moves_json, const std::vector<HanabiMove>& expected,
+                              const char* key) {
+    if (moves_json.size() != expected.size()) {
+      throw std::invalid_argument(std::string("'") + key + "' does not match the game");
+    }
+    for (size_t i = 0; i < expected.size(); ++i) {
+      if (!(HanabiMove::fromJSON(moves_json[i]) == expected[i])) {
+        throw std::invalid_argument(std::string("'") + key + "' does not match the game");
+      }
+    }
+  };
+  check_moves(JsonArray(j, "moves"), game.moves_, "moves");
+  check_moves(JsonArray(j, "chance_outcomes"), game.chance_outcomes_, "chance_outcomes");
 
-  // Deserialize moves_ and chance_outcomes_
-  game.moves_.clear();
-  for (const auto& move_json : j["moves"]) {
-    game.moves_.push_back(HanabiMove::fromJSON(move_json));
-  }
-  game.chance_outcomes_.clear();
-  for (const auto& outcome_json : j["chance_outcomes"]) {
-    game.chance_outcomes_.push_back(HanabiMove::fromJSON(outcome_json));
-  }
-
-  // Deserialize rng_ state
-  std::stringstream ss(j["rng_state"].get<std::string>());
+  std::stringstream ss(JsonString(j, "rng_state"));
   ss >> game.rng_;
+  if (ss.fail()) {
+    throw std::invalid_argument("'rng_state' is not a valid mt19937 state");
+  }
 
   return game;
 }

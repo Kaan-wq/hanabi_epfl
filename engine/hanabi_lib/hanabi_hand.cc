@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_hand.h"
 
@@ -18,8 +20,10 @@
 #include <cassert>
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include <utility>
 using json = nlohmann::json;
 
+#include "json_checks.h"
 #include "util.h"
 
 namespace hanabi_learning_env {
@@ -30,7 +34,7 @@ HanabiHand::ValueKnowledge::ValueKnowledge(int value_range)
 }
 
 void HanabiHand::ValueKnowledge::ApplyIsValueHint(int value) {
-  assert(value >= 0 && value < value_plausible_.size());
+  assert(value >= 0 && value < Range());
   assert(value_ < 0 || value_ == value);
   assert(value_plausible_[value] == true);
   value_ = value;
@@ -39,7 +43,7 @@ void HanabiHand::ValueKnowledge::ApplyIsValueHint(int value) {
 }
 
 void HanabiHand::ValueKnowledge::ApplyIsNotValueHint(int value) {
-  assert(value >= 0 && value < value_plausible_.size());
+  assert(value >= 0 && value < Range());
   assert(value_ < 0 || value_ != value);
   value_plausible_[value] = false;
 }
@@ -122,7 +126,7 @@ void HanabiHand::RemoveKnowledge(int card_index, const CardKnowledge& initial_kn
 uint8_t HanabiHand::RevealColor(const int color) {
   uint8_t mask = 0;
   assert(cards_.size() <= 8);  // More than 8 cards is currently not supported.
-  for (int i = 0; i < cards_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(cards_.size()); ++i) {
     if (cards_[i].Color() == color) {
       if (!card_knowledge_[i].ColorHinted()) {
         mask |= static_cast<uint8_t>(1) << i;
@@ -138,7 +142,7 @@ uint8_t HanabiHand::RevealColor(const int color) {
 uint8_t HanabiHand::RevealRank(const int rank) {
   uint8_t mask = 0;
   assert(cards_.size() <= 8);  // More than 8 cards is currently not supported.
-  for (int i = 0; i < cards_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(cards_.size()); ++i) {
     if (cards_[i].Rank() == rank) {
       if (!card_knowledge_[i].RankHinted()) {
         mask |= static_cast<uint8_t>(1) << i;
@@ -154,7 +158,7 @@ uint8_t HanabiHand::RevealRank(const int rank) {
 std::string HanabiHand::ToString() const {
   std::string result;
   assert(cards_.size() == card_knowledge_.size());
-  for (int i = 0; i < cards_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(cards_.size()); ++i) {
     result += cards_[i].ToString() + " || " + card_knowledge_[i].ToString() + '\n';
   }
   return result;
@@ -172,9 +176,12 @@ json HanabiHand::ValueKnowledge::toJSON() const {
 }
 
 HanabiHand::ValueKnowledge HanabiHand::ValueKnowledge::fromJSON(const json& j) {
-  ValueKnowledge vk(j.at("value_plausible").size());
-  vk.value_ = j.at("value").get<int>();
-  vk.value_plausible_ = j.at("value_plausible").get<std::vector<bool>>();
+  std::vector<bool> plausible = JsonBoolArray(j, "value_plausible");
+  const int range = static_cast<int>(plausible.size());
+  CheckRange(range, 1, std::max(kMaxNumColors, kMaxNumRanks), "'value_plausible' length");
+  ValueKnowledge vk(range);
+  vk.value_ = JsonInt(j, "value", -1, range - 1);
+  vk.value_plausible_ = std::move(plausible);
   return vk;
 }
 
@@ -190,10 +197,11 @@ json HanabiHand::CardKnowledge::toJSON() const {
 }
 
 HanabiHand::CardKnowledge HanabiHand::CardKnowledge::fromJSON(const json& j) {
-  CardKnowledge ck(j.at("color").at("value_plausible").size(),
-                   j.at("rank").at("value_plausible").size());
-  ck.color_ = ValueKnowledge::fromJSON(j.at("color"));
-  ck.rank_ = ValueKnowledge::fromJSON(j.at("rank"));
+  ValueKnowledge color = ValueKnowledge::fromJSON(JsonField(j, "color"));
+  ValueKnowledge rank = ValueKnowledge::fromJSON(JsonField(j, "rank"));
+  CardKnowledge ck(color.Range(), rank.Range());
+  ck.color_ = std::move(color);
+  ck.rank_ = std::move(rank);
   return ck;
 }
 
@@ -224,13 +232,13 @@ HanabiHand HanabiHand::fromJSON(const json& j) {
 
   // Deserialize cards
   hand.cards_.clear();
-  for (const auto& card_json : j.at("cards")) {
+  for (const auto& card_json : JsonArray(j, "cards")) {
     hand.cards_.push_back(HanabiCard::fromJSON(card_json));
   }
 
   // Deserialize card knowledge
   hand.card_knowledge_.clear();
-  for (const auto& ck_json : j.at("card_knowledge")) {
+  for (const auto& ck_json : JsonArray(j, "card_knowledge")) {
     hand.card_knowledge_.push_back(CardKnowledge::fromJSON(ck_json));
   }
 

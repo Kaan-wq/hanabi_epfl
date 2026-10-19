@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #ifndef __HANABI_STATE_H__
 #define __HANABI_STATE_H__
@@ -74,6 +76,7 @@ class HanabiState {
   explicit HanabiState(const HanabiGame* parent_game, int start_player = -1);
   // Copy constructor for recursive game traversals using copy + apply-move.
   HanabiState(const HanabiState& state) = default;
+  HanabiState& operator=(const HanabiState& state) = default;
 
   bool MoveIsLegal(HanabiMove move) const;
   void ApplyMove(HanabiMove move);
@@ -129,6 +132,15 @@ class HanabiState {
   HanabiHand* HandByOffset(int offset) { return &hands_[(cur_player_ + offset) % hands_.size()]; }
   void AdvanceToNextPlayer(bool stayOnPlayer);  // Set cur_player to next player to act.
   bool HintingIsLegal(HanabiMove move) const;
+  // Range checks for moves, which can come from Python with any values.
+  bool IsPlayer(int player) const { return player >= 0 && player < ParentGame()->NumPlayers(); }
+  bool IsCardIndex(int player, int card_index) const {
+    return card_index >= 0 && card_index < static_cast<int>(hands_[player].Cards().size());
+  }
+  bool CardIsInGame(int color, int rank) const {
+    return color >= 0 && color < ParentGame()->NumColors() && rank >= 0 &&
+           rank < ParentGame()->NumRanks();
+  }
   int PlayerToDeal() const;  // -1 if no player needs a card.
   bool IncrementInformationTokens();
   void DecrementInformationTokens();
