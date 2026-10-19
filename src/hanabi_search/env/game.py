@@ -6,7 +6,7 @@ from typing import Self
 
 from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
 from hanabi_search.env.moves import HanabiMove
-from hanabi_search.exceptions import SerializationError
+from hanabi_search.exceptions import ConfigError, EngineCallError, SerializationError
 
 type GameParams = Mapping[str, int | bool | str]
 
@@ -50,7 +50,9 @@ class HanabiGame:
             for text in (key, str(value))
         ]
         c_array = ffi.new(f"char * [{len(strings)}]", strings)
-        lib.NewGame(self._game, len(strings), c_array)
+        if not lib.NewGame(self._game, len(strings), c_array):
+            self._game = None  # Nothing for __del__ to free.
+            raise ConfigError(f"Invalid game parameters: {dict(params)}")
 
     @classmethod
     def _from_c_game(cls, c_game: CData) -> Self:
@@ -113,9 +115,14 @@ class HanabiGame:
         return int(lib.GetMoveUid(self.c_game, move.c_move))
 
     def get_move(self, move_uid: int) -> HanabiMove:
-        """Returns the move with the given id."""
+        """Returns the move with the given id.
+
+        Raises:
+            EngineCallError: If `move_uid` is not in [0, max_moves()).
+        """
         c_move = ffi.new("pyhanabi_move_t*")
-        lib.GetMoveByUid(self.c_game, move_uid, c_move)
+        if not lib.GetMoveByUid(self.c_game, move_uid, c_move):
+            raise EngineCallError(f"Move id {move_uid} is out of range")
         return HanabiMove(c_move)
 
     def to_json(self) -> str:

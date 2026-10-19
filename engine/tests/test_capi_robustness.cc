@@ -1,6 +1,7 @@
 // Tests that the C API rejects bad input with a status instead of crashing:
-// malformed or out-of-range JSON in the *FromJson functions, and out-of-range
-// moves in MoveIsLegal. Run them under ASan + UBSan (Debug build).
+// malformed or out-of-range JSON in the *FromJson functions, out-of-range moves
+// in MoveIsLegal, and out-of-range indices, ids and parameters everywhere else.
+// Run them under ASan + UBSan (Debug build).
 
 #include <functional>
 #include <iostream>
@@ -25,7 +26,7 @@ struct Fixture {
 
   Fixture() {
     const char* params[] = {"players", "3", "seed", "7"};
-    NewGame(&game, 4, params);
+    CHECK(NewGame(&game, 4, params));
     NewState(&game, &state);
     DealUntilPlayerTurn();
   }
@@ -37,14 +38,15 @@ struct Fixture {
   Fixture& operator=(const Fixture&) = delete;
 
   void DealUntilPlayerTurn() {
-    while (StateCurPlayer(&state) == -1) StateDealCard(&state);
+    while (StateCurPlayer(&state) == -1 && StateDealCard(&state)) {
+    }
   }
 
   // Applies a move built by `make`, which fills a zeroed pyhanabi_move_t.
   void Apply(const std::function<bool(pyhanabi_move_t*)>& make) {
     pyhanabi_move_t move{};
     make(&move);
-    StateApplyMove(&state, &move);
+    CHECK(StateApplyMove(&state, &move));
     DeleteMove(&move);
   }
 
@@ -371,6 +373,161 @@ HANABI_TEST(MoveIsLegalRejectsOutOfRangePlayerMoves) {
   CHECK_EQ(StateCurPlayer(&f.state), -1);
   CHECK(!f.IsLegal([](pyhanabi_move_t* m) { return GetPlayMove(0, m); }));
   CHECK(!f.IsLegal([](pyhanabi_move_t* m) { return GetDiscardMove(0, m); }));
+}
+
+HANABI_TEST(MoveFunctionsRejectBadArguments) {
+  pyhanabi_move_t move{};
+  // Values that do not fit the move's 8-bit fields.
+  CHECK(!GetPlayMove(128, &move));
+  CHECK(!GetDiscardMove(-129, &move));
+  CHECK(!GetReturnMove(0, 300, &move));
+  CHECK(!GetDealSpecificMove(0, 0, 1000, 0, &move));
+  CHECK(!GetRevealColorMove(1, 128, &move));
+  CHECK(!GetRevealRankMove(200, 0, &move));
+  CHECK(move.move == nullptr);
+
+  Fixture f;
+  void* list = StateLegalMoves(&f.state);
+  CHECK(!GetMove(list, -1, &move));
+  CHECK(!GetMove(list, NumMoves(list), &move));
+  CHECK(move.move == nullptr);
+  CHECK(GetMove(list, 0, &move));
+  DeleteMove(&move);
+  DeleteMoveList(list);
+
+  CHECK(!GetMoveByUid(&f.game, -1, &move));
+  CHECK(!GetMoveByUid(&f.game, MaxMoves(&f.game), &move));
+  CHECK(move.move == nullptr);
+  CHECK(GetMoveByUid(&f.game, MaxMoves(&f.game) - 1, &move));
+  DeleteMove(&move);
+}
+
+HANABI_TEST(StateFunctionsRejectBadArguments) {
+  Fixture f;
+  pyhanabi_card_t card{};
+  const int hand_size = StateGetHandSize(&f.state, 0);
+  CHECK_EQ(hand_size, 5);
+  for (int player : {-1, kNumPlayers}) {
+    CHECK_EQ(StateGetHandSize(&f.state, player), -1);
+    CHECK(!StateGetHandCard(&f.state, player, 0, &card));
+    CHECK(!StateRemoveKnowledge(&f.state, player, 0));
+  }
+  for (int index : {-1, hand_size}) {
+    CHECK(!StateGetHandCard(&f.state, 0, index, &card));
+    CHECK(!StateRemoveKnowledge(&f.state, 0, index));
+  }
+  CHECK(StateGetHandCard(&f.state, 0, hand_size - 1, &card));
+  CHECK(StateRemoveKnowledge(&f.state, 0, hand_size - 1));
+
+  for (int color : {-1, 5}) CHECK_EQ(StateFireworks(&f.state, color), -1);
+  CHECK_EQ(StateFireworks(&f.state, 4), 0);
+  CHECK(!StateGetDiscard(&f.state, 0, &card));  // The discard pile is empty.
+  CHECK(!StateGetDiscard(&f.state, -1, &card));
+
+  pyhanabi_history_item_t item{};
+  const int history_length = StateLenMoveHistory(&f.state);
+  CHECK(!StateGetMoveHistory(&f.state, history_length, &item));
+  CHECK(!StateGetMoveHistory(&f.state, -1, &item));
+  CHECK(item.item == nullptr);
+  CHECK(StateGetMoveHistory(&f.state, history_length - 1, &item));
+  DeleteHistoryItem(&item);
+}
+
+HANABI_TEST(StateApplyMoveAndDealCardRejectIllegalCalls) {
+  Fixture f;
+  const std::string before = StateJson(f);
+  pyhanabi_move_t move{};
+  CHECK(GetPlayMove(7, &move));  // Beyond the hand.
+  CHECK(!StateApplyMove(&f.state, &move));
+  DeleteMove(&move);
+  CHECK(!StateDealCard(&f.state));  // Not a chance turn.
+  CHECK_EQ(StateJson(f), before);
+
+  // A chance turn with an empty deck (a state only JSON can produce).
+  json state = json::parse(before);
+  state["cur_player"] = -1;
+  for (auto& count : state["deck"]["card_count"]) count = 0;
+  state["deck"]["total_count"] = 0;
+  CHECK(StateFromJson(state.dump().c_str(), &f.state, &f.game));
+  CHECK(!StateDealCard(&f.state));
+}
+
+HANABI_TEST(NewGameRejectsBadParameters) {
+  const std::vector<std::vector<const char*>> bad_params = {
+      {"players", "1"},
+      {"players", "6"},
+      {"players", "two"},
+      {"colors", "0"},
+      {"ranks", "6"},
+      {"hand_size", "0"},
+      {"hand_size", "26"},  // 2 x 26 > 50 cards
+      {"max_life_tokens", "0"},
+      {"max_information_tokens", "-1"},
+      {"observation_type", "3"},
+      {"players"},  // A key without a value.
+  };
+  for (auto params : bad_params) {  // A copy: NewGame takes a non-const array.
+    pyhanabi_game_t game{};
+    CHECK(!NewGame(&game, static_cast<int>(params.size()), params.data()));
+    CHECK(game.game == nullptr);
+  }
+  pyhanabi_game_t game{};
+  CHECK(!NewGame(&game, -2, nullptr));
+  const char* good_params[] = {"players", "4"};
+  CHECK(NewGame(&game, 2, good_params));
+  CHECK_EQ(NumPlayers(&game), 4);
+
+  pyhanabi_observation_encoder_t encoder{};
+  CHECK(!NewObservationEncoder(&encoder, &game, 1));
+  CHECK(!NewObservationEncoder(&encoder, &game, -1));
+  CHECK(encoder.encoder == nullptr);
+  CHECK(NewObservationEncoder(&encoder, &game, 0));
+  DeleteObservationEncoder(&encoder);
+  DeleteGame(&game);
+}
+
+HANABI_TEST(ObservationFunctionsRejectBadArguments) {
+  Fixture f;
+  pyhanabi_observation_t obs{};
+  CHECK(!NewObservation(&f.state, -1, &obs));
+  CHECK(!NewObservation(&f.state, kNumPlayers, &obs));
+  CHECK(obs.observation == nullptr);
+  CHECK(NewObservation(&f.state, 0, &obs));
+
+  pyhanabi_card_t card{};
+  pyhanabi_card_knowledge_t knowledge{};
+  for (int offset : {-1, kNumPlayers}) {
+    CHECK_EQ(ObsGetHandSize(&obs, offset), -1);
+    CHECK(!ObsGetHandCard(&obs, offset, 0, &card));
+    CHECK(!ObsGetHandCardKnowledge(&obs, offset, 0, &knowledge));
+  }
+  for (int index : {-1, ObsGetHandSize(&obs, 1)}) {
+    CHECK(!ObsGetHandCard(&obs, 1, index, &card));
+    CHECK(!ObsGetHandCardKnowledge(&obs, 1, index, &knowledge));
+  }
+  CHECK(knowledge.knowledge == nullptr);
+  CHECK(ObsGetHandCardKnowledge(&obs, 1, 0, &knowledge));
+  for (int value : {-1, 5}) {
+    CHECK_EQ(ColorIsPlausible(&knowledge, value), -1);
+    CHECK_EQ(RankIsPlausible(&knowledge, value), -1);
+  }
+  CHECK_EQ(ColorIsPlausible(&knowledge, 4), 1);
+  CHECK_EQ(RankIsPlausible(&knowledge, 4), 1);
+
+  for (int color : {-1, 5}) CHECK_EQ(ObsFireworks(&obs, color), -1);
+  CHECK(!ObsGetDiscard(&obs, 0, &card));
+
+  pyhanabi_history_item_t item{};
+  CHECK(!ObsGetLastMove(&obs, ObsNumLastMoves(&obs), &item));
+  CHECK(!ObsGetLastMove(&obs, -1, &item));
+  CHECK(item.item == nullptr);
+  pyhanabi_move_t move{};
+  CHECK(!ObsGetLegalMove(&obs, ObsNumLegalMoves(&obs), &move));
+  CHECK(!ObsGetLegalMove(&obs, -1, &move));
+  CHECK(move.move == nullptr);
+  CHECK(ObsGetLegalMove(&obs, 0, &move));
+  DeleteMove(&move);
+  DeleteObservation(&obs);
 }
 
 int main() { return hanabi_test::RunAll(); }

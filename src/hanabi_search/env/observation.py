@@ -6,6 +6,7 @@ from hanabi_search.env._pyhanabi import CData, card_values, ffi, lib, take_strin
 from hanabi_search.env.cards import HanabiCard, HanabiCardKnowledge
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
+from hanabi_search.exceptions import EngineCallError
 
 
 class HanabiObservation:
@@ -25,7 +26,9 @@ class HanabiObservation:
     def __init__(self, game: HanabiGame, c_state: CData, player: int) -> None:
         self._game = game
         self._observation: CData | None = ffi.new("pyhanabi_observation_t*")
-        lib.NewObservation(c_state, player, self._observation)
+        if not lib.NewObservation(c_state, player, self._observation):
+            self._observation = None  # Nothing for __del__ to free.
+            raise EngineCallError(f"Player {player} is out of range")
         # Reused buffers for card knowledge, one slot per (player, card).
         self._knowledge_pool = [
             ffi.new("pyhanabi_card_knowledge_t*")
@@ -164,7 +167,9 @@ class ObservationEncoder:
     ) -> None:
         self._game = game
         self._encoder: CData | None = ffi.new("pyhanabi_observation_encoder_t*")
-        lib.NewObservationEncoder(self._encoder, game.c_game, encoder_type)
+        if not lib.NewObservationEncoder(self._encoder, game.c_game, encoder_type):
+            self._encoder = None  # Nothing for __del__ to free.
+            raise EngineCallError(f"Unknown observation encoder type {encoder_type}")
 
     @property
     def _c_encoder(self) -> CData:

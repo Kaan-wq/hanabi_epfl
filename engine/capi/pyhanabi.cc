@@ -16,13 +16,14 @@
 
 #include "pyhanabi.h"
 
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
+#include <vector>
 using json = nlohmann::json;
 
 #include "hanabi_lib/canonical_encoders.h"
@@ -60,6 +61,39 @@ bool ReplaceFromJson(const char* json_str, void** handle, const Args&... extra_a
   } catch (const std::exception&) {
     return false;
   }
+}
+
+// Whether `index` is a valid position in a container of `size` elements.
+bool InRange(int index, size_t size) { return index >= 0 && static_cast<size_t>(index) < size; }
+
+bool FitsInt8(int value) { return value >= INT8_MIN && value <= INT8_MAX; }
+
+// Builds a move for the Get*Move functions; false if a value does not fit.
+bool NewMove(hanabi_learning_env::HanabiMove::Type type, int card_index, int target_offset,
+             int color, int rank, pyhanabi_move_t* move) {
+  REQUIRE(move != nullptr);
+  if (!FitsInt8(card_index) || !FitsInt8(target_offset) || !FitsInt8(color) || !FitsInt8(rank)) {
+    return false;
+  }
+  move->move = new hanabi_learning_env::HanabiMove(type, card_index, target_offset, color, rank);
+  return true;
+}
+
+// Copies a card into the caller's struct; false if `index` is out of range.
+bool CopyCard(const std::vector<hanabi_learning_env::HanabiCard>& cards, int index,
+              pyhanabi_card_t* card) {
+  REQUIRE(card != nullptr);
+  if (!InRange(index, cards.size())) return false;
+  card->color = cards[index].Color();
+  card->rank = cards[index].Rank();
+  return true;
+}
+
+const hanabi_learning_env::HanabiObservation& Observation(
+    const pyhanabi_observation_t* observation) {
+  REQUIRE(observation != nullptr);
+  REQUIRE(observation->observation != nullptr);
+  return *static_cast<const hanabi_learning_env::HanabiObservation*>(observation->observation);
 }
 
 }  // namespace
@@ -102,9 +136,10 @@ int KnownColor(pyhanabi_card_knowledge_t* knowledge) {
 int ColorIsPlausible(pyhanabi_card_knowledge_t* knowledge, int color) {
   REQUIRE(knowledge != nullptr);
   REQUIRE(knowledge->knowledge != nullptr);
-  return reinterpret_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(
-             knowledge->knowledge)
-      ->ColorPlausible(color);
+  const auto* card_knowledge =
+      static_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(knowledge->knowledge);
+  if (color < 0 || color >= card_knowledge->NumColors()) return -1;
+  return card_knowledge->ColorPlausible(color);
 }
 
 int RankWasHinted(pyhanabi_card_knowledge_t* knowledge) {
@@ -126,9 +161,10 @@ int KnownRank(pyhanabi_card_knowledge_t* knowledge) {
 int RankIsPlausible(pyhanabi_card_knowledge_t* knowledge, int rank) {
   REQUIRE(knowledge != nullptr);
   REQUIRE(knowledge->knowledge != nullptr);
-  return reinterpret_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(
-             knowledge->knowledge)
-      ->RankPlausible(rank);
+  const auto* card_knowledge =
+      static_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(knowledge->knowledge);
+  if (rank < 0 || rank >= card_knowledge->NumRanks()) return -1;
+  return card_knowledge->RankPlausible(rank);
 }
 
 /* Wrapper definitions for HanabiMove. */
@@ -140,10 +176,13 @@ int NumMoves(void* movelist) {
   return reinterpret_cast<std::vector<hanabi_learning_env::HanabiMove>*>(movelist)->size();
 }
 
-void GetMove(void* movelist, int index, pyhanabi_move_t* move) {
+bool GetMove(void* movelist, int index, pyhanabi_move_t* move) {
+  REQUIRE(movelist != nullptr);
   REQUIRE(move != nullptr);
-  auto hanabi_movelist = reinterpret_cast<std::vector<hanabi_learning_env::HanabiMove>*>(movelist);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_movelist->at(index));
+  const auto& moves = *static_cast<std::vector<hanabi_learning_env::HanabiMove>*>(movelist);
+  if (!InRange(index, moves.size())) return false;
+  move->move = new hanabi_learning_env::HanabiMove(moves[index]);
+  return true;
 }
 
 void DeleteMove(pyhanabi_move_t* move) {
@@ -182,46 +221,29 @@ int MoveRank(pyhanabi_move_t* move) {
 }
 
 bool GetDiscardMove(int card_index, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kDiscard,
-                                                   card_index, -1, -1, -1);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kDiscard, card_index, -1, -1, -1, move);
 }
 
 bool GetPlayMove(int card_index, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kPlay,
-                                                   card_index, -1, -1, -1);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kPlay, card_index, -1, -1, -1, move);
 }
 
 // MB: Added Move
 bool GetReturnMove(int card_index, int player, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kReturn,
-                                                   card_index, player, -1, -1);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kReturn, card_index, player, -1, -1, move);
 }
 
 bool GetDealSpecificMove(int card_index, int player, int color, int rank, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kDealSpecific,
-                                                   card_index, player, color, rank);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kDealSpecific, card_index, player, color, rank,
+                 move);
 }
 
 bool GetRevealColorMove(int target_offset, int color, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kRevealColor,
-                                                   -1, target_offset, color, -1);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kRevealColor, -1, target_offset, color, -1, move);
 }
 
 bool GetRevealRankMove(int target_offset, int rank, pyhanabi_move_t* move) {
-  REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(hanabi_learning_env::HanabiMove::kRevealRank, -1,
-                                                   target_offset, -1, rank);
-  return move->move != nullptr;
+  return NewMove(hanabi_learning_env::HanabiMove::kRevealRank, -1, target_offset, -1, rank, move);
 }
 
 /* Wrapper definitions for HanabiHistoryItem. */
@@ -324,30 +346,32 @@ void DeleteState(pyhanabi_state_t* state) {
   state->state = nullptr;
 }
 
-const void* StateParentGame(pyhanabi_state_t* state) {
-  REQUIRE(state != nullptr);
-  REQUIRE(state->state != nullptr);
-  return static_cast<const void*>(
-      reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->ParentGame());
-}
-
-void StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move) {
+bool StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   REQUIRE(move != nullptr);
   REQUIRE(move->move != nullptr);
-  auto hanabi_state = reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state);
-  auto hanabi_move = reinterpret_cast<const hanabi_learning_env::HanabiMove*>(move->move);
-  hanabi_state->ApplyMove(*hanabi_move);
+  auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
+  const auto& hanabi_move = *static_cast<const hanabi_learning_env::HanabiMove*>(move->move);
+  if (!hanabi_state->MoveIsLegal(hanabi_move)) return false;
+  hanabi_state->ApplyMove(hanabi_move);
+  return true;
 }
 
 int StateTurnsToPlay(pyhanabi_state_t* state) {
   return reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->TurnsToPlay();
 }
 
-void StateRemoveKnowledge(pyhanabi_state_t* state, int player, int card_index) {
-  auto hanabi_state = reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state);
+bool StateRemoveKnowledge(pyhanabi_state_t* state, int player, int card_index) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
+  const auto& hands = hanabi_state->Hands();
+  if (!InRange(player, hands.size()) || !InRange(card_index, hands[player].Knowledge().size())) {
+    return false;
+  }
   hanabi_state->RemoveKnowledge(player, card_index);
+  return true;
 }
 
 int StateCurPlayer(pyhanabi_state_t* state) {
@@ -356,11 +380,16 @@ int StateCurPlayer(pyhanabi_state_t* state) {
   return reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->CurPlayer();
 }
 
-void StateDealCard(pyhanabi_state_t* state) {
+bool StateDealCard(pyhanabi_state_t* state) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-  auto hanabi_state = reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state);
+  auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
+  if (hanabi_state->CurPlayer() != hanabi_learning_env::kChancePlayerId ||
+      hanabi_state->Deck().Empty()) {
+    return false;
+  }
   hanabi_state->ApplyRandomChance();
+  return true;
 }
 
 int StateDeckSize(pyhanabi_state_t* state) {
@@ -372,7 +401,8 @@ int StateDeckSize(pyhanabi_state_t* state) {
 int StateFireworks(pyhanabi_state_t* state, int color) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-  return reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->Fireworks().at(color);
+  const auto& fireworks = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Fireworks();
+  return InRange(color, fireworks.size()) ? fireworks[color] : -1;
 }
 
 int StateDiscardPileSize(pyhanabi_state_t* state) {
@@ -381,37 +411,25 @@ int StateDiscardPileSize(pyhanabi_state_t* state) {
   return reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->DiscardPile().size();
 }
 
-void StateGetDiscard(pyhanabi_state_t* state, int index, pyhanabi_card_t* card) {
+bool StateGetDiscard(pyhanabi_state_t* state, int index, pyhanabi_card_t* card) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-  REQUIRE(card != nullptr);
-  hanabi_learning_env::HanabiCard hanabi_card =
-      reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)->DiscardPile().at(index);
-  card->color = hanabi_card.Color();
-  card->rank = hanabi_card.Rank();
+  return CopyCard(static_cast<hanabi_learning_env::HanabiState*>(state->state)->DiscardPile(),
+                  index, card);
 }
 
 int StateGetHandSize(pyhanabi_state_t* state, int pid) {
   REQUIRE(state != nullptr);
-  return reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)
-      ->Hands()
-      .at(pid)
-      .Cards()
-      .size();
+  REQUIRE(state->state != nullptr);
+  const auto& hands = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Hands();
+  return InRange(pid, hands.size()) ? static_cast<int>(hands[pid].Cards().size()) : -1;
 }
 
-void StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card) {
+bool StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-  REQUIRE(card != nullptr);
-  hanabi_learning_env::HanabiCard hanabi_card =
-      reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state)
-          ->Hands()
-          .at(pid)
-          .Cards()
-          .at(index);
-  card->color = hanabi_card.Color();
-  card->rank = hanabi_card.Rank();
+  const auto& hands = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Hands();
+  return InRange(pid, hands.size()) && CopyCard(hands[pid].Cards(), index, card);
 }
 
 int StateInformationTokens(pyhanabi_state_t* state) {
@@ -482,14 +500,15 @@ int StateLenMoveHistory(pyhanabi_state_t* state) {
       .size();
 }
 
-void StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_item_t* item) {
+bool StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_item_t* item) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   REQUIRE(item != nullptr);
-  item->item = new hanabi_learning_env::HanabiHistoryItem(
-      reinterpret_cast<const hanabi_learning_env::HanabiState*>(state->state)
-          ->MoveHistory()
-          .at(index));
+  const auto& history =
+      static_cast<const hanabi_learning_env::HanabiState*>(state->state)->MoveHistory();
+  if (!InRange(index, history.size())) return false;
+  item->item = new hanabi_learning_env::HanabiHistoryItem(history[index]);
+  return true;
 }
 
 /* Wrapper definitions for HanabiGame. */
@@ -507,18 +526,22 @@ void NewDefaultGame(pyhanabi_game_t* game) {
   REQUIRE(game->game != nullptr);
 }
 
-void NewGame(pyhanabi_game_t* game, int list_length, const char** param_list) {
+bool NewGame(pyhanabi_game_t* game, int list_length, const char** param_list) {
+  REQUIRE(game != nullptr);
+  if (list_length < 0 || list_length % 2 != 0) return false;
+  REQUIRE(list_length == 0 || param_list != nullptr);
   std::unordered_map<std::string, std::string> params;
-
   for (int p = 0; p < list_length; p += 2) {
-    std::string key = param_list[p];
-    std::string value = param_list[p + 1];
-    params[key] = value;
+    REQUIRE(param_list[p] != nullptr && param_list[p + 1] != nullptr);
+    params[param_list[p]] = param_list[p + 1];
   }
-
-  game->game =
-      static_cast<hanabi_learning_env::HanabiGame*>(new hanabi_learning_env::HanabiGame(params));
-  REQUIRE(game->game != nullptr);
+  try {
+    // The constructor throws on invalid parameters.
+    game->game = new hanabi_learning_env::HanabiGame(params);
+    return true;
+  } catch (const std::exception&) {
+    return false;
+  }
 }
 
 char* GameParamString(pyhanabi_game_t* game) {
@@ -570,13 +593,14 @@ int GetMoveUid(pyhanabi_game_t* game, pyhanabi_move_t* move) {
       ->GetMoveUid(*reinterpret_cast<const hanabi_learning_env::HanabiMove*>(move->move));
 }
 
-void GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move) {
+bool GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move) {
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
   REQUIRE(move != nullptr);
-  auto hanabi_game = reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
+  auto hanabi_game = static_cast<hanabi_learning_env::HanabiGame*>(game->game);
+  if (move_uid < 0 || move_uid >= hanabi_game->MaxMoves()) return false;
   move->move = new hanabi_learning_env::HanabiMove(hanabi_game->GetMove(move_uid));
-  REQUIRE(move->move != nullptr);
+  return true;
 }
 
 int MaxMoves(pyhanabi_game_t* game) {
@@ -584,14 +608,14 @@ int MaxMoves(pyhanabi_game_t* game) {
 }
 
 /* Wrapper definitions for HanabiObservation. */
-void NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation) {
+bool NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   REQUIRE(observation != nullptr);
-  observation->observation = static_cast<hanabi_learning_env::HanabiObservation*>(
-      new hanabi_learning_env::HanabiObservation(
-          *reinterpret_cast<hanabi_learning_env::HanabiState*>(state->state), player));
-  REQUIRE(observation->observation != nullptr);
+  const auto& hanabi_state = *static_cast<hanabi_learning_env::HanabiState*>(state->state);
+  if (player < 0 || player >= hanabi_state.ParentGame()->NumPlayers()) return false;
+  observation->observation = new hanabi_learning_env::HanabiObservation(hanabi_state, player);
+  return true;
 }
 
 void DeleteObservation(pyhanabi_observation_t* observation) {
@@ -626,41 +650,23 @@ int ObsNumPlayers(pyhanabi_observation_t* observation) {
 }
 
 int ObsGetHandSize(pyhanabi_observation_t* observation, int pid) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
-  return reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-      ->Hands()
-      .at(pid)
-      .Cards()
-      .size();
+  const auto& hands = Observation(observation).Hands();
+  return InRange(pid, hands.size()) ? static_cast<int>(hands[pid].Cards().size()) : -1;
 }
 
-void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index,
+bool ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index,
                     pyhanabi_card_t* card) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
-  REQUIRE(card != nullptr);
-  hanabi_learning_env::HanabiCard hanabi_card =
-      reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-          ->Hands()
-          .at(pid)
-          .Cards()
-          .at(index);
-  card->color = hanabi_card.Color();
-  card->rank = hanabi_card.Rank();
+  const auto& hands = Observation(observation).Hands();
+  return InRange(pid, hands.size()) && CopyCard(hands[pid].Cards(), index, card);
 }
 
-void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
+bool ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
                              pyhanabi_card_knowledge_t* knowledge) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
   REQUIRE(knowledge != nullptr);
-  knowledge->knowledge =
-      &(reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-            ->Hands()
-            .at(pid)
-            .Knowledge()
-            .at(index));
+  const auto& hands = Observation(observation).Hands();
+  if (!InRange(pid, hands.size()) || !InRange(index, hands[pid].Knowledge().size())) return false;
+  knowledge->knowledge = &hands[pid].Knowledge()[index];
+  return true;
 }
 
 int ObsDiscardPileSize(pyhanabi_observation_t* observation) {
@@ -669,24 +675,13 @@ int ObsDiscardPileSize(pyhanabi_observation_t* observation) {
       .size();
 }
 
-void ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
-  REQUIRE(card != nullptr);
-  hanabi_learning_env::HanabiCard hanabi_card =
-      reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-          ->DiscardPile()
-          .at(index);
-  card->color = hanabi_card.Color();
-  card->rank = hanabi_card.Rank();
+bool ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card) {
+  return CopyCard(Observation(observation).DiscardPile(), index, card);
 }
 
 int ObsFireworks(pyhanabi_observation_t* observation, int color) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
-  return reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-      ->Fireworks()
-      .at(color);
+  const auto& fireworks = Observation(observation).Fireworks();
+  return InRange(color, fireworks.size()) ? fireworks[color] : -1;
 }
 
 int ObsDeckSize(pyhanabi_observation_t* observation) {
@@ -704,14 +699,12 @@ int ObsNumLastMoves(pyhanabi_observation_t* observation) {
       .size();
 }
 
-void ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
+bool ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item) {
   REQUIRE(item != nullptr);
-  item->item = new hanabi_learning_env::HanabiHistoryItem(
-      reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-          ->LastMoves()
-          .at(index));
+  const auto& last_moves = Observation(observation).LastMoves();
+  if (!InRange(index, last_moves.size())) return false;
+  item->item = new hanabi_learning_env::HanabiHistoryItem(last_moves[index]);
+  return true;
 }
 
 int ObsInformationTokens(pyhanabi_observation_t* observation) {
@@ -736,14 +729,12 @@ int ObsNumLegalMoves(pyhanabi_observation_t* observation) {
       .size();
 }
 
-void ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move) {
-  REQUIRE(observation != nullptr);
-  REQUIRE(observation->observation != nullptr);
+bool ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
-  move->move = new hanabi_learning_env::HanabiMove(
-      (reinterpret_cast<hanabi_learning_env::HanabiObservation*>(observation->observation)
-           ->LegalMoves()
-           .at(index)));
+  const auto& legal_moves = Observation(observation).LegalMoves();
+  if (!InRange(index, legal_moves.size())) return false;
+  move->move = new hanabi_learning_env::HanabiMove(legal_moves[index]);
+  return true;
 }
 
 bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int color, int rank) {
@@ -751,23 +742,15 @@ bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int c
       ->CardPlayableOnFireworks(color, rank);
 }
 
-void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game,
+bool NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game,
                            int type) {
   REQUIRE(encoder != nullptr);
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
-  auto otype = static_cast<hanabi_learning_env::ObservationEncoder::Type>(type);
-  auto hanabi_game = reinterpret_cast<hanabi_learning_env::HanabiGame*>(game->game);
-  switch (otype) {
-    case hanabi_learning_env::ObservationEncoder::Type::kCanonical:
-      encoder->encoder = static_cast<hanabi_learning_env::ObservationEncoder*>(
-          new hanabi_learning_env::CanonicalObservationEncoder(hanabi_game));
-      break;
-    default:
-      std::cerr << "Encoder type not recognized." << '\n';
-      encoder->encoder = nullptr;
-      std::abort();
-  }
+  if (type != hanabi_learning_env::ObservationEncoder::Type::kCanonical) return false;
+  encoder->encoder = new hanabi_learning_env::CanonicalObservationEncoder(
+      static_cast<hanabi_learning_env::HanabiGame*>(game->game));
+  return true;
 }
 
 void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder) {

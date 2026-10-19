@@ -1,4 +1,5 @@
 import json
+from typing import Any, cast
 
 import pytest
 
@@ -10,8 +11,14 @@ from hanabi_search.env import (
     HanabiGame,
     HanabiMove,
     HanabiState,
+    ObservationEncoder,
 )
-from hanabi_search.exceptions import SerializationError
+from hanabi_search.exceptions import (
+    ConfigError,
+    EngineCallError,
+    IllegalMoveError,
+    SerializationError,
+)
 from tests.support import SMALL_GAME, advance_randomly, make_env
 
 
@@ -128,3 +135,58 @@ def test_out_of_range_return_and_deal_specific_moves_are_illegal(state: HanabiSt
     for player, index, color, rank in [(num_players, 0, 0, 0), (0, 9, 0, 0), (0, 0, 7, 0)]:
         move = HanabiMove.get_deal_specific_move(index, player, color, rank)
         assert not state.move_is_legal(move)
+
+
+@pytest.mark.parametrize(
+    "params",
+    [{"players": 1}, {"players": 6}, {"colors": 0}, {"hand_size": 30}, {"observation_type": 5}],
+)
+def test_game_with_invalid_parameters_raises(params: dict[str, int]) -> None:
+    # Regression: invalid parameters used to abort the process.
+    with pytest.raises(ConfigError):
+        HanabiGame(params)
+
+
+def test_get_move_out_of_range_raises() -> None:
+    game = HanabiGame({"players": 2})
+    assert game.get_move(game.max_moves() - 1).type() is not None
+    with pytest.raises(EngineCallError):
+        game.get_move(game.max_moves())
+
+
+def test_observation_encoder_with_unknown_type_raises() -> None:
+    with pytest.raises(EngineCallError):
+        ObservationEncoder(HanabiGame({"players": 2}), cast(Any, 7))
+
+
+def test_illegal_move_raises_and_leaves_state_unchanged(state: HanabiState) -> None:
+    # Regression: an illegal move used to abort the process.
+    before = state.to_json()
+    with pytest.raises(IllegalMoveError):
+        state.apply_move(HanabiMove.get_play_move(9))
+    assert state.to_json() == before
+
+
+def test_deal_outside_chance_turn_raises(state: HanabiState) -> None:
+    assert state.cur_player() != CHANCE_PLAYER_ID
+    with pytest.raises(EngineCallError):
+        state.deal_random_card()
+
+
+def test_remove_knowledge_out_of_range_raises(state: HanabiState) -> None:
+    state.remove_knowledge(0, 0)
+    with pytest.raises(EngineCallError):
+        state.remove_knowledge(state.num_players(), 0)
+    with pytest.raises(EngineCallError):
+        state.remove_knowledge(0, 9)
+
+
+def test_observation_and_knowledge_out_of_range_raise(state: HanabiState) -> None:
+    with pytest.raises(EngineCallError):
+        state.observation(state.num_players())
+    knowledge = state.observation(0).card_knowledge()[0][0]
+    assert knowledge.color_plausible(0)
+    with pytest.raises(EngineCallError):
+        knowledge.color_plausible(5)
+    with pytest.raises(EngineCallError):
+        knowledge.rank_plausible(-1)

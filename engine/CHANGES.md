@@ -8,6 +8,45 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Status returns for bad arguments across the C API
+
+About 25 C API functions took an index, id or parameter without checking it:
+a bad value from Python read out of bounds, threw an uncaught `std::out_of_range`
+(terminating the process), or hit an abort. They now check and report failure.
+Valid calls behave exactly as before. **C API signatures changed**; the cffi
+declarations and Python wrappers changed with them.
+
+- `void` → `bool` (false on a bad argument, output handle untouched):
+  `GetMove`, `StateApplyMove` (illegal move), `StateDealCard` (not a chance
+  turn, or empty deck), `StateRemoveKnowledge`, `StateGetDiscard`,
+  `StateGetHandCard`, `StateGetMoveHistory`, `NewGame`, `GetMoveByUid`,
+  `NewObservation`, `ObsGetHandCard`, `ObsGetHandCardKnowledge`,
+  `ObsGetDiscard`, `ObsGetLastMove`, `ObsGetLegalMove`, `NewObservationEncoder`.
+- `int` getters return -1 for an out-of-range argument: `StateFireworks`,
+  `StateGetHandSize`, `ObsGetHandSize`, `ObsFireworks`, `ColorIsPlausible`,
+  `RankIsPlausible`.
+- `Get*Move` return false when a value does not fit the move's 8-bit fields
+  (`GetReturnMove(0, 300)` used to become player 44).
+- Removed `StateParentGame`: it returned a raw `HanabiGame*`, and nothing used it.
+- `HanabiGame`'s constructor throws `std::invalid_argument` instead of aborting
+  on invalid parameters, and also rejects `hand_size < 1`,
+  `max_information_tokens < 0`, `max_life_tokens < 1` and an unknown
+  `observation_type` (all previously accepted, then crashed or misbehaved
+  later). `NewGame` catches and returns false; `fromJSON` now relies on the
+  constructor for its range checks.
+- NULL pointer arguments still abort through `REQUIRE`: they are bugs in our
+  own wrapper, never bad data (agreed exception, recorded in CLAUDE.md).
+- Python: wrappers raise `IllegalMoveError` (illegal move), `ConfigError`
+  (invalid game parameters) or `EngineCallError` (bad index or id).
+- Tests: 5 new tests in `tests/test_capi_robustness.cc` (13 in total); all
+  engine tests pass in Release and under ASan + UBSan; pytest 184 pass.
+- Benchmark (median of 5 alternating runs, previous commit → this one): every
+  row within ±3% (2p random games 1074k → 1069k steps/s, JSON round-trip
+  11.8k → 11.9k/s), i.e. no measurable change. `bench_engine` does not go
+  through the C API; there, `StateApplyMove` now also calls `MoveIsLegal`.
+
+---
+
 ## 2026-10-20: Reject bad input at the C API instead of crashing
 
 Malformed or out-of-range input could terminate the Python process or read

@@ -9,7 +9,7 @@ from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
 from hanabi_search.env.observation import HanabiObservation
-from hanabi_search.exceptions import SerializationError
+from hanabi_search.exceptions import EngineCallError, IllegalMoveError, SerializationError
 
 CHANCE_PLAYER_ID = -1
 
@@ -70,16 +70,33 @@ class HanabiState:
         return HanabiObservation(self._game, self.c_state, player)
 
     def apply_move(self, move: HanabiMove) -> None:
-        """Applies `move` for the acting player (or chance)."""
-        lib.StateApplyMove(self.c_state, move.c_move)
+        """Applies `move` for the acting player (or chance).
+
+        Raises:
+            IllegalMoveError: If `move` is not legal in this state; nothing changes.
+        """
+        if not lib.StateApplyMove(self.c_state, move.c_move):
+            raise IllegalMoveError(f"Illegal move {move} in state:\n{self}")
 
     def deal_random_card(self) -> None:
-        """Deals a random card; only valid when `cur_player()` is chance."""
-        lib.StateDealCard(self.c_state)
+        """Deals a random card.
+
+        Raises:
+            EngineCallError: If it is not a chance turn or the deck is empty.
+        """
+        if not lib.StateDealCard(self.c_state):
+            raise EngineCallError("No card can be dealt: not a chance turn, or the deck is empty")
 
     def remove_knowledge(self, player: int, card_index: int) -> None:
-        """Resets all hint knowledge about one of `player`'s cards."""
-        lib.StateRemoveKnowledge(self.c_state, player, card_index)
+        """Resets all hint knowledge about one of `player`'s cards.
+
+        `card_index` is a knowledge slot, which outlives its card across a return move.
+
+        Raises:
+            EngineCallError: If `player` or `card_index` is out of range.
+        """
+        if not lib.StateRemoveKnowledge(self.c_state, player, card_index):
+            raise EngineCallError(f"No card knowledge for player {player} at {card_index}")
 
     def cur_player(self) -> int:
         """Returns the acting player, or `CHANCE_PLAYER_ID` if a card must be dealt."""

@@ -288,8 +288,9 @@ invalidates every result, so correctness comes before speed.
 - Prefix every new exported symbol with `pyhanabi_`. Existing upstream functions
   (`NewGame`, `StateApplyMove`, ...) keep their unprefixed names.
 - Use fixed-width types (`int32_t`, `uint8_t`, `size_t`) for all parameters.
-- Errors via return status codes, never `exit()`/`abort()`. Inherited code still
-  aborts through `REQUIRE`; convert it when you touch a function.
+- Errors via return status codes, never `exit()`/`abort()`: a bad index, id,
+  move or parameter returns `false` (or `-1` from an `int` getter). Agreed
+  exception: a NULL pointer argument is a caller bug and aborts via `REQUIRE`.
 - Every function documents who owns returned memory. Pair every allocating
   call with a `*_delete` / `*_free` function. Prefer caller-provided buffers.
 - Doc comment on every exported function: purpose, params, return, ownership,

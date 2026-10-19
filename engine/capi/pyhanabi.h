@@ -65,6 +65,15 @@ typedef struct PyHanabiObservationEncoder {
   void* encoder;
 } pyhanabi_observation_encoder_t;
 
+/* Error convention. Functions that take an index, id or parameter from the
+ * caller check it: on a bad value, a function returning bool returns false
+ * and leaves its output handle untouched, and a getter returning int returns
+ * -1. A NULL pointer argument is a caller bug and still aborts.
+ *
+ * Ownership: a function filling a pyhanabi_*_t handle allocates a new object
+ * that the caller frees with the matching Delete* function. Strings returned
+ * as char* are freed with DeleteString. */
+
 /* Utility Functions. */
 void DeleteString(char* str);
 
@@ -75,15 +84,18 @@ int CardValid(pyhanabi_card_t* card);
 char* CardKnowledgeToString(pyhanabi_card_knowledge_t* knowledge);
 int ColorWasHinted(pyhanabi_card_knowledge_t* knowledge);
 int KnownColor(pyhanabi_card_knowledge_t* knowledge);
+/* 1 if no hint rules out `color`, 0 if one does, -1 if `color` is out of range. */
 int ColorIsPlausible(pyhanabi_card_knowledge_t* knowledge, int color);
 int RankWasHinted(pyhanabi_card_knowledge_t* knowledge);
 int KnownRank(pyhanabi_card_knowledge_t* knowledge);
+/* 1 if no hint rules out `rank`, 0 if one does, -1 if `rank` is out of range. */
 int RankIsPlausible(pyhanabi_card_knowledge_t* knowledge, int rank);
 
 /* Move functions. */
 void DeleteMoveList(void* movelist);
 int NumMoves(void* movelist);
-void GetMove(void* movelist, int index, pyhanabi_move_t* move);
+/* Copies move `index` of a list from StateLegalMoves; false if out of range. */
+bool GetMove(void* movelist, int index, pyhanabi_move_t* move);
 void DeleteMove(pyhanabi_move_t* move);
 char* MoveToString(pyhanabi_move_t* move);
 int MoveType(pyhanabi_move_t* move);
@@ -91,6 +103,9 @@ int CardIndex(pyhanabi_move_t* move);
 int TargetOffset(pyhanabi_move_t* move);
 int MoveColor(pyhanabi_move_t* move);
 int MoveRank(pyhanabi_move_t* move);
+/* Get*Move build a move without checking it against a state (use MoveIsLegal).
+ * They return false if a value does not fit the move's 8-bit fields. Return
+ * and deal-specific moves take an absolute player id. */
 bool GetDiscardMove(int card_index, pyhanabi_move_t* move);
 bool GetReturnMove(int card_index, int player, pyhanabi_move_t* move);
 bool GetPlayMove(int card_index, pyhanabi_move_t* move);
@@ -115,17 +130,24 @@ int HistoryItemDealToPlayer(pyhanabi_history_item_t* item);
 void NewState(pyhanabi_game_t* game, pyhanabi_state_t* state);
 void CopyState(const pyhanabi_state_t* src, pyhanabi_state_t* dest);
 void DeleteState(pyhanabi_state_t* state);
-const void* StateParentGame(pyhanabi_state_t* state);
-void StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move);
-void StateRemoveKnowledge(pyhanabi_state_t* state, int pid, int index);
+/* Applies `move`; returns false, changing nothing, if it is not legal. */
+bool StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move);
+/* Resets the hint knowledge of player `pid`'s card `index` (a knowledge slot,
+ * which outlives its card across a return move); false if out of range. */
+bool StateRemoveKnowledge(pyhanabi_state_t* state, int pid, int index);
 int StateCurPlayer(pyhanabi_state_t* state);
-void StateDealCard(pyhanabi_state_t* state);
+/* Deals a random card; false if it is not a chance turn or the deck is empty. */
+bool StateDealCard(pyhanabi_state_t* state);
 int StateDeckSize(pyhanabi_state_t* state);
+/* Height of firework `color`; -1 if out of range. */
 int StateFireworks(pyhanabi_state_t* state, int color);
 int StateDiscardPileSize(pyhanabi_state_t* state);
-void StateGetDiscard(pyhanabi_state_t* state, int index, pyhanabi_card_t* card);
+/* Discarded card `index`, oldest first; false if out of range. */
+bool StateGetDiscard(pyhanabi_state_t* state, int index, pyhanabi_card_t* card);
+/* Number of cards in player `pid`'s hand; -1 if out of range. */
 int StateGetHandSize(pyhanabi_state_t* state, int pid);
-void StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card);
+/* Card `index` of player `pid`'s hand; false if either is out of range. */
+bool StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card);
 int StateEndOfGameStatus(pyhanabi_state_t* state);
 int StateInformationTokens(pyhanabi_state_t* state);
 void* StateLegalMoves(pyhanabi_state_t* state);
@@ -141,12 +163,16 @@ char* StateToString(pyhanabi_state_t* state);
 bool MoveIsLegal(const pyhanabi_state_t* state, const pyhanabi_move_t* move);
 bool CardPlayableOnFireworks(const pyhanabi_state_t* state, int color, int rank);
 int StateLenMoveHistory(pyhanabi_state_t* state);
-void StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_item_t* item);
+/* History item `index`, oldest first; false if out of range. */
+bool StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_item_t* item);
 
 /* Game functions. */
 void DeleteGame(pyhanabi_game_t* game);
 void NewDefaultGame(pyhanabi_game_t* game);
-void NewGame(pyhanabi_game_t* game, int list_length, const char** param_list);
+/* Builds a game from `list_length` strings: key, value, key, value, ...
+ * Returns false if the list is malformed or a parameter is invalid (see
+ * HanabiGame for the accepted ranges). */
+bool NewGame(pyhanabi_game_t* game, int list_length, const char** param_list);
 char* GameParamString(pyhanabi_game_t* game);
 int NumPlayers(pyhanabi_game_t* game);
 int NumColors(pyhanabi_game_t* game);
@@ -155,35 +181,42 @@ int HandSize(pyhanabi_game_t* game);
 int MaxInformationTokens(pyhanabi_game_t* game);
 int MaxLifeTokens(pyhanabi_game_t* game);
 int ObservationType(pyhanabi_game_t* game);
+/* Copies of (color, rank) in the full deck; 0 if the card is not in the game. */
 int NumCards(pyhanabi_game_t* game, int color, int rank);
 int GetMoveUid(pyhanabi_game_t* game, pyhanabi_move_t* move);
-void GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move);
+/* The move with id `move_uid` in [0, MaxMoves); false if out of range. */
+bool GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move);
 int MaxMoves(pyhanabi_game_t* game);
 
 /* Observation functions. */
-void NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation);
+/* Player `player`'s view of `state`; false if `player` is out of range.
+ * In an observation, players are offsets from the observer. */
+bool NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t* observation);
 void DeleteObservation(pyhanabi_observation_t* observation);
 char* ObsToString(pyhanabi_observation_t* observation);
 int ObsCurPlayerOffset(pyhanabi_observation_t* observation);
 int ObsNumPlayers(pyhanabi_observation_t* observation);
+/* Obs* getters taking an offset or index: -1 or false if out of range. */
 int ObsGetHandSize(pyhanabi_observation_t* observation, int pid);
-void ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_t* card);
-void ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
+bool ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index, pyhanabi_card_t* card);
+/* The knowledge points into `observation`, which must outlive it. */
+bool ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
                              pyhanabi_card_knowledge_t* knowledge);
 int ObsDiscardPileSize(pyhanabi_observation_t* observation);
-void ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card);
+bool ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card_t* card);
 int ObsFireworks(pyhanabi_observation_t* observation, int color);
 int ObsDeckSize(pyhanabi_observation_t* observation);
 int ObsNumLastMoves(pyhanabi_observation_t* observation);
-void ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item);
+bool ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item);
 int ObsInformationTokens(pyhanabi_observation_t* observation);
 int ObsLifeTokens(pyhanabi_observation_t* observation);
 int ObsNumLegalMoves(pyhanabi_observation_t* observation);
-void ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move);
+bool ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move);
 bool ObsCardPlayableOnFireworks(const pyhanabi_observation_t* observation, int color, int rank);
 
 /* ObservationEncoder functions. */
-void NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game,
+/* Encoder of `type` (0: canonical); false if the type is unknown. */
+bool NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_game_t* game,
                            int type);
 void DeleteObservationEncoder(pyhanabi_observation_encoder_t* encoder);
 char* ObservationShape(pyhanabi_observation_encoder_t* encoder);

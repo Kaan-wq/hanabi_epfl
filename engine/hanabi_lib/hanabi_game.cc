@@ -37,33 +37,37 @@ const int kInformationTokens = 8;
 const int kLifeTokens = 3;
 const bool kDefaultRandomStart = false;
 
-// Copies of each card of the given rank, in a game with num_ranks ranks.
-int InstancesOfRank(int rank, int num_ranks) {
-  if (rank == 0) {
-    return 3;
-  } else if (rank == num_ranks - 1) {
-    return 1;
+// Thrown, instead of aborting, so the C API can report invalid parameters.
+void CheckParameter(bool valid, const char* message) {
+  if (!valid) {
+    throw std::invalid_argument(message);
   }
-  return 2;
 }
 }  // namespace
 
 HanabiGame::HanabiGame(const std::unordered_map<std::string, std::string>& params) {
   params_ = params;
   num_players_ = ParameterValue<int>(params_, "players", kDefaultPlayers);
-  REQUIRE(num_players_ >= MinPlayers() && num_players_ <= MaxPlayers());
+  CheckParameter(num_players_ >= MinPlayers() && num_players_ <= MaxPlayers(),
+                 "players must be in [2, 5]");
   num_colors_ = ParameterValue<int>(params_, "colors", kMaxNumColors);
-  REQUIRE(num_colors_ > 0 && num_colors_ <= kMaxNumColors);
+  CheckParameter(num_colors_ > 0 && num_colors_ <= kMaxNumColors, "colors must be in [1, 5]");
   num_ranks_ = ParameterValue<int>(params_, "ranks", kMaxNumRanks);
-  REQUIRE(num_ranks_ > 0 && num_ranks_ <= kMaxNumRanks);
+  CheckParameter(num_ranks_ > 0 && num_ranks_ <= kMaxNumRanks, "ranks must be in [1, 5]");
   hand_size_ = ParameterValue<int>(params_, "hand_size", HandSizeFromRules());
+  CheckParameter(hand_size_ > 0, "hand_size must be positive");
   max_information_tokens_ =
       ParameterValue<int>(params_, "max_information_tokens", kInformationTokens);
+  CheckParameter(max_information_tokens_ >= 0, "max_information_tokens must be >= 0");
   max_life_tokens_ = ParameterValue<int>(params_, "max_life_tokens", kLifeTokens);
+  CheckParameter(max_life_tokens_ > 0, "max_life_tokens must be positive");
   seed_ = ParameterValue<int>(params_, "seed", -1);
   random_start_player_ = ParameterValue<bool>(params_, "random_start_player", kDefaultRandomStart);
-  observation_type_ = AgentObservationType(
-      ParameterValue<int>(params_, "observation_type", AgentObservationType::kCardKnowledge));
+  const int observation_type =
+      ParameterValue<int>(params_, "observation_type", AgentObservationType::kCardKnowledge);
+  CheckParameter(observation_type >= kMinimal && observation_type <= kSeer,
+                 "observation_type must be in [0, 2]");
+  observation_type_ = AgentObservationType(observation_type);
   while (seed_ == -1) {
     seed_ = std::random_device()();
   }
@@ -74,7 +78,8 @@ HanabiGame::HanabiGame(const std::unordered_map<std::string, std::string>& param
   for (int rank = 0; rank < num_ranks_; ++rank) {
     cards_per_color_ += NumberCardInstances(0, rank);
   }
-  REQUIRE(hand_size_ * num_players_ <= cards_per_color_ * num_colors_);
+  CheckParameter(hand_size_ * num_players_ <= cards_per_color_ * num_colors_,
+                 "the hands need more cards than the deck has");
 
   // Build static list of moves.
   for (int uid = 0; uid < MaxMoves(); ++uid) {
@@ -144,7 +149,12 @@ int HanabiGame::NumberCardInstances(int color, int rank) const {
   if (color < 0 || color >= NumColors() || rank < 0 || rank >= NumRanks()) {
     return 0;
   }
-  return InstancesOfRank(rank, NumRanks());
+  if (rank == 0) {
+    return 3;
+  } else if (rank == NumRanks() - 1) {
+    return 1;
+  }
+  return 2;
 }
 
 int HanabiGame::GetSampledStartPlayer() const {
@@ -245,24 +255,19 @@ json HanabiGame::toJSON() const {
 
 // Deserialization
 HanabiGame HanabiGame::fromJSON(const nlohmann::json& j) {
-  // The constructor aborts on invalid parameters, so check them first.
-  const int num_players = JsonInt(j, "num_players", 2, 5);
-  const int num_colors = JsonInt(j, "num_colors", 1, kMaxNumColors);
-  const int num_ranks = JsonInt(j, "num_ranks", 1, kMaxNumRanks);
-  int cards_per_color = 0;
-  for (int rank = 0; rank < num_ranks; ++rank) {
-    cards_per_color += InstancesOfRank(rank, num_ranks);
-  }
-  CheckRange(JsonInt(j, "cards_per_color", 0, cards_per_color), cards_per_color, cards_per_color,
-             "'cards_per_color'");
-  const int hand_size = JsonInt(j, "hand_size", 1, cards_per_color * num_colors / num_players);
-  const int max_information_tokens =
-      JsonInt(j, "max_information_tokens", 0, std::numeric_limits<int>::max());
-  const int max_life_tokens = JsonInt(j, "max_life_tokens", 1, std::numeric_limits<int>::max());
-  const int seed =
-      JsonInt(j, "seed", std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
+  // Ranges are checked by the constructor below.
+  constexpr int kMin = std::numeric_limits<int>::min();
+  constexpr int kMax = std::numeric_limits<int>::max();
+  const int num_players = JsonInt(j, "num_players", kMin, kMax);
+  const int num_colors = JsonInt(j, "num_colors", kMin, kMax);
+  const int num_ranks = JsonInt(j, "num_ranks", kMin, kMax);
+  const int hand_size = JsonInt(j, "hand_size", kMin, kMax);
+  const int max_information_tokens = JsonInt(j, "max_information_tokens", kMin, kMax);
+  const int max_life_tokens = JsonInt(j, "max_life_tokens", kMin, kMax);
+  const int seed = JsonInt(j, "seed", kMin, kMax);
   const bool random_start_player = JsonBool(j, "random_start_player");
-  const int observation_type = JsonInt(j, "observation_type", kMinimal, kSeer);
+  const int observation_type = JsonInt(j, "observation_type", kMin, kMax);
+  const int cards_per_color = JsonInt(j, "cards_per_color", kMin, kMax);
 
   std::unordered_map<std::string, std::string> params;
   const json& params_json = JsonField(j, "params");
@@ -288,6 +293,7 @@ HanabiGame HanabiGame::fromJSON(const nlohmann::json& j) {
                    {"observation_type", std::to_string(observation_type)}});
   game.params_ = std::move(params);
   game.seed_ = seed;
+  CheckRange(cards_per_color, game.cards_per_color_, game.cards_per_color_, "'cards_per_color'");
 
   // The move tables are derived from the parameters; they must match.
   const auto check_moves = [](const json& moves_json, const std::vector<HanabiMove>& expected,
