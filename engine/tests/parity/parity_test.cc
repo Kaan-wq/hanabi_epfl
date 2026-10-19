@@ -76,7 +76,7 @@ std::string ReplayGame(const std::unordered_map<std::string, std::string>& varia
 
 }  // namespace
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a test may abort
   if (argc != 2) {
     std::cerr << "usage: parity_test <golden.json>\n";
     return 2;

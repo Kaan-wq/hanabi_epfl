@@ -94,7 +94,7 @@ Result CopyStates(const std::vector<hle::HanabiState>& states, int rounds) {
   const auto start = Clock::now();
   for (int r = 0; r < rounds; ++r) {
     for (const auto& state : states) {
-      hle::HanabiState copy(state);
+      hle::HanabiState copy(state);  // NOLINT(performance-unnecessary-copy-initialization)
       checksum += copy.InformationTokens();
       ++result.steps;
     }
@@ -128,7 +128,7 @@ void Report(const char* name, int players, const Result& result, const char* uni
 
 }  // namespace
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a tool may abort
   const int num_games = argc > 1 ? std::atoi(argv[1]) : 20000;
   if (num_games <= 0) {
     std::fprintf(stderr, "usage: bench_engine [num_games > 0]\n");

@@ -45,10 +45,12 @@ inline int RunAll() {
 
 }  // namespace hanabi_test
 
+// NOLINTBEGIN(bugprone-macro-parentheses): `name` is an identifier.
 #define HANABI_TEST(name)                                             \
   static void name();                                                 \
   static const hanabi_test::Registrar name##_registrar(#name, &name); \
   static void name()
+// NOLINTEND(bugprone-macro-parentheses)
 
 #define CHECK(condition)                                                              \
   do {                                                                                \
