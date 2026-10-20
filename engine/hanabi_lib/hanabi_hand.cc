@@ -56,8 +56,7 @@ std::string HanabiHand::CardKnowledge::ToString() const {
   std::string result;
   result = result + (ColorHinted() ? ColorIndexToChar(Color()) : 'X') +
            (RankHinted() ? RankIndexToChar(Rank()) : 'X') + '|';
-  // MB: if it goes over there is a memory leak
-  assert(color_.Range() <= 8);
+  assert(color_.Range() <= ValueKnowledge::kMaxValueRange);
 
   for (int c = 0; c < color_.Range(); ++c) {
     if (color_.IsPlausible(c)) {
@@ -102,18 +101,11 @@ void HanabiHand::RemoveFromHand(int card_index, std::vector<HanabiCard>* discard
 }
 
 void HanabiHand::InsertCard(HanabiCard card, int card_index) {
-  // MB: No reset of card knowledge and insertion of card into hand
-  // MB: The choise of Insert
   REQUIRE(card.IsValid());
   cards_.insert(cards_.begin() + card_index, card);
 }
 
-void HanabiHand::ReturnFromHand(int card_index) {
-  // MB: Delete from hand (and try to not delete card knowledge too)
-  // MB: Adding to deck is handled by ApplyMove in hanabi_state
-  // MB: cards_ is vector<HanabiCard> , card_knowledge_ is vector<HanabiKnowledge>
-  cards_.erase(cards_.begin() + card_index);
-}
+void HanabiHand::ReturnFromHand(int card_index) { cards_.erase(cards_.begin() + card_index); }
 
 void HanabiHand::ReplaceCard(int card_index, HanabiCard card) {
   REQUIRE(card.IsValid());

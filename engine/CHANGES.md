@@ -8,6 +8,35 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-21: Deck counts in a fixed array; Lemire sampling in the hand sampler
+
+- `HanabiDeck` keeps its counts in a `CardCounts` array instead of a
+  `std::vector`, and exposes them as `Counts()`. Copying a state no longer
+  copies a heap buffer, and the hand sampler takes the deck in one copy
+  instead of 25 `CardCount` calls. JSON layout and deals are unchanged.
+- `HandSampler::SampleIndex` draws uniformly in `[0, total)` with Lemire's
+  multiply-and-shift, which needs a division only on the rare draw that may
+  be biased, instead of two 64-bit divisions per draw. Still exactly uniform,
+  but different cards seed for seed: search results change, their
+  distribution does not.
+- Code quality: the `MB:` comments are reworded into what the code does, and
+  commented-out debug output in `HanabiDeck` is removed.
+
+Not kept: counting the sampled card without branches (a fixed 25-step loop
+instead of stopping at the card) was 13% slower.
+
+Strength, 2p, 300 games at 1k rollouts (harness, seeds 0-299): 13.46 (was
+13.74, before Lemire; within one standard error). 100 games at 10k rollouts:
+16.16 +- 0.55 (was 15.67 +- 0.68).
+
+Benchmark (2p / 3p / 4p / 5p): `mcts (1000 iterations)` 821k / 677k / 707k /
+686k -> 943k / 780k / 813k / 791k iterations/s (+13-15%); `state copy`
+9.0-10.3M -> 11.4-12.4M copies/s (+20-36%); `rollout (3 moves)` +6-11%.
+`resample hand` is +20% at 2p but -12-18% at 3-5p: that row resamples 20,000
+cold state copies, and states are 80 bytes larger with the counts inline; in
+search the root copy stays in cache. End to end, 100 games at 10k rollouts
+(2p, 10 processes): 16.6 s -> 15.2 s.
+
 ## 2026-10-21: Card masks in hand sampling and the Van den Bergh rules; search deals from the sampler
 
 - New `hanabi_lib/card_mask.h`: sets of card identities as 25-bit masks
@@ -707,7 +736,8 @@ A state JSON round-trip costs about as much as 80 state copies.
 These predate this log. They were reconstructed by diffing against upstream
 `5df6a73`. Most come from Michael Brooks (MBlogs), whose repository this project
 started from: he had begun adding RIS-MCTS support (re-determinization moves,
-knowledge removal). His changes carry `MB:` comments in the code.
+knowledge removal). His changes carried `MB:` comments in the code (reworded
+2026-10-21).
 
 ### Re-determinization moves (for MCTS)
 Used by the MCTS agents to swap the hidden cards in a player's hand.

@@ -364,8 +364,8 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
 }
 
 bool pyhanabi_state_encode_observation(const pyhanabi_observation_encoder_t* encoder,
-                                       const pyhanabi_state_t* state, int32_t player,
-                                       uint8_t* bits, int32_t size) {
+                                       const pyhanabi_state_t* state, int32_t player, uint8_t* bits,
+                                       int32_t size) {
   REQUIRE(encoder != nullptr);
   REQUIRE(encoder->encoder != nullptr);
   REQUIRE(state != nullptr);

@@ -53,12 +53,7 @@ void FilterByKnowledge(const HanabiGame& game, const HanabiHand::CardKnowledge* 
 // The deck once `player` has returned their whole hand: what it can be dealt from.
 CardCounts DeckWithHand(const HanabiState& state, int player) {
   const HanabiGame& game = *state.ParentGame();
-  CardCounts counts{};
-  for (int color = 0; color < game.NumColors(); ++color) {
-    for (int rank = 0; rank < game.NumRanks(); ++rank) {
-      counts[CardIndex(game, color, rank)] = state.Deck().CardCount(color, rank);
-    }
-  }
+  CardCounts counts = state.Deck().Counts();
   for (const HanabiCard& card : state.Hands()[player].Cards()) {
     ++counts[CardIndex(game, card.Color(), card.Rank())];
   }
@@ -107,12 +102,7 @@ std::vector<int> HandSampler::CandidateCounts(const HanabiState& state, int play
                                               const HanabiHand::CardKnowledge* knowledge,
                                               std::span<const HanabiCard> excluded) {
   const HanabiGame& game = *state.ParentGame();
-  CardCounts counts{};
-  for (int color = 0; color < game.NumColors(); ++color) {
-    for (int rank = 0; rank < game.NumRanks(); ++rank) {
-      counts[CardIndex(game, color, rank)] = state.Deck().CardCount(color, rank);
-    }
-  }
+  CardCounts counts = state.Deck().Counts();
   const auto& cards = state.Hands()[player].Cards();
   if (card_index >= 0 && card_index < static_cast<int>(cards.size())) {
     ++counts[CardIndex(game, cards[card_index].Color(), cards[card_index].Rank())];
@@ -238,26 +228,23 @@ Status HandSampler::RestoreHand(HanabiState* state, int player,
 void HandSampler::DealPendingCards(HanabiState* state) {
   const HanabiGame& game = *state->ParentGame();
   while (state->CurPlayer() == kChancePlayerId) {
-    CardCounts deck{};
-    for (int color = 0; color < game.NumColors(); ++color) {
-      for (int rank = 0; rank < game.NumRanks(); ++rank) {
-        deck[CardIndex(game, color, rank)] = state->Deck().CardCount(color, rank);
-      }
-    }
     // Chance outcome ids are card indices.
-    state->ApplyMove(game.GetChanceOutcome(SampleIndex(deck, AnyCard(game), state->Deck().Size())));
+    state->ApplyMove(game.GetChanceOutcome(
+        SampleIndex(state->Deck().Counts(), AnyCard(game), state->Deck().Size())));
   }
 }
 
 int HandSampler::SampleIndex(const CardCounts& counts, CardMask mask, int total) {
-  // Rejection sampling: uniform in [0, total) without modulo bias.
-  const uint64_t bound = static_cast<uint64_t>(total);
-  const uint64_t limit = UINT64_MAX - UINT64_MAX % bound;
-  uint64_t draw = 0;
-  do {
-    draw = rng_();
-  } while (draw >= limit);
-  int target = static_cast<int>(draw % bound);
+  // Uniform in [0, total) by Lemire's multiply-and-shift: the high half of
+  // draw * total, with the few biased low halves rejected. Unlike a modulo,
+  // it needs a division only on the rare draw that might be biased.
+  const auto bound = static_cast<uint32_t>(total);
+  uint64_t product = (rng_() >> 32) * bound;
+  if (static_cast<uint32_t>(product) < bound) {
+    const uint32_t threshold = (0U - bound) % bound;  // 2^32 mod bound.
+    while (static_cast<uint32_t>(product) < threshold) product = (rng_() >> 32) * bound;
+  }
+  int target = static_cast<int>(product >> 32);
   int last = 0;
   for (; mask != 0; mask &= mask - 1) {
     last = std::countr_zero(mask);

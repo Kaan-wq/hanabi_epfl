@@ -26,7 +26,6 @@ using json = nlohmann::json;
 namespace hanabi_learning_env {
 
 bool HanabiMove::operator==(const HanabiMove& other_move) const {
-  // MB: Check if two moves are the same? not quite sure
   if (MoveType() != other_move.MoveType()) {
     return false;
   }

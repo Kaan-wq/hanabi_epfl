@@ -23,6 +23,7 @@
 #include <string>
 #include <vector>
 
+#include "card_mask.h"
 #include "hanabi_card.h"
 #include "hanabi_game.h"
 #include "hanabi_hand.h"
@@ -46,6 +47,9 @@ class HanabiState {
     int Size() const { return total_count_; }
     bool Empty() const { return total_count_ == 0; }
     int CardCount(int color, int rank) const { return card_count_[CardToIndex(color, rank)]; }
+    // Copies left of every card, indexed color * num_ranks + rank; 0 past
+    // the game's cards.
+    const CardCounts& Counts() const { return card_count_; }
 
     // ===== Serialization + Deserialization =====
     nlohmann::json toJSON() const;
@@ -60,9 +64,10 @@ class HanabiState {
     // Number of instances in the deck for each card.
     // E.g., if card_count_[CardToIndex(card)] == 2, then there are two
     // instances of card remaining in the deck, available to be dealt out.
-    std::vector<int> card_count_;
+    CardCounts card_count_{};
     int total_count_ = -1;  // Total number of cards available to be dealt out.
     int num_ranks_ = -1;    // From game.NumRanks(), used to map card to index.
+    int num_cards_ = -1;    // Distinct cards in the game: the used part of card_count_.
   };
 
   enum EndOfGameType {

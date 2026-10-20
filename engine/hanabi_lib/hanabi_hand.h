@@ -129,15 +129,16 @@ class HanabiHand {
   const CardList& Cards() const { return cards_; }
   const KnowledgeList& Knowledge() const { return card_knowledge_; }
   void AddCard(HanabiCard card, const CardKnowledge& initial_knowledge);
-  // MB: Insert card at specific position
+  // Inserts `card` at position card_index, leaving the knowledge list as is:
+  // it pairs with ReturnFromHand, which keeps the returned card's knowledge.
   void InsertCard(HanabiCard card, int card_index);
   // Remove card_index card from hand. Put in discard_pile if not nullptr
   // (pushes the card to the back of the discard_pile vector).
   void RemoveFromHand(int card_index, std::vector<HanabiCard>* discard_pile);
-  // MB: Remove card_index card from hand and put back in deck. Deck might not be able to access
-  // like this.
+  // Removes the card at card_index but keeps its knowledge; the caller puts
+  // the card back in the deck.
   void ReturnFromHand(int card_index);
-  // Remove knowledge seperately
+  // Resets the knowledge at card_index to initial_knowledge.
   void RemoveKnowledge(int card_index, const CardKnowledge& initial_knowledge);
   // Puts `card` at position card_index in place of the card there, keeping
   // that position's knowledge.

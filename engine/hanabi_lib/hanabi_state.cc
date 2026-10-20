@@ -21,7 +21,6 @@
 #include <cassert>
 #include <cstdint>
 #include <format>
-#include <iostream>
 #include <limits>
 #include <nlohmann/json.hpp>
 #include <numeric>
@@ -65,9 +64,7 @@ uint8_t HandRankBitmask(const HanabiHand& hand, int rank) {
 }  // namespace
 
 HanabiState::HanabiDeck::HanabiDeck(const HanabiGame& game)
-    : card_count_(static_cast<size_t>(game.NumColors()) * game.NumRanks(), 0),
-      total_count_(0),
-      num_ranks_(game.NumRanks()) {
+    : total_count_(0), num_ranks_(game.NumRanks()), num_cards_(game.NumColors() * game.NumRanks()) {
   for (int color = 0; color < game.NumColors(); ++color) {
     for (int rank = 0; rank < game.NumRanks(); ++rank) {
       auto count = game.NumberCardInstances(color, rank);
@@ -78,12 +75,11 @@ HanabiState::HanabiDeck::HanabiDeck(const HanabiGame& game)
 }
 
 HanabiCard HanabiState::HanabiDeck::DealCard(std::mt19937* rng) {
-  // MB: DealCard function. Need a AddCard option?
   if (Empty()) {
     return HanabiCard();
   }
   std::discrete_distribution<std::mt19937::result_type> dist(card_count_.begin(),
-                                                             card_count_.end());
+                                                             card_count_.begin() + num_cards_);
   int index = dist(*rng);
   assert(card_count_[index] > 0);
   --card_count_[index];
@@ -92,7 +88,6 @@ HanabiCard HanabiState::HanabiDeck::DealCard(std::mt19937* rng) {
 }
 
 HanabiCard HanabiState::HanabiDeck::DealCard(int color, int rank) {
-  // MB: This is a promising option. Check for validity elsewhere
   int index = CardToIndex(color, rank);
   if (card_count_[index] <= 0) {
     return HanabiCard();
@@ -100,29 +95,14 @@ HanabiCard HanabiState::HanabiDeck::DealCard(int color, int rank) {
   assert(card_count_[index] > 0);
   --card_count_[index];
   --total_count_;
-  // std::cout<<"After DealCard count of that card colorrank ";
-  // std::cout<<color;
-  // std::cout<<rank;
-  // std::cout<<" index ";
-  // std::cout<<index;
-  // std::cout<<" was ";
-  // std::cout<<card_count_[index];
   return HanabiCard(IndexToColor(index), IndexToRank(index));
 }
 
 void HanabiState::HanabiDeck::ReturnCard(int color, int rank) {
-  // MB: When a card is being Returned from a Hand to the deck
-  // Do we need to check for if it's valid to return the card? Probs not.
+  // Callers return only cards that were dealt from this deck.
   int index = CardToIndex(color, rank);
   card_count_[index] += 1;
   total_count_ += 1;
-  // std::cout<<"After ReturnCard, count of that card colorrank ";
-  // std::cout<<color;
-  // std::cout<<rank;
-  // std::cout<<" index ";
-  // std::cout<<index;
-  // std::cout<<" was ";
-  // std::cout<<card_count_[index];
 }
 
 HanabiState::HanabiState(const HanabiGame* parent_game, int start_player)
@@ -139,7 +119,6 @@ HanabiState::HanabiState(const HanabiGame* parent_game, int start_player)
       turns_to_play_(parent_game->NumPlayers()) {}
 
 void HanabiState::RemoveKnowledge(int player, int card_index) {
-  // MB: Define the default card knowledge structure
   HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(), ParentGame()->NumRanks());
   hands_[player].RemoveKnowledge(card_index, card_knowledge);
 }
@@ -181,7 +160,7 @@ void HanabiState::AdvanceToNextPlayer(bool stayOnPlayer) {
   if (!deck_.Empty() && PlayerToDeal() >= 0) {
     cur_player_ = kChancePlayerId;
   } else if (stayOnPlayer == true) {
-    // MB: Expression neccesary to ensure modulo wraps -1 > 2 (C++ % implementation)
+    // Adding the player count keeps the % operand non-negative.
     cur_player_ = ((next_non_chance_player_ - 1) + hands_.size()) % hands_.size();
   } else {
     cur_player_ = next_non_chance_player_;
@@ -252,7 +231,6 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
         return false;
       }
       break;
-    // MB: Copy of Deal for now
     case HanabiMove::kDealSpecific: {
       // TargetOffset is the absolute id of the player dealt to.
       if (cur_player_ != kChancePlayerId || !IsPlayer(move.TargetOffset())) {
@@ -318,18 +296,15 @@ bool HanabiState::MoveIsLegal(HanabiMove move) const {
 
 void HanabiState::ApplyMove(HanabiMove move) {
   REQUIRE(MoveIsLegal(move));
-  // MB: DealSpecific and Return can happen freely. Others mean it is now end game turns.
+  // Once the deck is empty, every move but kDealSpecific and kReturn uses up a final turn.
   if (deck_.Empty() && move.MoveType() != HanabiMove::kDealSpecific &&
       move.MoveType() != HanabiMove::kReturn) {
     --turns_to_play_;
   }
-  // MB: Do we really want a RETURN or DEALSPECFIC move to add to history? Might have to deal with
-  // this in history
   HanabiHistoryItem history(move);
   history.player = cur_player_;
   switch (move.MoveType()) {
     case HanabiMove::kDeal: {
-      // MB: Usuallly, deal returns an empty card
       history.deal_to_player = PlayerToDeal();
       HanabiHand::CardKnowledge card_knowledge(ParentGame()->NumColors(), ParentGame()->NumRanks());
       if (parent_game_->ObservationType() == HanabiGame::kSeer) {
@@ -340,8 +315,7 @@ void HanabiState::ApplyMove(HanabiMove move) {
                                              card_knowledge);
     } break;
     case HanabiMove::kDealSpecific: {
-      // MB: Important note: TargetOffset is bastardised here; really its just the absolute player
-      // id dealt to
+      // TargetOffset is the absolute id of the player dealt to.
       history.deal_to_player = move.TargetOffset();
       hands_[history.deal_to_player].InsertCard(deck_.DealCard(move.Color(), move.Rank()),
                                                 move.CardIndex());
@@ -353,7 +327,7 @@ void HanabiState::ApplyMove(HanabiMove move) {
       hands_[cur_player_].RemoveFromHand(move.CardIndex(), &discard_pile_);
       break;
     case HanabiMove::kReturn:
-      // MB: Return bastardises framework and uses TargetOffset to specify which hand to remove from
+      // TargetOffset is the absolute id of the player whose card is returned.
       history.player = move.TargetOffset();
       history.color = hands_[history.player].Cards()[move.CardIndex()].Color();
       history.rank = hands_[history.player].Cards()[move.CardIndex()].Rank();
@@ -383,7 +357,7 @@ void HanabiState::ApplyMove(HanabiMove move) {
       std::abort();  // Should not be possible.
   }
   move_history_.push_back(history);
-  // MB WARNING: DealSpecific skips this step.
+  // kDealSpecific refills a hand mid-turn: the same player acts next.
   AdvanceToNextPlayer(move.MoveType() == HanabiMove::kDealSpecific);
 }
 
@@ -529,7 +503,7 @@ HanabiState::EndOfGameType HanabiState::EndOfGameStatus() const {
 
 json HanabiState::HanabiDeck::toJSON() const {
   json j;
-  j["card_count"] = card_count_;
+  j["card_count"] = std::vector<int>(card_count_.begin(), card_count_.begin() + num_cards_);
   j["total_count"] = total_count_;
   j["num_ranks"] = num_ranks_;
   return j;
@@ -538,7 +512,7 @@ json HanabiState::HanabiDeck::toJSON() const {
 void HanabiState::HanabiDeck::fromJSON(const json& j) {
   // This deck was built for the game, so its current shape is the expected one.
   std::vector<int> card_count = JsonIntArray(j, "card_count", 0, std::numeric_limits<int>::max());
-  if (card_count.size() != card_count_.size()) {
+  if (card_count.size() != static_cast<size_t>(num_cards_)) {
     throw std::invalid_argument("'card_count' does not match the game");
   }
   const int total_count = JsonInt(j, "total_count", 0, std::numeric_limits<int>::max());
@@ -547,7 +521,7 @@ void HanabiState::HanabiDeck::fromJSON(const json& j) {
   }
   CheckRange(JsonInt(j, "num_ranks", 1, kMaxNumRanks), num_ranks_, num_ranks_, "'num_ranks'");
 
-  card_count_ = std::move(card_count);
+  std::ranges::copy(card_count, card_count_.begin());
   total_count_ = total_count;
 }
 

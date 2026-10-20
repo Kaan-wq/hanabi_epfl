@@ -234,7 +234,6 @@ bool GetPlayMove(int card_index, pyhanabi_move_t* move) {
   return NewMove(hanabi_learning_env::HanabiMove::kPlay, card_index, -1, -1, -1, move);
 }
 
-// MB: Added Move
 bool GetReturnMove(int card_index, int player, pyhanabi_move_t* move) {
   return NewMove(hanabi_learning_env::HanabiMove::kReturn, card_index, player, -1, -1, move);
 }

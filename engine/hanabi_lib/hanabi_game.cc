@@ -108,7 +108,7 @@ int HanabiGame::GetMoveUid(HanabiMove move) const {
                     move.Rank());
 }
 
-// MB: RETURN and DEAL_SPECIFIC aren't here. Problem?
+// Only the four player moves have uids; kReturn and kDealSpecific are -1.
 int HanabiGame::GetMoveUid(HanabiMove::Type move_type, int card_index, int target_offset, int color,
                            int rank) const {
   switch (move_type) {
