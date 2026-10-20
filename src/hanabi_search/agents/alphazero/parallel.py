@@ -1,6 +1,7 @@
 """AlphaZero with rollouts split across Ray worker processes (root parallelization)."""
 
 import copy
+import random
 from collections import defaultdict
 from typing import Any, override
 
@@ -83,8 +84,12 @@ class _AlphaZeroWorker:
         skeleton.eval()
         self.agent = AlphaZeroAgent(player_id, game, config, skeleton, torch.device("cpu"))
 
-    def search(self, state_json: str) -> dict[str, int]:
-        """Searches from the state and returns visit counts of the root's children."""
+    def search(self, state_json: str, seed: int) -> dict[str, int]:
+        """Searches from the state and returns visit counts of the root's children.
+
+        `seed` reseeds this process's `random`, which drives determinization.
+        """
+        random.seed(seed)
         agent = self.agent
         state = HanabiState.from_json(state_json)
         agent.environment.state = state
@@ -142,7 +147,11 @@ class ParallelAlphaZeroAgent(AlphaZeroAgent):
             return None
         self.reset(state)
         state_json = state.to_json()
-        results: list[dict[str, int]] = ray.get([w.search.remote(state_json) for w in self.workers])
+        # Drawn from this process's seeded `random`, so worker searches are reproducible.
+        seeds = [random.getrandbits(64) for _ in self.workers]
+        results: list[dict[str, int]] = ray.get(
+            [w.search.remote(state_json, seed) for w, seed in zip(self.workers, seeds, strict=True)]
+        )
 
         visits: defaultdict[str, int] = defaultdict(int)
         for stats in results:

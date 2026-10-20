@@ -1,5 +1,6 @@
 """MCTS with rollouts split across Ray worker processes (root parallelization)."""
 
+import random
 from collections import defaultdict
 from typing import Any, override
 
@@ -57,8 +58,12 @@ class _MCTSWorker:
     def __init__(self, player_id: int, game: GameConfig, config: MCTSAgentConfig) -> None:
         self.agent = MCTSAgent(player_id, game, config)
 
-    def search(self, state_json: str) -> RootStats:
-        """Searches from the state and returns statistics of the root's children."""
+    def search(self, state_json: str, seed: int) -> RootStats:
+        """Searches from the state and returns statistics of the root's children.
+
+        `seed` reseeds this process's `random`, which drives determinization.
+        """
+        random.seed(seed)
         agent = self.agent
         state = HanabiState.from_json(state_json)
         agent.environment.state = state
@@ -110,7 +115,11 @@ class ParallelMCTSAgent(MCTSAgent):
             return None
         self.reset(state)
         state_json = state.to_json()
-        results: list[RootStats] = ray.get([w.search.remote(state_json) for w in self.workers])
+        # Drawn from this process's seeded `random`, so worker searches are reproducible.
+        seeds = [random.getrandbits(64) for _ in self.workers]
+        results: list[RootStats] = ray.get(
+            [w.search.remote(state_json, seed) for w, seed in zip(self.workers, seeds, strict=True)]
+        )
 
         totals: defaultdict[str, list[float]] = defaultdict(lambda: [0.0, 0.0])
         for stats in results:
