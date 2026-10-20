@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <mdspan>
 #include <string>
 #include <vector>
 
@@ -45,9 +46,6 @@ namespace {
 const hanabi_learning_env::HanabiGame& Game(const pyhanabi_observation_t* observation) {
   return *Observation(observation).ParentGame();
 }
-
-// Elements in `rows` rows of `row_size` (callers pass non-negative values).
-size_t Cells(int rows, int row_size) { return static_cast<size_t>(rows) * row_size; }
 
 }  // namespace
 
@@ -248,17 +246,8 @@ bool pyhanabi_observation_hands(const pyhanabi_observation_t* observation, int32
   REQUIRE(hand_sizes != nullptr && colors != nullptr && ranks != nullptr);
   const auto& game = Game(observation);
   if (num_players != game.NumPlayers() || hand_size != game.HandSize()) return false;
-  std::fill(colors, colors + Cells(num_players, hand_size), -1);
-  std::fill(ranks, ranks + Cells(num_players, hand_size), -1);
-  const auto& hands = Observation(observation).Hands();
-  for (int offset = 0; offset < num_players; ++offset) {
-    const auto& cards = hands[offset].Cards();
-    hand_sizes[offset] = static_cast<int32_t>(cards.size());
-    for (size_t index = 0; index < cards.size(); ++index) {
-      colors[Cells(offset, hand_size) + index] = static_cast<int8_t>(cards[index].Color());
-      ranks[Cells(offset, hand_size) + index] = static_cast<int8_t>(cards[index].Rank());
-    }
-  }
+  pyhanabi_internal::WriteHands(Observation(observation).Hands(), hand_size, hand_sizes, colors,
+                                ranks);
   return true;
 }
 
@@ -272,15 +261,16 @@ bool pyhanabi_observation_card_knowledge(const pyhanabi_observation_t* observati
       num_colors != game.NumColors() || num_ranks != game.NumRanks()) {
     return false;
   }
-  std::fill(hinted_colors, hinted_colors + Cells(num_players, hand_size), -1);
-  std::fill(hinted_ranks, hinted_ranks + Cells(num_players, hand_size), -1);
+  const std::mdspan color_grid(hinted_colors, num_players, hand_size);  // [player, position]
+  const std::mdspan rank_grid(hinted_ranks, num_players, hand_size);
+  std::fill(hinted_colors, hinted_colors + color_grid.size(), -1);
+  std::fill(hinted_ranks, hinted_ranks + rank_grid.size(), -1);
   const auto& hands = Observation(observation).Hands();
   for (int offset = 0; offset < num_players; ++offset) {
     const auto& knowledge = hands[offset].Knowledge();
     for (size_t index = 0; index < hands[offset].Cards().size(); ++index) {
-      hinted_colors[Cells(offset, hand_size) + index] =
-          static_cast<int8_t>(knowledge[index].Color());
-      hinted_ranks[Cells(offset, hand_size) + index] = static_cast<int8_t>(knowledge[index].Rank());
+      color_grid[offset, index] = static_cast<int8_t>(knowledge[index].Color());
+      rank_grid[offset, index] = static_cast<int8_t>(knowledge[index].Rank());
     }
   }
   hanabi_learning_env::PlausibleCards(Observation(observation), plausible);

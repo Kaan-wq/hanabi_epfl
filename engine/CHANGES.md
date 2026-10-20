@@ -8,6 +8,26 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: `std::mdspan` for multi-dimensional buffers
+
+Modernization step 3. Code that indexed flat buffers by hand
+(`((offset * hand_size + index) * num_colors + color) * num_ranks + rank`)
+uses `std::mdspan` views instead (`grid[offset, index, color, rank]`):
+`UnseenCardCounts`, `PlausibleCards`, and the C API's hand and knowledge
+buffers. The observation and state hand buffers now share one writer
+(`pyhanabi_internal::WriteHands`). The sampler's card counts keep their flat
+index, which is the card's identity there.
+
+Performance note: the first version made `observation features` 13-16%
+slower. Writes through `uint8_t*` may alias any object, so the compiler
+reloaded `game.NumColors()` / `NumRanks()` in every loop test; they are now
+locals (as the old code had them), and each card's [color, rank] grid is
+located once. Final, median of 5 (3 players): observation features
+2,575,895 -> 2,485,295 (-4%; 2/4/5 players -2% / -5% / +2%, near noise);
+search iteration 254,863 -> 257,010 (+1%). No behavior change.
+
+---
+
 ## 2026-10-20: `std::span` for card sequences; warning-free engine (search iteration 5.43x)
 
 Modernization step 2. Functions taking "some cards" take

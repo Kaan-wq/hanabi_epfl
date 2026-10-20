@@ -668,18 +668,7 @@ bool pyhanabi_state_hands(const pyhanabi_state_t* state, int32_t* hand_sizes, in
   const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
   const auto& game = *hanabi_state.ParentGame();
   if (num_players != game.NumPlayers() || hand_size != game.HandSize()) return false;
-  const size_t cells = static_cast<size_t>(num_players) * hand_size;
-  std::fill(colors, colors + cells, -1);
-  std::fill(ranks, ranks + cells, -1);
-  for (int player = 0; player < num_players; ++player) {
-    const auto& cards = hanabi_state.Hands()[player].Cards();
-    hand_sizes[player] = static_cast<int32_t>(cards.size());
-    const size_t row = static_cast<size_t>(player) * hand_size;
-    for (size_t index = 0; index < cards.size(); ++index) {
-      colors[row + index] = static_cast<int8_t>(cards[index].Color());
-      ranks[row + index] = static_cast<int8_t>(cards[index].Rank());
-    }
-  }
+  pyhanabi_internal::WriteHands(hanabi_state.Hands(), hand_size, hand_sizes, colors, ranks);
   return true;
 }
 

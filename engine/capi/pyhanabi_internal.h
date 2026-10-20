@@ -3,11 +3,15 @@
 #ifndef PYHANABI_INTERNAL_H_
 #define PYHANABI_INTERNAL_H_
 
+#include <algorithm>
 #include <cstddef>
+#include <cstdint>
+#include <mdspan>
 #include <span>
 #include <vector>
 
 #include "hanabi_lib/hanabi_card.h"
+#include "hanabi_lib/hanabi_hand.h"
 #include "hanabi_lib/hanabi_observation.h"
 #include "hanabi_lib/util.h"
 #include "pyhanabi.h"
@@ -27,6 +31,25 @@ inline bool CopyCard(std::span<const hanabi_learning_env::HanabiCard> cards, int
   card->color = cards[index].Color();
   card->rank = cards[index].Rank();
   return true;
+}
+
+// Writes every hand into caller buffers: `hand_sizes` [player] and `colors`,
+// `ranks` [player, position] (players * hand_size entries; -1 for hidden
+// cards and past the end of a hand).
+inline void WriteHands(const std::vector<hanabi_learning_env::HanabiHand>& hands, int hand_size,
+                       int32_t* hand_sizes, int8_t* colors, int8_t* ranks) {
+  const std::mdspan color_grid(colors, hands.size(), hand_size);
+  const std::mdspan rank_grid(ranks, hands.size(), hand_size);
+  std::fill(colors, colors + color_grid.size(), -1);
+  std::fill(ranks, ranks + rank_grid.size(), -1);
+  for (size_t player = 0; player < hands.size(); ++player) {
+    const auto& cards = hands[player].Cards();
+    hand_sizes[player] = static_cast<int32_t>(cards.size());
+    for (size_t index = 0; index < cards.size(); ++index) {
+      color_grid[player, index] = static_cast<int8_t>(cards[index].Color());
+      rank_grid[player, index] = static_cast<int8_t>(cards[index].Rank());
+    }
+  }
 }
 
 inline const hanabi_learning_env::HanabiObservation& Observation(
