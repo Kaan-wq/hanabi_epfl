@@ -137,6 +137,10 @@ int HistoryItemDealToPlayer(pyhanabi_history_item_t* item);
 /* State functions. */
 void NewState(pyhanabi_game_t* game, pyhanabi_state_t* state);
 void CopyState(const pyhanabi_state_t* src, pyhanabi_state_t* dest);
+/* Overwrites `dest` (an existing state) with a copy of `src`, reusing the
+ * memory `dest` already holds; `dest` then belongs to `src`'s game, which
+ * must outlive it. */
+void pyhanabi_state_assign(pyhanabi_state_t* dest, const pyhanabi_state_t* src);
 void DeleteState(pyhanabi_state_t* state);
 /* Applies `move`; returns false, changing nothing, if it is not legal. */
 bool StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move);
@@ -318,6 +322,15 @@ bool pyhanabi_observation_unseen_card_counts(const pyhanabi_observation_t* obser
 bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
                                  const pyhanabi_observation_t* observation, uint8_t* bits,
                                  int32_t size);
+
+/* Writes the encoding of `player`'s observation of `state` to `bits`
+ * (uint8_t[size]): the values pyhanabi_observation_encode writes for
+ * NewObservation(state, player), without allocating an observation handle.
+ * Returns false if `player` is not in [0, NumPlayers) or `size` is not the
+ * encoder's flat length. */
+bool pyhanabi_state_encode_observation(const pyhanabi_observation_encoder_t* encoder,
+                                       const pyhanabi_state_t* state, int32_t player,
+                                       uint8_t* bits, int32_t size);
 
 /* State buffers: like the observation buffers above (caller-owned buffers,
  * nothing allocated, sizes must match the game exactly or the function

@@ -80,6 +80,15 @@ class AlphaZeroAgent(MCTSAgent):
     def reset(self, state: HanabiState) -> None:
         super().reset(state)
         self.tree = SearchTree(self.alphazero_config.exploration_weight, self.game.max_score)
+        # The state every iteration resets in place (see `redeterminize`).
+        self.environment.state = state.copy()
+
+    @override
+    def redeterminize(self) -> None:
+        # The tree holds no states, so the environment's state can be reused.
+        environment = self.environment
+        environment.state.assign(self._root_state)
+        environment.replace_hand(self.player_id)
 
     @override
     def search_steps(
@@ -106,11 +115,11 @@ class AlphaZeroAgent(MCTSAgent):
             reward = float(environment.reward())
         else:
             if depth == 0:
-                leaf_observation = observation["pyhanabi"]
+                encoded = environment.vectorized_observation(observation["pyhanabi"])
             else:
                 # Chance (-1) wraps to the last player, as in the original implementation.
-                leaf_observation = state.observation(state.cur_player() % environment.num_players)
-            encoded = environment.vectorized_observation(leaf_observation)
+                player = state.cur_player() % environment.num_players
+                encoded = environment.observation_encoder.encode_state(state, player)
             policy, value = yield np.asarray(encoded, dtype=np.float32)
             reward = (value + 1) / 2 * self.game.max_score
             if depth < self.max_depth and not tree.is_expanded(path):
@@ -145,7 +154,7 @@ class AlphaZeroAgent(MCTSAgent):
         ):
             best = self.rng.choices(range(len(visits)), visits)[0]
         else:
-            # Unvisited children lose; the first of equally visited ones wins.
+            # Unvisited children lose; of equally visited ones, the first (highest prior) wins.
             best = max(range(len(visits)), key=lambda index: visits[index] or -inf)
         return self.environment.game.all_moves()[root.move_uids[best]]
 
@@ -170,28 +179,27 @@ class AlphaZeroAgent(MCTSAgent):
             policy: The network's move probabilities at the leaf, shape (num_actions,).
         """
         uids = state.legal_move_uids()
-        if not uids.size:
+        if not uids:
             return
-        priors = policy[uids]  # (num_moves,)
-        total = priors.sum()
-        priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
+        probabilities = policy.tolist()
+        priors = [probabilities[uid] for uid in uids]
+        total = sum(priors)
+        if total <= 0:  # The network rules out every legal move: fall back to uniform.
+            priors, total = [1.0] * len(uids), len(uids)
+        priors = [prior / total for prior in priors]
         if self.self_play is not None and not path:
             priors = self._add_root_noise(priors, self.self_play, self.rng)
-        positive = priors > 0
-        if not positive.all():
-            uids, priors = uids[positive], priors[positive]
-        self.tree.expand(path, uids.tolist(), priors.tolist())
+        self.tree.expand(path, uids, priors)
 
     @staticmethod
     def _add_root_noise(
-        priors: npt.NDArray[np.float32], self_play: SelfPlayConfig, rng: random.Random
-    ) -> npt.NDArray[np.float32]:
-        """Mixes Dirichlet noise into the root priors, shape (num_candidates,)."""
-        gammas = np.array(
-            [rng.gammavariate(self_play.dirichlet_alpha, 1.0) for _ in range(len(priors))],
-            dtype=np.float32,
-        )
-        noise = gammas / gammas.sum()
+        priors: list[float], self_play: SelfPlayConfig, rng: random.Random
+    ) -> list[float]:
+        """Mixes Dirichlet noise into the root priors, one per candidate move."""
+        gammas = [rng.gammavariate(self_play.dirichlet_alpha, 1.0) for _ in priors]
+        total = sum(gammas)
         fraction = self_play.dirichlet_fraction
-        mixed: npt.NDArray[np.float32] = (1 - fraction) * priors + fraction * noise
-        return mixed
+        return [
+            (1 - fraction) * prior + fraction * gamma / total
+            for prior, gamma in zip(priors, gammas, strict=True)
+        ]

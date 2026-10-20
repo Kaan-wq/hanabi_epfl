@@ -71,6 +71,28 @@ def test_copied_state_is_independent_and_keeps_its_game(env: HanabiEnv) -> None:
     assert str(copy) != str(env.state)
 
 
+def test_assign_copies_a_state_of_another_game(env: HanabiEnv) -> None:
+    advance_randomly(env, 8)
+    target = HanabiState(HanabiGame({"players": 2, "colors": 2}))
+    target.assign(env.state)
+    assert target.game is env.state.game
+    assert target.to_json() == env.state.to_json()
+    target.apply_move(target.legal_moves()[0])
+    assert str(target) != str(env.state)
+
+
+@pytest.mark.parametrize("game", [GameConfig(players=p) for p in (2, 5)])
+def test_encode_state_matches_encoding_the_observation(game: GameConfig) -> None:
+    env = make_env(game, seed=3)
+    advance_randomly(env, 10, seed=3)
+    encoder = env.observation_encoder
+    for player in range(game.players):
+        expected = encoder.encode(env.state.observation(player))
+        assert (encoder.encode_state(env.state, player) == expected).all()
+    with pytest.raises(EngineCallError, match="player 5"):
+        encoder.encode_state(env.state, 5)
+
+
 def test_state_json_round_trip_mid_game(env: HanabiEnv) -> None:
     advance_randomly(env, 15)
     restored = HanabiState.from_json(env.state.to_json())
@@ -107,7 +129,7 @@ def test_terminal_state_has_no_legal_moves(env: HanabiEnv) -> None:
     while not env.state.is_terminal():
         env.step(env.state.legal_moves()[0])
     assert env.state.legal_moves() == []
-    assert env.state.legal_move_uids().size == 0
+    assert env.state.legal_move_uids() == []
     assert env.state.end_of_game_status() is not HanabiEndOfGameType.NOT_FINISHED
 
 
@@ -212,7 +234,7 @@ def test_legal_moves_are_the_legal_ones_of_all_moves(game: GameConfig) -> None:
         assert [env.game.get_move_uid(m) for m in legal] == sorted(
             env.game.get_move_uid(m) for m in legal
         )
-        assert env.state.legal_move_uids().tolist() == [env.game.get_move_uid(m) for m in legal]
+        assert env.state.legal_move_uids() == [env.game.get_move_uid(m) for m in legal]
         env.step(legal[-1])
 
 

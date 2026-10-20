@@ -83,7 +83,7 @@ def test_arrays_match_per_card_wrappers(game: GameConfig) -> None:
         assert list(zip(colors.tolist(), ranks.tolist(), strict=True)) == [
             (card.color(), card.rank()) for card in observation.discard_pile()
         ]
-        uids = observation.legal_move_uids().tolist()
+        uids = observation.legal_move_uids()
         assert uids == [env.game.get_move_uid(move) for move in observation.legal_moves()]
         assert (uids != []) == (observation.cur_player_offset() == 0)
 

@@ -11,7 +11,10 @@ from math import inf, sqrt
 
 @dataclass(slots=True)
 class TreeNode:
-    """An expanded node and the statistics of its children, in legal-move order.
+    """An expanded node and the statistics of its children.
+
+    Children are ordered by decreasing prior, so PUCT visits unvisited children in
+    order and the visited ones always come first (see `best_child`).
 
     Python lists, not NumPy arrays: nodes have a few dozen children at most, where
     a Python loop beats NumPy's per-call overhead.
@@ -33,9 +36,23 @@ class TreeNode:
 
     @classmethod
     def with_priors(cls, move_uids: list[int], priors: list[float]) -> TreeNode:
-        """Returns an unvisited node whose children follow the moves `move_uids`."""
-        count = len(move_uids)
-        return cls(move_uids, priors, [0] * count, [0.0] * count, [None] * count)
+        """Returns an unvisited node with a child per move of `move_uids` with a positive prior.
+
+        Children are sorted by decreasing prior; equal priors keep their order.
+        """
+        order = sorted(
+            (index for index, prior in enumerate(priors) if prior > 0),
+            key=priors.__getitem__,
+            reverse=True,
+        )
+        count = len(order)
+        return cls(
+            [move_uids[index] for index in order],
+            [priors[index] for index in order],
+            [0] * count,
+            [0.0] * count,
+            [None] * count,
+        )
 
     def best_child(
         self, visits: float, total: float, exploration_weight: float, max_score: float
@@ -45,6 +62,10 @@ class TreeNode:
         `Q` is the child's mean reward as a fraction of `max_score`, on the same
         [0, 1] scale as the exploration term; unvisited children take this node's
         mean reward. Ties go to the first child.
+
+        Of the unvisited children, the first has the highest prior and so the best
+        score; it is the only one that can be chosen. Children are therefore visited
+        in order, and the scan stops at the first unvisited one.
 
         Args:
             visits: This node's visit count `N`.
@@ -58,8 +79,11 @@ class TreeNode:
         for index, (count, value, prior) in enumerate(
             zip(self.visits, self.totals, self.priors, strict=True)
         ):
-            mean = value / count if count > 0 else parent_mean
-            score = mean / max_score + scale * prior / (1 + count)
+            if count == 0:
+                if parent_mean / max_score + scale * prior > best_score:
+                    best_index = index
+                break
+            score = value / count / max_score + scale * prior / (1 + count)
             if score > best_score:
                 best_score, best_index = score, index
         return best_index
@@ -109,7 +133,7 @@ class SearchTree:
     def expand(
         self, path: list[tuple[TreeNode, int]], move_uids: list[int], priors: list[float]
     ) -> None:
-        """Expands the node at the end of `path` with a child per move in `move_uids`."""
+        """Expands the node at the end of `path` (see `TreeNode.with_priors`)."""
         node = TreeNode.with_priors(move_uids, priors)
         if not path:
             self.root = node

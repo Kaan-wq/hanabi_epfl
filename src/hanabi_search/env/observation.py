@@ -2,15 +2,19 @@
 
 import enum
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 import numpy as np
 import numpy.typing as npt
 
-from hanabi_search.env._pyhanabi import CData, engine_message, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import CData, engine_message, ffi, int_values, lib, take_string
 from hanabi_search.env.cards import HanabiCard, HanabiCardKnowledge
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
 from hanabi_search.exceptions import EngineCallError
+
+if TYPE_CHECKING:
+    from hanabi_search.env.state import HanabiState
 
 
 @dataclass(frozen=True, slots=True)
@@ -270,20 +274,16 @@ class HanabiObservation:
             moves.append(HanabiMove(c_move))
         return moves
 
-    def legal_move_uids(self) -> npt.NDArray[np.int32]:
+    def legal_move_uids(self) -> list[int]:
         """Returns the ids (see `HanabiGame.get_move_uid`) of the observer's legal moves.
 
-        Returns:
-            Shape (num_legal_moves,), dtype int32, in the order of `legal_moves`;
-            empty unless the observer is acting.
+        They are in the order of `legal_moves`; empty unless the observer is acting.
         """
-        uids = np.empty(self._game.max_moves(), dtype=np.int32)
-        count = lib.pyhanabi_observation_legal_move_uids(
-            self.c_observation, ffi.from_buffer("int32_t[]", uids), uids.size
-        )
+        buffer = self._game.move_uid_buffer()
+        count = lib.pyhanabi_observation_legal_move_uids(self.c_observation, buffer, len(buffer))
         if count < 0:
             raise EngineCallError(engine_message("Cannot read the legal moves"))
-        return uids[:count]
+        return int_values(buffer, count)
 
     def card_playable_on_fireworks(self, color: int, rank: int) -> bool:
         """Returns whether the card (color, rank) can be played right now."""
@@ -354,6 +354,23 @@ class ObservationEncoder:
             bits.size,
         ):
             raise EngineCallError(engine_message("Cannot encode the observation"))
+        return bits
+
+    def encode_state(self, state: HanabiState, player: int) -> npt.NDArray[np.uint8]:
+        """Returns `encode(state.observation(player))`, without building the observation.
+
+        Raises:
+            EngineCallError: If `player` is not a player of the game.
+        """
+        bits = np.empty(self._length, dtype=np.uint8)
+        if not lib.pyhanabi_state_encode_observation(
+            self._c_encoder,
+            state.c_state,
+            player,
+            ffi.from_buffer("uint8_t[]", bits),
+            bits.size,
+        ):
+            raise EngineCallError(engine_message(f"Cannot encode player {player}'s observation"))
         return bits
 
     def __del__(self) -> None:

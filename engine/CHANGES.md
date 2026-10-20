@@ -8,6 +8,25 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Encode a state's observation directly; assign states in place
+
+New C API functions (no engine-core change, game rules untouched):
+- `pyhanabi_state_encode_observation`: writes the canonical encoding of a
+  player's observation of a state into a caller buffer, without allocating an
+  observation handle. Same bits as `NewObservation` + `pyhanabi_observation_encode`.
+- `pyhanabi_state_assign`: copies one state over an existing one, reusing its
+  memory (the destination adopts the source's game).
+
+AlphaZero now encodes search leaves with the first and resets its
+determinized state in place each iteration with the second instead of copying
+it. Tests: `StateEncodingMatchesObservationEncoding` (2-5 players, every
+player, along random games), `AssignCopiesAStateAcrossGames`, size and player
+rejection. Not on the engine benchmark (Python path); AlphaZero search, 1
+process, 32 batched games, untrained network, rollouts/s: 4 players 49,632 ->
+52,600 (1.06x), 2 players 42,372 -> 45,600 (1.08x).
+
+---
+
 ## 2026-10-20: Determinized rollout moves in one call
 
 New `AdvanceDeterminized` (hand_sampler.h) and C API function

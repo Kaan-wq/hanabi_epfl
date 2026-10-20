@@ -36,10 +36,11 @@ class HanabiGame:
         params: Game parameters; `None` for the engine's default game.
     """
 
-    __slots__ = ("_all_moves", "_game")
+    __slots__ = ("_all_moves", "_game", "_move_uids")
 
     def __init__(self, params: GameParams | None = None) -> None:
         self._all_moves: list[HanabiMove] | None = None
+        self._move_uids: CData | None = None
         self._game: CData | None = ffi.new("pyhanabi_game_t*")
         if params is None:
             lib.NewDefaultGame(self._game)
@@ -59,6 +60,7 @@ class HanabiGame:
     def _from_c_game(cls, c_game: CData) -> Self:
         game = cls.__new__(cls)
         game._all_moves = None
+        game._move_uids = None
         game._game = c_game
         return game
 
@@ -126,6 +128,16 @@ class HanabiGame:
         if not lib.GetMoveByUid(self.c_game, move_uid, c_move):
             raise EngineCallError(engine_message(f"Cannot get move {move_uid}"))
         return HanabiMove(c_move)
+
+    def move_uid_buffer(self) -> CData:
+        """Returns a reusable `int32_t[max_moves]` buffer for engine calls writing move ids.
+
+        Shared by every state and observation of this game: copy what a call wrote
+        before the next call.
+        """
+        if self._move_uids is None:
+            self._move_uids = ffi.new("int32_t[]", self.max_moves())
+        return self._move_uids
 
     def all_moves(self) -> list[HanabiMove]:
         """Returns every non-chance move, indexed by move id.

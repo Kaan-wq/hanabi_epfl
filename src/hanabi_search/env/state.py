@@ -5,9 +5,16 @@ import json
 from typing import Self
 
 import numpy as np
-import numpy.typing as npt
 
-from hanabi_search.env._pyhanabi import CData, card_values, engine_message, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import (
+    CData,
+    card_values,
+    engine_message,
+    ffi,
+    int_values,
+    lib,
+    take_string,
+)
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
@@ -67,6 +74,15 @@ class HanabiState:
     def copy(self) -> Self:
         """Returns an independent copy that shares this state's game."""
         return self._copy_of(self._game, self.c_state)
+
+    def assign(self, other: HanabiState) -> None:
+        """Makes this state a copy of `other`, reusing this state's engine memory.
+
+        Cheaper than `other.copy()` when one state is reset over and over. This
+        state then shares `other`'s game.
+        """
+        lib.pyhanabi_state_assign(self.c_state, other.c_state)
+        self._game = other._game
 
     def observation(self, player: int) -> HanabiObservation:
         """Returns `player`'s view of this state."""
@@ -205,17 +221,15 @@ class HanabiState:
         The moves are shared with `HanabiGame.all_moves` (moves are immutable).
         """
         moves = self._game.all_moves()
-        return [moves[uid] for uid in self.legal_move_uids().tolist()]
+        return [moves[uid] for uid in self.legal_move_uids()]
 
-    def legal_move_uids(self) -> npt.NDArray[np.int32]:
+    def legal_move_uids(self) -> list[int]:
         """Returns the ids of the acting player's legal moves, in `legal_moves` order."""
-        uids = np.empty(len(self._game.all_moves()), dtype=np.int32)
-        count = lib.pyhanabi_state_legal_move_uids(
-            self.c_state, ffi.from_buffer("int32_t[]", uids), uids.size
-        )
+        buffer = self._game.move_uid_buffer()
+        count = lib.pyhanabi_state_legal_move_uids(self.c_state, buffer, len(buffer))
         if count < 0:
             raise EngineCallError(engine_message("Cannot read the legal moves"))
-        return uids[:count]
+        return int_values(buffer, count)
 
     def move_is_legal(self, move: HanabiMove) -> bool:
         """Returns whether `move` is legal for the acting player."""

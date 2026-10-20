@@ -363,4 +363,24 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
   return true;
 }
 
+bool pyhanabi_state_encode_observation(const pyhanabi_observation_encoder_t* encoder,
+                                       const pyhanabi_state_t* state, int32_t player,
+                                       uint8_t* bits, int32_t size) {
+  REQUIRE(encoder != nullptr);
+  REQUIRE(encoder->encoder != nullptr);
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  REQUIRE(bits != nullptr);
+  const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
+  if (!CheckIndex(player, hanabi_state.ParentGame()->NumPlayers(), "player")) return false;
+  // NewObservationEncoder only creates canonical encoders.
+  const auto& obs_encoder =
+      *static_cast<const hanabi_learning_env::CanonicalObservationEncoder*>(encoder->encoder);
+  if (size != obs_encoder.Length()) {
+    return Fail(std::format("size {} is not the encoding length {}", size, obs_encoder.Length()));
+  }
+  obs_encoder.EncodeInto(hanabi_learning_env::HanabiObservation(hanabi_state, player), bits);
+  return true;
+}
+
 }  // extern "C"

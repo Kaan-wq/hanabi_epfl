@@ -135,7 +135,7 @@ class HanabiEnv:
 
     def observation_dict(self, observation: HanabiObservation) -> ObservationDict:
         """Converts an engine observation of the current state to dict form."""
-        uids = observation.legal_move_uids().tolist()
+        uids = observation.legal_move_uids()
         hands = observation.hand_arrays()
         knowledge = observation.knowledge_arrays()
         discard_colors, discard_ranks = observation.discard_pile_arrays()

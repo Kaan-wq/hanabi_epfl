@@ -367,6 +367,45 @@ HANABI_TEST(NoLegalMovesWhileACardMustBeDealt) {
   DeleteGame(&game);
 }
 
+HANABI_TEST(StateEncodingMatchesObservationEncoding) {
+  for (int players = 2; players <= 5; ++players) {
+    Game game(players);
+    pyhanabi_observation_encoder_t encoder{};
+    CHECK(NewObservationEncoder(&encoder, &game.game, 0));
+    const int length = EncodingLength(&encoder);
+    std::vector<uint8_t> expected(length), bits(length);
+    std::mt19937 rng(players);
+    do {
+      for (int player = 0; player < players; ++player) {
+        Obs obs(&game, player);
+        CHECK(pyhanabi_observation_encode(&encoder, &obs.observation, expected.data(), length));
+        CHECK(pyhanabi_state_encode_observation(&encoder, &game.state, player, bits.data(),
+                                                length));
+        CHECK(bits == expected);
+      }
+    } while (game.Step(&rng));
+    DeleteObservationEncoder(&encoder);
+  }
+}
+
+HANABI_TEST(AssignCopiesAStateAcrossGames) {
+  Game source(3);
+  Game dest(2, 2);  // Destroyed first: its state then belongs to source's game.
+  std::mt19937 rng(3);
+  for (int step = 0; step < 2; ++step) CHECK(source.Step(&rng));  // Too few to lose 3 lives.
+  pyhanabi_state_assign(&dest.state, &source.state);
+  char* source_json = StateToJson(&source.state);
+  char* dest_json = StateToJson(&dest.state);
+  CHECK_EQ(std::string(dest_json), std::string(source_json));
+  DeleteString(dest_json);
+
+  CHECK(dest.Step(&rng));  // The copy is independent of its source.
+  char* after_json = StateToJson(&source.state);
+  CHECK_EQ(std::string(after_json), std::string(source_json));
+  DeleteString(after_json);
+  DeleteString(source_json);
+}
+
 HANABI_TEST(WrongStateBufferSizesAreRejectedWithoutWriting) {
   Game game(3);
   const int p = game.players, h = game.hand_size;
@@ -376,6 +415,16 @@ HANABI_TEST(WrongStateBufferSizesAreRejectedWithoutWriting) {
   CHECK(!pyhanabi_state_hands(&game.state, sizes.data(), colors.data(), ranks.data(), p, h + 1));
   std::vector<int32_t> uids(MaxMoves(&game.game), 7);
   CHECK_EQ(pyhanabi_state_legal_move_uids(&game.state, uids.data(), MaxMoves(&game.game) - 1), -1);
+  pyhanabi_observation_encoder_t encoder{};
+  CHECK(NewObservationEncoder(&encoder, &game.game, 0));
+  const int length = EncodingLength(&encoder);
+  std::vector<uint8_t> bits(length + 1, 7);
+  CHECK(!pyhanabi_state_encode_observation(&encoder, &game.state, 0, bits.data(), length - 1));
+  CHECK(!pyhanabi_state_encode_observation(&encoder, &game.state, 0, bits.data(), length + 1));
+  CHECK(!pyhanabi_state_encode_observation(&encoder, &game.state, -1, bits.data(), length));
+  CHECK(!pyhanabi_state_encode_observation(&encoder, &game.state, p, bits.data(), length));
+  DeleteObservationEncoder(&encoder);
+  for (uint8_t v : bits) CHECK_EQ(v, 7);
   for (int32_t v : sizes) CHECK_EQ(v, 7);
   for (int8_t v : colors) CHECK_EQ(v, 7);
   for (int8_t v : ranks) CHECK_EQ(v, 7);

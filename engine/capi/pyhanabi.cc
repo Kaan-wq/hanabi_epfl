@@ -345,6 +345,15 @@ void CopyState(const pyhanabi_state_t* src, pyhanabi_state_t* dest) {
       *static_cast<hanabi_learning_env::HanabiState*>(src->state));
 }
 
+void pyhanabi_state_assign(pyhanabi_state_t* dest, const pyhanabi_state_t* src) {
+  REQUIRE(dest != nullptr);
+  REQUIRE(dest->state != nullptr);
+  REQUIRE(src != nullptr);
+  REQUIRE(src->state != nullptr);
+  *static_cast<hanabi_learning_env::HanabiState*>(dest->state) =
+      *static_cast<const hanabi_learning_env::HanabiState*>(src->state);
+}
+
 void DeleteState(pyhanabi_state_t* state) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);

@@ -35,16 +35,16 @@ def _agent(
 def _root_with_children(
     agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, int]]
 ) -> list[HanabiMove]:
-    """Gives the root one child per (prior, visits) entry, in legal-move order."""
+    """Gives the root one child per (prior, visits) entry, for the first legal moves."""
     agent.reset(env.state)
     agent.root_node.focused_state = env.state
     moves = env.state.legal_moves()[: len(stats)]
-    agent.tree.expand(
-        [], [env.game.get_move_uid(move) for move in moves], [prior for prior, _ in stats]
-    )
+    uids = [env.game.get_move_uid(move) for move in moves]
+    agent.tree.expand([], uids, [prior for prior, _ in stats])
     root = agent.tree.root
     assert root is not None
-    root.visits[:] = [visits for _, visits in stats]
+    visits_by_uid = {uid: visits for uid, (_, visits) in zip(uids, stats, strict=True)}
+    root.visits[:] = [visits_by_uid[uid] for uid in root.move_uids]
     return moves
 
 
@@ -69,8 +69,9 @@ def test_first_search_expands_the_root_with_priors_summing_to_one(env: HanabiEnv
     assert _search(agent, current_observation(env)) == 1
     root = agent.tree.root
     assert root is not None
-    assert root.move_uids == env.state.legal_move_uids().tolist()
+    assert sorted(root.move_uids) == env.state.legal_move_uids()
     assert sum(root.priors) == pytest.approx(1.0)
+    assert root.priors == sorted(root.priors, reverse=True)
     assert 0 <= agent.tree.root_total <= GAME.max_score
 
 
