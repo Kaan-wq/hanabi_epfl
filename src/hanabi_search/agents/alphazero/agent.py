@@ -174,11 +174,11 @@ class AlphaZeroAgent(MCTSAgent):
             state: The leaf's state in this determinization (not terminal).
             policy: The network's move probabilities at the leaf, shape (num_actions,).
         """
-        moves = state.legal_moves()
-        if not moves:
+        uids = state.legal_move_uids()
+        if not uids.size:
             return
-        game = self.environment.game
-        uids = [game.get_move_uid(move) for move in moves]
+        all_moves = self.environment.game.all_moves()
+        moves = [all_moves[uid] for uid in uids.tolist()]
         priors = policy[uids]  # (num_moves,)
         total = priors.sum()
         priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))

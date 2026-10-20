@@ -107,6 +107,7 @@ def test_terminal_state_has_no_legal_moves(env: HanabiEnv) -> None:
     while not env.state.is_terminal():
         env.step(env.state.legal_moves()[0])
     assert env.state.legal_moves() == []
+    assert env.state.legal_move_uids().size == 0
     assert env.state.end_of_game_status() is not HanabiEndOfGameType.NOT_FINISHED
 
 
@@ -211,6 +212,7 @@ def test_legal_moves_are_the_legal_ones_of_all_moves(game: GameConfig) -> None:
         assert [env.game.get_move_uid(m) for m in legal] == sorted(
             env.game.get_move_uid(m) for m in legal
         )
+        assert env.state.legal_move_uids().tolist() == [env.game.get_move_uid(m) for m in legal]
         env.step(legal[-1])
 
 

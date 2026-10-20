@@ -5,6 +5,7 @@ import json
 from typing import Self
 
 import numpy as np
+import numpy.typing as npt
 
 from hanabi_search.env._pyhanabi import CData, card_values, engine_message, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard
@@ -204,13 +205,17 @@ class HanabiState:
         The moves are shared with `HanabiGame.all_moves` (moves are immutable).
         """
         moves = self._game.all_moves()
-        uids = np.empty(len(moves), dtype=np.int32)
+        return [moves[uid] for uid in self.legal_move_uids().tolist()]
+
+    def legal_move_uids(self) -> npt.NDArray[np.int32]:
+        """Returns the ids of the acting player's legal moves, in `legal_moves` order."""
+        uids = np.empty(len(self._game.all_moves()), dtype=np.int32)
         count = lib.pyhanabi_state_legal_move_uids(
             self.c_state, ffi.from_buffer("int32_t[]", uids), uids.size
         )
         if count < 0:
             raise EngineCallError(engine_message("Cannot read the legal moves"))
-        return [moves[uid] for uid in uids[:count].tolist()]
+        return uids[:count]
 
     def move_is_legal(self, move: HanabiMove) -> bool:
         """Returns whether `move` is legal for the acting player."""
