@@ -90,14 +90,14 @@ def test_card_probabilities_are_probabilities() -> None:
 
 def test_tell_randomly_needs_information_tokens(env: HanabiEnv) -> None:
     observation = current_observation(env)
-    random.seed(0)
-    assert ruleset.tell_randomly(observation) is not None
+    rng = random.Random(0)
+    assert ruleset.tell_randomly(observation, rng) is not None
     observation["information_tokens"] = 0
-    assert ruleset.tell_randomly(observation) is None
+    assert ruleset.tell_randomly(observation, rng) is None
 
 
 def test_discard_rules_respect_full_tokens(env: HanabiEnv) -> None:
     observation = current_observation(env)
     assert observation["information_tokens"] == observation["max_information_tokens"]
-    assert ruleset.discard_most_confident(observation) is None
-    assert ruleset.discard_oldest_first(observation) is None
+    assert ruleset.discard_most_confident(observation, random.Random(0)) is None
+    assert ruleset.discard_oldest_first(observation, random.Random(0)) is None

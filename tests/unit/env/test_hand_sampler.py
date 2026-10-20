@@ -140,13 +140,12 @@ def test_determinized_rollout_keeps_hands_consistent(
         assert _cards_in_game(env.state) == 50
 
 
-def test_determinized_env_is_reproducible_from_random_seed() -> None:
+def test_determinized_env_is_reproducible_from_its_rng() -> None:
     game = GameConfig(players=2)
     real = make_env(game, seed=2)
     hands = []
     for _ in range(2):
-        random.seed(5)
-        env = DeterminizedEnv(game.to_params(), searching_player=0)
+        env = DeterminizedEnv(game.to_params(), searching_player=0, rng=random.Random(5))
         env.state = real.state.copy()
         env.replace_hand(0)
         hands.append(env.state.player_hands()[0])
@@ -158,8 +157,9 @@ def test_advance_changes_the_state_like_step() -> None:
     states = []
     for use_step in (True, False):
         real = make_env(game, seed=6)  # Deals use the real game's RNG, so one per run.
-        random.seed(2)
-        env = DeterminizedEnv(game.to_params(), searching_player=real.state.cur_player())
+        env = DeterminizedEnv(
+            game.to_params(), searching_player=real.state.cur_player(), rng=random.Random(2)
+        )
         env.state = real.state.copy()
         for _ in range(6):
             move = next(m for m in env.state.legal_moves() if m.type().name != "PLAY")

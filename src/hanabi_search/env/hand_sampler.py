@@ -2,7 +2,7 @@
 
 The sampling functions take a seed instead of using a generator of their own,
 so callers decide where randomness comes from (`DeterminizedEnv` draws it from
-Python's `random`, which each game reseeds).
+the game's random generator).
 """
 
 from collections.abc import Sequence

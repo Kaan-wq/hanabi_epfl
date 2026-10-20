@@ -1,6 +1,7 @@
 """Playing games between agents."""
 
 import logging
+import random
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 
@@ -39,6 +40,8 @@ def play_game(
 ) -> GameResult:
     """Plays one game to the end, then calls `end_episode` on every agent.
 
+    Every agent gets the game's random generator, `random.Random(seed)`.
+
     Args:
         env: Environment, already configured with the game's seed.
         agents: One agent per seat.
@@ -49,6 +52,9 @@ def play_game(
         HanabiSearchError: If the acting agent returns no action.
     """
     observations = env.reset()
+    rng = random.Random(seed)
+    for agent in agents:
+        agent.begin_episode(rng)
     moves: list[str] = []
     done = False
     while not done:

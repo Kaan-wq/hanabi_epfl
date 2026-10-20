@@ -1,5 +1,6 @@
 """Search-tree node for information-set MCTS."""
 
+import random
 from collections.abc import Sequence
 
 from hanabi_search.agents.rule_based.ruleset import Rule
@@ -33,12 +34,14 @@ class MCTSNode:
         assert self.focused_state is not None, "node has no focused state"
         return self.focused_state
 
-    def find_children(self, observation: ObservationDict) -> list[MoveDict] | list[HanabiMove]:
+    def find_children(
+        self, observation: ObservationDict, rng: random.Random
+    ) -> list[MoveDict] | list[HanabiMove]:
         """Returns candidate moves: those proposed by the rules, or all legal moves."""
         if self.is_terminal():
             return []
         if self.rules is not None:
-            return [action for rule in self.rules if (action := rule(observation)) is not None]
+            return [action for rule in self.rules if (action := rule(observation, rng)) is not None]
         return self.state.legal_moves()
 
     def initial_move(self) -> HanabiMove:

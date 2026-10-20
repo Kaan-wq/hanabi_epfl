@@ -18,12 +18,6 @@ from hanabi_search.env.observation_types import Action
 from hanabi_search.exceptions import HanabiSearchError
 
 
-def _sampling_seed() -> int:
-    # Drawn from Python's generator, so seeding `random` (as each game does)
-    # makes rollouts reproducible.
-    return random.getrandbits(64)
-
-
 class DeterminizationType(enum.StrEnum):
     """How other players' hands are handled during rollouts."""
 
@@ -49,6 +43,8 @@ class DeterminizedEnv(HanabiEnv):
         searching_player: Absolute id of the player running the search.
         determinization: How other players' hands are handled.
         rollout_reward: What `reward()` returns.
+        rng: Source of the sampler's seeds; set it to the game's generator so
+            rollouts are reproducible.
     """
 
     def __init__(
@@ -57,8 +53,10 @@ class DeterminizedEnv(HanabiEnv):
         searching_player: int,
         determinization: DeterminizationType = DeterminizationType.RESTORE,
         rollout_reward: RolloutReward = RolloutReward.SCORE,
+        rng: random.Random | None = None,
     ) -> None:
         super().__init__(params)
+        self.rng = rng or random.Random()
         self.searching_player = searching_player
         self.determinization = determinization
         self.rollout_reward = rollout_reward
@@ -109,7 +107,7 @@ class DeterminizedEnv(HanabiEnv):
 
     def replace_hand(self, player: int) -> None:
         """Replaces `player`'s hand with one sampled from what they know."""
-        resample_hand(self.state, player, _sampling_seed())
+        resample_hand(self.state, player, self.rng.getrandbits(64))
 
     def restore_hand(
         self,
@@ -132,5 +130,5 @@ class DeterminizedEnv(HanabiEnv):
             remembered_hand,
             removed_card,
             removed_card_index,
-            _sampling_seed(),
+            self.rng.getrandbits(64),
         )

@@ -99,7 +99,7 @@ class AlphaZeroAgent(MCTSAgent):
             return
         policy, node.value = self._evaluate(observation)
 
-        candidates = node.find_children(observation)
+        candidates = node.find_children(observation, self.rng)
         if not candidates:
             return
         converted = [self._as_move(candidate) for candidate in candidates]
@@ -112,7 +112,7 @@ class AlphaZeroAgent(MCTSAgent):
         total = priors.sum()
         priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
         if self.self_play is not None and node == self.root_node:
-            priors = self._add_root_noise(priors, self.self_play)
+            priors = self._add_root_noise(priors, self.self_play, self.rng)
 
         children: set[MCTSNode] = set()
         for move, prior in zip(moves, priors.tolist(), strict=True):
@@ -182,7 +182,7 @@ class AlphaZeroAgent(MCTSAgent):
             ordered = sorted(children, key=lambda child: game.get_move_uid(child.initial_move()))
             weights = [self.visits[child] for child in ordered]
             if sum(weights) > 0:
-                return random.choices(ordered, weights)[0].initial_move()
+                return self.rng.choices(ordered, weights)[0].initial_move()
 
         def visit_count(child: MCTSNode) -> float:
             visits = self.visits[child]
@@ -192,14 +192,11 @@ class AlphaZeroAgent(MCTSAgent):
 
     @staticmethod
     def _add_root_noise(
-        priors: npt.NDArray[np.float32], self_play: SelfPlayConfig
+        priors: npt.NDArray[np.float32], self_play: SelfPlayConfig, rng: random.Random
     ) -> npt.NDArray[np.float32]:
-        """Mixes Dirichlet noise into the root priors, shape (num_candidates,).
-
-        Drawn with Python's `random` (gamma variates), which each game reseeds.
-        """
+        """Mixes Dirichlet noise into the root priors, shape (num_candidates,)."""
         gammas = np.array(
-            [random.gammavariate(self_play.dirichlet_alpha, 1.0) for _ in range(len(priors))],
+            [rng.gammavariate(self_play.dirichlet_alpha, 1.0) for _ in range(len(priors))],
             dtype=np.float32,
         )
         noise = gammas / gammas.sum()

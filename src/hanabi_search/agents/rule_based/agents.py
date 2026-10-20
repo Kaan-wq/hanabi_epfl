@@ -31,10 +31,10 @@ class RuleBasedAgent(Agent):
         if observation["current_player_offset"] != 0:
             return None
         for rule in self.rules:
-            action = rule(observation)
+            action = rule(observation, self.rng)
             if action is not None:
                 return action
-        return ruleset.legal_random(observation)
+        return ruleset.legal_random(observation, self.rng)
 
     @override
     def act(self, observation: ObservationDict, state: HanabiState) -> MoveDict | None:

@@ -24,7 +24,8 @@ from hanabi_search.agents.rule_based.card_counting import (
 )
 from hanabi_search.env import HanabiMoveType, MoveDict, ObservationDict
 
-type Rule = Callable[[ObservationDict], MoveDict | None]
+# Rules share one signature; most ignore `rng`, the game's random generator.
+type Rule = Callable[[ObservationDict, random.Random], MoveDict | None]
 
 # Rules that hint a specific partner always target the next player.
 _NEXT_PLAYER = 1
@@ -75,7 +76,7 @@ def _complete_partial_hint(
     return None
 
 
-def playable_now_convention(observation: ObservationDict) -> MoveDict | None:
+def playable_now_convention(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Plays a card if the last hint singled it out and it may be playable."""
     history = [
         item
@@ -95,12 +96,12 @@ def playable_now_convention(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def discard_oldest_first(observation: ObservationDict) -> MoveDict | None:
+def discard_oldest_first(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Discards the oldest card when discarding is allowed."""
     return _discard(0) if _can_discard(observation) else None
 
 
-def osawa_discard(observation: ObservationDict) -> MoveDict | None:
+def osawa_discard(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Discards a card known to be useless; otherwise the one most likely useless."""
     if not _can_discard(observation):
         return None
@@ -122,7 +123,7 @@ def osawa_discard(observation: ObservationDict) -> MoveDict | None:
     return _discard(card_index) if probability_useless[card_index] > 0 else None
 
 
-def tell_unknown(observation: ObservationDict) -> MoveDict | None:
+def tell_unknown(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Hints the next player about the first attribute they do not know."""
     if observation["information_tokens"] <= 0:
         return None
@@ -135,25 +136,25 @@ def tell_unknown(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def tell_randomly(observation: ObservationDict) -> MoveDict | None:
+def tell_randomly(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Hints the color or rank of a random card of the next player."""
     if observation["information_tokens"] <= 0:
         return None
-    card = random.choice(observation["observed_hands"][_NEXT_PLAYER])
-    if random.randint(0, 1) == 0:
+    card = rng.choice(observation["observed_hands"][_NEXT_PLAYER])
+    if rng.randint(0, 1) == 0:
         return _reveal_rank(card["rank"], _NEXT_PLAYER)
     return _reveal_color(card["color"], _NEXT_PLAYER)
 
 
-def discard_randomly(observation: ObservationDict) -> MoveDict | None:
+def discard_randomly(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Discards a random card when discarding is allowed."""
     if not _can_discard(observation):
         return None
     hand_size = len(observation["observed_hands"][0])
-    return _discard(random.randint(0, hand_size - 1))
+    return _discard(rng.randint(0, hand_size - 1))
 
 
-def play_safe_card(observation: ObservationDict) -> MoveDict | None:
+def play_safe_card(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Plays a card that is playable whatever its hidden identity."""
     playable = playable_cards(observation)
     for card_index in range(len(observation["card_knowledge"][0])):
@@ -163,7 +164,7 @@ def play_safe_card(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def play_if_certain(observation: ObservationDict) -> MoveDict | None:
+def play_if_certain(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Plays a card whose color and rank were both hinted and that is playable."""
     fireworks = observation["fireworks"]
     for card_index, card in enumerate(observation["card_knowledge"][0]):
@@ -173,7 +174,7 @@ def play_if_certain(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def tell_playable_card_outer(observation: ObservationDict) -> MoveDict | None:
+def tell_playable_card_outer(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Hints the missing attribute of the first playable card in any partner's hand."""
     if observation["information_tokens"] <= 0:
         return None
@@ -190,9 +191,9 @@ def tell_playable_card_outer(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def tell_anyone_useful_card(observation: ObservationDict) -> MoveDict | None:
+def tell_anyone_useful_card(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Alias of `tell_playable_card_outer`."""
-    return tell_playable_card_outer(observation)
+    return tell_playable_card_outer(observation, rng)
 
 
 def tell_most_information_factory(consider_hints: bool = False) -> Rule:
@@ -202,7 +203,7 @@ def tell_most_information_factory(consider_hints: bool = False) -> Rule:
         consider_hints: If true, an attribute already hinted on a card counts for nothing.
     """
 
-    def tell_most_information(observation: ObservationDict) -> MoveDict | None:
+    def tell_most_information(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
         if observation["information_tokens"] <= 0:
             return None
         max_affected = -1
@@ -237,7 +238,7 @@ def tell_dispensable_factory(min_information_tokens: int | None = None) -> Rule:
             `None` means the game's maximum.
     """
 
-    def tell_dispensable(observation: ObservationDict) -> MoveDict | None:
+    def tell_dispensable(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
         threshold = (
             observation["max_information_tokens"]
             if min_information_tokens is None
@@ -268,7 +269,7 @@ def tell_dispensable_factory(min_information_tokens: int | None = None) -> Rule:
     return tell_dispensable
 
 
-def tell_anyone_useless_card(observation: ObservationDict) -> MoveDict | None:
+def tell_anyone_useless_card(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Hints an attribute of the first useless card in any partner's hand."""
     if observation["information_tokens"] <= 0:
         return None
@@ -286,7 +287,7 @@ def tell_anyone_useless_card(observation: ObservationDict) -> MoveDict | None:
     return None
 
 
-def tell_playable_card(observation: ObservationDict) -> MoveDict | None:
+def tell_playable_card(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Hints a random attribute of the first playable card in any partner's hand."""
     if observation["information_tokens"] <= 0:
         return None
@@ -294,17 +295,17 @@ def tell_playable_card(observation: ObservationDict) -> MoveDict | None:
     for offset in range(1, observation["num_players"]):
         for card in observation["observed_hands"][offset]:
             if playable_card(card, fireworks):
-                if random.choice([True, False]):
+                if rng.choice([True, False]):
                     return _reveal_rank(card["rank"], offset)
                 return _reveal_color(card["color"], offset)
     return None
 
 
-def legal_random(observation: ObservationDict) -> MoveDict | None:
+def legal_random(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Picks a uniformly random legal move on the agent's turn."""
     if observation["current_player_offset"] != 0:
         return None
-    return random.choice(observation["legal_moves"])
+    return rng.choice(observation["legal_moves"])
 
 
 def play_probably_safe_factory(threshold: float = 0.95, require_extra_lives: bool = False) -> Rule:
@@ -315,7 +316,7 @@ def play_probably_safe_factory(threshold: float = 0.95, require_extra_lives: boo
         require_extra_lives: Only play while more than one life remains.
     """
 
-    def play_probably_safe(observation: ObservationDict) -> MoveDict | None:
+    def play_probably_safe(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
         playability = get_card_playability(observation)
         card_index = int(np.argmax(playability))
         if require_extra_lives and observation["life_tokens"] <= 1:
@@ -328,7 +329,9 @@ def play_probably_safe_factory(threshold: float = 0.95, require_extra_lives: boo
 def discard_probably_useless_factory(threshold: float = 0.75) -> Rule:
     """Returns a rule discarding the most-likely-useless card if P(useless) >= `threshold`."""
 
-    def discard_probably_useless(observation: ObservationDict) -> MoveDict | None:
+    def discard_probably_useless(
+        observation: ObservationDict, rng: random.Random
+    ) -> MoveDict | None:
         if not _can_discard(observation):
             return None
         probability_useless = get_probability_useless(observation)
@@ -338,17 +341,19 @@ def discard_probably_useless_factory(threshold: float = 0.75) -> Rule:
     return discard_probably_useless
 
 
-def hail_mary(observation: ObservationDict) -> MoveDict | None:
+def hail_mary(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """With an empty deck and lives to spare, plays the most-likely-playable card."""
     if observation["deck_size"] == 0 and observation["life_tokens"] > 1:
-        return play_probably_safe_factory(0.0)(observation)
+        return play_probably_safe_factory(0.0)(observation, rng)
     return None
 
 
 def discard_probably_notcritical_factory(threshold: float = 0.75) -> Rule:
     """Returns a rule discarding the card most likely not critical if P >= `threshold`."""
 
-    def discard_probably_notcritical(observation: ObservationDict) -> MoveDict | None:
+    def discard_probably_notcritical(
+        observation: ObservationDict, rng: random.Random
+    ) -> MoveDict | None:
         if not _can_discard(observation):
             return None
         probability_notcritical = get_probability_notcritical(observation)
@@ -360,7 +365,7 @@ def discard_probably_notcritical_factory(threshold: float = 0.75) -> Rule:
     return discard_probably_notcritical
 
 
-def complete_tell_useful(observation: ObservationDict) -> MoveDict | None:
+def complete_tell_useful(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Completes a half-known playable card in a partner's hand."""
     fireworks = observation["fireworks"]
     hands = observation["observed_hands"]
@@ -369,7 +374,7 @@ def complete_tell_useful(observation: ObservationDict) -> MoveDict | None:
     )
 
 
-def complete_tell_dispensable(observation: ObservationDict) -> MoveDict | None:
+def complete_tell_dispensable(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Completes a half-known useless card in a partner's hand."""
     fireworks = observation["fireworks"]
     max_fireworks = get_max_fireworks(observation)
@@ -380,7 +385,7 @@ def complete_tell_dispensable(observation: ObservationDict) -> MoveDict | None:
     )
 
 
-def complete_tell_unplayable(observation: ObservationDict) -> MoveDict | None:
+def complete_tell_unplayable(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Completes a half-known card that is neither playable nor useless."""
     fireworks = observation["fireworks"]
     max_fireworks = get_max_fireworks(observation)
@@ -398,20 +403,22 @@ def complete_tell_unplayable(observation: ObservationDict) -> MoveDict | None:
 def play_probably_safe_late_factory(threshold: float = 0.4, deck_size: int = 5) -> Rule:
     """Returns `play_probably_safe_factory(threshold)` restricted to deck size <= `deck_size`."""
 
-    def play_probably_safe_late(observation: ObservationDict) -> MoveDict | None:
+    def play_probably_safe_late(
+        observation: ObservationDict, rng: random.Random
+    ) -> MoveDict | None:
         if observation["deck_size"] <= deck_size:
-            return play_probably_safe_factory(threshold)(observation)
+            return play_probably_safe_factory(threshold)(observation, rng)
         return None
 
     return play_probably_safe_late
 
 
-def discard_most_confident(observation: ObservationDict) -> MoveDict | None:
+def discard_most_confident(observation: ObservationDict, rng: random.Random) -> MoveDict | None:
     """Discards by `osawa_discard`, else the least critical card, else the oldest."""
     if not _can_discard(observation):
         return None
     return (
-        osawa_discard(observation)
-        or discard_probably_notcritical_factory(0)(observation)
-        or discard_oldest_first(observation)
+        osawa_discard(observation, rng)
+        or discard_probably_notcritical_factory(0)(observation, rng)
+        or discard_oldest_first(observation, rng)
     )

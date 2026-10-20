@@ -99,6 +99,13 @@ class MCTSAgent(Agent):
         return best
 
     @override
+    def begin_episode(self, rng: random.Random) -> None:
+        super().begin_episode(rng)
+        self.environment.rng = rng
+        for agent in self.rollout_agents:
+            agent.begin_episode(rng)
+
+    @override
     def end_episode(self, final_score: int) -> None:
         if self._transition_sink is not None and self._pending:
             value = value_target(final_score, self.game.max_score)
@@ -173,7 +180,7 @@ class MCTSAgent(Agent):
         """Adds a child for every candidate move of `node`."""
         if node in self.children:
             return
-        candidates = node.find_children(observation)
+        candidates = node.find_children(observation, self.rng)
         moves = {self._as_move(candidate) for candidate in candidates}
         self.children[node] = {self.node_type((*node.moves, move), self.rules) for move in moves}
 
@@ -224,7 +231,7 @@ class MCTSAgent(Agent):
             raise RuntimeError(f"choose_move called on terminal node {node}")
         children = self.children.get(node)
         if not children:
-            return random.choice(node.state.legal_moves())
+            return self.rng.choice(node.state.legal_moves())
 
         def mean_reward(child: MCTSNode) -> float:
             visits = self.visits[child]

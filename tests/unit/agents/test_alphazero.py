@@ -20,7 +20,7 @@ def _agent(
 ) -> AlphaZeroAgent:
     torch.manual_seed(0)
     network = AlphaZeroNetwork(env.num_moves(), env.vectorized_observation_shape()[0], (32, 16))
-    return AlphaZeroAgent(
+    agent = AlphaZeroAgent(
         env.state.cur_player(),
         GAME,
         config or AlphaZeroAgentConfig(),
@@ -28,6 +28,8 @@ def _agent(
         torch.device("cpu"),
         self_play=self_play,
     )
+    agent.begin_episode(random.Random(0))
+    return agent
 
 
 def _root_with_children(
@@ -123,7 +125,6 @@ def _root_priors(env: HanabiEnv, self_play: SelfPlayConfig | None) -> dict[str, 
 
 
 def test_root_noise_only_in_self_play(env: HanabiEnv) -> None:
-    random.seed(0)
     greedy = _root_priors(env, None)
     assert _root_priors(env, SelfPlayConfig(dirichlet_fraction=0.0)) == pytest.approx(greedy)
     noisy = _root_priors(env, SelfPlayConfig(dirichlet_fraction=0.5))
@@ -145,7 +146,6 @@ def test_greedy_without_self_play(env: HanabiEnv) -> None:
 
 
 def test_temperature_draws_first_moves_by_visits_then_plays_greedily(env: HanabiEnv) -> None:
-    random.seed(0)
     agent = _agent(env, self_play=SelfPlayConfig(temperature_moves=600))
     most_visited = str(env.state.legal_moves()[2])
     drawn = _chosen_moves(agent, env, 600)

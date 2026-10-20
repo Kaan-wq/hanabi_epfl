@@ -61,10 +61,10 @@ class _MCTSWorker:
     def search(self, state_json: str, seed: int) -> RootStats:
         """Searches from the state and returns statistics of the root's children.
 
-        `seed` reseeds this process's `random`, which drives determinization.
+        `seed` seeds the worker agent's random generator.
         """
-        random.seed(seed)
         agent = self.agent
+        agent.begin_episode(random.Random(seed))
         state = HanabiState.from_json(state_json)
         agent.environment.state = state
         observation = agent.environment.observation_dict(state.observation(state.cur_player()))
@@ -115,8 +115,8 @@ class ParallelMCTSAgent(MCTSAgent):
             return None
         self.reset(state)
         state_json = state.to_json()
-        # Drawn from this process's seeded `random`, so worker searches are reproducible.
-        seeds = [random.getrandbits(64) for _ in self.workers]
+        # Drawn from the game's generator, so worker searches are reproducible.
+        seeds = [self.rng.getrandbits(64) for _ in self.workers]
         results: list[RootStats] = ray.get(
             [w.search.remote(state_json, seed) for w, seed in zip(self.workers, seeds, strict=True)]
         )

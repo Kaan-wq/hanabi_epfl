@@ -91,6 +91,8 @@ ban-relative-imports = "all"
 [tool.ruff.lint.per-file-ignores]
 "scripts/*" = ["T20"]
 "tests/*" = ["D", "ANN", "PLR2004", "ARG"]
+# Every rule takes the game's `rng`; most do not use it.
+"src/hanabi_search/agents/rule_based/ruleset.py" = ["ARG001"]
 
 # --------------------------------------------------------------------------- mypy
 

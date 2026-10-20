@@ -77,6 +77,7 @@ class HumanAgent(Agent):
             if words[:1] == ["BOT"]:
                 if len(words) == 2 and words[1] in BOTS:
                     self.bot = BOTS[words[1]](self.player_id, self.game)
+                    self.bot.begin_episode(self.rng)
                     return self.bot.choose(observation)
                 self._show(f"Unknown bot. Choose one of {', '.join(BOTS)}")
                 continue

@@ -1,3 +1,5 @@
+import random
+
 import numpy as np
 import pytest
 import torch
@@ -5,7 +7,7 @@ import torch
 from hanabi_search.agents import RULE_BASED_AGENTS, AlphaZeroAgent, MCTSAgent, ParallelMCTSAgent
 from hanabi_search.config import AlphaZeroAgentConfig, GameConfig, MCTSAgentConfig, SelfPlayConfig
 from hanabi_search.env import HanabiEnv
-from hanabi_search.evaluation import evaluate, play_games
+from hanabi_search.evaluation import evaluate, play_game, play_games
 from hanabi_search.networks import AlphaZeroNetwork
 from hanabi_search.training import Transition
 from tests.support import PLAYER_COUNTS
@@ -20,6 +22,19 @@ def test_same_seeds_give_identical_mcts_games() -> None:
     first = play_games(game, _mcts_table(game), [10, 11])
     second = play_games(game, _mcts_table(game), [10, 11])
     assert [r.moves for r in first] == [r.moves for r in second]
+
+
+@pytest.mark.parametrize("players", PLAYER_COUNTS)
+def test_games_ignore_the_global_random_state(players: int) -> None:
+    # Agents draw only from the game's own generator, so interleaved games cannot
+    # disturb each other.
+    game = GameConfig(players=players)
+    results = []
+    for global_seed in (1, 2):
+        random.seed(global_seed)
+        env = HanabiEnv(game.to_params(4))
+        results.append(play_game(env, _mcts_table(game), 4).moves)
+    assert results[0] == results[1]
 
 
 def _self_play(game: GameConfig, seeds: list[int]) -> tuple[list[list[str]], list[Transition]]:
