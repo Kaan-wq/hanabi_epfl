@@ -19,6 +19,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <expected>
 #include <string>
 #include <unordered_map>
 
@@ -26,6 +27,9 @@ namespace hanabi_learning_env {
 
 constexpr int kMaxNumColors = 5;
 constexpr int kMaxNumRanks = 5;
+// Success, or the reason an operation failed (it then changed nothing).
+using Status = std::expected<void, std::string>;
+
 // Hint outcomes are 8-bit masks over hand positions (HanabiHistoryItem), and
 // hands store their cards inline (FixedVector), so hands hold at most 8 cards.
 constexpr int kMaxHandSize = 8;

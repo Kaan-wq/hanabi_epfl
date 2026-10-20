@@ -90,6 +90,15 @@ HanabiGame::HanabiGame(const std::unordered_map<std::string, std::string>& param
   }
 }
 
+std::expected<HanabiGame, std::string> HanabiGame::Create(
+    const std::unordered_map<std::string, std::string>& params) {
+  try {
+    return HanabiGame(params);
+  } catch (const std::invalid_argument& error) {
+    return std::unexpected(error.what());
+  }
+}
+
 int HanabiGame::MaxMoves() const {
   return MaxDiscardMoves() + MaxPlayMoves() + MaxRevealColorMoves() + MaxRevealRankMoves();
 }

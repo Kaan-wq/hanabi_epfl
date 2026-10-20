@@ -28,6 +28,7 @@
 #include "hanabi_hand.h"
 #include "hanabi_history_item.h"
 #include "hanabi_move.h"
+#include "util.h"
 
 namespace hanabi_learning_env {
 
@@ -96,10 +97,10 @@ class HanabiState {
   // the player holds): the old cards go back to the deck and the new ones are
   // drawn from it, while card knowledge stays with each position. Used to
   // re-determinize hidden hands; it is not a move, so the move history,
-  // current player, tokens and turn count are unchanged. Returns false,
-  // changing nothing, if the player or a card is out of range, the number of
-  // cards differs, or the deck cannot supply the new cards.
-  bool ReplaceHand(int player, std::span<const HanabiCard> cards);
+  // current player, tokens and turn count are unchanged. Fails, changing
+  // nothing, if the player or a card is out of range, the number of cards
+  // differs, or the deck cannot supply the new cards.
+  Status ReplaceHand(int player, std::span<const HanabiCard> cards);
   void ApplyRandomChance();
   // Get the valid chance moves, and associated probabilities.
   // Guaranteed that moves.size() == probabilities.size().

@@ -17,6 +17,7 @@
 #include "hanabi_card.h"
 #include "hanabi_hand.h"
 #include "hanabi_state.h"
+#include "util.h"
 
 namespace hanabi_learning_env {
 
@@ -52,20 +53,20 @@ class HandSampler {
 
   // Returns all of `player`'s cards to the deck, then deals a hand of the same
   // size sampled card by card from what the player knows, restarting when a
-  // position has no candidate left. Returns false, leaving `state` unchanged,
-  // if `player` is out of range or no consistent hand is found.
-  bool ResampleHand(HanabiState* state, int player);
+  // position has no candidate left. Fails, leaving `state` unchanged, if
+  // `player` is out of range or no consistent hand is found.
+  Status ResampleHand(HanabiState* state, int player);
 
   // Returns all of `player`'s cards to the deck, then deals back
   // `remembered` (their hand before they acted) without the card at
   // `removed_index`, and samples a card for any position left over (the card
   // they drew). `removed_card` is the card they played or discarded (invalid
   // after a hint); a remembered copy of it that is no longer available is
-  // replaced by a sampled card, ignoring hints if nothing else fits. Returns
-  // false, leaving `state` unchanged, if `player` is out of range or no
+  // replaced by a sampled card, ignoring hints if nothing else fits. Fails,
+  // leaving `state` unchanged, if `player` or a card is out of range or no
   // consistent hand is found.
-  bool RestoreHand(HanabiState* state, int player, std::span<const HanabiCard> remembered,
-                   const HanabiCard& removed_card, int removed_index);
+  Status RestoreHand(HanabiState* state, int player, std::span<const HanabiCard> remembered,
+                     const HanabiCard& removed_card, int removed_index);
 
  private:
   // Picks an index in [0, num_counts) with probability counts[i] / total;

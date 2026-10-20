@@ -172,7 +172,9 @@ HANABI_TEST(FailedResampleLeavesStateUnchanged) {
   hle::HanabiState impossible = hle::HanabiState::fromJSON(j, &game);
   const std::string before = impossible.toJSON().dump();
   hle::HandSampler sampler(1);
-  CHECK(!sampler.ResampleHand(&impossible, 1));
+  const hle::Status failed = sampler.ResampleHand(&impossible, 1);
+  CHECK(!failed);
+  CHECK(!failed && failed.error().find("no hand fits player 1's knowledge") != std::string::npos);
   CHECK(!sampler.ResampleHand(&impossible, 2));  // Not a player.
   CHECK(!sampler.RestoreHand(&impossible, -1, {}, hle::HanabiCard(), -1));
   CHECK_EQ(impossible.toJSON().dump(), before);

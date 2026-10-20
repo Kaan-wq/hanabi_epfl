@@ -139,7 +139,7 @@ Result ResampleHands(const std::vector<hle::HanabiState>& states, int rounds) {
   int64_t checksum = 0;
   const auto start = Clock::now();
   for (auto& state : copies) {
-    checksum += sampler.ResampleHand(&state, state.CurPlayer());
+    checksum += sampler.ResampleHand(&state, state.CurPlayer()).has_value();
     ++result.steps;
   }
   result.seconds = Seconds(start);
@@ -190,7 +190,7 @@ Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::Hana
     for (const auto& root : roots) {
       hle::HanabiState state(root);
       const int searcher = state.CurPlayer();
-      sampler.ResampleHand(&state, searcher);
+      checksum += sampler.ResampleHand(&state, searcher).has_value();
       for (int step = 0; step < depth && !state.IsTerminal(); ++step) {
         const int player = state.CurPlayer();
         const auto legal = state.LegalMoves(player);
@@ -205,13 +205,14 @@ Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::Hana
           state.ApplyRandomChance();
         }
         if (player != searcher) {
-          checksum += sampler.RestoreHand(&state, player, remembered, removed, move.CardIndex());
+          checksum += sampler.RestoreHand(&state, player, remembered, removed, move.CardIndex())
+                          .has_value();
         }
         const int next = state.CurPlayer();
         if (!state.IsTerminal() && next != searcher) {
           const auto& cards = state.Hands()[next].Cards();
           remembered.assign(cards.begin(), cards.end());
-          checksum += sampler.ResampleHand(&state, next);
+          checksum += sampler.ResampleHand(&state, next).has_value();
         }
       }
       const int observer = state.IsTerminal() ? searcher : state.CurPlayer();

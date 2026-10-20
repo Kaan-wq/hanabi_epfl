@@ -6,8 +6,11 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <format>
 #include <mdspan>
 #include <span>
+#include <string>
+#include <utility>
 #include <vector>
 
 #include "hanabi_lib/hanabi_card.h"
@@ -23,11 +26,31 @@ inline bool InRange(int index, size_t size) {
   return index >= 0 && static_cast<size_t>(index) < size;
 }
 
-// Copies a card into the caller's struct; false if `index` is out of range.
+// Records why the current call fails, for pyhanabi_last_error().
+void SetLastError(std::string message);
+
+// Records `message`; returns false (or -1, for int getters).
+inline bool Fail(std::string message) {
+  SetLastError(std::move(message));
+  return false;
+}
+inline int FailInt(std::string message) {
+  SetLastError(std::move(message));
+  return -1;
+}
+
+// True if `index` is in [0, size); otherwise records "<what> <index> is not
+// in [0, <size>)" and returns false.
+inline bool CheckIndex(int index, size_t size, const char* what) {
+  if (InRange(index, size)) return true;
+  return Fail(std::format("{} {} is not in [0, {})", what, index, size));
+}
+
+// Copies card `index` into the caller's struct; false if it is out of range.
 inline bool CopyCard(std::span<const hanabi_learning_env::HanabiCard> cards, int index,
                      pyhanabi_card_t* card) {
   REQUIRE(card != nullptr);
-  if (!InRange(index, cards.size())) return false;
+  if (!CheckIndex(index, cards.size(), "card index")) return false;
   card->color = cards[index].Color();
   card->rank = cards[index].Rank();
   return true;

@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -39,15 +40,19 @@ using json = nlohmann::json;
 
 namespace {
 
+using pyhanabi_internal::CheckIndex;
 using pyhanabi_internal::CopyCard;
-using pyhanabi_internal::InRange;
+using pyhanabi_internal::Fail;
+using pyhanabi_internal::FailInt;
+using pyhanabi_internal::SetLastError;
 
 // Serializes `object` into a malloc'd C string, or returns nullptr on failure.
 template <typename T>
 char* ToJsonString(const T& object) {
   try {
     return strdup(object.toJSON().dump().c_str());
-  } catch (const std::exception&) {
+  } catch (const std::exception& error) {
+    SetLastError(std::format("cannot serialize: {}", error.what()));
     return nullptr;
   }
 }
@@ -62,8 +67,8 @@ bool ReplaceFromJson(const char* json_str, void** handle, const Args&... extra_a
     delete static_cast<T*>(*handle);
     *handle = parsed.release();
     return true;
-  } catch (const std::exception&) {
-    return false;
+  } catch (const std::exception& error) {
+    return Fail(std::format("invalid JSON: {}", error.what()));
   }
 }
 
@@ -74,7 +79,10 @@ bool NewMove(hanabi_learning_env::HanabiMove::Type type, int card_index, int tar
              int color, int rank, pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
   if (!FitsInt8(card_index) || !FitsInt8(target_offset) || !FitsInt8(color) || !FitsInt8(rank)) {
-    return false;
+    return Fail(
+        std::format("move values must fit in 8 bits (card index {}, target {}, color {}, "
+                    "rank {})",
+                    card_index, target_offset, color, rank));
   }
   move->move = new hanabi_learning_env::HanabiMove(type, card_index, target_offset, color, rank);
   return true;
@@ -82,9 +90,23 @@ bool NewMove(hanabi_learning_env::HanabiMove::Type type, int card_index, int tar
 
 }  // namespace
 
+namespace pyhanabi_internal {
+
+namespace {
+thread_local std::string last_error;  // Read by pyhanabi_last_error().
+}  // namespace
+
+void SetLastError(std::string message) { last_error = std::move(message); }
+
+const char* LastError() { return last_error.c_str(); }
+
+}  // namespace pyhanabi_internal
+
 extern "C" {
 
 /* Helpers. */
+
+const char* pyhanabi_last_error(void) { return pyhanabi_internal::LastError(); }
 
 void DeleteString(char* str) { free(str); }
 
@@ -122,7 +144,7 @@ int ColorIsPlausible(pyhanabi_card_knowledge_t* knowledge, int color) {
   REQUIRE(knowledge->knowledge != nullptr);
   const auto* card_knowledge =
       static_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(knowledge->knowledge);
-  if (color < 0 || color >= card_knowledge->NumColors()) return -1;
+  if (!CheckIndex(color, card_knowledge->NumColors(), "color")) return -1;
   return card_knowledge->ColorPlausible(color);
 }
 
@@ -147,7 +169,7 @@ int RankIsPlausible(pyhanabi_card_knowledge_t* knowledge, int rank) {
   REQUIRE(knowledge->knowledge != nullptr);
   const auto* card_knowledge =
       static_cast<const hanabi_learning_env::HanabiHand::CardKnowledge*>(knowledge->knowledge);
-  if (rank < 0 || rank >= card_knowledge->NumRanks()) return -1;
+  if (!CheckIndex(rank, card_knowledge->NumRanks(), "rank")) return -1;
   return card_knowledge->RankPlausible(rank);
 }
 
@@ -164,7 +186,7 @@ bool GetMove(void* movelist, int index, pyhanabi_move_t* move) {
   REQUIRE(movelist != nullptr);
   REQUIRE(move != nullptr);
   const auto& moves = *static_cast<std::vector<hanabi_learning_env::HanabiMove>*>(movelist);
-  if (!InRange(index, moves.size())) return false;
+  if (!CheckIndex(index, moves.size(), "move index")) return false;
   move->move = new hanabi_learning_env::HanabiMove(moves[index]);
   return true;
 }
@@ -337,7 +359,9 @@ bool StateApplyMove(pyhanabi_state_t* state, pyhanabi_move_t* move) {
   REQUIRE(move->move != nullptr);
   auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
   const auto& hanabi_move = *static_cast<const hanabi_learning_env::HanabiMove*>(move->move);
-  if (!hanabi_state->MoveIsLegal(hanabi_move)) return false;
+  if (!hanabi_state->MoveIsLegal(hanabi_move)) {
+    return Fail(std::format("move {} is not legal in this state", hanabi_move.ToString()));
+  }
   hanabi_state->ApplyMove(hanabi_move);
   return true;
 }
@@ -351,7 +375,8 @@ bool StateRemoveKnowledge(pyhanabi_state_t* state, int player, int card_index) {
   REQUIRE(state->state != nullptr);
   auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
   const auto& hands = hanabi_state->Hands();
-  if (!InRange(player, hands.size()) || !InRange(card_index, hands[player].Knowledge().size())) {
+  if (!CheckIndex(player, hands.size(), "player") ||
+      !CheckIndex(card_index, hands[player].Knowledge().size(), "card index")) {
     return false;
   }
   hanabi_state->RemoveKnowledge(player, card_index);
@@ -368,10 +393,10 @@ bool StateDealCard(pyhanabi_state_t* state) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   auto hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
-  if (hanabi_state->CurPlayer() != hanabi_learning_env::kChancePlayerId ||
-      hanabi_state->Deck().Empty()) {
-    return false;
+  if (hanabi_state->CurPlayer() != hanabi_learning_env::kChancePlayerId) {
+    return Fail(std::format("not a chance turn: player {} must act", hanabi_state->CurPlayer()));
   }
+  if (hanabi_state->Deck().Empty()) return Fail("the deck is empty");
   hanabi_state->ApplyRandomChance();
   return true;
 }
@@ -386,7 +411,7 @@ int StateFireworks(pyhanabi_state_t* state, int color) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   const auto& fireworks = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Fireworks();
-  return InRange(color, fireworks.size()) ? fireworks[color] : -1;
+  return CheckIndex(color, fireworks.size(), "color") ? fireworks[color] : -1;
 }
 
 int StateDiscardPileSize(pyhanabi_state_t* state) {
@@ -406,14 +431,14 @@ int StateGetHandSize(pyhanabi_state_t* state, int pid) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   const auto& hands = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Hands();
-  return InRange(pid, hands.size()) ? static_cast<int>(hands[pid].Cards().size()) : -1;
+  return CheckIndex(pid, hands.size(), "player") ? static_cast<int>(hands[pid].Cards().size()) : -1;
 }
 
 bool StateGetHandCard(pyhanabi_state_t* state, int pid, int index, pyhanabi_card_t* card) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
   const auto& hands = static_cast<hanabi_learning_env::HanabiState*>(state->state)->Hands();
-  return InRange(pid, hands.size()) && CopyCard(hands[pid].Cards(), index, card);
+  return CheckIndex(pid, hands.size(), "player") && CopyCard(hands[pid].Cards(), index, card);
 }
 
 int StateInformationTokens(pyhanabi_state_t* state) {
@@ -490,7 +515,7 @@ bool StateGetMoveHistory(pyhanabi_state_t* state, int index, pyhanabi_history_it
   REQUIRE(item != nullptr);
   const auto& history =
       static_cast<const hanabi_learning_env::HanabiState*>(state->state)->MoveHistory();
-  if (!InRange(index, history.size())) return false;
+  if (!CheckIndex(index, history.size(), "history index")) return false;
   item->item = new hanabi_learning_env::HanabiHistoryItem(history[index]);
   return true;
 }
@@ -512,20 +537,19 @@ void NewDefaultGame(pyhanabi_game_t* game) {
 
 bool NewGame(pyhanabi_game_t* game, int list_length, const char** param_list) {
   REQUIRE(game != nullptr);
-  if (list_length < 0 || list_length % 2 != 0) return false;
+  if (list_length < 0 || list_length % 2 != 0) {
+    return Fail(std::format("parameter list length must be even and >= 0, got {}", list_length));
+  }
   REQUIRE(list_length == 0 || param_list != nullptr);
   std::unordered_map<std::string, std::string> params;
   for (int p = 0; p < list_length; p += 2) {
     REQUIRE(param_list[p] != nullptr && param_list[p + 1] != nullptr);
     params[param_list[p]] = param_list[p + 1];
   }
-  try {
-    // The constructor throws on invalid parameters.
-    game->game = new hanabi_learning_env::HanabiGame(params);
-    return true;
-  } catch (const std::exception&) {
-    return false;
-  }
+  auto created = hanabi_learning_env::HanabiGame::Create(params);
+  if (!created) return Fail(std::move(created.error()));
+  game->game = new hanabi_learning_env::HanabiGame(std::move(*created));
+  return true;
 }
 
 char* GameParamString(pyhanabi_game_t* game) {
@@ -582,7 +606,7 @@ bool GetMoveByUid(pyhanabi_game_t* game, int move_uid, pyhanabi_move_t* move) {
   REQUIRE(game->game != nullptr);
   REQUIRE(move != nullptr);
   auto hanabi_game = static_cast<hanabi_learning_env::HanabiGame*>(game->game);
-  if (move_uid < 0 || move_uid >= hanabi_game->MaxMoves()) return false;
+  if (!CheckIndex(move_uid, hanabi_game->MaxMoves(), "move id")) return false;
   move->move = new hanabi_learning_env::HanabiMove(hanabi_game->GetMove(move_uid));
   return true;
 }
@@ -667,7 +691,10 @@ bool pyhanabi_state_hands(const pyhanabi_state_t* state, int32_t* hand_sizes, in
   REQUIRE(hand_sizes != nullptr && colors != nullptr && ranks != nullptr);
   const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
   const auto& game = *hanabi_state.ParentGame();
-  if (num_players != game.NumPlayers() || hand_size != game.HandSize()) return false;
+  if (num_players != game.NumPlayers() || hand_size != game.HandSize()) {
+    return Fail(std::format("buffers are for {} players x {} cards; the game has {} x {}",
+                            num_players, hand_size, game.NumPlayers(), game.HandSize()));
+  }
   pyhanabi_internal::WriteHands(hanabi_state.Hands(), hand_size, hand_sizes, colors, ranks);
   return true;
 }
@@ -679,7 +706,9 @@ int32_t pyhanabi_state_legal_move_uids(const pyhanabi_state_t* state, int32_t* u
   REQUIRE(uids != nullptr);
   const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
   const auto& game = *hanabi_state.ParentGame();
-  if (capacity < game.MaxMoves()) return -1;
+  if (capacity < game.MaxMoves()) {
+    return FailInt(std::format("capacity {} is below MaxMoves ({})", capacity, game.MaxMoves()));
+  }
   if (hanabi_state.IsTerminal() ||
       hanabi_state.CurPlayer() == hanabi_learning_env::kChancePlayerId) {
     return 0;
@@ -705,17 +734,26 @@ bool pyhanabi_state_candidate_counts(const pyhanabi_state_t* state, int32_t play
   REQUIRE(counts != nullptr);
   const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
   const auto& game = *hanabi_state.ParentGame();
-  if (!InRange(player, hanabi_state.Hands().size()) || card_index < 0 ||
-      card_index >= game.HandSize() || num_excluded < 0 ||
-      counts_size != game.NumColors() * game.NumRanks()) {
+  if (!CheckIndex(player, hanabi_state.Hands().size(), "player") ||
+      !CheckIndex(card_index, game.HandSize(), "card index")) {
     return false;
+  }
+  if (num_excluded < 0) return Fail(std::format("num_excluded {} is negative", num_excluded));
+  if (counts_size != game.NumColors() * game.NumRanks()) {
+    return Fail(std::format("counts_size {} is not num_colors * num_ranks ({})", counts_size,
+                            game.NumColors() * game.NumRanks()));
   }
   REQUIRE(num_excluded == 0 || excluded != nullptr);
   const auto& knowledge = hanabi_state.Hands()[player].Knowledge();
-  if (use_knowledge && !InRange(card_index, knowledge.size())) return false;
+  if (use_knowledge && !CheckIndex(card_index, knowledge.size(), "card index (with knowledge)")) {
+    return false;
+  }
   std::vector<hanabi_learning_env::HanabiCard> excluded_cards;
   for (int32_t i = 0; i < num_excluded; ++i) {
-    if (!game.NumberCardInstances(excluded[i].color, excluded[i].rank)) return false;
+    if (!game.NumberCardInstances(excluded[i].color, excluded[i].rank)) {
+      return Fail(std::format("excluded card (color {}, rank {}) is not in the game",
+                              excluded[i].color, excluded[i].rank));
+    }
     excluded_cards.emplace_back(excluded[i].color, excluded[i].rank);
   }
   const std::vector<int> candidates = hanabi_learning_env::HandSampler::CandidateCounts(
@@ -728,8 +766,9 @@ bool pyhanabi_state_candidate_counts(const pyhanabi_state_t* state, int32_t play
 bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint64_t seed) {
   REQUIRE(state != nullptr);
   REQUIRE(state->state != nullptr);
-  return hanabi_learning_env::HandSampler(seed).ResampleHand(
+  const auto status = hanabi_learning_env::HandSampler(seed).ResampleHand(
       static_cast<hanabi_learning_env::HanabiState*>(state->state), player);
+  return status ? true : Fail(status.error());
 }
 
 bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
@@ -740,23 +779,33 @@ bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
   REQUIRE(state->state != nullptr);
   auto* hanabi_state = static_cast<hanabi_learning_env::HanabiState*>(state->state);
   const auto& game = *hanabi_state->ParentGame();
-  if (num_remembered < 0 || num_remembered > game.HandSize() || removed_index < -1 ||
-      removed_index >= num_remembered) {
-    return false;
+  if (num_remembered < 0 || num_remembered > game.HandSize()) {
+    return Fail(
+        std::format("num_remembered {} is not in [0, {}]", num_remembered, game.HandSize()));
+  }
+  if (removed_index < -1 || removed_index >= num_remembered) {
+    return Fail(std::format("removed_index {} is not in [-1, {})", removed_index, num_remembered));
   }
   REQUIRE(num_remembered == 0 || remembered != nullptr);
   std::vector<hanabi_learning_env::HanabiCard> remembered_cards;
   for (int32_t i = 0; i < num_remembered; ++i) {
-    if (!game.NumberCardInstances(remembered[i].color, remembered[i].rank)) return false;
+    if (!game.NumberCardInstances(remembered[i].color, remembered[i].rank)) {
+      return Fail(std::format("remembered card (color {}, rank {}) is not in the game",
+                              remembered[i].color, remembered[i].rank));
+    }
     remembered_cards.emplace_back(remembered[i].color, remembered[i].rank);
   }
   const bool has_removed_card = removed_color != -1 || removed_rank != -1;
-  if (has_removed_card && !game.NumberCardInstances(removed_color, removed_rank)) return false;
+  if (has_removed_card && !game.NumberCardInstances(removed_color, removed_rank)) {
+    return Fail(std::format("removed card (color {}, rank {}) is not in the game", removed_color,
+                            removed_rank));
+  }
   const hanabi_learning_env::HanabiCard removed_card =
       has_removed_card ? hanabi_learning_env::HanabiCard(removed_color, removed_rank)
                        : hanabi_learning_env::HanabiCard();
-  return hanabi_learning_env::HandSampler(seed).RestoreHand(hanabi_state, player, remembered_cards,
-                                                            removed_card, removed_index);
+  const auto status = hanabi_learning_env::HandSampler(seed).RestoreHand(
+      hanabi_state, player, remembered_cards, removed_card, removed_index);
+  return status ? true : Fail(status.error());
 }
 
 } /* extern "C" */

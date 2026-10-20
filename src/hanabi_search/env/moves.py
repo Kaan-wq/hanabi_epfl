@@ -3,7 +3,7 @@
 import enum
 from typing import Self
 
-from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import CData, engine_message, ffi, lib, take_string
 from hanabi_search.env.cards import color_idx_to_char
 from hanabi_search.env.observation_types import MoveDict
 from hanabi_search.exceptions import EngineCallError, SerializationError
@@ -29,7 +29,7 @@ class HanabiMoveType(enum.IntEnum):
 def _new_move(build: str, *args: int) -> CData:
     c_move = ffi.new("pyhanabi_move_t*")
     if not getattr(lib, build)(*args, c_move):
-        raise EngineCallError(f"{build}{args} failed")
+        raise EngineCallError(engine_message(f"{build}{args} failed"))
     return c_move
 
 
@@ -125,7 +125,7 @@ class HanabiMove:
         """Serializes the move to a JSON string."""
         c_string = lib.MoveToJson(self.c_move)
         if c_string == ffi.NULL:
-            raise SerializationError("MoveToJson returned NULL")
+            raise SerializationError(engine_message("Cannot serialize the move"))
         return take_string(c_string)
 
     @classmethod
@@ -133,7 +133,9 @@ class HanabiMove:
         """Deserializes a move produced by `to_json`."""
         c_move = ffi.new("pyhanabi_move_t*")
         if not lib.MoveFromJson(json_str.encode(), c_move):
-            raise SerializationError(f"Cannot deserialize HanabiMove from {json_str!r}")
+            raise SerializationError(
+                engine_message(f"Cannot deserialize HanabiMove from {json_str!r}")
+            )
         return cls(c_move)
 
     def to_dict(self) -> MoveDict:
@@ -249,7 +251,7 @@ class HanabiHistoryItem:
         """Serializes the history item to a JSON string."""
         c_string = lib.HistoryItemToJson(self._c_item)
         if c_string == ffi.NULL:
-            raise SerializationError("HistoryItemToJson returned NULL")
+            raise SerializationError(engine_message("Cannot serialize the history item"))
         return take_string(c_string)
 
     @classmethod
@@ -257,7 +259,9 @@ class HanabiHistoryItem:
         """Deserializes a history item produced by `to_json`."""
         c_item = ffi.new("pyhanabi_history_item_t*")
         if not lib.HistoryItemFromJson(json_str.encode(), c_item):
-            raise SerializationError(f"Cannot deserialize HanabiHistoryItem from {json_str!r}")
+            raise SerializationError(
+                engine_message(f"Cannot deserialize HanabiHistoryItem from {json_str!r}")
+            )
         return cls(c_item)
 
     def __str__(self) -> str:

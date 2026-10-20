@@ -67,7 +67,8 @@ typedef struct PyHanabiObservationEncoder {
 /* Error convention. Functions that take an index, id or parameter from the
  * caller check it: on a bad value, a function returning bool returns false
  * and leaves its output handle untouched, and a getter returning int returns
- * -1. A NULL pointer argument is a caller bug and still aborts.
+ * -1. pyhanabi_last_error() then says why. A NULL pointer argument is a
+ * caller bug and still aborts.
  *
  * Ownership: a function filling a pyhanabi_*_t handle allocates a new object
  * that the caller frees with the matching Delete* function. Strings returned
@@ -75,6 +76,11 @@ typedef struct PyHanabiObservationEncoder {
 
 /* Utility Functions. */
 void DeleteString(char* str);
+/* Why the most recent failing call (false or -1 as above) in the calling
+ * thread failed, e.g. "player 3 is not in [0, 3)". Empty before any failure.
+ * The string belongs to the engine and stays valid until the next failing
+ * call in the same thread; do not free it. */
+const char* pyhanabi_last_error(void);
 
 /* Card functions. */
 int CardValid(pyhanabi_card_t* card);
@@ -419,6 +425,23 @@ def take_string(c_string: CData) -> str:
 class _CardStruct(Protocol):
     color: int
     rank: int
+
+
+def engine_message(context: str) -> str:
+    """Returns `context` followed by why the last failing engine call failed.
+
+    Call it right after an engine function signals failure (false, -1 or NULL):
+    the reason is kept per thread until the next failure.
+
+    Args:
+        context: What was being attempted, e.g. "Cannot resample the hand of player 1".
+
+    Returns:
+        "<context>: <engine reason>", or `context` if the engine gave none.
+    """
+    value = ffi.string(lib.pyhanabi_last_error())
+    reason = value.decode() if isinstance(value, bytes) else value
+    return f"{context}: {reason}" if reason else context
 
 
 def card_values(c_card: CData) -> tuple[int, int]:

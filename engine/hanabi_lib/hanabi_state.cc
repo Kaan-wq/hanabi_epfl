@@ -20,6 +20,7 @@
 #include <array>
 #include <cassert>
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <limits>
 #include <nlohmann/json.hpp>
@@ -143,10 +144,15 @@ void HanabiState::RemoveKnowledge(int player, int card_index) {
   hands_[player].RemoveKnowledge(card_index, card_knowledge);
 }
 
-bool HanabiState::ReplaceHand(int player, std::span<const HanabiCard> cards) {
-  if (!IsPlayer(player)) return false;
+Status HanabiState::ReplaceHand(int player, std::span<const HanabiCard> cards) {
+  if (!IsPlayer(player)) {
+    return std::unexpected(std::format("player {} is not in [0, {})", player, hands_.size()));
+  }
   const auto& old_cards = hands_[player].Cards();
-  if (cards.size() != old_cards.size()) return false;
+  if (cards.size() != old_cards.size()) {
+    return std::unexpected(
+        std::format("player {} holds {} cards, not {}", player, old_cards.size(), cards.size()));
+  }
   const HanabiGame& game = *parent_game_;
   // Copies available once the old cards are back in the deck, minus the new ones.
   std::array<int, static_cast<size_t>(kMaxNumColors) * kMaxNumRanks> available{};
@@ -155,15 +161,20 @@ bool HanabiState::ReplaceHand(int player, std::span<const HanabiCard> cards) {
   };
   for (const HanabiCard& card : old_cards) ++available[index(card)];
   for (const HanabiCard& card : cards) {
-    if (!CardIsInGame(card.Color(), card.Rank())) return false;
-    if (--available[index(card)] + deck_.CardCount(card.Color(), card.Rank()) < 0) return false;
+    if (!CardIsInGame(card.Color(), card.Rank())) {
+      return std::unexpected(
+          std::format("card (color {}, rank {}) is not in the game", card.Color(), card.Rank()));
+    }
+    if (--available[index(card)] + deck_.CardCount(card.Color(), card.Rank()) < 0) {
+      return std::unexpected(std::format("no copy of {} is left to deal", card.ToString()));
+    }
   }
   for (const HanabiCard& card : old_cards) deck_.ReturnCard(card.Color(), card.Rank());
   for (int position = 0; position < static_cast<int>(cards.size()); ++position) {
     hands_[player].ReplaceCard(position,
                                deck_.DealCard(cards[position].Color(), cards[position].Rank()));
   }
-  return true;
+  return {};
 }
 
 void HanabiState::AdvanceToNextPlayer(bool stayOnPlayer) {

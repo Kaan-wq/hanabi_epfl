@@ -4,7 +4,7 @@ import enum
 from collections.abc import Mapping
 from typing import Self
 
-from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import CData, engine_message, ffi, lib, take_string
 from hanabi_search.env.moves import HanabiMove
 from hanabi_search.exceptions import ConfigError, EngineCallError, SerializationError
 
@@ -53,7 +53,7 @@ class HanabiGame:
         c_array = ffi.new(f"char * [{len(strings)}]", strings)
         if not lib.NewGame(self._game, len(strings), c_array):
             self._game = None  # Nothing for __del__ to free.
-            raise ConfigError(f"Invalid game parameters: {dict(params)}")
+            raise ConfigError(engine_message(f"Invalid game parameters: {dict(params)}"))
 
     @classmethod
     def _from_c_game(cls, c_game: CData) -> Self:
@@ -124,7 +124,7 @@ class HanabiGame:
         """
         c_move = ffi.new("pyhanabi_move_t*")
         if not lib.GetMoveByUid(self.c_game, move_uid, c_move):
-            raise EngineCallError(f"Move id {move_uid} is out of range")
+            raise EngineCallError(engine_message(f"Cannot get move {move_uid}"))
         return HanabiMove(c_move)
 
     def all_moves(self) -> list[HanabiMove]:
@@ -140,7 +140,7 @@ class HanabiGame:
         """Serializes the game, including its RNG state, to a JSON string."""
         c_string = lib.GameToJson(self.c_game)
         if c_string == ffi.NULL:
-            raise SerializationError("GameToJson returned NULL")
+            raise SerializationError(engine_message("Cannot serialize the game"))
         return take_string(c_string)
 
     @classmethod
@@ -148,7 +148,7 @@ class HanabiGame:
         """Deserializes a game produced by `to_json`."""
         c_game = ffi.new("pyhanabi_game_t*")
         if not lib.GameFromJson(json_str.encode(), c_game):
-            raise SerializationError("Cannot deserialize HanabiGame")
+            raise SerializationError(engine_message("Cannot deserialize HanabiGame"))
         return cls._from_c_game(c_game)
 
     def __del__(self) -> None:

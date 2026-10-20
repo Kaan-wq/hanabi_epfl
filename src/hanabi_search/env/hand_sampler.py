@@ -10,7 +10,7 @@ from collections.abc import Sequence
 import numpy as np
 import numpy.typing as npt
 
-from hanabi_search.env._pyhanabi import CData, ffi, lib
+from hanabi_search.env._pyhanabi import CData, engine_message, ffi, lib
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.state import HanabiState
 from hanabi_search.exceptions import ConfigError, EngineCallError
@@ -63,7 +63,9 @@ def candidate_counts(
         ffi.from_buffer("int32_t[]", counts),
         counts.size,
     ):
-        raise EngineCallError(f"No candidates for player {player} at position {card_index}")
+        raise EngineCallError(
+            engine_message(f"Cannot count candidates for player {player} at {card_index}")
+        )
     return counts.reshape(game.num_colors(), game.num_ranks())
 
 
@@ -90,7 +92,7 @@ def resample_hand(state: HanabiState, player: int, seed: int) -> None:
     """
     _check_seed(seed)
     if not lib.pyhanabi_state_resample_hand(state.c_state, player, seed):
-        raise EngineCallError(f"Cannot resample the hand of player {player}")
+        raise EngineCallError(engine_message(f"Cannot resample the hand of player {player}"))
 
 
 def restore_hand(
@@ -134,4 +136,4 @@ def restore_hand(
         removed_index,
         seed,
     ):
-        raise EngineCallError(f"Cannot restore the hand of player {player}")
+        raise EngineCallError(engine_message(f"Cannot restore the hand of player {player}"))

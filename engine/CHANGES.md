@@ -8,6 +8,34 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: `std::expected` and error reasons through the C API
+
+Modernization step 4. Failures now say why, from the engine to Python.
+
+- `HanabiGame::Create(params)` returns `std::expected<HanabiGame, std::string>`
+  (the throwing constructor stays for internal use).
+  `HanabiState::ReplaceHand`, `HandSampler::ResampleHand` and `RestoreHand`
+  return `Status` (`std::expected<void, std::string>`, in `util.h`) with the
+  reason, e.g. "no hand fits player 1's knowledge (10000 attempts)".
+- New C API function `const char* pyhanabi_last_error(void)`: the reason for
+  the calling thread's most recent failing call (thread-local, owned by the
+  engine, valid until the next failure). Every C API path that returns
+  false / -1 / NULL records one ("player 5 is not in [0, 3)", "move (Play 0)
+  is not legal in this state", "invalid JSON: 'cur_player' ...").
+- Python: `engine_message(context)` (in `_pyhanabi.py`) appends the reason to
+  every `ConfigError`, `EngineCallError`, `SerializationError` and
+  `IllegalMoveError` raised after an engine failure.
+- Inside the JSON parser, exceptions remain (dozens of nested reads; without
+  a `?` operator, `expected` would add an error-forwarding line after each);
+  they are caught once at the C API boundary and their message recorded.
+
+Tests: `FailuresExplainThemselves` (C API), sampler reasons, and Python tests
+matching the reasons in exception messages. No behavior change otherwise
+(dumps, rule outputs and MCTS decisions identical); search iteration
+unchanged (257,939 -> 258,221, 3p).
+
+---
+
 ## 2026-10-20: `std::mdspan` for multi-dimensional buffers
 
 Modernization step 3. Code that indexed flat buffers by hand

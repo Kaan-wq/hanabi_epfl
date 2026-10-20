@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <format>
 #include <numeric>
 #include <span>
 #include <vector>
@@ -88,7 +89,7 @@ void CommitHand(HanabiState* state, int player, const PlannedHand& hand,
   const HanabiGame& game = *state->ParentGame();
   HanabiHand::CardList cards;
   for (int card : hand) cards.push_back(HanabiCard(card / game.NumRanks(), card % game.NumRanks()));
-  REQUIRE(state->ReplaceHand(player, cards));  // Drawable by construction (DeckWithHand).
+  REQUIRE(state->ReplaceHand(player, cards).has_value());  // Drawable by construction.
   for (int position = 0; position < static_cast<int>(forget.size()); ++position) {
     if (forget[position]) state->RemoveKnowledge(player, position);
   }
@@ -96,6 +97,16 @@ void CommitHand(HanabiState* state, int player, const PlannedHand& hand,
 
 bool IsPlayer(const HanabiState& state, int player) {
   return player >= 0 && player < state.ParentGame()->NumPlayers();
+}
+
+std::unexpected<std::string> NoCandidate(int player, int position) {
+  return std::unexpected(
+      std::format("no card fits player {}'s knowledge at position {}", player, position));
+}
+
+std::unexpected<std::string> NotAPlayer(const HanabiState& state, int player) {
+  return std::unexpected(
+      std::format("player {} is not in [0, {})", player, state.ParentGame()->NumPlayers()));
 }
 
 }  // namespace
@@ -122,8 +133,8 @@ std::vector<int> HandSampler::CandidateCounts(const HanabiState& state, int play
 // Both sampling functions plan the new hand on counts alone, then swap it in
 // with HanabiState::ReplaceHand: a failure leaves the state untouched.
 
-bool HandSampler::ResampleHand(HanabiState* state, int player) {
-  if (!IsPlayer(*state, player)) return false;
+Status HandSampler::ResampleHand(HanabiState* state, int player) {
+  if (!IsPlayer(*state, player)) return NotAPlayer(*state, player);
   const HanabiGame& game = *state->ParentGame();
   const int hand_size = static_cast<int>(state->Hands()[player].Cards().size());
   const Counts available = DeckWithHand(*state, player);
@@ -142,16 +153,21 @@ bool HandSampler::ResampleHand(HanabiState* state, int player) {
       hand.push_back(SampleIndex(counts.data(), NumCards(game), total));
     }
   }
-  if (static_cast<int>(hand.size()) < hand_size) return false;
+  if (static_cast<int>(hand.size()) < hand_size) {
+    return std::unexpected(
+        std::format("no hand fits player {}'s knowledge ({} attempts)", player, kMaxAttempts));
+  }
   CommitHand(state, player, hand, {});
-  return true;
+  return {};
 }
 
-bool HandSampler::RestoreHand(HanabiState* state, int player,
-                              std::span<const HanabiCard> remembered,
-                              const HanabiCard& removed_card, int removed_index) {
-  if (!IsPlayer(*state, player) || remembered.size() > HanabiHand::CardList::capacity()) {
-    return false;
+Status HandSampler::RestoreHand(HanabiState* state, int player,
+                                std::span<const HanabiCard> remembered,
+                                const HanabiCard& removed_card, int removed_index) {
+  if (!IsPlayer(*state, player)) return NotAPlayer(*state, player);
+  if (remembered.size() > HanabiHand::CardList::capacity()) {
+    return std::unexpected(
+        std::format("remembered hand has {} cards, more than {}", remembered.size(), kMaxHandSize));
   }
   const HanabiGame& game = *state->ParentGame();
   const int hand_size = static_cast<int>(state->Hands()[player].Cards().size());
@@ -181,9 +197,15 @@ bool HandSampler::RestoreHand(HanabiState* state, int player,
   for (int i = 0; i < static_cast<int>(remembered.size()); ++i) {
     if (i == removed_index) continue;
     const int position = static_cast<int>(hand.size());
-    if (position >= hand_size) return false;
+    if (position >= hand_size) {
+      return std::unexpected(
+          std::format("remembered hand has more cards than player {} holds", player));
+    }
     const HanabiCard& card = remembered[i];
-    if (game.NumberCardInstances(card) == 0) return false;  // Not a card of the game.
+    if (game.NumberCardInstances(card) == 0) {
+      return std::unexpected(
+          std::format("card (color {}, rank {}) is not in the game", card.Color(), card.Rank()));
+    }
     const int card_index = CardIndex(game, card.Color(), card.Rank());
     if (removed_card.IsValid() && card == removed_card) {
       // The played or discarded copy may have been the last one available.
@@ -198,11 +220,13 @@ bool HandSampler::RestoreHand(HanabiState* state, int player,
           forget[position] = true;
           counts = candidates(nullptr, later_cards);
         }
-        if (!plan_sampled(counts)) return false;
+        if (!plan_sampled(counts)) return NoCandidate(player, position);
         continue;
       }
     }
-    if (deck[card_index] == 0) return false;
+    if (deck[card_index] == 0) {
+      return std::unexpected(std::format("no copy of remembered {} is left", card.ToString()));
+    }
     hand.push_back(card_index);
     --deck[card_index];
   }
@@ -210,11 +234,11 @@ bool HandSampler::RestoreHand(HanabiState* state, int player,
   if (position < hand_size) {
     // The card drawn after acting.
     if (!plan_sampled(candidates(KnowledgeAt(*state, player, position), {}))) {
-      return false;
+      return NoCandidate(player, position);
     }
   }
   CommitHand(state, player, hand, std::span<const bool>(forget).first(hand.size()));
-  return true;
+  return {};
 }
 
 int HandSampler::SampleIndex(const int* counts, int num_counts, int total) {

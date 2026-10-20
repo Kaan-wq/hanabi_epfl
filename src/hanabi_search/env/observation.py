@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import numpy as np
 import numpy.typing as npt
 
-from hanabi_search.env._pyhanabi import CData, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import CData, engine_message, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard, HanabiCardKnowledge
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
@@ -78,7 +78,7 @@ class HanabiObservation:
         self._observation: CData | None = ffi.new("pyhanabi_observation_t*")
         if not lib.NewObservation(c_state, player, self._observation):
             self._observation = None  # Nothing for __del__ to free.
-            raise EngineCallError(f"Player {player} is out of range")
+            raise EngineCallError(engine_message(f"Cannot observe the state as player {player}"))
         # Reused buffers for `card_knowledge`, one slot per (player, card); made on first use.
         self._knowledge_pool: list[CData] | None = None
         self._hands: HandArrays | None = None
@@ -127,7 +127,7 @@ class HanabiObservation:
                 ffi.from_buffer("int8_t[]", ranks),
                 *shape,
             ):
-                raise EngineCallError("pyhanabi_observation_hands rejected the game's shape")
+                raise EngineCallError(engine_message("Cannot read the observed hands"))
             self._hands = HandArrays(_read_only(sizes), _read_only(colors), _read_only(ranks))
         return self._hands
 
@@ -165,7 +165,7 @@ class HanabiObservation:
                 *shape,
                 *cards,
             ):
-                raise EngineCallError("pyhanabi_observation_card_knowledge rejected the shape")
+                raise EngineCallError(engine_message("Cannot read the card knowledge"))
             self._knowledge = KnowledgeArrays(
                 _read_only(hinted_colors),
                 _read_only(hinted_ranks),
@@ -199,7 +199,7 @@ class HanabiObservation:
             if not lib.pyhanabi_observation_unseen_card_counts(
                 self.c_observation, ffi.from_buffer("int32_t[]", counts), counts.size
             ):
-                raise EngineCallError("pyhanabi_observation_unseen_card_counts rejected the shape")
+                raise EngineCallError(engine_message("Cannot count the unseen cards"))
             self._unseen = _read_only(counts)
         return self._unseen
 
@@ -225,7 +225,7 @@ class HanabiObservation:
             capacity,
         )
         if count < 0:
-            raise EngineCallError("Discard pile larger than the deck")
+            raise EngineCallError(engine_message("Cannot read the discard pile"))
         return colors[:count], ranks[:count]
 
     def fireworks(self) -> list[int]:
@@ -234,7 +234,7 @@ class HanabiObservation:
         if not lib.pyhanabi_observation_fireworks(
             self.c_observation, ffi.from_buffer("int32_t[]", heights), heights.size
         ):
-            raise EngineCallError("pyhanabi_observation_fireworks rejected the number of colors")
+            raise EngineCallError(engine_message("Cannot read the fireworks"))
         return heights.tolist()
 
     def deck_size(self) -> int:
@@ -282,7 +282,7 @@ class HanabiObservation:
             self.c_observation, ffi.from_buffer("int32_t[]", uids), uids.size
         )
         if count < 0:
-            raise EngineCallError("More legal moves than the game's action space")
+            raise EngineCallError(engine_message("Cannot read the legal moves"))
         return uids[:count]
 
     def card_playable_on_fireworks(self, color: int, rank: int) -> bool:
@@ -331,7 +331,7 @@ class ObservationEncoder:
         self._encoder: CData | None = ffi.new("pyhanabi_observation_encoder_t*")
         if not lib.NewObservationEncoder(self._encoder, game.c_game, encoder_type):
             self._encoder = None  # Nothing for __del__ to free.
-            raise EngineCallError(f"Unknown observation encoder type {encoder_type}")
+            raise EngineCallError(engine_message(f"Cannot create encoder type {encoder_type}"))
         self._length = int(np.prod(self.shape()))
 
     @property
@@ -353,7 +353,7 @@ class ObservationEncoder:
             ffi.from_buffer("uint8_t[]", bits),
             bits.size,
         ):
-            raise EngineCallError("pyhanabi_observation_encode rejected the encoding length")
+            raise EngineCallError(engine_message("Cannot encode the observation"))
         return bits
 
     def __del__(self) -> None:

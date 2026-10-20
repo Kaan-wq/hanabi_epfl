@@ -195,3 +195,11 @@ def test_resampling_records_no_moves(game: GameConfig) -> None:
         )
     # The resampled player cannot see their own cards: their view is unchanged.
     assert (env.vectorized_observation(state.observation(player)) == own_encoding).all()
+
+
+def test_sampling_errors_carry_the_engine_reason(env: HanabiEnv) -> None:
+    with pytest.raises(EngineCallError, match=r"player 2 is not in \[0, 2\)"):
+        resample_hand(env.state, 2, seed=0)
+    remembered = env.state.player_hands()[1]
+    with pytest.raises(EngineCallError, match=r"removed_index 5 is not in \[-1, 5\)"):
+        restore_hand(env.state, 1, remembered, None, len(remembered), seed=0)

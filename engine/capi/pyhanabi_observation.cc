@@ -22,6 +22,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <format>
 #include <mdspan>
 #include <string>
 #include <vector>
@@ -37,8 +38,10 @@
 #include "pyhanabi.h"
 #include "pyhanabi_internal.h"
 
+using pyhanabi_internal::CheckIndex;
 using pyhanabi_internal::CopyCard;
-using pyhanabi_internal::InRange;
+using pyhanabi_internal::Fail;
+using pyhanabi_internal::FailInt;
 using pyhanabi_internal::Observation;
 
 namespace {
@@ -57,7 +60,7 @@ bool NewObservation(pyhanabi_state_t* state, int player, pyhanabi_observation_t*
   REQUIRE(state->state != nullptr);
   REQUIRE(observation != nullptr);
   const auto& hanabi_state = *static_cast<hanabi_learning_env::HanabiState*>(state->state);
-  if (player < 0 || player >= hanabi_state.ParentGame()->NumPlayers()) return false;
+  if (!CheckIndex(player, hanabi_state.ParentGame()->NumPlayers(), "player")) return false;
   observation->observation = new hanabi_learning_env::HanabiObservation(hanabi_state, player);
   return true;
 }
@@ -95,20 +98,26 @@ int ObsNumPlayers(pyhanabi_observation_t* observation) {
 
 int ObsGetHandSize(pyhanabi_observation_t* observation, int pid) {
   const auto& hands = Observation(observation).Hands();
-  return InRange(pid, hands.size()) ? static_cast<int>(hands[pid].Cards().size()) : -1;
+  return CheckIndex(pid, hands.size(), "player offset")
+             ? static_cast<int>(hands[pid].Cards().size())
+             : -1;
 }
 
 bool ObsGetHandCard(pyhanabi_observation_t* observation, int pid, int index,
                     pyhanabi_card_t* card) {
   const auto& hands = Observation(observation).Hands();
-  return InRange(pid, hands.size()) && CopyCard(hands[pid].Cards(), index, card);
+  return CheckIndex(pid, hands.size(), "player offset") &&
+         CopyCard(hands[pid].Cards(), index, card);
 }
 
 bool ObsGetHandCardKnowledge(pyhanabi_observation_t* observation, int pid, int index,
                              pyhanabi_card_knowledge_t* knowledge) {
   REQUIRE(knowledge != nullptr);
   const auto& hands = Observation(observation).Hands();
-  if (!InRange(pid, hands.size()) || !InRange(index, hands[pid].Knowledge().size())) return false;
+  if (!CheckIndex(pid, hands.size(), "player offset") ||
+      !CheckIndex(index, hands[pid].Knowledge().size(), "card index")) {
+    return false;
+  }
   knowledge->knowledge = &hands[pid].Knowledge()[index];
   return true;
 }
@@ -125,7 +134,7 @@ bool ObsGetDiscard(pyhanabi_observation_t* observation, int index, pyhanabi_card
 
 int ObsFireworks(pyhanabi_observation_t* observation, int color) {
   const auto& fireworks = Observation(observation).Fireworks();
-  return InRange(color, fireworks.size()) ? fireworks[color] : -1;
+  return CheckIndex(color, fireworks.size(), "color") ? fireworks[color] : -1;
 }
 
 int ObsDeckSize(pyhanabi_observation_t* observation) {
@@ -146,7 +155,7 @@ int ObsNumLastMoves(pyhanabi_observation_t* observation) {
 bool ObsGetLastMove(pyhanabi_observation_t* observation, int index, pyhanabi_history_item_t* item) {
   REQUIRE(item != nullptr);
   const auto& last_moves = Observation(observation).LastMoves();
-  if (!InRange(index, last_moves.size())) return false;
+  if (!CheckIndex(index, last_moves.size(), "last move index")) return false;
   item->item = new hanabi_learning_env::HanabiHistoryItem(last_moves[index]);
   return true;
 }
@@ -176,7 +185,7 @@ int ObsNumLegalMoves(pyhanabi_observation_t* observation) {
 bool ObsGetLegalMove(pyhanabi_observation_t* observation, int index, pyhanabi_move_t* move) {
   REQUIRE(move != nullptr);
   const auto& legal_moves = Observation(observation).LegalMoves();
-  if (!InRange(index, legal_moves.size())) return false;
+  if (!CheckIndex(index, legal_moves.size(), "legal move index")) return false;
   move->move = new hanabi_learning_env::HanabiMove(legal_moves[index]);
   return true;
 }
@@ -191,7 +200,9 @@ bool NewObservationEncoder(pyhanabi_observation_encoder_t* encoder, pyhanabi_gam
   REQUIRE(encoder != nullptr);
   REQUIRE(game != nullptr);
   REQUIRE(game->game != nullptr);
-  if (type != hanabi_learning_env::ObservationEncoder::Type::kCanonical) return false;
+  if (type != hanabi_learning_env::ObservationEncoder::Type::kCanonical) {
+    return Fail(std::format("unknown observation encoder type {} (0: canonical)", type));
+  }
   encoder->encoder = new hanabi_learning_env::CanonicalObservationEncoder(
       static_cast<hanabi_learning_env::HanabiGame*>(game->game));
   return true;
@@ -245,7 +256,10 @@ bool pyhanabi_observation_hands(const pyhanabi_observation_t* observation, int32
                                 int32_t hand_size) {
   REQUIRE(hand_sizes != nullptr && colors != nullptr && ranks != nullptr);
   const auto& game = Game(observation);
-  if (num_players != game.NumPlayers() || hand_size != game.HandSize()) return false;
+  if (num_players != game.NumPlayers() || hand_size != game.HandSize()) {
+    return Fail(std::format("buffers are for {} players x {} cards; the game has {} x {}",
+                            num_players, hand_size, game.NumPlayers(), game.HandSize()));
+  }
   pyhanabi_internal::WriteHands(Observation(observation).Hands(), hand_size, hand_sizes, colors,
                                 ranks);
   return true;
@@ -259,7 +273,11 @@ bool pyhanabi_observation_card_knowledge(const pyhanabi_observation_t* observati
   const auto& game = Game(observation);
   if (num_players != game.NumPlayers() || hand_size != game.HandSize() ||
       num_colors != game.NumColors() || num_ranks != game.NumRanks()) {
-    return false;
+    return Fail(std::format(
+        "buffers are for {} players x {} cards x {} colors x {} ranks; the game has {} x {} x {} "
+        "x {}",
+        num_players, hand_size, num_colors, num_ranks, game.NumPlayers(), game.HandSize(),
+        game.NumColors(), game.NumRanks()));
   }
   const std::mdspan color_grid(hinted_colors, num_players, hand_size);  // [player, position]
   const std::mdspan rank_grid(hinted_ranks, num_players, hand_size);
@@ -281,7 +299,10 @@ int32_t pyhanabi_observation_discard_pile(const pyhanabi_observation_t* observat
                                           int8_t* ranks, int32_t capacity) {
   REQUIRE(colors != nullptr && ranks != nullptr);
   const auto& discards = Observation(observation).DiscardPile();
-  if (capacity < 0 || discards.size() > static_cast<size_t>(capacity)) return -1;
+  if (capacity < 0 || discards.size() > static_cast<size_t>(capacity)) {
+    return FailInt(
+        std::format("capacity {} is below the {} discarded cards", capacity, discards.size()));
+  }
   for (size_t index = 0; index < discards.size(); ++index) {
     colors[index] = static_cast<int8_t>(discards[index].Color());
     ranks[index] = static_cast<int8_t>(discards[index].Rank());
@@ -293,7 +314,9 @@ bool pyhanabi_observation_fireworks(const pyhanabi_observation_t* observation, i
                                     int32_t num_colors) {
   REQUIRE(heights != nullptr);
   const auto& fireworks = Observation(observation).Fireworks();
-  if (num_colors < 0 || static_cast<size_t>(num_colors) != fireworks.size()) return false;
+  if (num_colors < 0 || static_cast<size_t>(num_colors) != fireworks.size()) {
+    return Fail(std::format("num_colors {} is not the game's {}", num_colors, fireworks.size()));
+  }
   std::copy(fireworks.begin(), fireworks.end(), heights);
   return true;
 }
@@ -303,7 +326,9 @@ int32_t pyhanabi_observation_legal_move_uids(const pyhanabi_observation_t* obser
   REQUIRE(uids != nullptr);
   const auto& game = Game(observation);
   const auto& moves = Observation(observation).LegalMoves();
-  if (capacity < 0 || moves.size() > static_cast<size_t>(capacity)) return -1;
+  if (capacity < 0 || moves.size() > static_cast<size_t>(capacity)) {
+    return FailInt(std::format("capacity {} is below the {} legal moves", capacity, moves.size()));
+  }
   for (size_t index = 0; index < moves.size(); ++index) {
     uids[index] = game.GetMoveUid(moves[index]);
   }
@@ -314,7 +339,10 @@ bool pyhanabi_observation_unseen_card_counts(const pyhanabi_observation_t* obser
                                              int32_t* counts, int32_t counts_size) {
   REQUIRE(counts != nullptr);
   const auto& game = Game(observation);
-  if (counts_size != game.NumColors() * game.NumRanks()) return false;
+  if (counts_size != game.NumColors() * game.NumRanks()) {
+    return Fail(std::format("counts_size {} is not num_colors * num_ranks ({})", counts_size,
+                            game.NumColors() * game.NumRanks()));
+  }
   hanabi_learning_env::UnseenCardCounts(Observation(observation), counts);
   return true;
 }
@@ -328,7 +356,9 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
   // NewObservationEncoder only creates canonical encoders.
   const auto& obs_encoder =
       *static_cast<const hanabi_learning_env::CanonicalObservationEncoder*>(encoder->encoder);
-  if (size != obs_encoder.Length()) return false;
+  if (size != obs_encoder.Length()) {
+    return Fail(std::format("size {} is not the encoding length {}", size, obs_encoder.Length()));
+  }
   obs_encoder.EncodeInto(Observation(observation), bits);
   return true;
 }

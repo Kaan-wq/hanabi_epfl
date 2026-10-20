@@ -573,4 +573,59 @@ HANABI_TEST(HandSamplingFunctionsRejectBadArguments) {
   }
 }
 
+// Whether pyhanabi_last_error() mentions `text`.
+bool LastErrorMentions(const std::string& text) {
+  const std::string error = pyhanabi_last_error();
+  if (error.find(text) != std::string::npos) return true;
+  std::cerr << "last error \"" << error << "\" does not mention \"" << text << "\"\n";
+  return false;
+}
+
+HANABI_TEST(FailuresExplainThemselves) {
+  Fixture f;
+
+  pyhanabi_game_t game{};
+  const char* bad_params[] = {"players", "3", "hand_size", "9"};
+  CHECK(!NewGame(&game, 4, bad_params));
+  CHECK(LastErrorMentions("hand_size must be in [1, 8]"));
+  CHECK(!NewGame(&game, 3, bad_params));
+  CHECK(LastErrorMentions("must be even"));
+
+  pyhanabi_card_t card{};
+  CHECK(!StateGetHandCard(&f.state, kNumPlayers, 0, &card));
+  CHECK(LastErrorMentions("player 3 is not in [0, 3)"));
+  CHECK(!StateGetHandCard(&f.state, 0, 9, &card));
+  CHECK(LastErrorMentions("card index 9 is not in [0, 5)"));
+  CHECK_EQ(StateFireworks(&f.state, 7), -1);
+  CHECK(LastErrorMentions("color 7"));
+
+  pyhanabi_move_t move{};
+  CHECK(GetPlayMove(0, &move));
+  pyhanabi_state_t copy{};
+  CopyState(&f.state, &copy);
+  while (StateEndOfGameStatus(&copy) == 0 && StateCurPlayer(&copy) != -1) {
+    StateApplyMove(&copy, &move);  // Plays until a deal is pending or the game ends.
+  }
+  if (StateCurPlayer(&copy) == -1) {
+    CHECK(!StateApplyMove(&copy, &move));
+    CHECK(LastErrorMentions("is not legal"));
+  }
+  DeleteState(&copy);
+  DeleteMove(&move);
+  CHECK(!StateDealCard(&f.state));
+  CHECK(LastErrorMentions("not a chance turn"));
+
+  CHECK(!StateFromJson("{\"cur_player\": 1}", &f.state, &f.game));
+  CHECK(LastErrorMentions("invalid JSON"));
+  CHECK(!pyhanabi_state_resample_hand(&f.state, -1, 0));
+  CHECK(LastErrorMentions("player -1 is not in [0, 3)"));
+  int32_t uids[1];
+  CHECK_EQ(pyhanabi_state_legal_move_uids(&f.state, uids, 1), -1);
+  CHECK(LastErrorMentions("below MaxMoves"));
+
+  pyhanabi_observation_t observation{};
+  CHECK(!NewObservation(&f.state, 5, &observation));
+  CHECK(LastErrorMentions("player 5 is not in [0, 3)"));
+}
+
 int main() { return hanabi_test::RunAll(); }

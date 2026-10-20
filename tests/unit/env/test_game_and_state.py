@@ -243,3 +243,25 @@ def test_hands_from_arrays_match_per_player(env: HanabiEnv) -> None:
 def test_player_hand_out_of_range_raises(env: HanabiEnv, player: int) -> None:
     with pytest.raises(IndexError):
         env.state.player_hand(player)
+
+
+def test_engine_errors_carry_the_engine_reason(state: HanabiState) -> None:
+    with pytest.raises(ConfigError, match=r"hand_size must be in \[1, 8\]"):
+        HanabiGame({"players": 3, "hand_size": 9})
+    with pytest.raises(EngineCallError, match=r"player 5 is not in \[0, 2\)"):
+        state.observation(5)
+    with pytest.raises(EngineCallError, match="not a chance turn"):
+        state.deal_random_card()
+    payload = json.loads(state.to_json())
+    engine_state = json.loads(payload["HanabiState"])
+    engine_state["cur_player"] = 7
+    payload["HanabiState"] = json.dumps(engine_state)
+    with pytest.raises(SerializationError, match="invalid JSON: 'cur_player'"):
+        HanabiState.from_json(json.dumps(payload))
+
+
+def test_illegal_move_error_says_why_before_the_state(state: HanabiState) -> None:
+    discard = HanabiMove.get_discard_move(0)  # Not legal while information tokens are full.
+    with pytest.raises(IllegalMoveError, match=r"Illegal move .*: move .* is not legal") as error:
+        state.apply_move(discard)
+    assert "\nState:\n" in str(error.value)

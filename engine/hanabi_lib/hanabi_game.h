@@ -17,6 +17,7 @@
 #ifndef HANABI_LIB_HANABI_GAME_H_
 #define HANABI_LIB_HANABI_GAME_H_
 
+#include <expected>
 #include <nlohmann/json.hpp>
 #include <random>
 #include <string>
@@ -41,7 +42,11 @@ class HanabiGame {
   // hints have been given.
   enum AgentObservationType { kMinimal = 0, kCardKnowledge = 1, kSeer = 2 };
 
+  // Throws std::invalid_argument for invalid parameters; see Create.
   explicit HanabiGame(const std::unordered_map<std::string, std::string>& params);
+  // The game for `params`, or why they are invalid.
+  static std::expected<HanabiGame, std::string> Create(
+      const std::unordered_map<std::string, std::string>& params);
 
   // ========= Serialization + Deserialization =========
   nlohmann::json toJSON() const;

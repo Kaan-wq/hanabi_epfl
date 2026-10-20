@@ -6,7 +6,7 @@ from typing import Self
 
 import numpy as np
 
-from hanabi_search.env._pyhanabi import CData, card_values, ffi, lib, take_string
+from hanabi_search.env._pyhanabi import CData, card_values, engine_message, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
@@ -78,7 +78,7 @@ class HanabiState:
             IllegalMoveError: If `move` is not legal in this state; nothing changes.
         """
         if not lib.StateApplyMove(self.c_state, move.c_move):
-            raise IllegalMoveError(f"Illegal move {move} in state:\n{self}")
+            raise IllegalMoveError(f"{engine_message(f'Illegal move {move}')}\nState:\n{self}")
 
     def deal_random_card(self) -> None:
         """Deals a random card.
@@ -87,7 +87,7 @@ class HanabiState:
             EngineCallError: If it is not a chance turn or the deck is empty.
         """
         if not lib.StateDealCard(self.c_state):
-            raise EngineCallError("No card can be dealt: not a chance turn, or the deck is empty")
+            raise EngineCallError(engine_message("No card can be dealt"))
 
     def remove_knowledge(self, player: int, card_index: int) -> None:
         """Resets all hint knowledge about one of `player`'s cards.
@@ -98,7 +98,9 @@ class HanabiState:
             EngineCallError: If `player` or `card_index` is out of range.
         """
         if not lib.StateRemoveKnowledge(self.c_state, player, card_index):
-            raise EngineCallError(f"No card knowledge for player {player} at {card_index}")
+            raise EngineCallError(
+                engine_message(f"Cannot remove the knowledge of player {player} at {card_index}")
+            )
 
     def cur_player(self) -> int:
         """Returns the acting player, or `CHANCE_PLAYER_ID` if a card must be dealt."""
@@ -173,7 +175,7 @@ class HanabiState:
             ffi.from_buffer("int8_t[]", ranks),
             *shape,
         ):
-            raise EngineCallError("pyhanabi_state_hands rejected the game's shape")
+            raise EngineCallError(engine_message("Cannot read the hands"))
         return HandArrays(sizes, colors, ranks)
 
     def information_tokens(self) -> int:
@@ -207,7 +209,7 @@ class HanabiState:
             self.c_state, ffi.from_buffer("int32_t[]", uids), uids.size
         )
         if count < 0:
-            raise EngineCallError("pyhanabi_state_legal_move_uids rejected the capacity")
+            raise EngineCallError(engine_message("Cannot read the legal moves"))
         return [moves[uid] for uid in uids[:count].tolist()]
 
     def move_is_legal(self, move: HanabiMove) -> bool:
@@ -231,7 +233,7 @@ class HanabiState:
         """Serializes the state together with its game (parameters and RNG state)."""
         c_state_json = lib.StateToJson(self.c_state)
         if c_state_json == ffi.NULL:
-            raise SerializationError("StateToJson returned NULL")
+            raise SerializationError(engine_message("Cannot serialize the state"))
         return json.dumps(
             {"HanabiGame": self._game.to_json(), "HanabiState": take_string(c_state_json)}
         )
@@ -248,7 +250,7 @@ class HanabiState:
         game = HanabiGame.from_json(payload["HanabiGame"])
         c_state = ffi.new("pyhanabi_state_t*")
         if not lib.StateFromJson(str(payload["HanabiState"]).encode(), c_state, game.c_game):
-            raise SerializationError("Cannot deserialize HanabiState")
+            raise SerializationError(engine_message("Cannot deserialize HanabiState"))
         # Only take ownership once the engine state exists, so __del__ never frees garbage.
         state = cls.__new__(cls)
         state._game = game

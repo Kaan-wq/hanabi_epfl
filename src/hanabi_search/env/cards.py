@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from hanabi_search.env._pyhanabi import CData, lib, take_string
+from hanabi_search.env._pyhanabi import CData, engine_message, lib, take_string
 from hanabi_search.env.observation_types import CardDict, KnowledgeDict
 from hanabi_search.exceptions import EngineCallError
 
@@ -125,7 +125,7 @@ class HanabiCardKnowledge:
         """
         plausible = lib.ColorIsPlausible(self._knowledge, color_index)
         if plausible < 0:
-            raise EngineCallError(f"Color {color_index} is out of range")
+            raise EngineCallError(engine_message(f"Cannot check color {color_index}"))
         return bool(plausible)
 
     def rank(self) -> int | None:
@@ -140,7 +140,7 @@ class HanabiCardKnowledge:
         """
         plausible = lib.RankIsPlausible(self._knowledge, rank_index)
         if plausible < 0:
-            raise EngineCallError(f"Rank {rank_index} is out of range")
+            raise EngineCallError(engine_message(f"Cannot check rank {rank_index}"))
         return bool(plausible)
 
     def to_dict(self) -> KnowledgeDict:
