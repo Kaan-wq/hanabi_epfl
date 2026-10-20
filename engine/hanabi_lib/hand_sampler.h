@@ -66,8 +66,9 @@ class HandSampler {
                    const HanabiCard& removed_card, int removed_index);
 
  private:
-  // Picks an index with probability counts[i] / total; total must be > 0.
-  int SampleIndex(const std::vector<int>& counts, int total);
+  // Picks an index in [0, num_counts) with probability counts[i] / total;
+  // total must be the (positive) sum of the counts.
+  int SampleIndex(const int* counts, int num_counts, int total);
 
   SplitMix64 rng_;
 };

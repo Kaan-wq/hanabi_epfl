@@ -8,6 +8,28 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Hand sampling without state copies (search iteration 2.69x)
+
+`ResampleHand` and `RestoreHand` copied the whole state (move history
+included) to stay atomic, assigned it back on success, and allocated count
+vectors in their inner loops. They now plan the new hand on fixed-size card
+counts (the deck plus the returned hand), then apply the returns and
+deal-specific moves to the state only on success; a failure still leaves the
+state untouched. Random draws happen in the same order, so samples are
+identical: Python MCTS decisions match before and after (72/72, with and
+without rule filtering). `RestoreHand` now also rejects cards that are not in
+the game (the C API already did).
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 79,347 | 125,364 (1.58x; 2.69x baseline) |
+| resample hand | 1,156,975 | 2,557,054 (2.21x) |
+
+Search iteration 2/4/5 players: 2.26x / 2.92x / 3.10x baseline. Other rows
+within noise (-6% to +1%).
+
+---
+
 ## 2026-10-20: Card knowledge as a bitmask (search iteration 1.67x)
 
 `ValueKnowledge` stored plausible values in a `std::vector<bool>`, so every

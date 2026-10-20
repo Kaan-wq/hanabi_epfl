@@ -1,11 +1,13 @@
 #include "hand_sampler.h"
 
+#include <array>
 #include <cstdint>
 #include <numeric>
 #include <vector>
 
 #include "hanabi_game.h"
 #include "hanabi_move.h"
+#include "util.h"
 
 namespace hanabi_learning_env {
 
@@ -14,19 +16,25 @@ namespace {
 // Bounds the restarts of ResampleHand; a consistent hand normally takes one or two.
 constexpr int kMaxAttempts = 10000;
 
+// Copies of each card, indexed color * num_ranks + rank. Fixed-size, so the
+// sampling loops allocate nothing.
+using Counts = std::array<int, static_cast<size_t>(kMaxNumColors) * kMaxNumRanks>;
+
 int CardIndex(const HanabiGame& game, int color, int rank) {
   return color * game.NumRanks() + rank;
 }
 
+int NumCards(const HanabiGame& game) { return game.NumColors() * game.NumRanks(); }
+
 // Removes one copy of `card` if any is left.
-void RemoveOne(const HanabiGame& game, const HanabiCard& card, std::vector<int>* counts) {
+void RemoveOne(const HanabiGame& game, const HanabiCard& card, Counts* counts) {
   int& count = (*counts)[CardIndex(game, card.Color(), card.Rank())];
   if (count > 0) --count;
 }
 
 // Zeroes the cards `knowledge` rules out; returns the remaining total.
 int FilterByKnowledge(const HanabiGame& game, const HanabiHand::CardKnowledge* knowledge,
-                      std::vector<int>* counts) {
+                      Counts* counts) {
   int total = 0;
   for (int color = 0; color < game.NumColors(); ++color) {
     for (int rank = 0; rank < game.NumRanks(); ++rank) {
@@ -41,16 +49,31 @@ int FilterByKnowledge(const HanabiGame& game, const HanabiHand::CardKnowledge* k
   return total;
 }
 
-// What `player` knows about each card in their hand, as their observation
-// shows it: with kMinimal observations, hints are not remembered.
-std::vector<HanabiHand::CardKnowledge> KnowledgeOf(const HanabiState& state, int player) {
+int Total(const HanabiGame& game, const Counts& counts) {
+  return std::accumulate(counts.begin(), counts.begin() + NumCards(game), 0);
+}
+
+// The deck once `player` has returned their whole hand: what it can be dealt from.
+Counts DeckWithHand(const HanabiState& state, int player) {
   const HanabiGame& game = *state.ParentGame();
-  const HanabiHand& hand = state.Hands()[player];
-  if (game.ObservationType() == HanabiGame::kMinimal) {
-    return std::vector<HanabiHand::CardKnowledge>(
-        hand.Cards().size(), HanabiHand::CardKnowledge(game.NumColors(), game.NumRanks()));
+  Counts counts{};
+  for (int color = 0; color < game.NumColors(); ++color) {
+    for (int rank = 0; rank < game.NumRanks(); ++rank) {
+      counts[CardIndex(game, color, rank)] = state.Deck().CardCount(color, rank);
+    }
   }
-  return {hand.Knowledge().begin(), hand.Knowledge().begin() + hand.Cards().size()};
+  for (const HanabiCard& card : state.Hands()[player].Cards()) {
+    ++counts[CardIndex(game, card.Color(), card.Rank())];
+  }
+  return counts;
+}
+
+// What `player` knows about the card at `position`, as their observation
+// shows it; nullptr (no filter) with kMinimal observations, where hints are
+// not remembered.
+const HanabiHand::CardKnowledge* KnowledgeAt(const HanabiState& state, int player, int position) {
+  if (state.ParentGame()->ObservationType() == HanabiGame::kMinimal) return nullptr;
+  return &state.Hands()[player].Knowledge()[position];
 }
 
 void ReturnHand(HanabiState* state, int player) {
@@ -61,11 +84,20 @@ void ReturnHand(HanabiState* state, int player) {
   }
 }
 
-bool DealSpecific(HanabiState* state, int card_index, int player, int color, int rank) {
-  const HanabiMove move(HanabiMove::kDealSpecific, card_index, player, color, rank);
-  if (!state->MoveIsLegal(move)) return false;
-  state->ApplyMove(move);
-  return true;
+// Swaps `player`'s hand for `hand` (card indices by position), which must be
+// drawable from the deck once the hand is returned. `forget[position]` resets
+// the knowledge of that position first.
+void CommitHand(HanabiState* state, int player, const std::vector<int>& hand,
+                const std::vector<bool>& forget) {
+  const HanabiGame& game = *state->ParentGame();
+  ReturnHand(state, player);
+  for (int position = 0; position < static_cast<int>(hand.size()); ++position) {
+    if (!forget.empty() && forget[position]) state->RemoveKnowledge(player, position);
+    const HanabiMove deal(HanabiMove::kDealSpecific, position, player,
+                          hand[position] / game.NumRanks(), hand[position] % game.NumRanks());
+    REQUIRE(state->MoveIsLegal(deal));  // Guaranteed by sampling from DeckWithHand.
+    state->ApplyMove(deal);
+  }
 }
 
 bool IsPlayer(const HanabiState& state, int player) {
@@ -78,7 +110,7 @@ std::vector<int> HandSampler::CandidateCounts(const HanabiState& state, int play
                                               const HanabiHand::CardKnowledge* knowledge,
                                               const std::vector<HanabiCard>& excluded) {
   const HanabiGame& game = *state.ParentGame();
-  std::vector<int> counts(static_cast<size_t>(game.NumColors()) * game.NumRanks());
+  Counts counts{};
   for (int color = 0; color < game.NumColors(); ++color) {
     for (int rank = 0; rank < game.NumRanks(); ++rank) {
       counts[CardIndex(game, color, rank)] = state.Deck().CardCount(color, rank);
@@ -90,42 +122,35 @@ std::vector<int> HandSampler::CandidateCounts(const HanabiState& state, int play
   }
   for (const HanabiCard& card : excluded) RemoveOne(game, card, &counts);
   FilterByKnowledge(game, knowledge, &counts);
-  return counts;
+  return {counts.begin(), counts.begin() + NumCards(game)};
 }
+
+// Both sampling functions plan the new hand on counts alone, then apply it to
+// the state in one go: a failure leaves the state untouched without copying it.
 
 bool HandSampler::ResampleHand(HanabiState* state, int player) {
   if (!IsPlayer(*state, player)) return false;
-  HanabiState sampled_state = *state;  // Committed only on success.
   const HanabiGame& game = *state->ParentGame();
-  const std::vector<HanabiHand::CardKnowledge> knowledge = KnowledgeOf(*state, player);
-  const int hand_size = static_cast<int>(knowledge.size());
-  ReturnHand(&sampled_state, player);
-  const std::vector<int> available =
-      CandidateCounts(sampled_state, player, -1, nullptr, std::vector<HanabiCard>());
+  const int hand_size = static_cast<int>(state->Hands()[player].Cards().size());
+  const Counts available = DeckWithHand(*state, player);
 
   std::vector<int> hand;  // Card indices, by position.
+  hand.reserve(hand_size);
   for (int attempt = 0; attempt < kMaxAttempts && static_cast<int>(hand.size()) < hand_size;
        ++attempt) {
     hand.clear();
     for (int position = 0; position < hand_size; ++position) {
-      std::vector<int> counts = available;
+      Counts counts = available;
       for (int card : hand) {
         if (counts[card] > 0) --counts[card];
       }
-      const int total = FilterByKnowledge(game, &knowledge[position], &counts);
+      const int total = FilterByKnowledge(game, KnowledgeAt(*state, player, position), &counts);
       if (total == 0) break;
-      hand.push_back(SampleIndex(counts, total));
+      hand.push_back(SampleIndex(counts.data(), NumCards(game), total));
     }
   }
   if (static_cast<int>(hand.size()) < hand_size) return false;
-
-  for (int position = 0; position < hand_size; ++position) {
-    if (!DealSpecific(&sampled_state, position, player, hand[position] / game.NumRanks(),
-                      hand[position] % game.NumRanks())) {
-      return false;
-    }
-  }
-  *state = sampled_state;
+  CommitHand(state, player, hand, {});
   return true;
 }
 
@@ -133,62 +158,72 @@ bool HandSampler::RestoreHand(HanabiState* state, int player,
                               const std::vector<HanabiCard>& remembered,
                               const HanabiCard& removed_card, int removed_index) {
   if (!IsPlayer(*state, player)) return false;
-  HanabiState restored_state = *state;  // Committed only on success.
   const HanabiGame& game = *state->ParentGame();
-  const std::vector<HanabiHand::CardKnowledge> knowledge = KnowledgeOf(*state, player);
-  const int hand_size = static_cast<int>(knowledge.size());
-  ReturnHand(&restored_state, player);
+  const int hand_size = static_cast<int>(state->Hands()[player].Cards().size());
+  Counts deck = DeckWithHand(*state, player);  // Minus the cards planned so far.
+  std::vector<int> hand;
+  hand.reserve(hand_size);
+  std::vector<bool> forget(hand_size, false);
 
-  // Deals the sampled card for `position`; false if no candidate is left.
-  const auto deal_sampled = [&](int position, std::vector<int> counts) {
-    const int total = std::accumulate(counts.begin(), counts.end(), 0);
+  // Candidates for the next position: the deck minus `later` cards, filtered
+  // by `knowledge` (nullptr: no filter).
+  const auto candidates = [&](const HanabiHand::CardKnowledge* knowledge,
+                              const std::vector<HanabiCard>& later) {
+    Counts counts = deck;
+    for (const HanabiCard& card : later) RemoveOne(game, card, &counts);
+    FilterByKnowledge(game, knowledge, &counts);
+    return counts;
+  };
+  // Plans a sampled card for the next position; false if no candidate is left.
+  const auto plan_sampled = [&](const Counts& counts) {
+    const int total = Total(game, counts);
     if (total == 0) return false;
-    const int card = SampleIndex(counts, total);
-    return DealSpecific(&restored_state, position, player, card / game.NumRanks(),
-                        card % game.NumRanks());
+    hand.push_back(SampleIndex(counts.data(), NumCards(game), total));
+    --deck[hand.back()];
+    return true;
   };
 
-  int position = 0;
+  std::vector<HanabiCard> later_cards;
   for (int i = 0; i < static_cast<int>(remembered.size()); ++i) {
     if (i == removed_index) continue;
+    const int position = static_cast<int>(hand.size());
     if (position >= hand_size) return false;
     const HanabiCard& card = remembered[i];
-    bool dealt = false;
+    if (game.NumberCardInstances(card) == 0) return false;  // Not a card of the game.
+    const int card_index = CardIndex(game, card.Color(), card.Rank());
     if (removed_card.IsValid() && card == removed_card) {
       // The played or discarded copy may have been the last one available.
-      std::vector<HanabiCard> later_cards;
+      later_cards.clear();
       for (int j = i + 1; j < static_cast<int>(remembered.size()); ++j) {
         if (j != removed_index) later_cards.push_back(remembered[j]);
       }
-      std::vector<int> counts =
-          CandidateCounts(restored_state, player, position, &knowledge[position], later_cards);
-      if (counts[CardIndex(game, card.Color(), card.Rank())] == 0) {
-        if (std::accumulate(counts.begin(), counts.end(), 0) == 0) {
+      Counts counts = candidates(KnowledgeAt(*state, player, position), later_cards);
+      if (counts[card_index] == 0) {
+        if (Total(game, counts) == 0) {
           // Nothing fits the hints: forget them for this card.
-          restored_state.RemoveKnowledge(player, position);
-          counts = CandidateCounts(restored_state, player, position, nullptr, later_cards);
+          forget[position] = true;
+          counts = candidates(nullptr, later_cards);
         }
-        if (!deal_sampled(position, counts)) return false;
-        dealt = true;
+        if (!plan_sampled(counts)) return false;
+        continue;
       }
     }
-    if (!dealt && !DealSpecific(&restored_state, position, player, card.Color(), card.Rank())) {
-      return false;
-    }
-    ++position;
+    if (deck[card_index] == 0) return false;
+    hand.push_back(card_index);
+    --deck[card_index];
   }
+  const int position = static_cast<int>(hand.size());
   if (position < hand_size) {
     // The card drawn after acting.
-    if (!deal_sampled(position, CandidateCounts(restored_state, player, position,
-                                                &knowledge[position], std::vector<HanabiCard>()))) {
+    if (!plan_sampled(candidates(KnowledgeAt(*state, player, position), {}))) {
       return false;
     }
   }
-  *state = restored_state;
+  CommitHand(state, player, hand, forget);
   return true;
 }
 
-int HandSampler::SampleIndex(const std::vector<int>& counts, int total) {
+int HandSampler::SampleIndex(const int* counts, int num_counts, int total) {
   // Rejection sampling: uniform in [0, total) without modulo bias.
   const uint64_t bound = static_cast<uint64_t>(total);
   const uint64_t limit = UINT64_MAX - UINT64_MAX % bound;
@@ -197,11 +232,11 @@ int HandSampler::SampleIndex(const std::vector<int>& counts, int total) {
     draw = rng_();
   } while (draw >= limit);
   int target = static_cast<int>(draw % bound);
-  for (int i = 0; i < static_cast<int>(counts.size()); ++i) {
+  for (int i = 0; i < num_counts; ++i) {
     if (target < counts[i]) return i;
     target -= counts[i];
   }
-  return static_cast<int>(counts.size()) - 1;  // Unreachable when total is the sum.
+  return num_counts - 1;  // Unreachable when total is the sum.
 }
 
 }  // namespace hanabi_learning_env
