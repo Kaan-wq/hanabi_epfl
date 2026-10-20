@@ -33,13 +33,13 @@ def _agent(
 
 
 def _root_with_children(
-    agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, float]]
+    agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, int]]
 ) -> list[HanabiMove]:
     """Gives the root one child per (prior, visits) entry, in legal-move order."""
     agent.reset(env.state)
     agent.root_node.focused_state = env.state
     moves = env.state.legal_moves()[: len(stats)]
-    agent.tree.expand([], moves, np.array([prior for prior, _ in stats]))
+    agent.tree.expand([], moves, [prior for prior, _ in stats])
     root = agent.tree.root
     assert root is not None
     root.visits[:] = [visits for _, visits in stats]
@@ -68,7 +68,7 @@ def test_first_search_expands_the_root_with_priors_summing_to_one(env: HanabiEnv
     root = agent.tree.root
     assert root is not None
     assert root.moves == env.state.legal_moves()
-    assert root.priors.sum() == pytest.approx(1.0)
+    assert sum(root.priors) == pytest.approx(1.0)
     assert 0 <= agent.tree.root_total <= GAME.max_score
 
 
@@ -115,7 +115,7 @@ def _root_priors(env: HanabiEnv, self_play: SelfPlayConfig | None) -> dict[str, 
     _search(agent, current_observation(env))
     root = agent.tree.root
     assert root is not None
-    return {str(move): prior for move, prior in zip(root.moves, root.priors.tolist(), strict=True)}
+    return {str(move): prior for move, prior in zip(root.moves, root.priors, strict=True)}
 
 
 def test_root_noise_only_in_self_play(env: HanabiEnv) -> None:

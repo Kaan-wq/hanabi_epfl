@@ -1,14 +1,13 @@
-import numpy as np
 import pytest
 
 from hanabi_search.agents.alphazero.tree import SearchTree, TreeNode
 from hanabi_search.env import HanabiEnv, HanabiMove
 
 
-def _node(env: HanabiEnv, stats: list[tuple[float, float, float]]) -> TreeNode:
+def _node(env: HanabiEnv, stats: list[tuple[float, int, float]]) -> TreeNode:
     """A node with one child per (prior, visits, total) entry."""
     moves = env.state.legal_moves()[: len(stats)]
-    node = TreeNode.with_priors(moves, np.array([prior for prior, _, _ in stats]))
+    node = TreeNode.with_priors(moves, [prior for prior, _, _ in stats])
     node.visits[:] = [visits for _, visits, _ in stats]
     node.totals[:] = [total for _, _, total in stats]
     return node
@@ -43,11 +42,11 @@ def test_select_stops_at_unexpanded_child_and_expand_attaches_it(env: HanabiEnv)
     tree = SearchTree(exploration_weight=2.5, max_score=25)
     assert tree.select() == ([], [])
     assert not tree.is_expanded([])
-    tree.expand([], env.state.legal_moves()[:2], np.array([0.7, 0.3]))
+    tree.expand([], env.state.legal_moves()[:2], [0.7, 0.3])
     path, _ = tree.select()
     assert not tree.is_expanded(path)
     child_moves: list[HanabiMove] = env.state.legal_moves()[2:4]
-    tree.expand(path, child_moves, np.array([0.5, 0.5]))
+    tree.expand(path, child_moves, [0.5, 0.5])
     assert tree.is_expanded(path)
     deeper, moves = tree.select()
     assert len(deeper) == 2 and moves[1] in child_moves
@@ -55,10 +54,10 @@ def test_select_stops_at_unexpanded_child_and_expand_attaches_it(env: HanabiEnv)
 
 def test_backpropagate_updates_root_and_path(env: HanabiEnv) -> None:
     tree = SearchTree(exploration_weight=2.5, max_score=25)
-    tree.expand([], env.state.legal_moves()[:2], np.array([0.7, 0.3]))
+    tree.expand([], env.state.legal_moves()[:2], [0.7, 0.3])
     path, _ = tree.select()
     tree.backpropagate(path, 12.0)
     root = tree.root
     assert root is not None
     assert (tree.root_visits, tree.root_total) == (1, 12.0)
-    assert root.visits.tolist() == [1, 0] and root.totals.tolist() == pytest.approx([12.0, 0])
+    assert root.visits == [1, 0] and root.totals == pytest.approx([12.0, 0])

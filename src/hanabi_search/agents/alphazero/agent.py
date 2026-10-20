@@ -2,6 +2,7 @@
 
 import random
 from collections.abc import Generator
+from math import inf
 from typing import override
 
 import numpy as np
@@ -144,11 +145,16 @@ class AlphaZeroAgent(MCTSAgent):
         if root is None or not root.moves:
             return super().choose_move(node)
         visits = root.visits
-        if self.self_play is not None and self._moves_this_game <= self.self_play.temperature_moves:
-            weights = visits.tolist()
-            if sum(weights) > 0:
-                return root.moves[self.rng.choices(range(len(weights)), weights)[0]]
-        return root.moves[int(np.argmax(np.where(visits == 0, -np.inf, visits)))]
+        self_play = self.self_play
+        if (
+            self_play is not None
+            and self._moves_this_game <= self_play.temperature_moves
+            and sum(visits) > 0
+        ):
+            return root.moves[self.rng.choices(range(len(visits)), visits)[0]]
+        # Unvisited children lose; the first of equally visited ones wins.
+        best = max(range(len(visits)), key=lambda index: visits[index] or -inf)
+        return root.moves[best]
 
     @override
     def root_visits(self) -> dict[int, float]:
@@ -158,7 +164,7 @@ class AlphaZeroAgent(MCTSAgent):
         game = self.environment.game
         return {
             game.get_move_uid(move): visits
-            for move, visits in zip(root.moves, root.visits.tolist(), strict=True)
+            for move, visits in zip(root.moves, root.visits, strict=True)
         }
 
     def _expand(
@@ -188,7 +194,7 @@ class AlphaZeroAgent(MCTSAgent):
         if not positive.all():
             moves = [move for move, keep in zip(moves, positive.tolist(), strict=True) if keep]
             priors = priors[positive]
-        self.tree.expand(path, moves, priors.astype(np.float64))
+        self.tree.expand(path, moves, priors.tolist())
 
     @staticmethod
     def _add_root_noise(

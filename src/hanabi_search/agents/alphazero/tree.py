@@ -1,4 +1,4 @@
-"""AlphaZero search tree: per expanded node, its children's statistics in NumPy arrays.
+"""AlphaZero search tree: per expanded node, its children's statistics in flat lists.
 
 A node is identified by the moves leading to it from the root, so the same move
 sequence reached under different determinizations shares statistics. A child's
@@ -6,19 +6,17 @@ visit count and value sum live in its parent's arrays; the root's are scalars.
 """
 
 from dataclasses import dataclass
-from math import sqrt
-
-import numpy as np
-import numpy.typing as npt
+from math import inf, sqrt
 
 from hanabi_search.env import HanabiMove
-
-type Vector = npt.NDArray[np.float64]
 
 
 @dataclass(slots=True)
 class TreeNode:
     """An expanded node and the statistics of its children, in legal-move order.
+
+    Python lists, not NumPy arrays: nodes have a few dozen children at most, where
+    a Python loop beats NumPy's per-call overhead.
 
     Attributes:
         moves: Move leading to each child, shape (num_children,).
@@ -30,16 +28,16 @@ class TreeNode:
     """
 
     moves: list[HanabiMove]
-    priors: Vector
-    visits: Vector
-    totals: Vector
+    priors: list[float]
+    visits: list[int]
+    totals: list[float]
     children: list[TreeNode | None]
 
     @classmethod
-    def with_priors(cls, moves: list[HanabiMove], priors: Vector) -> TreeNode:
+    def with_priors(cls, moves: list[HanabiMove], priors: list[float]) -> TreeNode:
         """Returns an unvisited node whose children are `moves`."""
         count = len(moves)
-        return cls(moves, priors, np.zeros(count), np.zeros(count), [None] * count)
+        return cls(moves, priors, [0] * count, [0.0] * count, [None] * count)
 
     def best_child(
         self, visits: float, total: float, exploration_weight: float, max_score: float
@@ -57,12 +55,16 @@ class TreeNode:
             max_score: Score of a perfect game.
         """
         parent_mean = total / visits if visits > 0 else 0.0
-        child_visits = self.visits
-        means = np.where(child_visits > 0, self.totals / np.maximum(child_visits, 1), parent_mean)
-        scores = means / max_score + exploration_weight * sqrt(visits) * self.priors / (
-            1 + child_visits
-        )
-        return int(np.argmax(scores))
+        scale = exploration_weight * sqrt(visits)
+        best_score, best_index = -inf, 0
+        for index, (count, value, prior) in enumerate(
+            zip(self.visits, self.totals, self.priors, strict=True)
+        ):
+            mean = value / count if count > 0 else parent_mean
+            score = mean / max_score + scale * prior / (1 + count)
+            if score > best_score:
+                best_score, best_index = score, index
+        return best_index
 
 
 @dataclass(slots=True)
@@ -107,7 +109,7 @@ class SearchTree:
         return parent.children[index] is not None
 
     def expand(
-        self, path: list[tuple[TreeNode, int]], moves: list[HanabiMove], priors: Vector
+        self, path: list[tuple[TreeNode, int]], moves: list[HanabiMove], priors: list[float]
     ) -> None:
         """Expands the node at the end of `path` with children `moves`."""
         node = TreeNode.with_priors(moves, priors)
