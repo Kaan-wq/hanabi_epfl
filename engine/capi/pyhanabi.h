@@ -14,8 +14,8 @@
 //
 // Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __PYHANABI_H__
-#define __PYHANABI_H__
+#ifndef PYHANABI_H_
+#define PYHANABI_H_
 
 /**
  * This is a pure C API to the C++ code.

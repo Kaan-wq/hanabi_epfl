@@ -242,14 +242,16 @@ HanabiHand HanabiHand::fromJSON(const json& j) {
   HanabiHand hand;
 
   // Deserialize cards
-  hand.cards_.clear();
-  for (const auto& card_json : JsonArray(j, "cards")) {
+  const json& cards = JsonArray(j, "cards");
+  CheckRange(static_cast<int>(cards.size()), 0, kMaxHandSize, "'cards' length");
+  for (const auto& card_json : cards) {
     hand.cards_.push_back(HanabiCard::fromJSON(card_json));
   }
 
   // Deserialize card knowledge
-  hand.card_knowledge_.clear();
-  for (const auto& ck_json : JsonArray(j, "card_knowledge")) {
+  const json& knowledge = JsonArray(j, "card_knowledge");
+  CheckRange(static_cast<int>(knowledge.size()), 0, kMaxHandSize, "'card_knowledge' length");
+  for (const auto& ck_json : knowledge) {
     hand.card_knowledge_.push_back(CardKnowledge::fromJSON(ck_json));
   }
 

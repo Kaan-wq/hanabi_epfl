@@ -209,7 +209,8 @@ Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::Hana
         }
         const int next = state.CurPlayer();
         if (!state.IsTerminal() && next != searcher) {
-          remembered = state.Hands()[next].Cards();
+          const auto& cards = state.Hands()[next].Cards();
+          remembered.assign(cards.begin(), cards.end());
           checksum += sampler.ResampleHand(&state, next);
         }
       }

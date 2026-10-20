@@ -246,6 +246,7 @@ HANABI_TEST(FromJsonRejectsOutOfRangeValues) {
       [](json& j) { j["num_ranks"] = 6; },
       [](json& j) { j["hand_size"] = 0; },
       [](json& j) { j["hand_size"] = 20; },  // more cards in hands than in the deck
+      [](json& j) { j["hand_size"] = 9; },   // fits the deck; hands hold at most 8 cards
       [](json& j) { j["cards_per_color"] = 11; },
       [](json& j) { j["max_life_tokens"] = 0; },
       [](json& j) { j["max_information_tokens"] = -1; },

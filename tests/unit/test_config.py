@@ -37,6 +37,11 @@ def test_game_params_match_engine_names() -> None:
     assert "seed" not in GameConfig().to_params()
 
 
+def test_hand_size_above_engine_limit_is_rejected() -> None:
+    with pytest.raises(ValueError, match="hand_size"):
+        GameConfig(players=2, hand_size=9)
+
+
 def test_single_agent_fills_every_seat() -> None:
     config = ExperimentConfig(name="x", game=GameConfig(players=4), agents=(MCTSAgentConfig(),))
     assert len(config.seat_agents()) == 4

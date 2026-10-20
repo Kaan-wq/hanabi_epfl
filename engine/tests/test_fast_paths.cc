@@ -11,6 +11,7 @@
 
 #include "canonical_encoders.h"
 #include "check.h"
+#include "fixed_vector.h"
 #include "hanabi_game.h"
 #include "hanabi_move.h"
 #include "hanabi_observation.h"
@@ -140,6 +141,51 @@ HANABI_TEST(EncodeIntoWritesWhatEncodeReturns) {
       }
     }
   });
+}
+
+HANABI_TEST(FixedVectorBehavesLikeStdVector) {
+  // Random sequences of the operations hands use, mirrored on a std::vector.
+  std::mt19937 rng(17);
+  for (int sequence = 0; sequence < 2000; ++sequence) {
+    hle::FixedVector<int, 8> fixed;
+    std::vector<int> reference;
+    for (int step = 0; step < 30; ++step) {
+      const int value = static_cast<int>(rng() % 100);
+      switch (rng() % 5) {
+        case 0:
+          if (reference.size() < 8) {
+            fixed.push_back(value);
+            reference.push_back(value);
+          }
+          break;
+        case 1:
+          if (reference.size() < 8) {
+            const size_t at = rng() % (reference.size() + 1);
+            fixed.insert(fixed.begin() + at, value);
+            reference.insert(reference.begin() + at, value);
+          }
+          break;
+        case 2:
+          if (!reference.empty()) {
+            const size_t at = rng() % reference.size();
+            fixed.erase(fixed.begin() + at);
+            reference.erase(reference.begin() + at);
+          }
+          break;
+        case 3: {
+          const size_t count = rng() % 9;
+          fixed.resize(count, value);
+          reference.resize(count, value);
+          break;
+        }
+        default: {
+          const hle::FixedVector<int, 8> copy = fixed;  // Copies keep the elements.
+          CHECK(copy == fixed);
+        }
+      }
+      CHECK(std::vector<int>(fixed) == reference);
+    }
+  }
 }
 
 int main() { return hanabi_test::RunAll(); }

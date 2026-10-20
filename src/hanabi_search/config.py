@@ -20,7 +20,9 @@ class GameConfig(_Config):
     players: int = Field(default=2, ge=2, le=5)
     colors: int = Field(default=5, ge=1, le=5)
     ranks: int = Field(default=5, ge=1, le=5)
-    hand_size: int | None = Field(default=None, ge=1, description="None: 5 cards, 4 for 4+ players")
+    hand_size: int | None = Field(
+        default=None, ge=1, le=8, description="None: 5 cards, 4 for 4+ players (engine max: 8)"
+    )
     max_information_tokens: int = Field(default=8, ge=1)
     max_life_tokens: int = Field(default=3, ge=1)
     observation_type: AgentObservationType = AgentObservationType.CARD_KNOWLEDGE

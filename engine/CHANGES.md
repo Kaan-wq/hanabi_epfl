@@ -8,6 +8,36 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Hands stored inline, at most 8 cards (search iteration 4.91x)
+
+A hand held two `std::vector`s (cards, knowledge): every copy of a state or
+observation allocated two per player. Hands now store both in a new
+`FixedVector<T, 8>` (`hanabi_lib/fixed_vector.h`: inline storage, the subset
+of the vector interface hands use, aborts past capacity; its conversion to
+`std::vector` is explicit so a hand is never copied by accident, which
+caught the C API's `CopyCard` copying the whole hand to read one card).
+
+**Parameter limit:** `hand_size` must now be in [1, 8] (engine, hand JSON and
+the Python `GameConfig`). Larger hands were already broken: hint outcomes are
+8-bit masks over hand positions, so hints silently missed cards past
+position 8. No game behavior changes: observations, encodings, rule outputs
+and MCTS decisions are identical; parity tests pass;
+`tests/test_fast_paths.cc` checks `FixedVector` against `std::vector` on
+random operation sequences.
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 209,527 | 232,646 (1.11x; 4.91x baseline) |
+| state copy | 4,596,028 | 10,346,120 (2.25x) |
+| observation features | 1,431,268 | 2,493,248 (1.74x) |
+| random games + encode | 813,462 | 1,059,985 (1.30x) |
+
+Search iteration 2/4/5 players: 4.14x / 5.46x / 5.89x baseline. JSON and
+resample rows unchanged. Also: inherited reserved include guards and an
+unparenthesized macro argument fixed in `util.h` and `pyhanabi.h`.
+
+---
+
 ## 2026-10-20: Re-determinize outside the move history (fixes AlphaZero leaf inputs)
 
 **Behavior change (approved).** `HandSampler` swapped hands through the

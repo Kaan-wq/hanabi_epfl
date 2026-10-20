@@ -120,7 +120,7 @@ HANABI_TEST(ReplaceHandSwapsCardsWithoutAMove) {
   const hle::HanabiState before = state;
 
   // Swap the first card for a different one still in the deck; keep the rest.
-  std::vector<hle::HanabiCard> cards = hand_before.Cards();
+  std::vector<hle::HanabiCard> cards(hand_before.Cards());
   for (int index = 0; index < game.NumColors() * game.NumRanks(); ++index) {
     const hle::HanabiCard card(index / game.NumRanks(), index % game.NumRanks());
     if (state.Deck().CardCount(card.Color(), card.Rank()) > 0 && !(card == cards[0])) {
@@ -131,7 +131,7 @@ HANABI_TEST(ReplaceHandSwapsCardsWithoutAMove) {
   CHECK(!(cards[0] == hand_before.Cards()[0]));
   CHECK(state.ReplaceHand(player, cards));
 
-  CHECK(state.Hands()[player].Cards() == cards);
+  CHECK(std::vector<hle::HanabiCard>(state.Hands()[player].Cards()) == cards);
   CHECK_EQ(state.Deck().Size(), before.Deck().Size());
   CHECK_EQ(state.Deck().CardCount(cards[0].Color(), cards[0].Rank()),
            before.Deck().CardCount(cards[0].Color(), cards[0].Rank()) - 1);
@@ -155,7 +155,7 @@ HANABI_TEST(ReplaceHandRejectsImpossibleSwapsUnchanged) {
   hle::HanabiState state(&game, 0);
   Advance(&state, 4);
   const std::string before = state.ToString();
-  const std::vector<hle::HanabiCard> cards = state.Hands()[0].Cards();
+  const std::vector<hle::HanabiCard> cards(state.Hands()[0].Cards());
   CHECK(!state.ReplaceHand(2, cards));                             // Not a player.
   CHECK(!state.ReplaceHand(0, {cards.begin(), cards.end() - 1}));  // Wrong count.
   std::vector<hle::HanabiCard> bad = cards;

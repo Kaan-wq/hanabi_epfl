@@ -64,7 +64,7 @@ int EncodeHands(const HanabiGame& game, const HanabiObservation& obs, int start_
   const std::vector<HanabiHand>& hands = obs.Hands();
   assert(static_cast<int>(hands.size()) == num_players);
   for (int player = 1; player < num_players; ++player) {
-    const std::vector<HanabiCard>& cards = hands[player].Cards();
+    const auto& cards = hands[player].Cards();
     int num_cards = 0;
 
     for (const HanabiCard& card : cards) {
@@ -369,7 +369,7 @@ int EncodeCardKnowledge(const HanabiGame& game, const HanabiObservation& obs, in
   const std::vector<HanabiHand>& hands = obs.Hands();
   assert(static_cast<int>(hands.size()) == num_players);
   for (int player = 0; player < num_players; ++player) {
-    const std::vector<HanabiHand::CardKnowledge>& knowledge = hands[player].Knowledge();
+    const auto& knowledge = hands[player].Knowledge();
     int num_cards = 0;
 
     for (const HanabiHand::CardKnowledge& card_knowledge : knowledge) {

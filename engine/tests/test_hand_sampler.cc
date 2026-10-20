@@ -184,7 +184,7 @@ HANABI_TEST(RestoreDealsBackTheRememberedHand) {
   DealPending(&state);
   hle::HandSampler sampler(7);
   const int player = state.CurPlayer();
-  const std::vector<hle::HanabiCard> remembered = state.Hands()[player].Cards();
+  const std::vector<hle::HanabiCard> remembered(state.Hands()[player].Cards());
 
   // The player plays position 1 of a sampled hand, then draws.
   CHECK(sampler.ResampleHand(&state, player));
@@ -258,7 +258,7 @@ HANABI_TEST(RestoreRolloutsKeepCardCounts) {
       DealPending(&state);
       while (!state.IsTerminal()) {
         const int player = state.CurPlayer();
-        const std::vector<hle::HanabiCard> remembered = state.Hands()[player].Cards();
+        const std::vector<hle::HanabiCard> remembered(state.Hands()[player].Cards());
         CHECK(sampler.ResampleHand(&state, player));
         const auto legal = state.LegalMoves(player);
         const hle::HanabiMove move = legal[rng() % legal.size()];
@@ -292,12 +292,12 @@ HANABI_TEST(ResamplingIsInvisibleToTheResampledPlayer) {
       const int player = state.CurPlayer();
       const std::vector<int> before = encoder.Encode(hle::HanabiObservation(state, player));
       const size_t history = state.MoveHistory().size();
-      const std::vector<hle::HanabiCard> remembered = state.Hands()[player].Cards();
+      const std::vector<hle::HanabiCard> remembered(state.Hands()[player].Cards());
       CHECK(sampler.ResampleHand(&state, player));
       CHECK_EQ(state.MoveHistory().size(), history);
       CHECK(encoder.Encode(hle::HanabiObservation(state, player)) == before);
       CHECK(sampler.RestoreHand(&state, player, remembered, hle::HanabiCard(), -1));
-      CHECK(state.Hands()[player].Cards() == remembered);
+      CHECK(std::vector<hle::HanabiCard>(state.Hands()[player].Cards()) == remembered);
       CHECK_EQ(state.MoveHistory().size(), history);
       CHECK(encoder.Encode(hle::HanabiObservation(state, player)) == before);
     }

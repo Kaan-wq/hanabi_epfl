@@ -11,9 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __UTIL_H__
-#define __UTIL_H__
+#ifndef HANABI_LIB_UTIL_H_
+#define HANABI_LIB_UTIL_H_
 
 #include <cassert>
 #include <cstdlib>
@@ -24,6 +26,9 @@ namespace hanabi_learning_env {
 
 constexpr int kMaxNumColors = 5;
 constexpr int kMaxNumRanks = 5;
+// Hint outcomes are 8-bit masks over hand positions (HanabiHistoryItem), and
+// hands store their cards inline (FixedVector), so hands hold at most 8 cards.
+constexpr int kMaxHandSize = 8;
 
 // Returns a character representation of an integer color/rank index.
 char ColorIndexToChar(int color);
@@ -49,11 +54,11 @@ bool ParameterValue(const std::unordered_map<std::string, std::string>& params,
                     const std::string& key, bool default_value);
 
 #if defined(NDEBUG)
-#define REQUIRE(expr)                                                                            \
-  (expr ? (void)0                                                                                \
-        : (fprintf(stderr, "Input requirements failed at %s:%d in %s: %s\n", __FILE__, __LINE__, \
-                   __func__, #expr),                                                             \
-           std::abort()))
+#define REQUIRE(expr)                                                                              \
+  ((expr) ? (void)0                                                                                \
+          : (fprintf(stderr, "Input requirements failed at %s:%d in %s: %s\n", __FILE__, __LINE__, \
+                     __func__, #expr),                                                             \
+             std::abort()))
 #else
 #define REQUIRE(expr) assert(expr)
 #endif

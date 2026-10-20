@@ -22,7 +22,9 @@
 #include <string>
 #include <vector>
 
+#include "fixed_vector.h"
 #include "hanabi_card.h"
+#include "util.h"
 
 namespace hanabi_learning_env {
 
@@ -42,6 +44,7 @@ class HanabiHand {
    public:
     // value_range must be in [1, kMaxValueRange].
     explicit ValueKnowledge(int value_range);
+    ValueKnowledge() = default;  // Empty range; only fills unused hand slots.
     int Range() const { return range_; }
     // Returns true if and only if the exact value was revealed.
     // Does not perform inference to get a known value from not-value hints.
@@ -76,6 +79,7 @@ class HanabiHand {
     // Hinted knowledge about color and rank of an initially unknown card.
    public:
     CardKnowledge(int num_colors, int num_ranks);
+    CardKnowledge() = default;  // Empty ranges; only fills unused hand slots.
     // Returns number of possible colors being tracked.
     int NumColors() const { return color_.Range(); }
     // Returns true if and only if the exact color was revealed.
@@ -110,6 +114,10 @@ class HanabiHand {
     ValueKnowledge rank_;
   };
 
+  // Cards and knowledge are stored inline: copying a hand never allocates.
+  using CardList = FixedVector<HanabiCard, kMaxHandSize>;
+  using KnowledgeList = FixedVector<CardKnowledge, kMaxHandSize>;
+
   HanabiHand() {}
   HanabiHand(const HanabiHand& hand) = default;
   HanabiHand& operator=(const HanabiHand& hand) = default;
@@ -118,8 +126,8 @@ class HanabiHand {
   HanabiHand(const HanabiHand& hand, bool hide_cards, bool hide_knowledge);
   // Cards and corresponding card knowledge are always arranged from oldest to
   // newest, with the oldest card or knowledge at index 0.
-  const std::vector<HanabiCard>& Cards() const { return cards_; }
-  const std::vector<CardKnowledge>& Knowledge() const { return card_knowledge_; }
+  const CardList& Cards() const { return cards_; }
+  const KnowledgeList& Knowledge() const { return card_knowledge_; }
   void AddCard(HanabiCard card, const CardKnowledge& initial_knowledge);
   // MB: Insert card at specific position
   void InsertCard(HanabiCard card, int card_index);
@@ -151,8 +159,8 @@ class HanabiHand {
 
  private:
   // A set of cards and knowledge about them.
-  std::vector<HanabiCard> cards_;
-  std::vector<CardKnowledge> card_knowledge_;
+  CardList cards_;
+  KnowledgeList card_knowledge_;
 };
 
 }  // namespace hanabi_learning_env

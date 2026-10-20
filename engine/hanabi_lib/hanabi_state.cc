@@ -145,7 +145,7 @@ void HanabiState::RemoveKnowledge(int player, int card_index) {
 
 bool HanabiState::ReplaceHand(int player, const std::vector<HanabiCard>& cards) {
   if (!IsPlayer(player)) return false;
-  const std::vector<HanabiCard>& old_cards = hands_[player].Cards();
+  const auto& old_cards = hands_[player].Cards();
   if (cards.size() != old_cards.size()) return false;
   const HanabiGame& game = *parent_game_;
   // Copies available once the old cards are back in the deck, minus the new ones.

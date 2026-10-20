@@ -55,7 +55,7 @@ HanabiGame::HanabiGame(const std::unordered_map<std::string, std::string>& param
   num_ranks_ = ParameterValue<int>(params_, "ranks", kMaxNumRanks);
   CheckParameter(num_ranks_ > 0 && num_ranks_ <= kMaxNumRanks, "ranks must be in [1, 5]");
   hand_size_ = ParameterValue<int>(params_, "hand_size", HandSizeFromRules());
-  CheckParameter(hand_size_ > 0, "hand_size must be positive");
+  CheckParameter(hand_size_ > 0 && hand_size_ <= kMaxHandSize, "hand_size must be in [1, 8]");
   max_information_tokens_ =
       ParameterValue<int>(params_, "max_information_tokens", kInformationTokens);
   CheckParameter(max_information_tokens_ >= 0, "max_information_tokens must be >= 0");

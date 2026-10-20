@@ -140,7 +140,14 @@ def test_out_of_range_return_and_deal_specific_moves_are_illegal(state: HanabiSt
 
 @pytest.mark.parametrize(
     "params",
-    [{"players": 1}, {"players": 6}, {"colors": 0}, {"hand_size": 30}, {"observation_type": 5}],
+    [
+        {"players": 1},
+        {"players": 6},
+        {"colors": 0},
+        {"hand_size": 30},
+        {"players": 3, "hand_size": 9},  # fits the deck, but hands hold at most 8 cards
+        {"observation_type": 5},
+    ],
 )
 def test_game_with_invalid_parameters_raises(params: dict[str, int]) -> None:
     # Regression: invalid parameters used to abort the process.
