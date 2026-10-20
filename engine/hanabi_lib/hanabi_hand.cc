@@ -29,23 +29,24 @@ using json = nlohmann::json;
 namespace hanabi_learning_env {
 
 HanabiHand::ValueKnowledge::ValueKnowledge(int value_range)
-    : value_(-1), value_plausible_(std::max(value_range, 0), true) {
-  assert(value_range > 0);
+    : value_(-1),
+      range_(static_cast<int8_t>(value_range)),
+      plausible_(static_cast<uint8_t>((1U << value_range) - 1)) {
+  REQUIRE(value_range > 0 && value_range <= kMaxValueRange);
 }
 
 void HanabiHand::ValueKnowledge::ApplyIsValueHint(int value) {
   assert(value >= 0 && value < Range());
   assert(value_ < 0 || value_ == value);
-  assert(value_plausible_[value] == true);
-  value_ = value;
-  std::fill(value_plausible_.begin(), value_plausible_.end(), false);
-  value_plausible_[value] = true;
+  assert(IsPlausible(value));
+  value_ = static_cast<int8_t>(value);
+  plausible_ = static_cast<uint8_t>(1U << value);
 }
 
 void HanabiHand::ValueKnowledge::ApplyIsNotValueHint(int value) {
   assert(value >= 0 && value < Range());
   assert(value_ < 0 || value_ != value);
-  value_plausible_[value] = false;
+  plausible_ = static_cast<uint8_t>(plausible_ & ~(1U << value));
 }
 
 HanabiHand::CardKnowledge::CardKnowledge(int num_colors, int num_ranks)
@@ -170,18 +171,23 @@ std::string HanabiHand::ToString() const {
 
 json HanabiHand::ValueKnowledge::toJSON() const {
   json j;
-  j["value"] = value_;
-  j["value_plausible"] = value_plausible_;
+  j["value"] = static_cast<int>(value_);
+  json plausible = json::array();
+  for (int value = 0; value < range_; ++value) plausible.push_back(IsPlausible(value));
+  j["value_plausible"] = std::move(plausible);
   return j;
 }
 
 HanabiHand::ValueKnowledge HanabiHand::ValueKnowledge::fromJSON(const json& j) {
-  std::vector<bool> plausible = JsonBoolArray(j, "value_plausible");
+  const std::vector<bool> plausible = JsonBoolArray(j, "value_plausible");
   const int range = static_cast<int>(plausible.size());
   CheckRange(range, 1, std::max(kMaxNumColors, kMaxNumRanks), "'value_plausible' length");
   ValueKnowledge vk(range);
-  vk.value_ = JsonInt(j, "value", -1, range - 1);
-  vk.value_plausible_ = std::move(plausible);
+  vk.value_ = static_cast<int8_t>(JsonInt(j, "value", -1, range - 1));
+  vk.plausible_ = 0;
+  for (int value = 0; value < range; ++value) {
+    if (plausible[value]) vk.plausible_ = static_cast<uint8_t>(vk.plausible_ | (1U << value));
+  }
   return vk;
 }
 
@@ -200,8 +206,8 @@ HanabiHand::CardKnowledge HanabiHand::CardKnowledge::fromJSON(const json& j) {
   ValueKnowledge color = ValueKnowledge::fromJSON(JsonField(j, "color"));
   ValueKnowledge rank = ValueKnowledge::fromJSON(JsonField(j, "rank"));
   CardKnowledge ck(color.Range(), rank.Range());
-  ck.color_ = std::move(color);
-  ck.rank_ = std::move(rank);
+  ck.color_ = color;
+  ck.rank_ = rank;
   return ck;
 }
 

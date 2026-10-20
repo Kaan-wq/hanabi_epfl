@@ -14,8 +14,8 @@
 //
 // Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __HANABI_HAND_H__
-#define __HANABI_HAND_H__
+#ifndef HANABI_LIB_HANABI_HAND_H_
+#define HANABI_LIB_HANABI_HAND_H_
 
 #include <cstdint>
 #include <nlohmann/json.hpp>
@@ -40,14 +40,15 @@ class HanabiHand {
     // After recording that the value is 0, we have
     // ValueHinted()=true, value()=0, and ValueCouldBe(v)=false for v=1, and 2.
    public:
+    // value_range must be in [1, kMaxValueRange].
     explicit ValueKnowledge(int value_range);
-    int Range() const { return value_plausible_.size(); }
+    int Range() const { return range_; }
     // Returns true if and only if the exact value was revealed.
     // Does not perform inference to get a known value from not-value hints.
     bool ValueHinted() const { return value_ >= 0; }
     int Value() const { return value_; }  // -1 if value was not hinted.
     // Returns true if we have no hint saying variable is not the given value.
-    bool IsPlausible(int value) const { return value_plausible_[value]; }
+    bool IsPlausible(int value) const { return (plausible_ >> value) & 1U; }
     // Record a hint that gives the value of the variable.
     void ApplyIsValueHint(int value);
     // Record a hint that the variable does not have the given value.
@@ -58,10 +59,17 @@ class HanabiHand {
     static ValueKnowledge fromJSON(const nlohmann::json& j);
     // ===========================================
 
+    // Values are bits of an 8-bit mask; games have at most 5 colors and ranks.
+    static constexpr int kMaxValueRange = 8;
+
    private:
     // Value if hint directly provided the value, or -1 with no direct hint.
-    int value_ = -1;
-    std::vector<bool> value_plausible_;  // Knowledge from not-value hints.
+    int8_t value_ = -1;
+    int8_t range_ = 0;
+    // Knowledge from not-value hints: bit v is set while value v is plausible.
+    // A bitmask rather than a vector keeps knowledge (copied with every state,
+    // hand and observation) free of heap allocations.
+    uint8_t plausible_ = 0;
   };
 
   class CardKnowledge {

@@ -8,6 +8,28 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Card knowledge as a bitmask (search iteration 1.67x)
+
+`ValueKnowledge` stored plausible values in a `std::vector<bool>`, so every
+card's knowledge held two heap allocations, paid on every copy of a state,
+hand or observation. Profiling the search-iteration row showed ~58% of time
+in malloc/free. Plausible values are now bits of a `uint8_t` (games have at
+most 5 colors and ranks; the constructor checks the range), making knowledge
+6 bytes and trivially copyable. Behavior and the JSON format are unchanged;
+parity tests pass.
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 47,458 | 79,344 (1.67x) |
+| state copy | 1,457,668 | 4,670,051 (3.20x) |
+| observation features | 525,347 | 1,103,715 (2.10x) |
+| random games + encode | 326,990 | 511,419 (1.56x) |
+
+Search iteration 2/4/5 players: 1.55x / 1.77x / 1.91x. JSON round-trip
+-1 to -3% (noise range; not a hot path).
+
+---
+
 ## 2026-10-20: `search iteration` benchmark row (headline engine metric)
 
 `bench_engine` gets a `search iteration` row: one iteration of a
