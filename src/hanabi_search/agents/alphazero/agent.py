@@ -2,13 +2,12 @@
 
 import random
 from collections.abc import Generator
-from math import sqrt
 from typing import override
 
 import numpy as np
 import numpy.typing as npt
 
-from hanabi_search.agents.alphazero.node import AlphaZeroNode
+from hanabi_search.agents.alphazero.tree import SearchTree, TreeNode
 from hanabi_search.agents.base import Evaluation, EvaluationRequest
 from hanabi_search.agents.mcts.agent import MCTSAgent
 from hanabi_search.agents.mcts.node import MCTSNode
@@ -18,7 +17,7 @@ from hanabi_search.config import (
     MCTSAgentConfig,
     SelfPlayConfig,
 )
-from hanabi_search.env import HanabiMove, ObservationDict
+from hanabi_search.env import HanabiMove, HanabiState, ObservationDict
 from hanabi_search.networks import AlphaZeroNetwork
 from hanabi_search.training.transition import TransitionSink
 
@@ -54,8 +53,6 @@ class AlphaZeroAgent(MCTSAgent):
             and plays greedily.
     """
 
-    node_type = AlphaZeroNode
-
     def __init__(
         self,
         player_id: int,
@@ -70,6 +67,7 @@ class AlphaZeroAgent(MCTSAgent):
         self.network = network
         self.num_actions = self.environment.num_moves()
         self.self_play = self_play
+        self.tree = SearchTree(config.exploration_weight, game.max_score)
         self._moves_this_game = 0
 
     @override
@@ -78,16 +76,9 @@ class AlphaZeroAgent(MCTSAgent):
         self._moves_this_game = 0
 
     @override
-    def select(self, node: MCTSNode) -> list[MCTSNode]:
-        """Descends by PUCT until reaching an unexpanded node.
-
-        Unlike plain MCTS, unvisited children are not tried first: the prior decides.
-        """
-        path = [node]
-        while self.children.get(node):
-            node = self.uct_select(node)
-            path.append(node)
-        return path
+    def reset(self, state: HanabiState) -> None:
+        super().reset(state)
+        self.tree = SearchTree(self.alphazero_config.exploration_weight, self.game.max_score)
 
     @override
     def search_steps(
@@ -95,25 +86,43 @@ class AlphaZeroAgent(MCTSAgent):
     ) -> Generator[EvaluationRequest, Evaluation]:
         """One search iteration: yields the leaf for the network, then expands it.
 
+        The path is selected by PUCT first, then replayed in this determinization.
         Finished games are valued by their score and impossible paths by the reward
         reached; leaves at the depth limit get the network's value but no children.
+
+        Args:
+            node: The root (AlphaZero always searches from it).
+            observation: The searching player's observation at the root.
         """
-        descent = self.descend(node, observation)
-        leaf = descent.path[-1]
+        tree = self.tree
+        path, moves = tree.select()
         environment = self.environment
-        if descent.impossible or leaf.is_terminal():
+        state = environment.state
+        depth = 0
+        impossible = False
+        for move in moves:
+            if state.is_terminal() or not state.move_is_legal(move):
+                impossible = True
+                break
+            environment.advance(move)
+            state = environment.state
+            depth += 1
+            if depth > self.max_depth:
+                break
+        if impossible or state.is_terminal():
             reward = float(environment.reward())
         else:
-            leaf_observation = descent.observation or environment.observe(
-                # Chance (-1) wraps to the last player, as in `descend`.
-                leaf.state.cur_player() % environment.num_players
-            )
-            encoded = environment.vectorized_observation(leaf_observation["pyhanabi"])
+            if depth == 0:
+                leaf_observation = observation["pyhanabi"]
+            else:
+                # Chance (-1) wraps to the last player, as in the original implementation.
+                leaf_observation = state.observation(state.cur_player() % environment.num_players)
+            encoded = environment.vectorized_observation(leaf_observation)
             policy, value = yield np.asarray(encoded, dtype=np.float32)
             reward = (value + 1) / 2 * self.game.max_score
-            if descent.observation is not None:
-                self.add_children(leaf, policy)
-        self.backpropagate(descent.path, reward)
+            if depth < self.max_depth and not tree.is_expanded(path):
+                self._expand(path, state, policy)
+        tree.backpropagate(path, reward)
 
     @override
     def evaluate(self, request: EvaluationRequest) -> Evaluation:
@@ -121,85 +130,65 @@ class AlphaZeroAgent(MCTSAgent):
         policies, values = self.network.predict(request[np.newaxis])
         return policies[0], float(values[0])
 
-    def add_children(self, node: MCTSNode, policy: npt.NDArray[np.float32]) -> None:
-        """Adds every legal move of `node` as a child, with its prior from `policy`.
-
-        Args:
-            node: The leaf being expanded (its focused state is not terminal).
-            policy: The network's move probabilities at `node`, shape (num_actions,).
-        """
-        if node in self.children:
-            return
-        moves = node.state.legal_moves()
-        if not moves:
-            return
-        uids = [self.environment.game.get_move_uid(move) for move in moves]
-
-        priors = policy[uids]  # (num_candidates,)
-        total = priors.sum()
-        priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
-        if self.self_play is not None and node == self.root_node:
-            priors = self._add_root_noise(priors, self.self_play, self.rng)
-
-        # A list in legal-move order: ties in PUCT and visit counts go to the first move.
-        children: list[MCTSNode] = []
-        for move, prior in zip(moves, priors.tolist(), strict=True):
-            if prior > 0:
-                child = AlphaZeroNode((*node.moves, move), self.rules)
-                child.prior = prior
-                children.append(child)
-        self.children[node] = children
-
-    @override
-    def uct_select(self, node: MCTSNode) -> MCTSNode:
-        """Returns the child maximizing PUCT: `Q + c * P * sqrt(N) / (1 + n)`.
-
-        `Q` is the child's mean reward as a fraction of the maximum score, so it is on
-        the same [0, 1] scale as the exploration term. Unvisited children take the
-        parent's mean reward as their `Q`.
-        """
-        max_score = self.game.max_score
-        parent_visits = self.visits[node]
-        parent_mean = self.total_reward[node] / parent_visits if parent_visits > 0 else 0.0
-        scale = self.exploration_weight * sqrt(parent_visits)
-
-        def puct(child: MCTSNode) -> float:
-            assert isinstance(child, AlphaZeroNode)
-            visits = self.visits[child]
-            mean = self.total_reward[child] / visits if visits > 0 else parent_mean
-            return mean / max_score + scale * child.prior / (1 + visits)
-
-        return max(self.children[node], key=puct)
-
-    @override
-    def backpropagate(self, path: list[MCTSNode], reward: float) -> None:
-        for node in reversed(path):
-            self.visits[node] += 1
-            self.total_reward[node] += reward
-
     @override
     def choose_move(self, node: MCTSNode) -> HanabiMove:
-        """Returns the most visited root move.
+        """Returns the most visited root move (the first one on ties).
 
         In self-play, this agent's first `temperature_moves` moves of each game are
         instead drawn in proportion to root visits.
         """
         if node.is_terminal():
             raise RuntimeError(f"choose_move called on terminal node {node}")
-        children = self.children.get(node)
+        root = self.tree.root
         self._moves_this_game += 1
-        if not children:
+        if root is None or not root.moves:
             return super().choose_move(node)
+        visits = root.visits
         if self.self_play is not None and self._moves_this_game <= self.self_play.temperature_moves:
-            weights = [self.visits[child] for child in children]
+            weights = visits.tolist()
             if sum(weights) > 0:
-                return self.rng.choices(list(children), weights)[0].initial_move()
+                return root.moves[self.rng.choices(range(len(weights)), weights)[0]]
+        return root.moves[int(np.argmax(np.where(visits == 0, -np.inf, visits)))]
 
-        def visit_count(child: MCTSNode) -> float:
-            visits = self.visits[child]
-            return float("-inf") if visits == 0 else visits
+    @override
+    def root_visits(self) -> dict[int, float]:
+        root = self.tree.root
+        if root is None:
+            return {}
+        game = self.environment.game
+        return {
+            game.get_move_uid(move): visits
+            for move, visits in zip(root.moves, root.visits.tolist(), strict=True)
+        }
 
-        return max(children, key=visit_count).initial_move()
+    def _expand(
+        self,
+        path: list[tuple[TreeNode, int]],
+        state: HanabiState,
+        policy: npt.NDArray[np.float32],
+    ) -> None:
+        """Expands the leaf at the end of `path` with every legal move of `state`.
+
+        Args:
+            path: Path to the leaf, as returned by `SearchTree.select`.
+            state: The leaf's state in this determinization (not terminal).
+            policy: The network's move probabilities at the leaf, shape (num_actions,).
+        """
+        moves = state.legal_moves()
+        if not moves:
+            return
+        game = self.environment.game
+        uids = [game.get_move_uid(move) for move in moves]
+        priors = policy[uids]  # (num_moves,)
+        total = priors.sum()
+        priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
+        if self.self_play is not None and not path:
+            priors = self._add_root_noise(priors, self.self_play, self.rng)
+        positive = priors > 0
+        if not positive.all():
+            moves = [move for move, keep in zip(moves, positive.tolist(), strict=True) if keep]
+            priors = priors[positive]
+        self.tree.expand(path, moves, priors.astype(np.float64))
 
     @staticmethod
     def _add_root_noise(

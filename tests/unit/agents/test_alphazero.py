@@ -1,10 +1,10 @@
 import random
 
+import numpy as np
 import pytest
 import torch
 
 from hanabi_search.agents import AlphaZeroAgent
-from hanabi_search.agents.alphazero.node import AlphaZeroNode
 from hanabi_search.agents.base import run_steps
 from hanabi_search.config import AlphaZeroAgentConfig, GameConfig, SelfPlayConfig
 from hanabi_search.env import HanabiEnv, HanabiMove, ObservationDict
@@ -33,46 +33,17 @@ def _agent(
 
 
 def _root_with_children(
-    agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, int, float]]
-) -> list[AlphaZeroNode]:
-    """Gives the root one child per (prior, visits, total_reward) entry."""
+    agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, float]]
+) -> list[HanabiMove]:
+    """Gives the root one child per (prior, visits) entry, in legal-move order."""
     agent.reset(env.state)
-    root = agent.root_node
-    children = []
-    for move, (prior, visits, total) in zip(env.state.legal_moves(), stats, strict=False):
-        child = AlphaZeroNode((move,), agent.rules)
-        child.prior = prior
-        agent.visits[child] = visits
-        agent.total_reward[child] = total
-        children.append(child)
-    agent.children[root] = set(children)
-    return children
-
-
-def test_puct_uses_sqrt_parent_visits_and_normalized_values(env: HanabiEnv) -> None:
-    agent = _agent(env, AlphaZeroAgentConfig(exploration_weight=2.5))
-    # Q in score fraction + 2.5 * P * sqrt(9) / (1 + n):
-    #   strong: 20/25 + 2.5*0.5*3/5 = 1.55
-    #   unvisited: parent mean 10/25 + 2.5*0.4*3/1 = 3.4
-    #   perfect: 25/25 + 2.5*0.1*3/6 = 1.125
-    strong, unvisited, _perfect = _root_with_children(
-        agent, env, [(0.5, 4, 80.0), (0.4, 0, 0.0), (0.1, 5, 125.0)]
-    )
-    agent.visits[agent.root_node] = 9
-    agent.total_reward[agent.root_node] = 90.0
-    assert agent.uct_select(agent.root_node) == unvisited
-    agent.visits[unvisited] = 1
-    agent.total_reward[unvisited] = 0.0
-    # unvisited: 0 + 2.5*0.4*3/2 = 1.5 < strong (1.55).
-    assert agent.uct_select(agent.root_node) == strong
-
-
-def test_select_lets_the_prior_decide_over_unvisited_children(env: HanabiEnv) -> None:
-    agent = _agent(env)
-    strong, _unlikely = _root_with_children(agent, env, [(0.99, 4, 80.0), (0.01, 0, 0.0)])
-    agent.visits[agent.root_node] = 4
-    agent.total_reward[agent.root_node] = 80.0
-    assert agent.select(agent.root_node) == [agent.root_node, strong]
+    agent.root_node.focused_state = env.state
+    moves = env.state.legal_moves()[: len(stats)]
+    agent.tree.expand([], moves, np.array([prior for prior, _ in stats]))
+    root = agent.tree.root
+    assert root is not None
+    root.visits[:] = [visits for _, visits in stats]
+    return moves
 
 
 def _search(agent: AlphaZeroAgent, observation: ObservationDict) -> int:
@@ -94,12 +65,11 @@ def test_first_search_expands_the_root_with_priors_summing_to_one(env: HanabiEnv
     agent = _agent(env, AlphaZeroAgentConfig())
     agent.reset(env.state)
     assert _search(agent, current_observation(env)) == 1
-    children = agent.children[agent.root_node]
-    assert len(children) == len(env.state.legal_moves())
-    assert sum(child.prior for child in children if isinstance(child, AlphaZeroNode)) == (
-        pytest.approx(1.0)
-    )
-    assert 0 <= agent.total_reward[agent.root_node] <= GAME.max_score
+    root = agent.tree.root
+    assert root is not None
+    assert root.moves == env.state.legal_moves()
+    assert root.priors.sum() == pytest.approx(1.0)
+    assert 0 <= agent.tree.root_total <= GAME.max_score
 
 
 def test_terminal_leaf_is_valued_by_its_score(env: HanabiEnv) -> None:
@@ -108,8 +78,8 @@ def test_terminal_leaf_is_valued_by_its_score(env: HanabiEnv) -> None:
         env.step(env.state.legal_moves()[0])
     agent.reset(env.state)
     assert _search(agent, env.observe_all()["player_observations"][0]) == 0
-    assert agent.total_reward[agent.root_node] == env.state.score()
-    assert agent.root_node not in agent.children
+    assert agent.tree.root_total == env.state.score()
+    assert agent.tree.root is None
 
 
 def test_leaf_at_depth_limit_is_valued_by_the_network_without_children(env: HanabiEnv) -> None:
@@ -118,10 +88,12 @@ def test_leaf_at_depth_limit_is_valued_by_the_network_without_children(env: Hana
     observation = current_observation(env)
     _search(agent, observation)  # Expands the root.
     assert _search(agent, observation) == 1
-    (leaf,) = [child for child in agent.children[agent.root_node] if agent.visits[child]]
-    assert leaf not in agent.children
+    root = agent.tree.root
+    assert root is not None
+    (leaf,) = np.flatnonzero(root.visits)
+    assert root.children[leaf] is None
     # The network's (untrained) value, not the current score of 0.
-    assert agent.total_reward[leaf] > 0
+    assert root.totals[leaf] > 0
 
 
 def test_act_matches_driving_act_steps(env: HanabiEnv) -> None:
@@ -141,11 +113,9 @@ def _root_priors(env: HanabiEnv, self_play: SelfPlayConfig | None) -> dict[str, 
     agent = _agent(env, self_play=self_play)
     agent.reset(env.state)
     _search(agent, current_observation(env))
-    return {
-        str(child.initial_move()): child.prior
-        for child in agent.children[agent.root_node]
-        if isinstance(child, AlphaZeroNode)
-    }
+    root = agent.tree.root
+    assert root is not None
+    return {str(move): prior for move, prior in zip(root.moves, root.priors.tolist(), strict=True)}
 
 
 def test_root_noise_only_in_self_play(env: HanabiEnv) -> None:
@@ -158,8 +128,7 @@ def test_root_noise_only_in_self_play(env: HanabiEnv) -> None:
 
 
 def _chosen_moves(agent: AlphaZeroAgent, env: HanabiEnv, count: int) -> list[str]:
-    _root_with_children(agent, env, [(0.3, 10, 0.0), (0.3, 10, 0.0), (0.4, 30, 0.0)])
-    agent.root_node.focused_state = env.state
+    _root_with_children(agent, env, [(0.3, 10), (0.3, 10), (0.4, 30)])
     return [str(agent.choose_move(agent.root_node)) for _ in range(count)]
 
 

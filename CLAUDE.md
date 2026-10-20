@@ -92,7 +92,7 @@ Never leave the repo in a state where any of the above fail.
 │       │   ├── base.py, factory.py, human.py
 │       │   ├── rule_based/   #   ruleset.py, card_counting.py, agents.py
 │       │   ├── mcts/         #   node.py, agent.py
-│       │   └── alphazero/    #   node.py, agent.py
+│       │   └── alphazero/    #   tree.py (array-based search tree), agent.py
 │       ├── networks/         # nn.Module definitions, no training logic
 │       ├── training/         # transitions, replay buffer, AlphaZero trainer
 │       ├── evaluation/       # game sessions, (batched) game runner, score metrics
