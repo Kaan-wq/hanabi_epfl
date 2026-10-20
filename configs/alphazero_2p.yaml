@@ -32,3 +32,4 @@ evaluation:
   num_games: 1000
   seed: 1000000
   parallel_games: 32
+  num_processes: 4

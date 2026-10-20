@@ -2,9 +2,12 @@
 
 import json
 import logging
+import multiprocessing
 from collections.abc import Callable
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from itertools import repeat
 from pathlib import Path
 
 import numpy as np
@@ -18,7 +21,7 @@ from hanabi_search.config import (
     SelfPlayConfig,
 )
 from hanabi_search.env import OBSERVATION_ENCODER_VERSION, HanabiEnv, StepResult
-from hanabi_search.evaluation import GameResult, play_games_batched
+from hanabi_search.evaluation import GameResult, ScoreSummary, play_games, play_games_batched
 from hanabi_search.exceptions import ConfigError
 from hanabi_search.logging_utils import setup_logging
 from hanabi_search.networks import AlphaZeroNetwork
@@ -136,6 +139,50 @@ def set_up(
     resources = AgentResources(network, transition_sink, ask, show, self_play)
     tables = [build_agents(config.seat_agents(), config.game, resources) for _ in range(num_tables)]
     return Setup(tables, network, device)
+
+
+def evaluate_experiment(
+    config: ExperimentConfig, checkpoint: Path | None = None, num_games: int | None = None
+) -> ScoreSummary:
+    """Plays the evaluation games, split over `evaluation.num_processes` processes.
+
+    Game `i` uses seed `evaluation.seed + i`. Each process builds its own agents and
+    network and plays every `num_processes`-th seed, batching network evaluations
+    over `evaluation.parallel_games` games. A game depends only on its seed, so the
+    scores do not depend on the number of processes (up to floating-point
+    differences between batch sizes).
+
+    Args:
+        config: The experiment.
+        checkpoint: Network weights overriding `config.network.checkpoint`.
+        num_games: Overrides `evaluation.num_games`.
+    """
+    evaluation = config.evaluation
+    count = evaluation.num_games if num_games is None else num_games
+    seeds = list(range(evaluation.seed, evaluation.seed + count))
+    num_processes = min(evaluation.num_processes, len(seeds))
+    if num_processes == 1:
+        results = _play_evaluation_games(config, checkpoint, seeds)
+    else:
+        shards = [seeds[start::num_processes] for start in range(num_processes)]
+        context = multiprocessing.get_context("spawn")
+        with ProcessPoolExecutor(num_processes, mp_context=context) as pool:
+            parts = pool.map(_play_evaluation_games, repeat(config), repeat(checkpoint), shards)
+            results = sorted((r for part in parts for r in part), key=lambda r: r.seed)
+    return ScoreSummary.from_scores(
+        [result.score for result in results], config.game.players, config.game.max_score
+    )
+
+
+def _play_evaluation_games(
+    config: ExperimentConfig, checkpoint: Path | None, seeds: list[int]
+) -> list[GameResult]:
+    """Plays `seeds` with freshly built agents (also runs in worker processes)."""
+    num_tables = config.evaluation.parallel_games if uses_network(config) else 1
+    setup = set_up(config, checkpoint, num_tables=num_tables)
+    if setup.network is None:
+        return play_games(config.game, setup.agents, seeds)
+    return play_games_batched(config.game, setup.tables, seeds, setup.network)
 
 
 def train_alphazero(config: ExperimentConfig, run_dir: Path) -> Path:

@@ -95,8 +95,9 @@ Never leave the repo in a state where any of the above fail.
 │       │   └── alphazero/    #   node.py, agent.py
 │       ├── networks/         # nn.Module definitions, no training logic
 │       ├── training/         # transitions, replay buffer, AlphaZero trainer
-│       ├── evaluation/       # game runner, score metrics
-│       ├── experiment.py     # wires a config into agents, run dirs, training loop
+│       ├── evaluation/       # game sessions, (batched) game runner, score metrics
+│       ├── experiment.py     # wires a config into agents, run dirs, training loop,
+│       │                     #   process-parallel evaluation
 │       ├── reproducibility.py  # seeding, device selection
 │       └── logging_utils.py  # logger setup
 ├── tests/                    # Python tests, mirroring src/hanabi_search/

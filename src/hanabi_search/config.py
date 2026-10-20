@@ -158,6 +158,7 @@ class EvaluationConfig(_Config):
     parallel_games: int = Field(
         default=32, ge=1, description="Games played at once when a seat has a network"
     )
+    num_processes: int = Field(default=4, ge=1, description="Processes sharing the games")
 
 
 class ExperimentConfig(_Config):

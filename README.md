@@ -47,14 +47,16 @@ uv run python scripts/play.py --config configs/human_vs_vandenbergh_2p.yaml --nu
 # Train AlphaZero by self-play; writes runs/<experiment>/<timestamp>_<seed>/
 uv run python scripts/train.py --config configs/alphazero_2p.yaml
 
-# Evaluate on the held-out evaluation seeds
+# Evaluate on the held-out evaluation seeds (evaluation.num_processes processes;
+# network evaluations batched over evaluation.parallel_games games)
 uv run python scripts/evaluate.py --config configs/alphazero_2p.yaml \
     --checkpoint runs/alphazero_2p/<run>/model.pt --num-games 1000
 ```
 
 Agent kinds: `rule_based` (policies `VanDenBergh`, `Piers`, `IGGI`, `Outer`,
-`Inner`, `Flawed`, `Mute`, `LegalRandom`), `mcts`, `alphazero` and `human`. See [`src/hanabi_search/config.py`](src/hanabi_search/config.py)
-for every option and its default.
+`Inner`, `Flawed`, `Mute`, `LegalRandom`), `mcts`, `alphazero` and `human`. See
+[`src/hanabi_search/config.py`](src/hanabi_search/config.py) for every option and
+its default.
 
 ## Development
 

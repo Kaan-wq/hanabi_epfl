@@ -13,8 +13,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from hanabi_search.config import ExperimentConfig
-from hanabi_search.evaluation import evaluate
-from hanabi_search.experiment import create_run_dir, set_up
+from hanabi_search.experiment import create_run_dir, evaluate_experiment
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,9 +32,7 @@ def main() -> None:
     args = parse_args()
     config = ExperimentConfig.from_yaml(args.config)
     run_dir = create_run_dir(config)
-    setup = set_up(config, args.checkpoint)
-    num_games = config.evaluation.num_games if args.num_games is None else args.num_games
-    summary = evaluate(config.game, setup.agents, num_games, config.evaluation.seed)
+    summary = evaluate_experiment(config, args.checkpoint, args.num_games)
     print(summary)
     record = {
         **asdict(summary),
