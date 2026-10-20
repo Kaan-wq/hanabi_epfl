@@ -8,8 +8,10 @@ from hanabi_search.agents.rule_based import ruleset
 from hanabi_search.agents.rule_based.card_counting import (
     get_card_playability,
     get_max_fireworks,
+    get_probability_notcritical,
     get_probability_useless,
-    get_remaining_counts,
+    playable_cards,
+    useless_cards,
 )
 from hanabi_search.config import GameConfig, RuleBasedPolicy
 from hanabi_search.env import HanabiEnv
@@ -50,10 +52,31 @@ def test_rule_based_play_is_reproducible() -> None:
 
 def test_card_counts_at_start(env: HanabiEnv) -> None:
     observation = current_observation(env)
-    remaining = get_remaining_counts(observation)
-    # Full deck minus the partner's visible hand.
-    assert sum(remaining.values()) == 50 - 5
     assert get_max_fireworks(observation) == dict.fromkeys("RYGWB", 5)
+    playable = playable_cards(observation)
+    assert playable.shape == (5, 5)
+    assert playable[:, 0].all() and not playable[:, 1:].any()
+    assert not useless_cards(observation).any()
+
+
+def test_probabilities_follow_unseen_copies(env: HanabiEnv) -> None:
+    # Before any hint, P(playable) for every card is (unseen 1s) / (all unseen cards).
+    observation = current_observation(env)
+    unseen = observation["pyhanabi"].unseen_card_counts()
+    expected = unseen[:, 0].sum() / unseen.sum()
+    assert np.array_equal(get_card_playability(observation), np.full(5, expected))
+    # Only 1s and 5s have no copy to spare (3 and 1 copies; 2-4 have 2).
+    notcritical = get_probability_notcritical(observation)
+    assert np.all((notcritical > 0) & (notcritical < 1))
+
+
+def test_probabilities_follow_hints() -> None:
+    env = make_env(GameConfig(players=2), seed=1)
+    hinted = env.state.player_hands()[1 - env.state.cur_player()][0]
+    env.step({"action_type": "REVEAL_RANK", "rank": hinted.rank(), "target_offset": 1})
+    observation = current_observation(env)
+    playability = get_card_playability(observation)
+    assert playability[0] == (1.0 if hinted.rank() == 0 else 0.0)
 
 
 def test_card_probabilities_are_probabilities() -> None:

@@ -15,10 +15,11 @@ import numpy as np
 from hanabi_search.agents.rule_based.card_counting import (
     get_card_playability,
     get_max_fireworks,
-    get_plausible_cards,
     get_probability_notcritical,
     get_probability_useless,
+    plausible_card_mask,
     playable_card,
+    playable_cards,
     useless_card,
 )
 from hanabi_search.env import HanabiMoveType, MoveDict, ObservationDict
@@ -88,11 +89,8 @@ def playable_now_convention(observation: ObservationDict) -> MoveDict | None:
     action = last.move().to_dict()
     if revealed and action["target_offset"] == _NEXT_PLAYER and len(revealed) == 1:
         hand_index = revealed[0]
-        fireworks = observation["fireworks"]
-        if any(
-            playable_card(card, fireworks)
-            for card in get_plausible_cards(observation, 0, hand_index)
-        ):
+        plausible = plausible_card_mask(observation, 0, hand_index)
+        if (plausible & playable_cards(observation)).any():
             return _play(hand_index)
     return None
 
@@ -157,10 +155,10 @@ def discard_randomly(observation: ObservationDict) -> MoveDict | None:
 
 def play_safe_card(observation: ObservationDict) -> MoveDict | None:
     """Plays a card that is playable whatever its hidden identity."""
-    fireworks = observation["fireworks"]
+    playable = playable_cards(observation)
     for card_index in range(len(observation["card_knowledge"][0])):
-        plausible = get_plausible_cards(observation, 0, card_index)
-        if plausible and all(playable_card(card, fireworks) for card in plausible):
+        plausible = plausible_card_mask(observation, 0, card_index)
+        if plausible.any() and not (plausible & ~playable).any():
             return _play(card_index)
     return None
 

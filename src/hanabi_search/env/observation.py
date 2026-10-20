@@ -2,6 +2,9 @@
 
 import enum
 
+import numpy as np
+import numpy.typing as npt
+
 from hanabi_search.env._pyhanabi import CData, card_values, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard, HanabiCardKnowledge
 from hanabi_search.env.game import HanabiGame
@@ -21,7 +24,7 @@ class HanabiObservation:
         player: Absolute id of the observing player.
     """
 
-    __slots__ = ("_game", "_knowledge_pool", "_observation")
+    __slots__ = ("_game", "_knowledge_pool", "_observation", "_plausible_cards", "_unseen_counts")
 
     def __init__(self, game: HanabiGame, c_state: CData, player: int) -> None:
         self._game = game
@@ -34,6 +37,9 @@ class HanabiObservation:
             ffi.new("pyhanabi_card_knowledge_t*")
             for _ in range(self.num_players() * game.hand_size())
         ]
+        # Computed on first use; an observation never changes.
+        self._unseen_counts: npt.NDArray[np.int32] | None = None
+        self._plausible_cards: npt.NDArray[np.bool_] | None = None
 
     @property
     def c_observation(self) -> CData:
@@ -122,6 +128,60 @@ class HanabiObservation:
             lib.ObsGetLegalMove(self.c_observation, index, c_move)
             moves.append(HanabiMove(c_move))
         return moves
+
+    def unseen_card_counts(self) -> npt.NDArray[np.int32]:
+        """Returns how many copies of each card the observer cannot see.
+
+        The full deck minus the other players' hands, the discard pile and the
+        fireworks: what is left is in the deck or in the observer's own hand.
+
+        Returns:
+            Read-only counts of shape (num_colors, num_ranks), dtype int32.
+        """
+        if self._unseen_counts is None:
+            game = self._game
+            counts = np.array(
+                [
+                    [game.num_cards(color, rank) for rank in range(game.num_ranks())]
+                    for color in range(game.num_colors())
+                ],
+                dtype=np.int32,
+            )
+            # The observer's own cards are hidden (invalid), so they are skipped.
+            seen = [card for hand in self.observed_hands() for card in hand if card.valid()]
+            for card in seen + self.discard_pile():
+                counts[card.color(), card.rank()] -= 1
+            for color, height in enumerate(self.fireworks()):
+                counts[color, :height] -= 1
+            counts.flags.writeable = False
+            self._unseen_counts = counts
+        return self._unseen_counts
+
+    def plausible_cards(self) -> npt.NDArray[np.bool_]:
+        """Returns which cards the hints still allow at each position of each hand.
+
+        Returns:
+            Read-only mask of shape (num_players, hand_size, num_colors, num_ranks),
+            dtype bool: entry [offset, index, color, rank] is whether the card at
+            `index` in the hand of player `offset` (from the observer) can be
+            (color, rank). Positions past the end of a hand are all False.
+        """
+        if self._plausible_cards is None:
+            game = self._game
+            num_colors, num_ranks = game.num_colors(), game.num_ranks()
+            shape = (self.num_players(), game.hand_size())
+            colors = np.zeros((*shape, num_colors), dtype=np.bool_)
+            ranks = np.zeros((*shape, num_ranks), dtype=np.bool_)
+            for offset, hand in enumerate(self.card_knowledge()):
+                for index, knowledge in enumerate(hand):
+                    colors[offset, index] = [
+                        knowledge.color_plausible(c) for c in range(num_colors)
+                    ]
+                    ranks[offset, index] = [knowledge.rank_plausible(r) for r in range(num_ranks)]
+            mask = colors[..., :, None] & ranks[..., None, :]
+            mask.flags.writeable = False
+            self._plausible_cards = mask
+        return self._plausible_cards
 
     def card_playable_on_fireworks(self, color: int, rank: int) -> bool:
         """Returns whether the card (color, rank) can be played right now."""
