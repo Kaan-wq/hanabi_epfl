@@ -8,6 +8,19 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: `search iteration` benchmark row (headline engine metric)
+
+`bench_engine` gets a `search iteration` row: one iteration of a
+re-determinizing tree search done entirely in the engine (copy a mid-game
+root state, resample the searcher's hand, replay up to 10 random legal moves
+with dealing and RESTORE re-determinization, then encode the leaf observation
+into a uint8 buffer). 2,000 fixed roots x 25 rounds per player count. This is
+the metric engine optimizations are judged by from now on; a second argument
+runs only the rows whose name contains it (`bench_engine 20000 "search"`).
+
+Baseline (median of 5): 72,771 / 47,425 / 42,626 / 34,215 iterations/s for
+2-5 players.
+
 ## 2026-10-20: State buffers for hands and legal moves
 
 `HanabiState.player_hands()` made one C call per card, and `legal_moves()`

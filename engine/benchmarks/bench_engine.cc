@@ -1,8 +1,14 @@
 // Engine speed benchmark. Run in Release mode before and after any engine
 // optimization, and record the numbers in engine/CHANGES.md.
 //
-// Usage: bench_engine [num_games]   (default 20000 games per player count)
+// Usage: bench_engine [num_games] [row]
+//   num_games: games per player count for the random-game rows (default 20000)
+//   row:       run only the rows whose name contains this text (for profiling)
+//
+// The headline metric is "search iteration": one iteration of a
+// re-determinizing tree search done entirely in the engine.
 
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 #include <cstdio>
@@ -165,6 +171,64 @@ Result ObservationFeatures(const hle::HanabiGame& game, const std::vector<hle::H
   return result;
 }
 
+// One iteration of a re-determinizing tree search, as a C++ search would run
+// it: copy a root state, resample the searcher's hand, replay a path of up to
+// `depth` moves (listing legal moves, applying one, dealing, restoring the
+// previous player's hand and resampling the next player's), then encode the
+// leaf observation into a network input buffer.
+Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::HanabiState>& roots,
+                        int rounds, int depth) {
+  const hle::CanonicalObservationEncoder encoder(&game);
+  int length = 1;
+  for (int dim : encoder.Shape()) length *= dim;
+  std::vector<uint8_t> bits(length);
+  hle::HandSampler sampler(17);
+  std::mt19937 rng(23);
+  std::vector<hle::HanabiCard> remembered;
+  Result result;
+  int64_t checksum = 0;
+  const auto start = Clock::now();
+  for (int r = 0; r < rounds; ++r) {
+    for (const auto& root : roots) {
+      hle::HanabiState state(root);
+      const int searcher = state.CurPlayer();
+      sampler.ResampleHand(&state, searcher);
+      for (int step = 0; step < depth && !state.IsTerminal(); ++step) {
+        const int player = state.CurPlayer();
+        const auto legal = state.LegalMoves(player);
+        const hle::HanabiMove move = legal[rng() % legal.size()];
+        hle::HanabiCard removed;
+        if (move.MoveType() == hle::HanabiMove::kPlay ||
+            move.MoveType() == hle::HanabiMove::kDiscard) {
+          removed = state.Hands()[player].Cards()[move.CardIndex()];
+        }
+        state.ApplyMove(move);
+        while (!state.IsTerminal() && state.CurPlayer() == hle::kChancePlayerId) {
+          state.ApplyRandomChance();
+        }
+        if (player != searcher) {
+          checksum += sampler.RestoreHand(&state, player, remembered, removed, move.CardIndex());
+        }
+        const int next = state.CurPlayer();
+        if (!state.IsTerminal() && next != searcher) {
+          remembered = state.Hands()[next].Cards();
+          checksum += sampler.ResampleHand(&state, next);
+        }
+      }
+      const int observer = state.IsTerminal() ? searcher : state.CurPlayer();
+      const hle::HanabiObservation observation(state, observer);
+      const std::vector<int> encoding = encoder.Encode(observation);
+      std::transform(encoding.begin(), encoding.end(), bits.begin(),
+                     [](int bit) { return static_cast<uint8_t>(bit != 0); });
+      checksum += bits[0];
+      ++result.steps;
+    }
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
 void Report(const char* name, int players, const Result& result, const char* unit) {
   std::printf("%-22s %d players  %12.0f %s/s  (%lld in %.2fs)\n", name, players,
               static_cast<double>(result.steps) / result.seconds, unit,
@@ -176,18 +240,35 @@ void Report(const char* name, int players, const Result& result, const char* uni
 int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a tool may abort
   const int num_games = argc > 1 ? std::atoi(argv[1]) : 20000;
   if (num_games <= 0) {
-    std::fprintf(stderr, "usage: bench_engine [num_games > 0]\n");
+    std::fprintf(stderr, "usage: bench_engine [num_games > 0] [row]\n");
     return 2;
   }
+  const std::string only = argc > 2 ? argv[2] : "";
+  const auto run = [&](const char* name) {
+    return name == only || std::string(name).find(only) != std::string::npos;
+  };
   for (int players = 2; players <= 5; ++players) {
-    Report("random games", players, PlayRandomGames(players, num_games, false), "steps");
-    Report("random games + encode", players, PlayRandomGames(players, num_games, true), "steps");
+    if (run("search iteration")) {
+      const hle::HanabiGame game = MakeGame(players, 3);
+      const auto roots = SampleStates(game, 2000);
+      Report("search iteration", players, SearchIterations(game, roots, 25, 10), "iters");
+    }
+    if (run("random games")) {
+      Report("random games", players, PlayRandomGames(players, num_games, false), "steps");
+    }
+    if (run("random games + encode")) {
+      Report("random games + encode", players, PlayRandomGames(players, num_games, true), "steps");
+    }
     const hle::HanabiGame game = MakeGame(players, 3);
     const auto states = SampleStates(game, 2000);
-    Report("state copy", players, CopyStates(states, 50), "copies");
-    Report("state JSON round-trip", players, JsonRoundTrips(game, states), "trips");
-    Report("resample hand", players, ResampleHands(states, 10), "hands");
-    Report("observation features", players, ObservationFeatures(game, states, 10), "obs");
+    if (run("state copy")) Report("state copy", players, CopyStates(states, 50), "copies");
+    if (run("state JSON round-trip")) {
+      Report("state JSON round-trip", players, JsonRoundTrips(game, states), "trips");
+    }
+    if (run("resample hand")) Report("resample hand", players, ResampleHands(states, 10), "hands");
+    if (run("observation features")) {
+      Report("observation features", players, ObservationFeatures(game, states, 10), "obs");
+    }
   }
   return 0;
 }
