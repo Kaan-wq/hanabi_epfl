@@ -36,7 +36,8 @@ ctest --test-dir build --output-on-failure     # engine tests, incl. parity test
 cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug && cmake --build build-debug \
   && ctest --test-dir build-debug              # tests under ASan + UBSan
 uv run clang-format -i engine/**/*.cc engine/**/*.h
-SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build <files>  # static analysis
+SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build \
+  --extra-arg=-resource-dir=$(xcrun clang -print-resource-dir) <files>  # static analysis (macOS)
 
 uv sync                          # install / update the environment
 uv run pytest                    # Python tests (-m "not slow" skips Ray/script tests)
@@ -267,8 +268,9 @@ invalidates every result, so correctness comes before speed.
 ## C++ / C standards (engine)
 
 ### Language and build
-- Engine core: **C++17**. C API (`engine/capi/`): plain C types only inside
-  `extern "C"` — no C++ types, exceptions or templates cross the boundary.
+- Engine core: **C++23** (clang 18+ or GCC 15+; `std::mdspan` sets the floor).
+  C API (`engine/capi/`): plain C types only inside `extern "C"` — no C++
+  types, exceptions or templates cross the boundary.
 - Warnings: `-Wall -Wextra -Wpedantic -Wshadow`. New and modified code compiles
   warning-free; fix inherited warnings in files you touch.
 - Debug builds use `-fsanitize=address,undefined`; tests must run clean under them.

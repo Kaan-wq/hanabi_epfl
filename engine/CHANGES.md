@@ -8,6 +8,19 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Build as C++23
+
+`CMAKE_CXX_STANDARD` 17 -> 23 (approved modernization plan, step 1 of 6). No
+code change; the engine compiles warning-free as before and all tests pass.
+Requirements are now clang >= 18 or GCC >= 15 (for `std::mdspan`, used in a
+later step). bench_engine search iteration unchanged (231,111 vs 231,636 3p).
+On macOS, clang-tidy now needs `--extra-arg=-resource-dir=$(xcrun clang
+-print-resource-dir)` (see CLAUDE.md): from C++20 on, the SDK's `math.h`
+expects the compiler's `float.h` to define `INFINITY`, and the pip LLVM's
+does not.
+
+---
+
 ## 2026-10-20: Hands stored inline, at most 8 cards (search iteration 4.91x)
 
 A hand held two `std::vector`s (cards, knowledge): every copy of a state or

@@ -14,7 +14,8 @@ The methodology, experiments and results are in the project report:
 
 ## Setup
 
-Requirements: a C++17 compiler, CMake ≥ 3.24 and [uv](https://docs.astral.sh/uv/).
+Requirements: a C++23 compiler (clang ≥ 18 or GCC ≥ 15, for `std::mdspan`), CMake ≥ 3.24
+and [uv](https://docs.astral.sh/uv/).
 On macOS, `xcode-select --install` provides the compiler. nlohmann/json is used
 from the system if installed, otherwise CMake downloads it.
 
