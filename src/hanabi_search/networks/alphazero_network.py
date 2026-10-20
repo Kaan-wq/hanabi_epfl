@@ -61,11 +61,11 @@ class AlphaZeroNetwork(nn.Module):
         features = self.backbone(observations)
         return self.policy_head(features), self.value_head(features)
 
-    @torch.no_grad()
+    @torch.inference_mode()
     def predict(
         self, observations: npt.NDArray[np.float32]
     ) -> tuple[npt.NDArray[np.float32], npt.NDArray[np.float32]]:
-        """Evaluates a batch on the network's device, for search.
+        """Evaluates a batch on the network's device, for search (call `eval()` first).
 
         Args:
             observations: Encoded observations, shape (batch, observation_size).

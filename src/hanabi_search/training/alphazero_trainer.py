@@ -73,8 +73,12 @@ class AlphaZeroTrainer:
         self.buffer = buffer
         self.config = config
         self.device = device
+        # Fused: one kernel for all parameters, without a host sync per parameter.
         self.optimizer = torch.optim.AdamW(
-            network.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay
+            network.parameters(),
+            lr=config.learning_rate,
+            weight_decay=config.weight_decay,
+            fused=True,
         )
 
     def train_step(self) -> LossStats | None:
@@ -91,16 +95,25 @@ class AlphaZeroTrainer:
             return None
         batch = self.buffer.sample(config.batch_size)
         transitions = batch.transitions
-        device = self.device
-        observations = torch.from_numpy(np.stack([t.observation for t in transitions])).to(device)
-        target_policies = torch.from_numpy(np.stack([t.policy for t in transitions])).to(device)
-        target_values = torch.tensor(
-            [t.value for t in transitions], dtype=torch.float32, device=device
+        # One host-to-device copy: (batch, observation_size + num_actions + 2).
+        packed = np.concatenate(
+            [
+                np.stack([t.observation for t in transitions]),
+                np.stack([t.policy for t in transitions]),
+                np.array([[t.value] for t in transitions], dtype=np.float32),
+                batch.weights[:, np.newaxis],
+            ],
+            axis=1,
         )
-        weights = torch.from_numpy(batch.weights).to(device)  # (batch,)
+        inputs = torch.from_numpy(packed).to(self.device)
+        observation_size = transitions[0].observation.shape[0]
+        observations = inputs[:, :observation_size]
+        target_policies = inputs[:, observation_size:-2]  # (batch, num_actions)
+        target_values = inputs[:, -2]  # (batch,)
+        weights = inputs[:, -1]  # (batch,)
 
         self.network.train()
-        self.optimizer.zero_grad()
+        self.optimizer.zero_grad(set_to_none=True)
         logits, values = self.network(observations)  # (batch, num_actions), (batch, 1)
         values = values.squeeze(-1)  # (batch,)
         policy_errors = -(target_policies * nn.functional.log_softmax(logits, dim=1)).sum(dim=1)
@@ -109,20 +122,29 @@ class AlphaZeroTrainer:
             nn.functional.mse_loss(values, target_values, reduction="none") * weights
         ).mean()
         loss = policy_loss + config.value_loss_weight * value_loss
-        if not torch.isfinite(loss):
+        priorities = policy_errors + config.value_loss_weight * (values - target_values).abs()
+        # One device-to-host copy (the step's only sync): priorities, then the 3 losses.
+        host = (
+            torch.cat([priorities, torch.stack([policy_loss, value_loss, loss])])
+            .detach()
+            .cpu()
+            .numpy()
+        )
+        policy_value, value_value, total_value = (float(x) for x in host[-3:])
+        if not np.isfinite(total_value):
+            self.network.eval()
             raise NonFiniteLossError(
-                f"loss={loss.item()} (policy={policy_loss.item()}, value={value_loss.item()})"
+                f"loss={total_value} (policy={policy_value}, value={value_value})"
             )
         torch.autograd.backward(loss)
         self.optimizer.step()
         self.network.eval()
 
-        priorities = policy_errors + config.value_loss_weight * (values - target_values).abs()
-        self.buffer.update_priorities(batch.indices, priorities.detach().cpu().numpy())
+        self.buffer.update_priorities(batch.indices, host[:-3])
         return LossStats(
-            policy_loss=policy_loss.item(),
-            value_loss=value_loss.item(),
-            total_loss=loss.item(),
+            policy_loss=policy_value,
+            value_loss=value_value,
+            total_loss=total_value,
             value_loss_weight=config.value_loss_weight,
         )
 
