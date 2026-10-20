@@ -3,7 +3,7 @@
 Every change to `engine/` relative to upstream HLE (see `UPSTREAM.md`): what,
 why, and the benchmark delta. Newest first.
 
-Benchmark: `./build/engine/benchmarks/bench_engine` (Release, default 20,000
+Benchmark: `./build/release/engine/benchmarks/bench_engine` (Release, default 20,000
 games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
