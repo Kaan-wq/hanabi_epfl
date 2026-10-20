@@ -1,8 +1,10 @@
 """Playing games between agents, optionally many at once with batched network evaluations."""
 
+import gc
 import logging
 from collections import deque
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterator, Sequence
+from contextlib import contextmanager
 
 import numpy as np
 
@@ -17,7 +19,27 @@ from hanabi_search.networks import AlphaZeroNetwork
 
 logger = logging.getLogger(__name__)
 
+# Young-generation GC threshold while games are played (Python's default is 2,000).
+_SEARCH_GC_THRESHOLD = 10_000
 
+
+@contextmanager
+def _infrequent_garbage_collection() -> Iterator[None]:
+    """Raises the young-generation GC threshold for the duration of the games.
+
+    Search trees allocate many small lists that live for a whole move; at the
+    default threshold the collector rescans them constantly (about 8% of search
+    time at 4 players, measured on Python 3.14).
+    """
+    thresholds = gc.get_threshold()
+    gc.set_threshold(max(thresholds[0], _SEARCH_GC_THRESHOLD), *thresholds[1:])
+    try:
+        yield
+    finally:
+        gc.set_threshold(*thresholds)
+
+
+@_infrequent_garbage_collection()
 def play_game(
     env: HanabiEnv, agents: Sequence[Agent], seed: int, on_move: MoveCallback | None = None
 ) -> GameResult:
@@ -62,6 +84,7 @@ def play_games(
     return results
 
 
+@_infrequent_garbage_collection()
 def play_games_batched(
     game: GameConfig,
     tables: Sequence[Sequence[Agent]],

@@ -1,3 +1,5 @@
+import gc
+
 import pytest
 import torch
 
@@ -74,6 +76,17 @@ def test_mixed_tables_only_batch_network_seats() -> None:
 
     batched = play_games_batched(game, [table(), table()], SEEDS, network)
     assert [r.moves for r in batched] == [r.moves for r in play_games(game, table(), SEEDS)]
+
+
+def test_games_restore_the_gc_thresholds() -> None:
+    game = GameConfig(players=2)
+    network = _network(game)
+    thresholds = gc.get_threshold()
+    during: list[int] = []
+    table = _alphazero_table(game, network)
+    play_games_batched(game, [table], [7], network, lambda *_: during.append(gc.get_threshold()[0]))
+    assert min(during) >= 10_000
+    assert gc.get_threshold() == thresholds
 
 
 def test_batched_games_need_a_table() -> None:
