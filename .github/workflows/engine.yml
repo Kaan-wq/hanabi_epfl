@@ -12,8 +12,6 @@ jobs:
     container:
       image: gcc:16
       options: --cap-add SYS_PTRACE  # LeakSanitizer needs ptrace in containers.
-    env:
-      UV_PYTHON: "3.14"  # The project's version; ray has no wheels for newer ones yet.
     steps:
       - uses: actions/checkout@v4
       - name: Install build tools
