@@ -8,6 +8,15 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Split observation functions out of `capi/pyhanabi.cc`
+
+Code move only, no behavior change: the `Obs*` and observation-encoder
+functions moved to `capi/pyhanabi_observation.cc`, and the helpers both files
+use (`InRange`, `CopyCard`, `Observation`) to `capi/pyhanabi_internal.h`.
+`pyhanabi.cc` was 931 lines, past the ~800-line split threshold, and the
+observation buffer functions that follow belong with the other `Obs*` ones.
+`pyhanabi.h` stays the one header (cffi reads it).
+
 ## 2026-10-20: Hidden-hand sampling in the engine (`HandSampler`)
 
 Re-determinizing MCTS resampled other players' hands in Python

@@ -71,7 +71,8 @@ Never leave the repo in a state where any of the above fail.
 │   ├── CHANGES.md            # log of every change vs upstream, and why
 │   ├── LICENSE               # upstream Apache-2.0 license, kept as-is
 │   ├── hanabi_lib/           # C++ game engine (rules, state, observations)
-│   ├── capi/                 # C API exposed to Python (pyhanabi.h / .cc)
+│   ├── capi/                 # C API exposed to Python: pyhanabi.h, pyhanabi.cc,
+│   │                         #   pyhanabi_observation.cc (Obs*), pyhanabi_internal.h
 │   ├── tests/                # C++ unit tests + parity/ (golden games from upstream)
 │   └── benchmarks/           # speed benchmarks (bench_engine)
 ├── src/
