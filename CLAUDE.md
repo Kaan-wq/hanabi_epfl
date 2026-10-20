@@ -64,14 +64,13 @@ Never leave the repo in a state where any of the above fail.
 ├── pyproject.toml            # single source of Python config (deps, ruff, mypy, pytest)
 ├── uv.lock                   # committed, never edited by hand
 ├── CMakeLists.txt            # top-level build, adds engine/
-├── .clang-format / .clang-tidy
 ├── .github/workflows/engine.yml  # CI: Linux GCC 16 build, engine tests, sanitizers, Python checks
-├── .git-blame-ignore-revs    # formatting-only commits, skipped by git blame
 ├── .gitignore
 ├── engine/                   # our fork of DeepMind's HLE
 │   ├── UPSTREAM.md           # upstream repo URL, forked commit, license notes
 │   ├── CHANGES.md            # log of every change vs upstream, and why
 │   ├── LICENSE               # upstream Apache-2.0 license, kept as-is
+│   ├── .clang-format / .clang-tidy  # C++ format and static-analysis config
 │   ├── hanabi_lib/           # C++ game engine (rules, state, observations)
 │   ├── capi/                 # C API exposed to Python: pyhanabi.h, pyhanabi.cc,
 │   │                         #   pyhanabi_observation.cc (Obs*), pyhanabi_internal.h

@@ -49,6 +49,11 @@ jobs:
         run: uv run mypy
       - name: Python tests
         shell: bash
+        # Torch segfaults with GCC 16's libstdc++ in /usr/local/lib64, which the image
+        # puts first on the loader path; use Debian's own. The engine library bundles
+        # its C++ runtime, so it does not need GCC 16's.
+        env:
+          LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu
         run: |
           if ! uv run pytest -m "not slow" -v 2>&1 | tee pytest.log; then
             if grep -q "Fatal Python error" pytest.log; then
