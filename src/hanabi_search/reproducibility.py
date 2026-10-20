@@ -13,12 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 def seed_everything(seed: int) -> None:
-    """Seeds Python's `random`, NumPy and PyTorch.
+    """Seeds Python's `random`, NumPy and PyTorch (e.g. for a network's initial weights).
 
-    The engine is seeded separately, through the game's `seed` parameter.
+    Games do not depend on these: the engine is seeded through the game's `seed`
+    parameter, and agents draw from the game's own generator.
     """
     random.seed(seed)
-    np.random.seed(seed)  # noqa: NPY002 -- agents use the legacy global generator.
+    np.random.seed(seed)  # noqa: NPY002 -- seeds any library still using it.
     torch.manual_seed(seed)
 
 

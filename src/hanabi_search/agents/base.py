@@ -9,6 +9,7 @@ import numpy.typing as npt
 
 from hanabi_search.config import GameConfig
 from hanabi_search.env import Action, HanabiState, ObservationDict
+from hanabi_search.exceptions import HanabiSearchError
 
 # A position a search agent needs the network to evaluate: its encoded
 # observation, shape (observation_size,).
@@ -76,6 +77,16 @@ class Agent(ABC):
         """
         yield from ()
         return self.act(observation, state)
+
+    def evaluate(self, request: EvaluationRequest) -> Evaluation:
+        """Answers one of this agent's evaluation requests by itself (batch of one).
+
+        Raises:
+            HanabiSearchError: If the agent has no network (it never makes requests).
+        """
+        raise HanabiSearchError(
+            f"{type(self).__name__} has no network; unexpected request {request.shape}"
+        )
 
     def end_episode(self, final_score: int) -> None:  # noqa: B027 -- optional hook
         """Called once per finished game; override to record training data."""

@@ -18,7 +18,8 @@ training:
   weight_decay: 1.0e-4
   batch_size: 128
   value_loss_weight: 10.0
-  train_every_step: true
+  train_steps_per_move: 1.0
+  parallel_games: 32
   replay_buffer:
     capacity: 10000
     alpha: 0.6
@@ -30,3 +31,4 @@ training:
 evaluation:
   num_games: 1000
   seed: 1000000
+  parallel_games: 32

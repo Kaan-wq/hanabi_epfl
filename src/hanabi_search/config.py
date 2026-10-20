@@ -138,7 +138,14 @@ class TrainingConfig(_Config):
     weight_decay: float = Field(default=1e-4, ge=0)
     batch_size: int = Field(default=128, ge=1)
     value_loss_weight: float = Field(default=10.0, ge=0)
-    train_every_step: bool = Field(default=True, description="Also train after every move")
+    train_steps_per_move: float = Field(
+        default=1.0,
+        ge=0,
+        description="Gradient steps per self-play move (fractions accumulate), plus one per game",
+    )
+    parallel_games: int = Field(
+        default=32, ge=1, description="Self-play games played at once, evaluations batched"
+    )
     replay_buffer: ReplayBufferConfig = ReplayBufferConfig()
     self_play: SelfPlayConfig = SelfPlayConfig()
 
@@ -148,6 +155,9 @@ class EvaluationConfig(_Config):
 
     num_games: int = Field(default=1000, ge=1)
     seed: int = Field(default=1_000_000, description="Game i uses seed + i")
+    parallel_games: int = Field(
+        default=32, ge=1, description="Games played at once when a seat has a network"
+    )
 
 
 class ExperimentConfig(_Config):

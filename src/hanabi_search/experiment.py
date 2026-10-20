@@ -18,11 +18,11 @@ from hanabi_search.config import (
     SelfPlayConfig,
 )
 from hanabi_search.env import OBSERVATION_ENCODER_VERSION, HanabiEnv, StepResult
-from hanabi_search.evaluation import play_games
+from hanabi_search.evaluation import GameResult, play_games_batched
 from hanabi_search.exceptions import ConfigError
 from hanabi_search.logging_utils import setup_logging
 from hanabi_search.networks import AlphaZeroNetwork
-from hanabi_search.reproducibility import select_device
+from hanabi_search.reproducibility import seed_everything, select_device
 from hanabi_search.training import (
     AlphaZeroTrainer,
     LossStats,
@@ -82,14 +82,19 @@ class Setup:
     """Everything needed to play an experiment's games.
 
     Attributes:
-        agents: One agent per seat.
+        tables: Agents of each concurrent game, one per seat (no agent is shared).
         network: The AlphaZero network, if any seat uses one.
         device: Device of `network`.
     """
 
-    agents: list[Agent]
+    tables: list[list[Agent]]
     network: AlphaZeroNetwork | None
     device: torch.device
+
+    @property
+    def agents(self) -> list[Agent]:
+        """The first table's agents, for playing one game at a time."""
+        return self.tables[0]
 
 
 def set_up(
@@ -99,6 +104,7 @@ def set_up(
     self_play: SelfPlayConfig | None = None,
     ask: Callable[[str], str] | None = None,
     show: Callable[[str], None] | None = None,
+    num_tables: int = 1,
 ) -> Setup:
     """Builds the device, network (if needed) and agents of an experiment.
 
@@ -109,8 +115,15 @@ def set_up(
         self_play: Exploration for AlphaZero agents; only for training games.
         ask: Input function for human seats.
         show: Output function for human seats.
+        num_tables: Number of independent sets of agents, one per concurrent game.
+
+    Raises:
+        ConfigError: If `num_tables` is below 1.
     """
+    if num_tables < 1:
+        raise ConfigError(f"num_tables must be at least 1, got {num_tables}")
     device = select_device(config.device)
+    seed_everything(config.seed)  # Initial weights of a network without checkpoint.
     network = None
     if uses_network(config):
         network_config = config.network
@@ -121,14 +134,17 @@ def set_up(
         network = make_network(config.model_copy(update={"network": network_config}), device)
         network.eval()
     resources = AgentResources(network, transition_sink, ask, show, self_play)
-    return Setup(build_agents(config.seat_agents(), config.game, resources), network, device)
+    tables = [build_agents(config.seat_agents(), config.game, resources) for _ in range(num_tables)]
+    return Setup(tables, network, device)
 
 
 def train_alphazero(config: ExperimentConfig, run_dir: Path) -> Path:
     """Self-play AlphaZero training; saves the network after every episode.
 
-    Episode `i` is played with seed `config.seed + i`. Training metrics are appended
-    to `run_dir/metrics.jsonl`.
+    Episodes are played `training.parallel_games` at a time, with batched network
+    evaluations; episode `i` uses seed `config.seed + i`. The network trains while
+    they are played, so games in progress see updated weights. Training metrics are
+    appended to `run_dir/metrics.jsonl`, one line per finished game.
 
     Returns:
         Path of the saved network.
@@ -147,30 +163,45 @@ def train_alphazero(config: ExperimentConfig, run_dir: Path) -> Path:
         rng=np.random.default_rng(config.seed),
         save_path=run_dir / "transitions.jsonl" if buffer_config.save_transitions else None,
     )
-    setup = set_up(config, transition_sink=buffer.add, self_play=training.self_play)
-    assert setup.network is not None
-    trainer = AlphaZeroTrainer(setup.network, buffer, training, setup.device)
+    setup = set_up(
+        config,
+        transition_sink=buffer.add,
+        self_play=training.self_play,
+        num_tables=training.parallel_games,
+    )
+    network = setup.network
+    assert network is not None
+    trainer = AlphaZeroTrainer(network, buffer, training, setup.device)
     metrics_path = run_dir / "metrics.jsonl"
-    checkpoint = run_dir / CHECKPOINT_FILE
+    pending_steps = 0.0
+    finished_games = 0
 
     def train_after_move(_env: HanabiEnv, _result: StepResult) -> None:
-        trainer.train_step()
+        nonlocal pending_steps
+        pending_steps += training.train_steps_per_move
+        while pending_steps >= 1:
+            trainer.train_step()
+            pending_steps -= 1
 
-    on_move = train_after_move if training.train_every_step else None
-    for episode in range(training.num_episodes):
-        seed = config.seed + episode
-        (result,) = play_games(config.game, setup.agents, [seed], on_move)
+    def after_game(result: GameResult) -> None:
+        nonlocal finished_games
         stats = trainer.train_step()
-        checkpoint = save_checkpoint(setup.network, run_dir, config)
-        _log_episode(metrics_path, episode, result.score, len(buffer), stats)
-    return checkpoint
+        save_checkpoint(network, run_dir, config)
+        _log_episode(metrics_path, finished_games, result, len(buffer), stats)
+        finished_games += 1
+
+    seeds = [config.seed + episode for episode in range(training.num_episodes)]
+    play_games_batched(config.game, setup.tables, seeds, network, train_after_move, after_game)
+    return run_dir / CHECKPOINT_FILE
 
 
 def _log_episode(
-    metrics_path: Path, episode: int, score: int, buffer_size: int, stats: LossStats | None
+    metrics_path: Path, episode: int, result: GameResult, buffer_size: int, stats: LossStats | None
 ) -> None:
+    score = result.score
     record: dict[str, float | int | None] = {
         "episode": episode,
+        "seed": result.seed,
         "score": score,
         "buffer_size": buffer_size,
         "policy_loss": None if stats is None else stats.policy_loss,

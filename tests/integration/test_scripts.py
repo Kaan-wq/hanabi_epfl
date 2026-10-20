@@ -46,7 +46,7 @@ def test_train_then_evaluate(tmp_path: Path) -> None:
         "game": {"players": 2},
         "agents": [{"kind": "alphazero", "rollouts": 2}],
         "network": {"hidden_sizes": [16]},
-        "training": {"num_episodes": 2, "batch_size": 8},
+        "training": {"num_episodes": 3, "batch_size": 8, "parallel_games": 2},
         "evaluation": {"num_games": 2, "seed": 100},
     }
     config_path = tmp_path / "tiny.yaml"
@@ -57,7 +57,8 @@ def test_train_then_evaluate(tmp_path: Path) -> None:
     for name in ("config.yaml", "run.log", "model.pt", "checkpoint.json", "transitions.jsonl"):
         assert (run_dir / name).is_file(), name
     metrics = [json.loads(line) for line in (run_dir / "metrics.jsonl").read_text().splitlines()]
-    assert [m["episode"] for m in metrics] == [0, 1]
+    assert [m["episode"] for m in metrics] == [0, 1, 2]
+    assert sorted(m["seed"] for m in metrics) == [3, 4, 5]
     assert json.loads((run_dir / "checkpoint.json").read_text())["observation_encoder"]
 
     checkpoint = run_dir / "model.pt"

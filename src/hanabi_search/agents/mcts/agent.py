@@ -129,16 +129,6 @@ class MCTSAgent(Agent):
             self._pending.append(self._decision(observation, self.root_visits()))
         return best
 
-    def evaluate(self, request: EvaluationRequest) -> Evaluation:
-        """Answers one evaluation request; plain MCTS never makes any.
-
-        Raises:
-            HanabiSearchError: Always.
-        """
-        raise HanabiSearchError(
-            f"MCTS values leaves by rollouts; unexpected evaluation request {request.shape}"
-        )
-
     @override
     def begin_episode(self, rng: random.Random) -> None:
         super().begin_episode(rng)
