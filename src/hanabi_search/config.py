@@ -84,13 +84,15 @@ class MCTSAgentConfig(_Config):
 
 
 class AlphaZeroAgentConfig(_Config):
-    """MCTS guided by a policy/value network instead of rollouts."""
+    """MCTS guided by a policy/value network instead of rollouts.
+
+    Expands every legal move, weighted by the network's policy: no hand-written rules.
+    """
 
     kind: Literal["alphazero"] = "alphazero"
     rollouts: int = Field(default=100, ge=1, description="Rollouts per move, over all workers")
     max_depth: int = Field(default=60, ge=1)
     exploration_weight: float = Field(default=2.5, ge=0)
-    use_rules: bool = Field(default=True, description="Expand only rule moves, not all legal")
     determinization: DeterminizationType = DeterminizationType.RESTORE
 
 

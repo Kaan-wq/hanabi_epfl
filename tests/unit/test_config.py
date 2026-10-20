@@ -49,9 +49,10 @@ def test_self_play_noise_fraction_above_one_is_rejected() -> None:
         SelfPlayConfig(dirichlet_fraction=1.5)
 
 
-def test_removed_num_workers_field_is_rejected() -> None:
-    with pytest.raises(ValueError, match="num_workers"):
-        AlphaZeroAgentConfig.model_validate({"num_workers": 2})
+@pytest.mark.parametrize("field", ["num_workers", "use_rules"])
+def test_removed_alphazero_fields_are_rejected(field: str) -> None:
+    with pytest.raises(ValueError, match=field):
+        AlphaZeroAgentConfig.model_validate({field: True})
 
 
 def test_single_agent_fills_every_seat() -> None:

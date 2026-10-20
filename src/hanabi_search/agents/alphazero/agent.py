@@ -30,7 +30,7 @@ def as_search_config(config: AlphaZeroAgentConfig) -> MCTSAgentConfig:
         max_simulation_steps=0,
         max_depth=config.max_depth,
         exploration_weight=config.exploration_weight,
-        use_rules=config.use_rules,
+        use_rules=False,
         determinization=config.determinization,
         collect_data=True,
     )
@@ -112,7 +112,7 @@ class AlphaZeroAgent(MCTSAgent):
             policy, value = yield np.asarray(encoded, dtype=np.float32)
             reward = (value + 1) / 2 * self.game.max_score
             if descent.observation is not None:
-                self.add_children(leaf, descent.observation, policy)
+                self.add_children(leaf, policy)
         self.backpropagate(descent.path, reward)
 
     @override
@@ -121,25 +121,18 @@ class AlphaZeroAgent(MCTSAgent):
         policies, values = self.network.predict(request[np.newaxis])
         return policies[0], float(values[0])
 
-    def add_children(
-        self, node: MCTSNode, observation: ObservationDict, policy: npt.NDArray[np.float32]
-    ) -> None:
-        """Adds `node`'s candidate moves as children, with priors from `policy`.
+    def add_children(self, node: MCTSNode, policy: npt.NDArray[np.float32]) -> None:
+        """Adds every legal move of `node` as a child, with its prior from `policy`.
 
         Args:
-            node: The leaf being expanded.
-            observation: Observation of the player acting at `node`.
+            node: The leaf being expanded (its focused state is not terminal).
             policy: The network's move probabilities at `node`, shape (num_actions,).
         """
         if node in self.children:
             return
-        candidates = node.find_children(observation, self.rng)
-        if not candidates:
+        moves = node.state.legal_moves()
+        if not moves:
             return
-        converted = [self._as_move(candidate) for candidate in candidates]
-        # Rule proposals are deduplicated through a set (as in the original implementation,
-        # whose iteration order determines tie-breaking); legal moves keep engine order.
-        moves = converted if isinstance(candidates[0], HanabiMove) else list(set(converted))
         uids = [self.environment.game.get_move_uid(move) for move in moves]
 
         priors = policy[uids]  # (num_candidates,)

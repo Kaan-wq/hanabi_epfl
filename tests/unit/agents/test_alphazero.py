@@ -91,7 +91,7 @@ def _search(agent: AlphaZeroAgent, observation: ObservationDict) -> int:
 
 
 def test_first_search_expands_the_root_with_priors_summing_to_one(env: HanabiEnv) -> None:
-    agent = _agent(env, AlphaZeroAgentConfig(use_rules=False))
+    agent = _agent(env, AlphaZeroAgentConfig())
     agent.reset(env.state)
     assert _search(agent, current_observation(env)) == 1
     children = agent.children[agent.root_node]
@@ -138,7 +138,7 @@ def test_act_matches_driving_act_steps(env: HanabiEnv) -> None:
 
 
 def _root_priors(env: HanabiEnv, self_play: SelfPlayConfig | None) -> dict[str, float]:
-    agent = _agent(env, AlphaZeroAgentConfig(use_rules=False), self_play)
+    agent = _agent(env, self_play=self_play)
     agent.reset(env.state)
     _search(agent, current_observation(env))
     return {
