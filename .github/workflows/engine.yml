@@ -12,6 +12,8 @@ jobs:
     container:
       image: gcc:16
       options: --cap-add SYS_PTRACE  # LeakSanitizer needs ptrace in containers.
+    env:
+      UV_PYTHON: "3.14"  # The project's version; ray has no wheels for newer ones yet.
     steps:
       - uses: actions/checkout@v4
       - name: Install build tools
@@ -37,10 +39,8 @@ jobs:
       - name: Install Python environment
         shell: bash
         run: |
-          df -h / | tail -1 | awk '{print "::notice::disk free before uv sync: " $4}'
           if ! uv sync 2>&1 | tee uv-sync.log; then
             echo "::error::uv sync failed: $(tail -c 3000 uv-sync.log | tr '\n' ' ')"
-            df -h / | tail -1 | awk '{print "::notice::disk free after uv sync: " $4}'
             exit 1
           fi
       - name: Ruff lint
