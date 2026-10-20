@@ -23,17 +23,17 @@ jobs:
       - name: Report compiler errors as annotations
         run: echo "::add-matcher::.github/gcc-problem-matcher.json"
       - name: Configure (Release)
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DHANABI_NATIVE_ARCH=OFF
+        run: cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release -DHANABI_NATIVE_ARCH=OFF
       - name: Build (Release)
-        run: cmake --build build -j
+        run: cmake --build build/release -j
       - name: Engine tests
-        run: ctest --test-dir build --output-on-failure
+        run: ctest --test-dir build/release --output-on-failure
       - name: Configure and build (Debug, ASan + UBSan)
         run: |
-          cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
-          cmake --build build-debug -j
+          cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build/debug -j
       - name: Engine tests under ASan + UBSan
-        run: ctest --test-dir build-debug --output-on-failure
+        run: ctest --test-dir build/debug --output-on-failure
       - name: Install Python environment
         shell: bash
         run: |

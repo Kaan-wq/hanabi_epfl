@@ -38,6 +38,7 @@ dev = [
 line-length = 100
 target-version = "py314"
 extend-exclude = ["notebooks"]
+cache-dir = ".cache/ruff"
 
 [tool.ruff.lint]
 select = [
@@ -88,6 +89,7 @@ strict = true
 python_version = "3.14"
 files = ["src", "tests", "scripts"]
 warn_unreachable = true
+cache_dir = ".cache/mypy"
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 
@@ -99,3 +101,4 @@ pythonpath = ["."]
 addopts = ["--strict-markers", "--strict-config", "-ra"]
 markers = ["slow: long-running tests (deselect with -m 'not slow')"]
 filterwarnings = ["error"]
+cache_dir = ".cache/pytest"

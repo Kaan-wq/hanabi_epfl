@@ -21,7 +21,7 @@ type RootStats = dict[str, tuple[float, int]]
 
 
 # Large directories workers never read; excluded when Ray ships the project to them.
-_RAY_UPLOAD_EXCLUDES = ["saved_models/", "docs/", "notebooks/", "outputs/", "runs/", "build*/"]
+_RAY_UPLOAD_EXCLUDES = ["saved_models/", "docs/", "notebooks/", "runs/", "build/", ".cache/"]
 
 
 def ensure_ray(num_cpus: int | None = None) -> None:

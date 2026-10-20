@@ -20,10 +20,10 @@ On macOS, `xcode-select --install` provides the compiler. nlohmann/json is used
 from the system if installed, otherwise CMake downloads it.
 
 ```bash
-# 1. Build the engine (Python loads build/engine/libpyhanabi)
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-ctest --test-dir build --output-on-failure
+# 1. Build the engine (Python loads build/release/engine/libpyhanabi)
+cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release
+cmake --build build/release
+ctest --test-dir build/release --output-on-failure
 
 # 2. Create the Python environment (Python 3.14)
 uv sync
@@ -64,7 +64,7 @@ for every option and its default.
 uv run pytest                 # all tests; add -m "not slow" to skip Ray/script tests
 uv run ruff check . && uv run ruff format --check .
 uv run mypy                   # strict
-./build/engine/benchmarks/bench_engine
+./build/release/engine/benchmarks/bench_engine
 ```
 
 Conventions, the repository layout and the rules for changing the engine are in
@@ -76,7 +76,7 @@ Conventions, the repository layout and the rules for changing the engine are in
   (step 1 above).
 - **macOS linker error `unknown architecture` in a `.tbd` file**: the default SDK
   is newer than the installed linker. Update the Command Line Tools
-  (`softwareupdate --list`), then reconfigure from a fresh `build/`.
+  (`softwareupdate --list`), then reconfigure from a fresh `build/release/`.
 
 ## Results
 

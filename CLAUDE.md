@@ -27,16 +27,16 @@ evaluation games alongside a score.
 ## Commands
 
 ```bash
-# Engine (run from repo root). Python loads build/engine/libpyhanabi, so build
+# Engine (run from repo root). Python loads build/release/engine/libpyhanabi, so build
 # this first and rebuild after every engine change.
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-cmake --build build
-ctest --test-dir build --output-on-failure     # engine tests, incl. parity tests
-./build/engine/benchmarks/bench_engine         # engine speed benchmark
-cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug && cmake --build build-debug \
-  && ctest --test-dir build-debug              # tests under ASan + UBSan
+cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+cmake --build build/release
+ctest --test-dir build/release --output-on-failure     # engine tests, incl. parity tests
+./build/release/engine/benchmarks/bench_engine         # engine speed benchmark
+cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug && cmake --build build/debug \
+  && ctest --test-dir build/debug              # tests under ASan + UBSan
 uv run clang-format -i engine/**/*.cc engine/**/*.h
-SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build \
+SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build/release \
   --extra-arg=-resource-dir=$(xcrun clang -print-resource-dir) <files>  # static analysis (macOS)
 
 uv sync                          # install / update the environment
@@ -112,7 +112,7 @@ Never leave the repo in a state where any of the above fail.
 └── docs/                     # report, slides, results/; papers/ is local-only
 ```
 
-Git-ignored, never committed: `build*/`, `dist/`, `.venv/`, `checkpoints/`,
+Git-ignored, never committed: `build/` (`release/`, `debug/`), `.cache/` (tool caches), `dist/`, `.venv/`, `checkpoints/`,
 `runs/`, `logs/`, `outputs/`, `wandb/`, `docs/papers/`, `*.so`, `*.dylib`, `*.o`,
 `__pycache__/`.
 

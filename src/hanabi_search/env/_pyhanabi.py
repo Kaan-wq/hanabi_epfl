@@ -5,7 +5,7 @@ This is the only module that loads the engine. `CDEF` must match the header's
 
 The library is searched for, in order: the path in the `HANABI_SEARCH_LIB`
 environment variable, this package directory, and the repository's CMake build
-directory (`build/engine/`).
+directory (`build/release/engine/`).
 """
 
 import os
@@ -383,7 +383,7 @@ def _candidate_paths() -> list[Path]:
     override = os.environ.get(LIB_ENV_VAR)
     if override:
         return [Path(override)]
-    directories = [Path(__file__).resolve().parent, _REPO_ROOT / "build" / "engine"]
+    directories = [Path(__file__).resolve().parent, _REPO_ROOT / "build" / "release" / "engine"]
     return [directory / name for directory in directories for name in _LIB_NAMES]
 
 
@@ -398,7 +398,7 @@ def _load_library() -> tuple[Any, Path]:
     searched = "\n  ".join(str(path) for path in candidates)
     raise EngineLoadError(
         "Engine library libpyhanabi not found. Build it with\n"
-        "  cmake -S . -B build -DCMAKE_BUILD_TYPE=Release && cmake --build build\n"
+        "  cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release && cmake --build build/release\n"
         f"or set {LIB_ENV_VAR}. Searched:\n  {searched}"
     )
 

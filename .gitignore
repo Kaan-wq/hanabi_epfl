@@ -1,22 +1,21 @@
+# Tool caches (ruff, mypy, pytest)
+.cache/
+
 # Python
 __pycache__/
 *.py[cod]
 .venv/
 *.egg-info/
 dist/
-.mypy_cache/
-.ruff_cache/
-.pytest_cache/
 
 # Native build output
-build*/
+build/
 *.so
 *.dylib
 *.dll
 *.o
 *.a
 compile_commands.json
-.cache/
 .clangd/
 
 # Run outputs (see CLAUDE.md)
