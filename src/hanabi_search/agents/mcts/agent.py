@@ -2,7 +2,7 @@
 
 import random
 from collections import defaultdict
-from collections.abc import Generator, Sequence
+from collections.abc import Collection, Generator, Sequence
 from dataclasses import dataclass
 from math import log, sqrt
 from typing import override
@@ -96,7 +96,7 @@ class MCTSAgent(Agent):
             game.to_params(), player_id, config.determinization, config.rollout_reward
         )
         self.rollout_agents = [VanDenBerghAgent(seat, game) for seat in range(game.players)]
-        self.children: dict[MCTSNode, set[MCTSNode]] = {}
+        self.children: dict[MCTSNode, Collection[MCTSNode]] = {}
         self.visits: defaultdict[MCTSNode, int] = defaultdict(int)
         self.total_reward: defaultdict[MCTSNode, float] = defaultdict(float)
         self.root_node = self.node_type((), self.rules)

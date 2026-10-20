@@ -141,12 +141,13 @@ class AlphaZeroAgent(MCTSAgent):
         if self.self_play is not None and node == self.root_node:
             priors = self._add_root_noise(priors, self.self_play, self.rng)
 
-        children: set[MCTSNode] = set()
+        # A list in legal-move order: ties in PUCT and visit counts go to the first move.
+        children: list[MCTSNode] = []
         for move, prior in zip(moves, priors.tolist(), strict=True):
             if prior > 0:
                 child = AlphaZeroNode((*node.moves, move), self.rules)
                 child.prior = prior
-                children.add(child)
+                children.append(child)
         self.children[node] = children
 
     @override
@@ -190,12 +191,9 @@ class AlphaZeroAgent(MCTSAgent):
         if not children:
             return super().choose_move(node)
         if self.self_play is not None and self._moves_this_game <= self.self_play.temperature_moves:
-            # Sorted by move uid: set order must not affect which move is drawn.
-            game = self.environment.game
-            ordered = sorted(children, key=lambda child: game.get_move_uid(child.initial_move()))
-            weights = [self.visits[child] for child in ordered]
+            weights = [self.visits[child] for child in children]
             if sum(weights) > 0:
-                return self.rng.choices(ordered, weights)[0].initial_move()
+                return self.rng.choices(list(children), weights)[0].initial_move()
 
         def visit_count(child: MCTSNode) -> float:
             visits = self.visits[child]
