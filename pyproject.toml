@@ -32,6 +32,16 @@ dev = [
     "types-tqdm>=4.70.0.20260906",
 ]
 
+# CPU-only torch on Linux (CI): we never use CUDA, and its wheels pull in GBs of
+# nvidia-* packages. macOS wheels from PyPI already include MPS.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
 # --------------------------------------------------------------------------- ruff
 
 [tool.ruff]
