@@ -83,4 +83,31 @@ HANABI_TEST(LegalMovesAreTheMoveIdsMoveIsLegalAccepts) {
   });
 }
 
+HANABI_TEST(RandomChanceDealsWhatTheChanceOutcomeListWouldDeal) {
+  // Two copies of each game (same seed) played in lockstep: one deals with
+  // ApplyRandomChance, the other picks from the full ChanceOutcomes() list.
+  for (const Variant& variant : Variants()) {
+    const hle::HanabiGame fast_game = MakeGame(variant, 9);
+    const hle::HanabiGame reference_game = MakeGame(variant, 9);
+    std::mt19937 rng(variant.players + variant.hand_size);
+    for (int g = 0; g < 30; ++g) {
+      hle::HanabiState fast(&fast_game, 0);
+      hle::HanabiState reference(&reference_game, 0);
+      while (!reference.IsTerminal()) {
+        if (reference.CurPlayer() == hle::kChancePlayerId) {
+          fast.ApplyRandomChance();
+          reference.ApplyMove(reference_game.PickRandomChance(reference.ChanceOutcomes()));
+        } else {
+          const auto legal = reference.LegalMoves(reference.CurPlayer());
+          const hle::HanabiMove move = legal[rng() % legal.size()];
+          fast.ApplyMove(move);
+          reference.ApplyMove(move);
+        }
+        CHECK_EQ(fast.ToString(), reference.ToString());
+      }
+      CHECK(fast.IsTerminal());
+    }
+  }
+}
+
 int main() { return hanabi_test::RunAll(); }

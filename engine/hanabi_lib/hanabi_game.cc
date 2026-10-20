@@ -126,11 +126,15 @@ int HanabiGame::GetChanceOutcomeUid(HanabiMove move) const {
   return move.Color() * NumRanks() + move.Rank();
 }
 
+int HanabiGame::PickRandomIndex(const double* weights, int num_weights) const {
+  std::discrete_distribution<std::mt19937::result_type> dist(weights, weights + num_weights);
+  return static_cast<int>(dist(rng_));
+}
+
 HanabiMove HanabiGame::PickRandomChance(
     const std::pair<std::vector<HanabiMove>, std::vector<double>>& chance_outcomes) const {
-  std::discrete_distribution<std::mt19937::result_type> dist(chance_outcomes.second.begin(),
-                                                             chance_outcomes.second.end());
-  return chance_outcomes.first[dist(rng_)];
+  const auto& weights = chance_outcomes.second;
+  return chance_outcomes.first[PickRandomIndex(weights.data(), static_cast<int>(weights.size()))];
 }
 
 std::unordered_map<std::string, std::string> HanabiGame::Parameters() const {

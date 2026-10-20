@@ -17,6 +17,7 @@
 #include "hanabi_state.h"
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -358,9 +359,23 @@ double HanabiState::ChanceOutcomeProb(HanabiMove move) const {
 }
 
 void HanabiState::ApplyRandomChance() {
-  auto chance_outcomes = ChanceOutcomes();
-  REQUIRE(!chance_outcomes.second.empty());
-  ApplyMove(ParentGame()->PickRandomChance(chance_outcomes));
+  // The outcomes and probabilities of ChanceOutcomes(), in the same order, in
+  // fixed-size arrays: the same draw from the game's RNG picks the same card.
+  const HanabiGame& game = *parent_game_;
+  std::array<double, static_cast<size_t>(kMaxNumColors) * kMaxNumRanks> probabilities{};
+  std::array<int, static_cast<size_t>(kMaxNumColors) * kMaxNumRanks> uids{};
+  int num_outcomes = 0;
+  if (cur_player_ == kChancePlayerId) {
+    for (int uid = 0; uid < game.MaxChanceOutcomes(); ++uid) {
+      const HanabiMove move = game.GetChanceOutcome(uid);
+      if (deck_.CardCount(move.Color(), move.Rank()) > 0) {
+        probabilities[num_outcomes] = ChanceOutcomeProb(move);
+        uids[num_outcomes++] = uid;
+      }
+    }
+  }
+  REQUIRE(num_outcomes > 0);
+  ApplyMove(game.GetChanceOutcome(uids[game.PickRandomIndex(probabilities.data(), num_outcomes)]));
 }
 
 std::vector<HanabiMove> HanabiState::LegalMoves(int player) const {

@@ -8,6 +8,28 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Random deals from fixed arrays (search iteration 3.82x)
+
+`ApplyRandomChance` built the full `ChanceOutcomes()` list (two growing
+vectors, `MoveIsLegal` on each of the 25 outcomes) to draw one card. It now
+fills fixed-size arrays with the same outcomes and probabilities in the same
+order and draws with the same `discrete_distribution` on the game's RNG
+(`HanabiGame::PickRandomIndex`, which `PickRandomChance` now uses too), so
+every deal is identical: parity tests pass, and
+`tests/test_fast_paths.cc` plays each variant in lockstep against the
+`ChanceOutcomes()` path (uniform weights make it fail).
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 156,607 | 180,684 (1.15x; 3.82x baseline) |
+| random games | 1,479,222 | 2,938,041 (1.99x) |
+| random games + encode | 614,727 | 781,127 (1.27x) |
+
+Search iteration 2/4/5 players: 3.35x / 4.18x / 4.45x baseline. Other rows
+within noise (-3% to +3%).
+
+---
+
 ## 2026-10-20: Generate legal moves directly (search iteration 3.33x)
 
 `LegalMoves` tested every move id with `MoveIsLegal` (30 ids for 3 players,

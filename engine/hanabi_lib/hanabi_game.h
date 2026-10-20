@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef __HANABI_GAME_H__
-#define __HANABI_GAME_H__
+#ifndef HANABI_LIB_HANABI_GAME_H_
+#define HANABI_LIB_HANABI_GAME_H_
 
 #include <nlohmann/json.hpp>
 #include <random>
@@ -60,6 +60,9 @@ class HanabiGame {
   HanabiMove GetChanceOutcome(int uid) const { return chance_outcomes_[uid]; }
   // Get unique id for a chance-outcome move. Returns -1 for invalid move.
   int GetChanceOutcomeUid(HanabiMove move) const;
+  // Index in [0, num_weights) drawn from the game's RNG with probability
+  // proportional to weights[i].
+  int PickRandomIndex(const double* weights, int num_weights) const;
   // Randomly sample a random chance-outcome move from list of moves and
   // associated probability distribution.
   HanabiMove PickRandomChance(
