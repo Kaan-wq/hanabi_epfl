@@ -8,6 +8,38 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-21: Card masks in hand sampling and the Van den Bergh rules; search deals from the sampler
+
+- New `hanabi_lib/card_mask.h`: sets of card identities as 25-bit masks
+  (`CardMask`), fixed-size per-identity counts (`CardCounts`), the identities a
+  card's knowledge allows (`PlausibleCards`) and a branch-free masked total.
+- `HandSampler::ResampleHand` builds each position's mask once per call and
+  decrements one running count instead of copying, re-subtracting and
+  re-filtering all 25 counts per position. Same draws, same hands.
+- The Van den Bergh rules keep playable/useless cards and each own card's
+  plausible identities as masks: probabilities are three masked totals per
+  card and the "safe card" rule one mask test. Same moves (parity tests pass).
+- New `HandSampler::DealPendingCards`: `AdvanceDeterminized` (so rollouts, MCTS
+  and `pyhanabi_state_play_determinized`) deals with the sampler's generator,
+  in proportion to the copies left, instead of `ApplyRandomChance`. The game's
+  generator built a `std::discrete_distribution` (two heap allocations) per
+  deal, and searches advanced it, so a search changed the real game's later
+  deals. Now a search depends only on its seed and leaves the game alone.
+  Same deal distribution, different cards seed for seed. Game rules and
+  `ApplyRandomChance` are unchanged.
+
+Not kept: dropping the move history from the MCTS root copy (state copies were
+7% of the profile) gave no measurable gain.
+
+Strength, 2p, 300 games at 1k rollouts: 12.88 +- 0.33 (was 13.16 +- 0.31); 100
+games at 10k rollouts: 15.67 +- 0.68 (was 15.33 +- 0.60).
+
+Benchmark (best of 2, 2p / 3p / 4p / 5p): `mcts (1000 iterations)` 598k / 496k /
+536k / 523k -> 826k / 678k / 707k / 681k iterations/s (+30-38%); `rollout (3
+moves)` +44-49%; `resample hand` +26-60%; `van den bergh move` +22-32%; other
+rows within noise. End to end, 100 games at 10k rollouts (2p, 10 processes):
+24.5 s -> 16.6 s.
+
 ## 2026-10-20: Pure MCTS in the engine (`engine/search/mcts.{h,cc}`)
 
 `MctsSearch` runs a whole re-determinizing MCTS decision in C++ (engine core

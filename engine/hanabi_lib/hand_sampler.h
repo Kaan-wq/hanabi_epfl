@@ -14,6 +14,7 @@
 #include <span>
 #include <vector>
 
+#include "card_mask.h"
 #include "hanabi_card.h"
 #include "hanabi_hand.h"
 #include "hanabi_state.h"
@@ -68,10 +69,16 @@ class HandSampler {
   Status RestoreHand(HanabiState* state, int player, std::span<const HanabiCard> remembered,
                      const HanabiCard& removed_card, int removed_index);
 
+  // Deals the cards `state` is waiting for (while the chance player is to
+  // act), each drawn from the deck in proportion to its copies, like
+  // HanabiState::ApplyRandomChance but with the sampler's generator: searches
+  // then leave the game's generator, and so its deals, alone.
+  void DealPendingCards(HanabiState* state);
+
  private:
-  // Picks an index in [0, num_counts) with probability counts[i] / total;
-  // total must be the (positive) sum of the counts.
-  int SampleIndex(const int* counts, int num_counts, int total);
+  // Picks a set bit i of `mask` with probability counts[i] / total; total
+  // must be the (positive) sum of those counts.
+  int SampleIndex(const CardCounts& counts, CardMask mask, int total);
 
   SplitMix64 rng_;
 };
@@ -91,7 +98,7 @@ struct RememberedHand {
 };
 
 // One move of a re-determinizing rollout: applies `move` (legal in `state`),
-// deals the cards it leaves due, then, unless the searcher acted, restores
+// deals the cards it leaves due (DealPendingCards), then, unless the searcher acted, restores
 // the acting player's `remembered` hand (kRestore only). Unless kNone or the
 // game is over, it then remembers the next player's hand and resamples it,
 // if that player is not the searcher. All sampling draws from `sampler`.

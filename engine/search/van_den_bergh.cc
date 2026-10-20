@@ -5,6 +5,7 @@
 #include <numeric>
 #include <vector>
 
+#include "hanabi_lib/card_mask.h"
 #include "hanabi_lib/hanabi_card.h"
 #include "hanabi_lib/hanabi_game.h"
 #include "hanabi_lib/hanabi_hand.h"
@@ -15,11 +16,7 @@ namespace hanabi_learning_env {
 namespace {
 
 constexpr int kMaxPlayers = 5;
-constexpr int kMaxCards = kMaxNumColors * kMaxNumRanks;
 
-// Per card identity, indexed color * num_ranks + rank.
-template <typename T>
-using CardGrid = std::array<T, kMaxCards>;
 // Per hand position.
 using HandProbabilities = std::array<double, kMaxHandSize>;
 
@@ -84,10 +81,6 @@ int HintedRank(const View& view, const HanabiHand::CardKnowledge& knowledge) {
   return view.use_knowledge ? knowledge.Rank() : -1;
 }
 
-bool Plausible(const View& view, const HanabiHand::CardKnowledge& knowledge, int color, int rank) {
-  return !view.use_knowledge || (knowledge.ColorPlausible(color) && knowledge.RankPlausible(rank));
-}
-
 // Index of the largest probability, the first on ties (as numpy.argmax).
 int ArgMax(const HandProbabilities& probabilities, int hand_size) {
   int best = 0;
@@ -97,7 +90,8 @@ int ArgMax(const HandProbabilities& probabilities, int hand_size) {
   return best;
 }
 
-// The rules, on one view. Card classes and probabilities are computed once.
+// The rules, on one view. Card classes and probabilities are computed once,
+// as masks of card identities (see card_mask.h).
 class Rules {
  public:
   explicit Rules(const View& view)
@@ -109,6 +103,7 @@ class Rules {
         hand_size_(static_cast<int>(own_.Cards().size())) {
     ClassifyCards();
     CountUnseen();
+    FindPlausibleCards();
     ComputeProbabilities();
   }
 
@@ -143,7 +138,7 @@ class Rules {
   // Playable now; useless if already played or no longer reachable because
   // every copy of a lower card of its color is discarded.
   void ClassifyCards() {
-    CardGrid<int> discarded{};
+    CardCounts discarded{};
     for (const HanabiCard& card : view_.discards) ++discarded[Index(card.Color(), card.Rank())];
     for (int color = 0; color < num_colors_; ++color) {
       int reachable = num_ranks_;
@@ -155,8 +150,9 @@ class Rules {
       }
       const int height = view_.fireworks[color];
       for (int rank = 0; rank < num_ranks_; ++rank) {
-        playable_[Index(color, rank)] = rank == height;
-        useless_[Index(color, rank)] = rank < height || rank >= reachable;
+        const CardMask card = CardMask{1} << Index(color, rank);
+        if (rank == height) playable_ |= card;
+        if (rank < height || rank >= reachable) useless_ |= card;
         unseen_[Index(color, rank)] = game_.NumberCardInstances(color, rank) -
                                       discarded[Index(color, rank)] - (rank < height ? 1 : 0);
       }
@@ -173,21 +169,20 @@ class Rules {
     for (int& count : unseen_) count = std::max(count, 0);
   }
 
+  // The identities the hints allow for each own card (all under kMinimal).
+  void FindPlausibleCards() {
+    for (int index = 0; index < hand_size_; ++index) {
+      plausible_[index] = view_.use_knowledge
+                              ? PlausibleCards(own_.Knowledge()[index], num_colors_, num_ranks_)
+                              : AllCards(num_colors_, num_ranks_);
+    }
+  }
+
   void ComputeProbabilities() {
     for (int index = 0; index < hand_size_; ++index) {
-      const HanabiHand::CardKnowledge& knowledge = own_.Knowledge()[index];
-      int total = 0;
-      int playable = 0;
-      int useless = 0;
-      for (int color = 0; color < num_colors_; ++color) {
-        for (int rank = 0; rank < num_ranks_; ++rank) {
-          if (!Plausible(view_, knowledge, color, rank)) continue;
-          const int card = Index(color, rank);
-          total += unseen_[card];
-          if (playable_[card]) playable += unseen_[card];
-          if (useless_[card]) useless += unseen_[card];
-        }
-      }
+      const int total = Total(unseen_, plausible_[index]);
+      const int playable = Total(unseen_, plausible_[index] & playable_);
+      const int useless = Total(unseen_, plausible_[index] & useless_);
       playable_probability_[index] = total > 0 ? static_cast<double>(playable) / total : 0.0;
       useless_probability_[index] = total > 0 ? static_cast<double>(useless) / total : 0.0;
     }
@@ -196,20 +191,7 @@ class Rules {
   // The first card that every identity the hints allow makes playable, or -1.
   int SafeCard() const {
     for (int index = 0; index < hand_size_; ++index) {
-      const HanabiHand::CardKnowledge& knowledge = own_.Knowledge()[index];
-      bool any = false;
-      bool all_playable = true;
-      for (int color = 0; color < num_colors_ && all_playable; ++color) {
-        for (int rank = 0; rank < num_ranks_; ++rank) {
-          if (!Plausible(view_, knowledge, color, rank)) continue;
-          any = true;
-          if (!playable_[Index(color, rank)]) {
-            all_playable = false;
-            break;
-          }
-        }
-      }
-      if (any && all_playable) return index;
+      if (plausible_[index] != 0 && (plausible_[index] & ~playable_) == 0) return index;
     }
     return -1;
   }
@@ -219,7 +201,7 @@ class Rules {
       const HanabiHand& hand = *view_.hands[offset];
       for (size_t index = 0; index < hand.Cards().size(); ++index) {
         const HanabiCard& card = hand.Cards()[index];
-        if (!playable_[Index(card.Color(), card.Rank())]) continue;
+        if (!Contains(playable_, Index(card.Color(), card.Rank()))) continue;
         if (HintedRank(view_, hand.Knowledge()[index]) < 0) return RevealRank(offset, card.Rank());
         if (HintedColor(view_, hand.Knowledge()[index]) < 0) {
           return RevealColor(offset, card.Color());
@@ -234,7 +216,7 @@ class Rules {
       const HanabiHand& hand = *view_.hands[offset];
       for (size_t index = 0; index < hand.Cards().size(); ++index) {
         const HanabiCard& card = hand.Cards()[index];
-        if (!useless_[Index(card.Color(), card.Rank())]) continue;
+        if (!Contains(useless_, Index(card.Color(), card.Rank()))) continue;
         if (HintedColor(view_, hand.Knowledge()[index]) < 0) {
           return RevealColor(offset, card.Color());
         }
@@ -286,9 +268,10 @@ class Rules {
   const int num_ranks_;
   const HanabiHand& own_;
   const int hand_size_;
-  CardGrid<bool> playable_{};
-  CardGrid<bool> useless_{};
-  CardGrid<int> unseen_{};  // Copies the player cannot see, at least 0.
+  CardMask playable_ = 0;
+  CardMask useless_ = 0;
+  CardCounts unseen_{};  // Copies the player cannot see, at least 0.
+  std::array<CardMask, kMaxHandSize> plausible_{};
   HandProbabilities playable_probability_{};
   HandProbabilities useless_probability_{};
 };
