@@ -14,8 +14,8 @@
 //
 // Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __HANABI_STATE_H__
-#define __HANABI_STATE_H__
+#ifndef HANABI_LIB_HANABI_STATE_H_
+#define HANABI_LIB_HANABI_STATE_H_
 
 #include <nlohmann/json.hpp>
 #include <random>

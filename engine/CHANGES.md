@@ -8,6 +8,28 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Generate legal moves directly (search iteration 3.33x)
+
+`LegalMoves` tested every move id with `MoveIsLegal` (30 ids for 3 players,
+each a full switch, hints scanning the target hand). It now generates the
+legal moves directly in move-id order: discards while tokens are below the
+maximum, every play, then the color and rank hints present in each target
+hand (one pass per hand). New `tests/test_fast_paths.cc` checks it equals
+the `MoveIsLegal` scan at every state of random playouts over 9 game
+variants (2-5 players, 1-5 colors and ranks, hand sizes 1-8, 0-8 tokens);
+a deliberately broken condition makes it fail.
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 124,342 | 156,225 (1.26x; 3.33x baseline) |
+| random games | 1,150,052 | 1,486,291 (1.29x) |
+| observation features | 1,117,875 | 1,441,991 (1.29x) |
+
+Search iteration 2/4/5 players: 2.74x / 3.67x / 3.91x baseline. Other rows
+within noise (-6% to +3%).
+
+---
+
 ## 2026-10-20: Hand sampling without state copies (search iteration 2.69x)
 
 `ResampleHand` and `RestoreHand` copied the whole state (move history

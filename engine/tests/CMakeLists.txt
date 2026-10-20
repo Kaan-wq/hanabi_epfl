@@ -27,3 +27,9 @@ add_executable(test_capi_buffers test_capi_buffers.cc)
 target_link_libraries(test_capi_buffers PRIVATE pyhanabi nlohmann_json::nlohmann_json)
 target_compile_options(test_capi_buffers PRIVATE ${HANABI_WARNINGS})
 add_test(NAME capi_buffers COMMAND test_capi_buffers)
+
+# Optimized engine paths against their reference definitions; see the file comment.
+add_executable(test_fast_paths test_fast_paths.cc)
+target_link_libraries(test_fast_paths PRIVATE hanabi)
+target_compile_options(test_fast_paths PRIVATE ${HANABI_WARNINGS})
+add_test(NAME fast_paths COMMAND test_fast_paths)

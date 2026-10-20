@@ -371,11 +371,32 @@ std::vector<HanabiMove> HanabiState::LegalMoves(int player) const {
     // Turn-based game. Empty move list for other players.
     return movelist;
   }
-  int max_move_uid = ParentGame()->MaxMoves();
-  for (int uid = 0; uid < max_move_uid; ++uid) {
-    HanabiMove move = ParentGame()->GetMove(uid);
-    if (MoveIsLegal(move)) {
-      movelist.push_back(move);
+  // Generates the moves MoveIsLegal accepts directly, in move-id order
+  // (discards, plays, color hints, rank hints; see HanabiGame::GetMoveUid),
+  // instead of testing every move id.
+  const HanabiGame& game = *parent_game_;
+  const auto add = [&](HanabiMove::Type type, int card_index, int offset, int color, int rank) {
+    movelist.push_back(game.GetMove(game.GetMoveUid(type, card_index, offset, color, rank)));
+  };
+  const int num_cards = static_cast<int>(hands_[player].Cards().size());
+  movelist.reserve(game.MaxMoves());
+  if (information_tokens_ < game.MaxInformationTokens()) {
+    for (int index = 0; index < num_cards; ++index) add(HanabiMove::kDiscard, index, -1, -1, -1);
+  }
+  for (int index = 0; index < num_cards; ++index) add(HanabiMove::kPlay, index, -1, -1, -1);
+  if (information_tokens_ <= 0) return movelist;
+  for (int offset = 1; offset < game.NumPlayers(); ++offset) {
+    unsigned colors = 0;  // Bit c set if the target holds a card of color c.
+    for (const HanabiCard& card : HandByOffset(offset).Cards()) colors |= 1U << card.Color();
+    for (int color = 0; color < game.NumColors(); ++color) {
+      if ((colors >> color) & 1U) add(HanabiMove::kRevealColor, -1, offset, color, -1);
+    }
+  }
+  for (int offset = 1; offset < game.NumPlayers(); ++offset) {
+    unsigned ranks = 0;  // Bit r set if the target holds a card of rank r.
+    for (const HanabiCard& card : HandByOffset(offset).Cards()) ranks |= 1U << card.Rank();
+    for (int rank = 0; rank < game.NumRanks(); ++rank) {
+      if ((ranks >> rank) & 1U) add(HanabiMove::kRevealRank, -1, offset, -1, rank);
     }
   }
   return movelist;
