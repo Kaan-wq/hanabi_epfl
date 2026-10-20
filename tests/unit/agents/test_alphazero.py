@@ -1,0 +1,103 @@
+import pytest
+import torch
+
+from hanabi_search.agents import AlphaZeroAgent
+from hanabi_search.agents.alphazero.node import AlphaZeroNode
+from hanabi_search.config import AlphaZeroAgentConfig, GameConfig
+from hanabi_search.env import HanabiEnv
+from hanabi_search.networks import AlphaZeroNetwork
+from tests.support import current_observation
+
+GAME = GameConfig(players=2)
+
+
+def _agent(env: HanabiEnv, config: AlphaZeroAgentConfig | None = None) -> AlphaZeroAgent:
+    torch.manual_seed(0)
+    network = AlphaZeroNetwork(env.num_moves(), env.vectorized_observation_shape()[0], (32, 16))
+    return AlphaZeroAgent(
+        env.state.cur_player(),
+        GAME,
+        config or AlphaZeroAgentConfig(),
+        network,
+        torch.device("cpu"),
+    )
+
+
+def _root_with_children(
+    agent: AlphaZeroAgent, env: HanabiEnv, stats: list[tuple[float, int, float]]
+) -> list[AlphaZeroNode]:
+    """Gives the root one child per (prior, visits, total_reward) entry."""
+    agent.reset(env.state)
+    root = agent.root_node
+    children = []
+    for move, (prior, visits, total) in zip(env.state.legal_moves(), stats, strict=False):
+        child = AlphaZeroNode((move,), agent.rules)
+        child.prior = prior
+        agent.visits[child] = visits
+        agent.total_reward[child] = total
+        children.append(child)
+    agent.children[root] = set(children)
+    return children
+
+
+def test_puct_uses_sqrt_parent_visits_and_normalized_values(env: HanabiEnv) -> None:
+    agent = _agent(env, AlphaZeroAgentConfig(exploration_weight=2.5))
+    # Q in score fraction + 2.5 * P * sqrt(9) / (1 + n):
+    #   strong: 20/25 + 2.5*0.5*3/5 = 1.55
+    #   unvisited: parent mean 10/25 + 2.5*0.4*3/1 = 3.4
+    #   perfect: 25/25 + 2.5*0.1*3/6 = 1.125
+    strong, unvisited, _perfect = _root_with_children(
+        agent, env, [(0.5, 4, 80.0), (0.4, 0, 0.0), (0.1, 5, 125.0)]
+    )
+    agent.visits[agent.root_node] = 9
+    agent.total_reward[agent.root_node] = 90.0
+    assert agent.uct_select(agent.root_node) == unvisited
+    agent.visits[unvisited] = 1
+    agent.total_reward[unvisited] = 0.0
+    # unvisited: 0 + 2.5*0.4*3/2 = 1.5 < strong (1.55).
+    assert agent.uct_select(agent.root_node) == strong
+
+
+def test_select_lets_the_prior_decide_over_unvisited_children(env: HanabiEnv) -> None:
+    agent = _agent(env)
+    strong, _unlikely = _root_with_children(agent, env, [(0.99, 4, 80.0), (0.01, 0, 0.0)])
+    agent.visits[agent.root_node] = 4
+    agent.total_reward[agent.root_node] = 80.0
+    assert agent.select(agent.root_node) == [agent.root_node, strong]
+
+
+def test_expand_gives_children_priors_summing_to_one(env: HanabiEnv) -> None:
+    agent = _agent(env, AlphaZeroAgentConfig(use_rules=False))
+    agent.reset(env.state)
+    agent.root_node.focused_state = env.state
+    agent.expand(agent.root_node, current_observation(env))
+    children = agent.children[agent.root_node]
+    assert len(children) == len(env.state.legal_moves())
+    assert sum(child.prior for child in children if isinstance(child, AlphaZeroNode)) == (
+        pytest.approx(1.0)
+    )
+    root = agent.root_node
+    assert isinstance(root, AlphaZeroNode) and root.value is not None
+    assert 0 <= root.value <= GAME.max_score
+
+
+def test_terminal_leaf_is_valued_by_its_score(env: HanabiEnv) -> None:
+    agent = _agent(env)
+    while not env.state.is_terminal():
+        env.step(env.state.legal_moves()[0])
+    leaf = AlphaZeroNode((), agent.rules)
+    leaf.focused_state = env.state
+    agent.environment.state = env.state
+    agent.expand(leaf, env.observe_all()["player_observations"][0])
+    assert leaf.value is None
+    assert agent.simulate(leaf) == env.state.score()
+
+
+def test_leaf_at_depth_limit_is_valued_by_the_network(env: HanabiEnv) -> None:
+    agent = _agent(env)
+    leaf = AlphaZeroNode((), agent.rules)
+    leaf.focused_state = env.state
+    agent.environment.state = env.state
+    expected = agent._evaluate(current_observation(env))[1]
+    assert agent.simulate(leaf) == pytest.approx(expected)
+    assert agent.simulate(leaf) != env.state.score()

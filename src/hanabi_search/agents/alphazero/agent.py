@@ -1,8 +1,10 @@
 """AlphaZero-style agent: information-set MCTS guided by a policy/value network."""
 
-from math import log, sqrt
+from math import sqrt
 from typing import override
 
+import numpy as np
+import numpy.typing as npt
 import torch
 
 from hanabi_search.agents.alphazero.node import AlphaZeroNode
@@ -61,18 +63,24 @@ class AlphaZeroAgent(MCTSAgent):
         self.num_actions = self.environment.num_moves()
 
     @override
+    def select(self, node: MCTSNode) -> list[MCTSNode]:
+        """Descends by PUCT until reaching an unexpanded node.
+
+        Unlike plain MCTS, unvisited children are not tried first: the prior decides.
+        """
+        path = [node]
+        while self.children.get(node):
+            node = self.uct_select(node)
+            path.append(node)
+        return path
+
+    @override
     def expand(self, node: MCTSNode, observation: ObservationDict) -> None:
         """Evaluates `node` with the network and adds children with their priors."""
         assert isinstance(node, AlphaZeroNode)
-        if node in self.children:
+        if node in self.children or node.is_terminal():
             return
-        encoded = self.environment.vectorized_observation(observation["pyhanabi"])
-        # (1, observation_size)
-        inputs = torch.tensor(encoded, dtype=torch.float32, device=self.device).unsqueeze(0)
-        with torch.no_grad():
-            logits, value = self.network(inputs)
-            policy = torch.softmax(logits, dim=1).squeeze(0)  # (num_actions,)
-        node.value = (value.item() + 1) / 2 * self.game.max_score
+        policy, node.value = self._evaluate(observation)
 
         candidates = node.find_children(observation)
         if not candidates:
@@ -83,20 +91,12 @@ class AlphaZeroAgent(MCTSAgent):
         moves = converted if isinstance(candidates[0], HanabiMove) else list(set(converted))
         uids = [self.environment.game.get_move_uid(move) for move in moves]
 
-        mask = torch.zeros(self.num_actions, dtype=torch.float32, device=self.device)
-        mask[uids] = 1.0
-        policy *= mask
-        total = policy.sum()
-        if total > 0:
-            policy /= total
-        elif mask.sum() > 0:
-            policy = mask / mask.sum()
-        else:
-            return
+        priors = policy[uids]  # (num_candidates,)
+        total = priors.sum()
+        priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
 
         children: set[MCTSNode] = set()
-        for move, uid in zip(moves, uids, strict=True):
-            prior = policy[uid].item()
+        for move, prior in zip(moves, priors.tolist(), strict=True):
             if prior > 0:
                 child = AlphaZeroNode((*node.moves, move), self.rules)
                 child.prior = prior
@@ -105,25 +105,37 @@ class AlphaZeroAgent(MCTSAgent):
 
     @override
     def uct_select(self, node: MCTSNode) -> MCTSNode:
-        """Returns the child maximizing PUCT: mean value plus a prior-weighted bonus."""
-        log_visits = log(self.visits[node] + 1)
+        """Returns the child maximizing PUCT: `Q + c * P * sqrt(N) / (1 + n)`.
+
+        `Q` is the child's mean reward as a fraction of the maximum score, so it is on
+        the same [0, 1] scale as the exploration term. Unvisited children take the
+        parent's mean reward as their `Q`.
+        """
+        max_score = self.game.max_score
+        parent_visits = self.visits[node]
+        parent_mean = self.total_reward[node] / parent_visits if parent_visits > 0 else 0.0
+        scale = self.exploration_weight * sqrt(parent_visits)
 
         def puct(child: MCTSNode) -> float:
             assert isinstance(child, AlphaZeroNode)
             visits = self.visits[child]
-            mean = self.total_reward[child] / visits if visits > 0 else 0
-            bonus = self.exploration_weight * child.prior * sqrt(log_visits) / (1 + visits)
-            return mean + bonus
+            mean = self.total_reward[child] / visits if visits > 0 else parent_mean
+            return mean / max_score + scale * child.prior / (1 + visits)
 
         return max(self.children[node], key=puct)
 
     @override
     def simulate(self, node: MCTSNode) -> float:
-        """Returns the network's value of `node` (no rollout)."""
+        """Returns the final score of a finished game, otherwise the network's value."""
         assert isinstance(node, AlphaZeroNode)
-        if node.value is None:
-            # Not expanded (depth limit reached): fall back to the current reward.
+        if node.is_terminal():
             return float(self.environment.reward())
+        if node.value is None:
+            # Not expanded (depth limit reached): evaluate without adding children.
+            environment = self.environment
+            # Chance (-1) wraps to the last player, as in `search`.
+            player = node.state.cur_player() % environment.num_players
+            return self._evaluate(environment.observe(player))[1]
         return node.value
 
     @override
@@ -146,3 +158,18 @@ class AlphaZeroAgent(MCTSAgent):
             return float("-inf") if visits == 0 else visits
 
         return max(children, key=visit_count).initial_move()
+
+    def _evaluate(self, observation: ObservationDict) -> tuple[npt.NDArray[np.float32], float]:
+        """Returns the network's move probabilities and value for `observation`.
+
+        Returns:
+            The policy, shape (num_actions,), and the value in score units (the
+            predicted final score).
+        """
+        encoded = self.environment.vectorized_observation(observation["pyhanabi"])
+        # (1, observation_size)
+        inputs = torch.tensor(encoded, dtype=torch.float32, device=self.device).unsqueeze(0)
+        with torch.no_grad():
+            logits, value = self.network(inputs)
+            policy = torch.softmax(logits, dim=1).squeeze(0).cpu().numpy()  # (num_actions,)
+        return policy, (value.item() + 1) / 2 * self.game.max_score
