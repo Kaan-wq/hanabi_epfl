@@ -40,7 +40,7 @@ def main() -> None:
     setup_logging(logging.INFO)
     config = ExperimentConfig.from_yaml(args.config)
     has_human = any(isinstance(agent, HumanAgentConfig) for agent in config.agents)
-    setup = set_up(config, args.checkpoint, ask=input, show=print)
+    setup = set_up(config, config.evaluation.device, args.checkpoint, ask=input, show=print)
     first_seed = config.seed if args.seed is None else args.seed
     on_move = print_move if args.show_moves or has_human else None
 

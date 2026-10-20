@@ -9,6 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_valida
 from hanabi_search.env import AgentObservationType, DeterminizationType, RolloutReward
 from hanabi_search.exceptions import ConfigError
 
+type DeviceName = Literal["cpu", "mps"]
+
 
 class _Config(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -148,6 +150,9 @@ class TrainingConfig(_Config):
     parallel_games: int = Field(
         default=32, ge=1, description="Self-play games played at once, evaluations batched"
     )
+    device: DeviceName = Field(
+        default="cpu", description="Network device for self-play and gradient steps"
+    )
     replay_buffer: ReplayBufferConfig = ReplayBufferConfig()
     self_play: SelfPlayConfig = SelfPlayConfig()
 
@@ -161,6 +166,9 @@ class EvaluationConfig(_Config):
         default=32, ge=1, description="Games played at once when a seat has a network"
     )
     num_processes: int = Field(default=4, ge=1, description="Processes sharing the games")
+    device: DeviceName = Field(
+        default="cpu", description="Network device for evaluation games and scripts/play.py"
+    )
 
 
 class ExperimentConfig(_Config):
@@ -168,7 +176,6 @@ class ExperimentConfig(_Config):
 
     name: str = Field(pattern=r"^[A-Za-z0-9_.-]+$")
     seed: int = 0
-    device: Literal["cpu", "mps"] = "cpu"
     game: GameConfig = GameConfig()
     agents: tuple[AgentConfig, ...] = Field(
         min_length=1, description="One per seat, or a single entry used for every seat"

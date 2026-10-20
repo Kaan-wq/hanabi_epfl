@@ -16,6 +16,7 @@ import torch
 from hanabi_search.agents import Agent, AgentResources, build_agents
 from hanabi_search.config import (
     AlphaZeroAgentConfig,
+    DeviceName,
     ExperimentConfig,
     NetworkConfig,
     SelfPlayConfig,
@@ -102,6 +103,7 @@ class Setup:
 
 def set_up(
     config: ExperimentConfig,
+    device_name: DeviceName,
     checkpoint: Path | None = None,
     transition_sink: TransitionSink | None = None,
     self_play: SelfPlayConfig | None = None,
@@ -113,6 +115,7 @@ def set_up(
 
     Args:
         config: The experiment.
+        device_name: Device of the network (`training.device` or `evaluation.device`).
         checkpoint: Network weights overriding `config.network.checkpoint`.
         transition_sink: Where search agents send training data.
         self_play: Exploration for AlphaZero agents; only for training games.
@@ -125,7 +128,7 @@ def set_up(
     """
     if num_tables < 1:
         raise ConfigError(f"num_tables must be at least 1, got {num_tables}")
-    device = select_device(config.device)
+    device = select_device(device_name)
     seed_everything(config.seed)  # Initial weights of a network without checkpoint.
     network = None
     if uses_network(config):
@@ -179,7 +182,7 @@ def _play_evaluation_games(
 ) -> list[GameResult]:
     """Plays `seeds` with freshly built agents (also runs in worker processes)."""
     num_tables = config.evaluation.parallel_games if uses_network(config) else 1
-    setup = set_up(config, checkpoint, num_tables=num_tables)
+    setup = set_up(config, config.evaluation.device, checkpoint, num_tables=num_tables)
     if setup.network is None:
         return play_games(config.game, setup.agents, seeds)
     return play_games_batched(config.game, setup.tables, seeds, setup.network)
@@ -212,6 +215,7 @@ def train_alphazero(config: ExperimentConfig, run_dir: Path) -> Path:
     )
     setup = set_up(
         config,
+        training.device,
         transition_sink=buffer.add,
         self_play=training.self_play,
         num_tables=training.parallel_games,

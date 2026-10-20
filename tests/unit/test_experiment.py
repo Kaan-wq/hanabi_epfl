@@ -1,15 +1,21 @@
-import pytest
+from pathlib import Path
 
+import pytest
+import torch
+
+from hanabi_search import experiment
 from hanabi_search.agents import AlphaZeroAgent
 from hanabi_search.config import (
     AlphaZeroAgentConfig,
+    DeviceName,
     EvaluationConfig,
     ExperimentConfig,
     MCTSAgentConfig,
     NetworkConfig,
+    TrainingConfig,
 )
 from hanabi_search.exceptions import ConfigError
-from hanabi_search.experiment import evaluate_experiment, set_up
+from hanabi_search.experiment import evaluate_experiment, set_up, train_alphazero
 
 CONFIG = ExperimentConfig(
     name="x", agents=(AlphaZeroAgentConfig(),), network=NetworkConfig(hidden_sizes=(16,))
@@ -17,7 +23,7 @@ CONFIG = ExperimentConfig(
 
 
 def test_set_up_builds_independent_tables_sharing_one_network() -> None:
-    setup = set_up(CONFIG, num_tables=3)
+    setup = set_up(CONFIG, "cpu", num_tables=3)
     assert len(setup.tables) == 3
     agents = [agent for table in setup.tables for agent in table]
     assert len({id(agent) for agent in agents}) == 3 * CONFIG.game.players
@@ -27,7 +33,7 @@ def test_set_up_builds_independent_tables_sharing_one_network() -> None:
 
 def test_set_up_needs_a_table() -> None:
     with pytest.raises(ConfigError, match="num_tables"):
-        set_up(CONFIG, num_tables=0)
+        set_up(CONFIG, "cpu", num_tables=0)
 
 
 @pytest.mark.parametrize(
@@ -49,3 +55,29 @@ def test_evaluation_does_not_depend_on_the_number_of_processes(
         summaries.append(evaluate_experiment(config))
     assert summaries[0] == summaries[1]
     assert summaries[0].num_games == 6
+
+
+def test_training_and_evaluation_use_their_own_devices(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    requested: list[DeviceName] = []
+
+    def record(name: DeviceName) -> torch.device:
+        requested.append(name)
+        return torch.device("cpu")  # MPS may be unavailable; only the request matters.
+
+    monkeypatch.setattr(experiment, "select_device", record)
+    config = CONFIG.model_copy(
+        update={
+            "agents": (AlphaZeroAgentConfig(rollouts=2),),
+            "training": TrainingConfig(
+                num_episodes=1, batch_size=8, parallel_games=1, device="mps"
+            ),
+            "evaluation": EvaluationConfig(
+                num_games=1, parallel_games=1, num_processes=1, device="cpu"
+            ),
+        }
+    )
+    train_alphazero(config, tmp_path)
+    evaluate_experiment(config)
+    assert requested == ["mps", "cpu"]

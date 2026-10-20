@@ -2,11 +2,11 @@
 
 import logging
 import random
-from typing import Literal
 
 import numpy as np
 import torch
 
+from hanabi_search.config import DeviceName
 from hanabi_search.exceptions import ConfigError
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ def seed_everything(seed: int) -> None:
     torch.manual_seed(seed)
 
 
-def select_device(name: Literal["cpu", "mps"]) -> torch.device:
+def select_device(name: DeviceName) -> torch.device:
     """Returns the requested device.
 
     Raises:

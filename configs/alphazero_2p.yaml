@@ -1,7 +1,6 @@
 # AlphaZero self-play training, 2-player full game, from the 100-episode no-rules checkpoint.
 name: alphazero_2p
 seed: 0
-device: cpu
 game:
   players: 2
 agents:
@@ -20,6 +19,7 @@ training:
   value_loss_weight: 10.0
   train_steps_per_move: 1.0
   parallel_games: 32
+  device: cpu
   replay_buffer:
     capacity: 10000
     alpha: 0.6
@@ -33,3 +33,4 @@ evaluation:
   seed: 1000000
   parallel_games: 32
   num_processes: 4
+  device: cpu
