@@ -35,7 +35,14 @@ jobs:
       - name: Engine tests under ASan + UBSan
         run: ctest --test-dir build-debug --output-on-failure
       - name: Install Python environment
-        run: uv sync
+        shell: bash
+        run: |
+          df -h / | tail -1 | awk '{print "::notice::disk free before uv sync: " $4}'
+          if ! uv sync 2>&1 | tee uv-sync.log; then
+            echo "::error::uv sync failed: $(tail -c 3000 uv-sync.log | tr '\n' ' ')"
+            df -h / | tail -1 | awk '{print "::notice::disk free after uv sync: " $4}'
+            exit 1
+          fi
       - name: Ruff lint
         run: uv run ruff check --output-format=github .
       - name: Ruff format
