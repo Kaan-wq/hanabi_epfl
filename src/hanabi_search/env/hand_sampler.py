@@ -75,7 +75,8 @@ def _check_seed(seed: int) -> None:
 def resample_hand(state: HanabiState, player: int, seed: int) -> None:
     """Replaces `player`'s hand with one sampled from what that player knows.
 
-    Works through return and deal-specific moves, so the move history records them.
+    The swap is not a move: the move history, and so every observation's last
+    moves, the current player and the tokens are unchanged.
 
     Args:
         state: The state to change.

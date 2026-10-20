@@ -91,6 +91,14 @@ class HanabiState {
   double ChanceOutcomeProb(HanabiMove move) const;
   void ApplyChanceOutcome(HanabiMove move) { ApplyMove(move); }
   void RemoveKnowledge(int player, int card_index);
+  // Replaces `player`'s cards, position by position, with `cards` (as many as
+  // the player holds): the old cards go back to the deck and the new ones are
+  // drawn from it, while card knowledge stays with each position. Used to
+  // re-determinize hidden hands; it is not a move, so the move history,
+  // current player, tokens and turn count are unchanged. Returns false,
+  // changing nothing, if the player or a card is out of range, the number of
+  // cards differs, or the deck cannot supply the new cards.
+  bool ReplaceHand(int player, const std::vector<HanabiCard>& cards);
   void ApplyRandomChance();
   // Get the valid chance moves, and associated probabilities.
   // Guaranteed that moves.size() == probabilities.size().

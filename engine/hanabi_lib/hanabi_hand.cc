@@ -115,6 +115,11 @@ void HanabiHand::ReturnFromHand(int card_index) {
   cards_.erase(cards_.begin() + card_index);
 }
 
+void HanabiHand::ReplaceCard(int card_index, HanabiCard card) {
+  REQUIRE(card.IsValid());
+  cards_[card_index] = card;
+}
+
 void HanabiHand::RemoveKnowledge(int card_index, const CardKnowledge& initial_knowledge) {
   // Stand alone: Remove card knowledge only
   // (use case: eg. used ReturnCard because we thought we wanted to retain knowledge.

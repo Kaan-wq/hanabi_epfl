@@ -8,6 +8,55 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Re-determinize outside the move history (fixes AlphaZero leaf inputs)
+
+**Behavior change (approved).** `HandSampler` swapped hands through the
+fork's return and deal-specific moves, which `ApplyMove` recorded in the move
+history. Observations then took those swaps for real moves, and the
+canonical encoder's "last action" picked them up: after resampling another
+player's hand, the observer's last action was encoded as empty in 160/160
+test states, and a deal-specific item (player -1) set the last bit of the
+discard section (in a standard game: "the last blue 5 was discarded") in
+151/160. Every AlphaZero search leaf is encoded from such a state, while its
+training inputs come from real games.
+
+- New `HanabiState::ReplaceHand(player, cards)` swaps a hand in place: old
+  cards back to the deck, new ones drawn from it, knowledge kept per
+  position. It is not a move, so history, current player, tokens and turn
+  count are unchanged; impossible swaps return false and change nothing.
+- `ResampleHand` / `RestoreHand` use it. Their random draws are unchanged, so
+  they sample exactly the same hands as before.
+- The encoder's last action now also skips return and deal-specific items, in
+  case a caller applies those moves directly (real games never contain them,
+  so parity is unaffected).
+- Return and deal-specific moves stay available (C API, Python wrappers).
+
+Effects: real-game observations, encodings and rule outputs are unchanged
+(identical dumps); re-determinized states now look like real ones (new tests:
+resampling is invisible to the resampled player, records no moves, and
+leaves every observer's last moves unchanged). Python MCTS decisions on the
+fixed test positions are unchanged (144/144).
+
+Evaluation on the same seeds, before vs after (paired):
+
+| Agents | Games | Before | After | Paired difference |
+|---|---|---|---|---|
+| MCTS + 2 VanDenBergh, 3p (`mcts_vs_vandenbergh_3p`) | 500 | 17.686 +- 0.095 | 17.686 +- 0.095 | 0 (all games identical) |
+| AlphaZero self-play, 2p (`alphazero_2p`, `alphazero_model_100-NR.pth`) | 300 | 10.617 +- 0.121 | 11.227 +- 0.128 | +0.610 +- 0.175 |
+
+Speed (swaps no longer go through `ApplyMove`, and history no longer grows
+during search):
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 186,334 | 208,429 (1.12x; 4.49x baseline) |
+| resample hand | 2,689,799 | 4,080,974 (1.52x) |
+
+Search iteration 2/4/5 players: 3.83x / 5.03x / 5.46x baseline. Other rows
+within noise (-4% to +4%).
+
+---
+
 ## 2026-10-20: Encode into a caller buffer (search iteration 3.96x)
 
 `CanonicalObservationEncoder::Encode` returns a fresh `std::vector<int>`

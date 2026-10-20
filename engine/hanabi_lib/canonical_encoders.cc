@@ -27,9 +27,13 @@ namespace hanabi_learning_env {
 
 namespace {
 
+// The most recent move a player made, skipping deals and the fork's return
+// and deal-specific moves (card swaps by re-determinization, not actions).
 const HanabiHistoryItem* GetLastNonDealMove(const std::vector<HanabiHistoryItem>& past_moves) {
   auto it = std::find_if(past_moves.begin(), past_moves.end(), [](const HanabiHistoryItem& item) {
-    return item.move.MoveType() != HanabiMove::Type::kDeal;
+    const HanabiMove::Type type = item.move.MoveType();
+    return type != HanabiMove::kDeal && type != HanabiMove::kReturn &&
+           type != HanabiMove::kDealSpecific;
   });
   return it == past_moves.end() ? nullptr : &(*it);
 }

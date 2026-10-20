@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "hanabi_game.h"
-#include "hanabi_move.h"
 #include "util.h"
 
 namespace hanabi_learning_env {
@@ -76,26 +75,18 @@ const HanabiHand::CardKnowledge* KnowledgeAt(const HanabiState& state, int playe
   return &state.Hands()[player].Knowledge()[position];
 }
 
-void ReturnHand(HanabiState* state, int player) {
-  const auto num_cards = state->Hands()[player].Cards().size();
-  for (size_t i = 0; i < num_cards; ++i) {
-    // Cards shift left after each return, so always return position 0.
-    state->ApplyMove(HanabiMove(HanabiMove::kReturn, 0, player, -1, -1));
-  }
-}
-
 // Swaps `player`'s hand for `hand` (card indices by position), which must be
 // drawable from the deck once the hand is returned. `forget[position]` resets
-// the knowledge of that position first.
+// the knowledge of that position.
 void CommitHand(HanabiState* state, int player, const std::vector<int>& hand,
                 const std::vector<bool>& forget) {
   const HanabiGame& game = *state->ParentGame();
-  ReturnHand(state, player);
-  for (int position = 0; position < static_cast<int>(hand.size()); ++position) {
-    if (!forget.empty() && forget[position]) state->RemoveKnowledge(player, position);
-    const HanabiMove deal(HanabiMove::kDealSpecific, position, player,
-                          hand[position] / game.NumRanks(), hand[position] % game.NumRanks());
-    state->ApplyMove(deal);  // Legal by construction (drawn from DeckWithHand); checked there.
+  std::vector<HanabiCard> cards;
+  cards.reserve(hand.size());
+  for (int card : hand) cards.emplace_back(card / game.NumRanks(), card % game.NumRanks());
+  REQUIRE(state->ReplaceHand(player, cards));  // Drawable by construction (DeckWithHand).
+  for (int position = 0; position < static_cast<int>(forget.size()); ++position) {
+    if (forget[position]) state->RemoveKnowledge(player, position);
   }
 }
 
@@ -124,8 +115,8 @@ std::vector<int> HandSampler::CandidateCounts(const HanabiState& state, int play
   return {counts.begin(), counts.begin() + NumCards(game)};
 }
 
-// Both sampling functions plan the new hand on counts alone, then apply it to
-// the state in one go: a failure leaves the state untouched without copying it.
+// Both sampling functions plan the new hand on counts alone, then swap it in
+// with HanabiState::ReplaceHand: a failure leaves the state untouched.
 
 bool HandSampler::ResampleHand(HanabiState* state, int player) {
   if (!IsPlayer(*state, player)) return false;

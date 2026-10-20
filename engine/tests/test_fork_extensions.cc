@@ -1,6 +1,6 @@
 // Tests for functionality our fork adds on top of upstream HLE: return and
-// deal-specific moves (used for MCTS re-determinization), knowledge removal,
-// and JSON serialization. Upstream behavior is covered by the parity test.
+// deal-specific moves, hand replacement (used for MCTS re-determinization),
+// knowledge removal, and JSON serialization. Upstream behavior is covered by the parity test.
 
 #include <string>
 #include <unordered_map>
@@ -107,6 +107,66 @@ HANABI_TEST(ReturnThenDealSpecificReplacesOneCard) {
   for (size_t i = 0; i < hand_after.Knowledge().size(); ++i) {
     CHECK_EQ(hand_after.Knowledge()[i].ToString(), hand_before.Knowledge()[i].ToString());
   }
+}
+
+HANABI_TEST(ReplaceHandSwapsCardsWithoutAMove) {
+  const hle::HanabiGame game = MakeGame(3, 11);
+  hle::HanabiState state(&game, 0);
+  Advance(&state, 10);
+  CHECK(!state.IsTerminal());
+  if (state.IsTerminal()) return;
+  const int player = (state.CurPlayer() + 1) % game.NumPlayers();
+  const hle::HanabiHand hand_before = state.Hands()[player];
+  const hle::HanabiState before = state;
+
+  // Swap the first card for a different one still in the deck; keep the rest.
+  std::vector<hle::HanabiCard> cards = hand_before.Cards();
+  for (int index = 0; index < game.NumColors() * game.NumRanks(); ++index) {
+    const hle::HanabiCard card(index / game.NumRanks(), index % game.NumRanks());
+    if (state.Deck().CardCount(card.Color(), card.Rank()) > 0 && !(card == cards[0])) {
+      cards[0] = card;
+      break;
+    }
+  }
+  CHECK(!(cards[0] == hand_before.Cards()[0]));
+  CHECK(state.ReplaceHand(player, cards));
+
+  CHECK(state.Hands()[player].Cards() == cards);
+  CHECK_EQ(state.Deck().Size(), before.Deck().Size());
+  CHECK_EQ(state.Deck().CardCount(cards[0].Color(), cards[0].Rank()),
+           before.Deck().CardCount(cards[0].Color(), cards[0].Rank()) - 1);
+  const hle::HanabiCard& old_card = hand_before.Cards()[0];
+  CHECK_EQ(state.Deck().CardCount(old_card.Color(), old_card.Rank()),
+           before.Deck().CardCount(old_card.Color(), old_card.Rank()) + 1);
+  // Not a move: history, turn and tokens stay; knowledge stays with each position.
+  CHECK_EQ(state.MoveHistory().size(), before.MoveHistory().size());
+  CHECK_EQ(state.CurPlayer(), before.CurPlayer());
+  CHECK_EQ(state.InformationTokens(), before.InformationTokens());
+  CHECK_EQ(state.LifeTokens(), before.LifeTokens());
+  CHECK_EQ(state.TurnsToPlay(), before.TurnsToPlay());
+  for (size_t i = 0; i < cards.size(); ++i) {
+    CHECK_EQ(state.Hands()[player].Knowledge()[i].ToString(),
+             hand_before.Knowledge()[i].ToString());
+  }
+}
+
+HANABI_TEST(ReplaceHandRejectsImpossibleSwapsUnchanged) {
+  const hle::HanabiGame game = MakeGame(2, 4);
+  hle::HanabiState state(&game, 0);
+  Advance(&state, 4);
+  const std::string before = state.ToString();
+  const std::vector<hle::HanabiCard> cards = state.Hands()[0].Cards();
+  CHECK(!state.ReplaceHand(2, cards));                             // Not a player.
+  CHECK(!state.ReplaceHand(0, {cards.begin(), cards.end() - 1}));  // Wrong count.
+  std::vector<hle::HanabiCard> bad = cards;
+  bad[0] = hle::HanabiCard(game.NumColors(), 0);  // Not a card of the game.
+  CHECK(!state.ReplaceHand(0, bad));
+  // More copies of a card than the game has.
+  std::vector<hle::HanabiCard> too_many(cards.size(), hle::HanabiCard(0, game.NumRanks() - 1));
+  CHECK(!state.ReplaceHand(0, too_many));
+  CHECK_EQ(state.ToString(), before);
+  CHECK(state.ReplaceHand(0, cards));  // The same hand is always possible.
+  CHECK_EQ(state.ToString(), before);
 }
 
 HANABI_TEST(RemoveKnowledgeResetsOnlyThatCard) {

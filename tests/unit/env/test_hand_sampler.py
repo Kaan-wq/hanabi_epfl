@@ -169,3 +169,29 @@ def test_advance_changes_the_state_like_step() -> None:
                 env.advance(move)
         states.append(env.state.to_json())
     assert states[0] == states[1]
+
+
+@pytest.mark.parametrize("game", [GameConfig(players=p) for p in (2, 3, 5)])
+def test_resampling_records_no_moves(game: GameConfig) -> None:
+    env = make_env(game, seed=9)
+    advance_randomly(env, 7, seed=9)
+    state = env.state
+    player = (state.cur_player() + 1) % game.players
+    history = [str(item) for item in state.move_history()]
+    last_moves = {
+        observer: [str(item) for item in state.observation(observer).last_moves()]
+        for observer in range(game.players)
+    }
+    own_encoding = env.vectorized_observation(state.observation(player))
+    cur_player = state.cur_player()
+
+    resample_hand(state, player, seed=1)
+
+    assert [str(item) for item in state.move_history()] == history
+    assert state.cur_player() == cur_player
+    for observer in range(game.players):
+        assert [str(item) for item in state.observation(observer).last_moves()] == (
+            last_moves[observer]
+        )
+    # The resampled player cannot see their own cards: their view is unchanged.
+    assert (env.vectorized_observation(state.observation(player)) == own_encoding).all()

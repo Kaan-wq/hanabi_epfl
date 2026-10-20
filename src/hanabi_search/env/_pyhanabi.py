@@ -347,9 +347,11 @@ bool pyhanabi_state_candidate_counts(const pyhanabi_state_t* state, int32_t play
                                      const pyhanabi_card_t* excluded, int32_t num_excluded,
                                      int32_t* counts, int32_t counts_size);
 
-/* Replaces `player`'s hand with one sampled from what that player knows,
- * through return and deal-specific moves. Returns false, leaving `state`
- * unchanged, if `player` is out of range or no consistent hand is found. */
+/* Replaces `player`'s hand with one sampled from what that player knows.
+ * The swap is not a move: the move history (and so every observation's last
+ * moves), current player and tokens are unchanged. Returns false, leaving
+ * `state` unchanged, if `player` is out of range or no consistent hand is
+ * found. */
 bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint64_t seed);
 
 /* Restores `player`'s hand after they acted: deals back the `num_remembered`
@@ -357,8 +359,9 @@ bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint6
  * `removed_index` (-1 after a hint), then samples a card for the position
  * left over. (`removed_color`, `removed_rank`) is the card they played or
  * discarded (-1, -1 after a hint); a remembered copy of it that is no longer
- * available is replaced by a sampled card. Returns false, leaving `state`
- * unchanged, if an argument is out of range or no consistent hand is found. */
+ * available is replaced by a sampled card. Like resampling, not a move.
+ * Returns false, leaving `state` unchanged, if an argument is out of range or
+ * no consistent hand is found. */
 bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
                                  const pyhanabi_card_t* remembered, int32_t num_remembered,
                                  int32_t removed_color, int32_t removed_rank, int32_t removed_index,

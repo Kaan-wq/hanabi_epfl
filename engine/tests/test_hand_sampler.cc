@@ -6,10 +6,12 @@
 #include <unordered_map>
 #include <vector>
 
+#include "canonical_encoders.h"
 #include "check.h"
 #include "hanabi_game.h"
 #include "hanabi_hand.h"
 #include "hanabi_move.h"
+#include "hanabi_observation.h"
 #include "hanabi_state.h"
 #include "hand_sampler.h"
 
@@ -270,6 +272,34 @@ HANABI_TEST(RestoreRolloutsKeepCardCounts) {
         CHECK(sampler.RestoreHand(&state, player, remembered, removed, move.CardIndex()));
         CHECK_EQ(CardsInGame(state), FullDeckSize(game));
       }
+    }
+  }
+}
+
+HANABI_TEST(ResamplingIsInvisibleToTheResampledPlayer) {
+  // A player's view of their own hand is their knowledge, so swapping their
+  // cards must not change anything they observe: not the move history (no
+  // swap moves are recorded), not the network encoding.
+  for (int players = 2; players <= 5; ++players) {
+    const hle::HanabiGame game = MakeGame(players);
+    const hle::CanonicalObservationEncoder encoder(&game);
+    std::mt19937 rng(players + 40);
+    hle::HandSampler sampler(players);
+    for (int round = 0; round < 15; ++round) {
+      hle::HanabiState state(&game, 0);
+      PlayRandomly(&state, round * 3, &rng);
+      if (state.IsTerminal()) continue;
+      const int player = state.CurPlayer();
+      const std::vector<int> before = encoder.Encode(hle::HanabiObservation(state, player));
+      const size_t history = state.MoveHistory().size();
+      const std::vector<hle::HanabiCard> remembered = state.Hands()[player].Cards();
+      CHECK(sampler.ResampleHand(&state, player));
+      CHECK_EQ(state.MoveHistory().size(), history);
+      CHECK(encoder.Encode(hle::HanabiObservation(state, player)) == before);
+      CHECK(sampler.RestoreHand(&state, player, remembered, hle::HanabiCard(), -1));
+      CHECK(state.Hands()[player].Cards() == remembered);
+      CHECK_EQ(state.MoveHistory().size(), history);
+      CHECK(encoder.Encode(hle::HanabiObservation(state, player)) == before);
     }
   }
 }

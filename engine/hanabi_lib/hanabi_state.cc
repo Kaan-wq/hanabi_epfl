@@ -143,6 +143,29 @@ void HanabiState::RemoveKnowledge(int player, int card_index) {
   hands_[player].RemoveKnowledge(card_index, card_knowledge);
 }
 
+bool HanabiState::ReplaceHand(int player, const std::vector<HanabiCard>& cards) {
+  if (!IsPlayer(player)) return false;
+  const std::vector<HanabiCard>& old_cards = hands_[player].Cards();
+  if (cards.size() != old_cards.size()) return false;
+  const HanabiGame& game = *parent_game_;
+  // Copies available once the old cards are back in the deck, minus the new ones.
+  std::array<int, static_cast<size_t>(kMaxNumColors) * kMaxNumRanks> available{};
+  const auto index = [&game](const HanabiCard& card) {
+    return card.Color() * game.NumRanks() + card.Rank();
+  };
+  for (const HanabiCard& card : old_cards) ++available[index(card)];
+  for (const HanabiCard& card : cards) {
+    if (!CardIsInGame(card.Color(), card.Rank())) return false;
+    if (--available[index(card)] + deck_.CardCount(card.Color(), card.Rank()) < 0) return false;
+  }
+  for (const HanabiCard& card : old_cards) deck_.ReturnCard(card.Color(), card.Rank());
+  for (int position = 0; position < static_cast<int>(cards.size()); ++position) {
+    hands_[player].ReplaceCard(position,
+                               deck_.DealCard(cards[position].Color(), cards[position].Rank()));
+  }
+  return true;
+}
+
 void HanabiState::AdvanceToNextPlayer(bool stayOnPlayer) {
   if (!deck_.Empty() && PlayerToDeal() >= 0) {
     cur_player_ = kChancePlayerId;

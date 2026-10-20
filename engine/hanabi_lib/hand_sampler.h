@@ -3,8 +3,9 @@
 // Before another player acts in a search rollout, their hand is replaced by
 // one sampled from what *they* know (hints, and every card they can see), so
 // the searcher cannot exploit hidden information. After they act, the
-// previous hand is restored as closely as possible. Both go through the
-// fork's return and deal-specific moves, so the move history records them.
+// previous hand is restored as closely as possible. Both swap cards with
+// HanabiState::ReplaceHand, which is not a move: the move history, and so
+// every observation's last moves, only ever hold the moves actually played.
 
 #ifndef HANABI_LIB_HAND_SAMPLER_H_
 #define HANABI_LIB_HAND_SAMPLER_H_

@@ -131,6 +131,9 @@ class HanabiHand {
   void ReturnFromHand(int card_index);
   // Remove knowledge seperately
   void RemoveKnowledge(int card_index, const CardKnowledge& initial_knowledge);
+  // Puts `card` at position card_index in place of the card there, keeping
+  // that position's knowledge.
+  void ReplaceCard(int card_index, HanabiCard card);
   // Make cards with the given rank visible.
   // Returns new information bitmask, bit_i set if card_i color was revealed
   // and was previously unknown.
