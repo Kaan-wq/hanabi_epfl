@@ -4,6 +4,7 @@
 #define PYHANABI_INTERNAL_H_
 
 #include <cstddef>
+#include <span>
 #include <vector>
 
 #include "hanabi_lib/hanabi_card.h"
@@ -19,9 +20,8 @@ inline bool InRange(int index, size_t size) {
 }
 
 // Copies a card into the caller's struct; false if `index` is out of range.
-// `Cards` is any container of HanabiCard (a hand's cards, a discard pile).
-template <typename Cards>
-bool CopyCard(const Cards& cards, int index, pyhanabi_card_t* card) {
+inline bool CopyCard(std::span<const hanabi_learning_env::HanabiCard> cards, int index,
+                     pyhanabi_card_t* card) {
   REQUIRE(card != nullptr);
   if (!InRange(index, cards.size())) return false;
   card->color = cards[index].Color();

@@ -143,7 +143,7 @@ void HanabiState::RemoveKnowledge(int player, int card_index) {
   hands_[player].RemoveKnowledge(card_index, card_knowledge);
 }
 
-bool HanabiState::ReplaceHand(int player, const std::vector<HanabiCard>& cards) {
+bool HanabiState::ReplaceHand(int player, std::span<const HanabiCard> cards) {
   if (!IsPlayer(player)) return false;
   const auto& old_cards = hands_[player].Cards();
   if (cards.size() != old_cards.size()) return false;

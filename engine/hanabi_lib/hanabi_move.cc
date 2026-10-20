@@ -41,7 +41,6 @@ bool HanabiMove::operator==(const HanabiMove& other_move) const {
     case kRevealRank:
       return TargetOffset() == other_move.TargetOffset() && Rank() == other_move.Rank();
     case kDeal:
-      return Color() == other_move.Color() && Rank() == other_move.Rank();
     case kDealSpecific:
       return Color() == other_move.Color() && Rank() == other_move.Rank();
     default:
@@ -65,12 +64,7 @@ std::string HanabiMove::ToString() const {
       return "(Reveal player +" + std::to_string(TargetOffset()) + " rank " +
              RankIndexToChar(Rank()) + ")";
     case kDeal:
-      if (color_ >= 0) {
-        return std::string("(Deal ") + ColorIndexToChar(Color()) + RankIndexToChar(Rank()) + ")";
-      } else {
-        return std::string("(Deal XX)");
-      }
-    case kDealSpecific:
+    case kDealSpecific:  // Printed like a deal.
       if (color_ >= 0) {
         return std::string("(Deal ") + ColorIndexToChar(Color()) + RankIndexToChar(Rank()) + ")";
       } else {

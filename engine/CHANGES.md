@@ -8,6 +8,35 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: `std::span` for card sequences; warning-free engine (search iteration 5.43x)
+
+Modernization step 2. Functions taking "some cards" take
+`std::span<const HanabiCard>` instead of `const std::vector<HanabiCard>&`:
+`HanabiState::ReplaceHand`, `HandSampler::CandidateCounts` and
+`RestoreHand`, and the C API's `CopyCard` (no longer a template). A hand's
+cards (a `FixedVector`) now pass without being copied into a vector. The
+sampler's planned hand, its "forget knowledge" flags and its list of later
+cards became fixed-size, removing its last per-call allocations; that is a
+measurable gain on its own. `RestoreHand` rejects a `remembered` longer than
+8 cards. `HanabiCard::operator==` is `= default` (`HanabiMove`'s stays
+hand-written: it compares only the fields each move type uses).
+
+Cleanup: the remaining reserved include guards (`__X_H__`) were renamed,
+duplicate switch branches in `hanabi_move.cc` merged and the last
+sign-compare / emplace warnings in `hanabi_observation.cc` fixed: the engine
+now builds with no compiler warnings and no clang-tidy findings.
+
+No behavior change: observation/encoding dumps, rule outputs and MCTS
+decisions identical; all tests pass.
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 229,149 | 257,618 (1.12x; 5.43x baseline) |
+
+2/4/5 players: 1.11x / 1.12x / 1.12x over the previous step.
+
+---
+
 ## 2026-10-20: Build as C++23
 
 `CMAKE_CXX_STANDARD` 17 -> 23 (approved modernization plan, step 1 of 6). No

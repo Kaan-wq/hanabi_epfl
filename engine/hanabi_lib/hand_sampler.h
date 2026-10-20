@@ -11,6 +11,7 @@
 #define HANABI_LIB_HAND_SAMPLER_H_
 
 #include <cstdint>
+#include <span>
 #include <vector>
 
 #include "hanabi_card.h"
@@ -47,7 +48,7 @@ class HandSampler {
   // nullptr to ignore hints.
   static std::vector<int> CandidateCounts(const HanabiState& state, int player, int card_index,
                                           const HanabiHand::CardKnowledge* knowledge,
-                                          const std::vector<HanabiCard>& excluded);
+                                          std::span<const HanabiCard> excluded);
 
   // Returns all of `player`'s cards to the deck, then deals a hand of the same
   // size sampled card by card from what the player knows, restarting when a
@@ -63,7 +64,7 @@ class HandSampler {
   // replaced by a sampled card, ignoring hints if nothing else fits. Returns
   // false, leaving `state` unchanged, if `player` is out of range or no
   // consistent hand is found.
-  bool RestoreHand(HanabiState* state, int player, const std::vector<HanabiCard>& remembered,
+  bool RestoreHand(HanabiState* state, int player, std::span<const HanabiCard> remembered,
                    const HanabiCard& removed_card, int removed_index);
 
  private:

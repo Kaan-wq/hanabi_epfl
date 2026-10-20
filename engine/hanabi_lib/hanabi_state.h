@@ -19,6 +19,7 @@
 
 #include <nlohmann/json.hpp>
 #include <random>
+#include <span>
 #include <string>
 #include <vector>
 
@@ -98,7 +99,7 @@ class HanabiState {
   // current player, tokens and turn count are unchanged. Returns false,
   // changing nothing, if the player or a card is out of range, the number of
   // cards differs, or the deck cannot supply the new cards.
-  bool ReplaceHand(int player, const std::vector<HanabiCard>& cards);
+  bool ReplaceHand(int player, std::span<const HanabiCard> cards);
   void ApplyRandomChance();
   // Get the valid chance moves, and associated probabilities.
   // Guaranteed that moves.size() == probabilities.size().

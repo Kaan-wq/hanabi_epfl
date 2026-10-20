@@ -11,9 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __HANABI_OBSERVATION_H__
-#define __HANABI_OBSERVATION_H__
+#ifndef HANABI_LIB_HANABI_OBSERVATION_H_
+#define HANABI_LIB_HANABI_OBSERVATION_H_
 
 #include <nlohmann/json.hpp>
 #include <string>

@@ -33,6 +33,8 @@ class FixedVector {
   T& back() { return items_[size_ - 1]; }
   const T& back() const { return items_[size_ - 1]; }
 
+  T* data() { return items_.data(); }
+  const T* data() const { return items_.data(); }
   iterator begin() { return items_.data(); }
   iterator end() { return items_.data() + size_; }
   const_iterator begin() const { return items_.data(); }

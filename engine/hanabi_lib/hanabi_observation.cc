@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 #include "hanabi_observation.h"
 
@@ -77,11 +79,11 @@ HanabiObservation::HanabiObservation(const HanabiState& state, int observing_pla
   hands_.reserve(state.Hands().size());
   const bool hide_knowledge = state.ParentGame()->ObservationType() == HanabiGame::kMinimal;
   const bool show_cards = state.ParentGame()->ObservationType() == HanabiGame::kSeer;
-  hands_.push_back(HanabiHand(state.Hands()[observing_player], !show_cards, hide_knowledge));
+  hands_.emplace_back(state.Hands()[observing_player], !show_cards, hide_knowledge);
   for (int offset = 1; offset < state.ParentGame()->NumPlayers(); ++offset) {
-    hands_.push_back(
-        HanabiHand(state.Hands()[(observing_player + offset) % state.ParentGame()->NumPlayers()],
-                   false, hide_knowledge));
+    hands_.emplace_back(
+        state.Hands()[(observing_player + offset) % state.ParentGame()->NumPlayers()], false,
+        hide_knowledge);
   }
 
   const auto& history = state.MoveHistory();
@@ -109,7 +111,7 @@ std::string HanabiObservation::ToString() const {
     result += std::to_string(fireworks_[i]) + " ";
   }
   result += "\nHands:\n";
-  for (int i = 0; i < hands_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(hands_.size()); ++i) {
     if (i > 0) {
       result += "-----\n";
     }
@@ -120,7 +122,7 @@ std::string HanabiObservation::ToString() const {
   }
   result += "Deck size: " + std::to_string(DeckSize()) + "\n";
   result += "Discards:";
-  for (int i = 0; i < discard_pile_.size(); ++i) {
+  for (int i = 0; i < static_cast<int>(discard_pile_.size()); ++i) {
     result += " " + discard_pile_[i].ToString();
   }
   return result;

@@ -11,9 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
-#ifndef __HANABI_CARD_H__
-#define __HANABI_CARD_H__
+#ifndef HANABI_LIB_HANABI_CARD_H_
+#define HANABI_LIB_HANABI_CARD_H_
 
 #include <nlohmann/json.hpp>
 #include <string>
@@ -24,7 +26,7 @@ class HanabiCard {
  public:
   HanabiCard(int color, int rank) : color_(color), rank_(rank) {}
   HanabiCard() = default;  // Create an invalid card.
-  bool operator==(const HanabiCard& other_card) const;
+  bool operator==(const HanabiCard& other_card) const = default;
   bool IsValid() const { return color_ >= 0 && rank_ >= 0; }
   std::string ToString() const;
   int Color() const { return color_; }
