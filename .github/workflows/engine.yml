@@ -20,16 +20,20 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: Release build and engine tests
-        run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DHANABI_NATIVE_ARCH=OFF
-          cmake --build build -j
-          ctest --test-dir build --output-on-failure
-      - name: Engine tests under ASan + UBSan
+      - name: Report compiler errors as annotations
+        run: echo "::add-matcher::.github/gcc-problem-matcher.json"
+      - name: Configure (Release)
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DHANABI_NATIVE_ARCH=OFF
+      - name: Build (Release)
+        run: cmake --build build -j
+      - name: Engine tests
+        run: ctest --test-dir build --output-on-failure
+      - name: Configure and build (Debug, ASan + UBSan)
         run: |
           cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
           cmake --build build-debug -j
-          ctest --test-dir build-debug --output-on-failure
+      - name: Engine tests under ASan + UBSan
+        run: ctest --test-dir build-debug --output-on-failure
       - name: Python checks
         run: |
           uv sync
