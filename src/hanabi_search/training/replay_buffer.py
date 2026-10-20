@@ -34,7 +34,8 @@ class SampledBatch:
 class PrioritizedReplayBuffer:
     """Ring buffer sampling transitions in proportion to `priority ** alpha`.
 
-    New transitions get the current maximum priority so they are seen soon.
+    Priorities are stored raw (training errors); `alpha` is applied once, when
+    sampling. New transitions get the current maximum priority so they are seen soon.
 
     Args:
         capacity: Maximum number of transitions; the oldest are overwritten.
@@ -59,6 +60,7 @@ class PrioritizedReplayBuffer:
         self._transitions: list[Transition] = []
         self._priorities = np.zeros(capacity, dtype=np.float32)
         self._position = 0
+        self._max_priority = 1.0
         self._save_path = save_path
         if save_path is not None:
             save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -71,9 +73,7 @@ class PrioritizedReplayBuffer:
                 self._transitions.append(transition)
             else:
                 self._transitions[self._position] = transition
-            self._priorities[self._position] = (
-                self._priorities.max() if len(self._transitions) > 1 else 1.0
-            )
+            self._priorities[self._position] = self._max_priority
             self._position = (self._position + 1) % self.capacity
         if self._save_path is not None:
             self._append_to_file(transitions)
@@ -101,13 +101,15 @@ class PrioritizedReplayBuffer:
     def update_priorities(
         self, indices: npt.NDArray[np.int64], errors: npt.NDArray[np.float32]
     ) -> None:
-        """Sets priorities from per-sample errors and anneals beta towards 1.
+        """Sets raw priorities from per-sample errors and anneals beta towards 1.
 
         Args:
             indices: Buffer positions, shape (batch,).
             errors: Training errors of those transitions, shape (batch,).
         """
-        self._priorities[indices] = (np.abs(errors) + _MIN_PRIORITY) ** self.alpha
+        priorities = np.abs(errors) + _MIN_PRIORITY
+        self._priorities[indices] = priorities
+        self._max_priority = max(self._max_priority, float(priorities.max()))
         self.beta = min(1.0, self.beta + _BETA_INCREMENT)
 
     def __len__(self) -> int:

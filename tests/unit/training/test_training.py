@@ -3,6 +3,7 @@ import math
 from pathlib import Path
 
 import numpy as np
+import numpy.typing as npt
 import pytest
 import torch
 
@@ -67,6 +68,50 @@ def test_buffer_sample_and_priorities() -> None:
     beta = buffer.beta
     buffer.update_priorities(batch.indices, np.ones(16, dtype=np.float32))
     assert buffer.beta > beta
+
+
+def _priority_buffer(alpha: float) -> PrioritizedReplayBuffer:
+    return PrioritizedReplayBuffer(16, alpha, 0.5, np.random.default_rng(0))
+
+
+def _draws(
+    buffer: PrioritizedReplayBuffer, count: int
+) -> tuple[npt.NDArray[np.int64], dict[int, float]]:
+    """Samples `count` batches of `len(buffer)`; returns all indices and the weight per index.
+
+    Weights are normalized by each batch's maximum, so only weights from batches that
+    contain every index are recorded.
+    """
+    indices: list[npt.NDArray[np.int64]] = []
+    weights: dict[int, float] = {}
+    for _ in range(count):
+        batch = buffer.sample(len(buffer))
+        indices.append(batch.indices)
+        if len(set(batch.indices.tolist())) == len(buffer):
+            weights = {int(i): float(w) for i, w in zip(batch.indices, batch.weights, strict=True)}
+    return np.concatenate(indices), weights
+
+
+def test_buffer_applies_alpha_once() -> None:
+    buffer = _priority_buffer(alpha=0.5)
+    buffer.add(_transitions(2))
+    buffer.update_priorities(np.array([0, 1]), np.array([1.0, 4.0], dtype=np.float32))
+    # Probabilities are proportional to [1, 4] ** 0.5 = [1, 2], so sample 1 is drawn twice
+    # as often and its importance weight is 2 ** -beta times that of sample 0.
+    indices, weights = _draws(buffer, 2000)
+    assert np.mean(indices == 1) == pytest.approx(2 / 3, abs=0.03)
+    assert weights[1] / weights[0] == pytest.approx(2**-buffer.beta, rel=1e-4)
+
+
+def test_buffer_gives_new_transitions_the_max_raw_priority() -> None:
+    buffer = _priority_buffer(alpha=0.5)
+    buffer.add(_transitions(2))
+    buffer.update_priorities(np.array([0, 1]), np.array([9.0, 1.0], dtype=np.float32))
+    buffer.add(_transitions(1, seed=1))
+    indices, weights = _draws(buffer, 2000)
+    # Sample 2 is as likely as sample 0 (raw priority 9), so their weights match.
+    assert np.mean(indices == 2) == pytest.approx(np.mean(indices == 0), abs=0.03)
+    assert weights[2] / weights[0] == pytest.approx(1.0, rel=1e-4)
 
 
 def test_buffer_sample_larger_than_contents_raises() -> None:
