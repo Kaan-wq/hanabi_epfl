@@ -573,6 +573,45 @@ HANABI_TEST(HandSamplingFunctionsRejectBadArguments) {
   }
 }
 
+HANABI_TEST(PlayDeterminizedRejectsBadArgumentsAndStopsAtIllegalMoves) {
+  Fixture f;
+  pyhanabi_card_t remembered[5] = {};
+  int32_t num_remembered = -1;
+  const auto play = [&](const std::vector<int32_t>& uids, int searcher, int determinization) {
+    return pyhanabi_state_play_determinized(&f.state, uids.data(),
+                                            static_cast<int32_t>(uids.size()), searcher,
+                                            determinization, remembered, &num_remembered, 1);
+  };
+  const std::string before = StateJson(f);
+  CHECK_EQ(play({0}, kNumPlayers, 0), -1);
+  CHECK_EQ(play({0}, 0, 3), -1);
+  CHECK_EQ(play({-1}, 0, 0), -1);
+  num_remembered = 6;
+  CHECK_EQ(play({0}, 0, 0), -1);
+  num_remembered = -1;
+  CHECK_EQ(StateJson(f), before);
+
+  // Discarding (uid 0) is illegal while every information token is left.
+  CHECK_EQ(play({0}, 0, 0), 0);
+  CHECK_EQ(StateJson(f), before);
+  // The first legal hint (hints follow the 5 discards and 5 plays).
+  const auto hint = [&] {
+    std::vector<int32_t> uids(64);
+    const int32_t count = pyhanabi_state_legal_move_uids(&f.state, uids.data(), 64);
+    for (int32_t i = 0; i < count; ++i) {
+      if (uids[i] >= 10) return uids[i];
+    }
+    return int32_t{-1};
+  };
+  CHECK_EQ(play({hint()}, 0, 0), 1);
+  CHECK_EQ(num_remembered, 5);  // Player 1 acts next: their hand was remembered.
+  CHECK_EQ(play({hint()}, 0, 0), 1);
+
+  // Restoring before anything was remembered is an error.
+  num_remembered = -1;
+  CHECK_EQ(play({hint()}, 0, 0), -1);
+}
+
 // Whether pyhanabi_last_error() mentions `text`.
 bool LastErrorMentions(const std::string& text) {
   const std::string error = pyhanabi_last_error();

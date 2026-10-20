@@ -306,4 +306,54 @@ HANABI_TEST(ResamplingIsInvisibleToTheResampledPlayer) {
   }
 }
 
+HANABI_TEST(AdvanceDeterminizedSwapsOnlyOtherPlayersHands) {
+  for (int players = 2; players <= 5; ++players) {
+    for (const auto mode : {hle::Determinization::kRestore, hle::Determinization::kReplace,
+                            hle::Determinization::kNone}) {
+      const hle::HanabiGame game = MakeGame(players);
+      std::mt19937 rng(players);
+      hle::HandSampler sampler(players);
+      hle::HanabiState state(&game, 0);
+      DealPending(&state);
+      constexpr int kSearcher = 0;
+      hle::RememberedHand remembered;
+      while (!state.IsTerminal()) {
+        const int acting = state.CurPlayer();
+        const auto legal = state.LegalMoves(acting);
+        const hle::HanabiMove move = legal[rng() % legal.size()];
+        // The same move without hand swaps, for the hands it leaves alone. (The
+        // card drawn differs: the game's generator deals it.)
+        hle::HanabiState plain = state;
+        plain.ApplyMove(move);
+        while (plain.CurPlayer() == hle::kChancePlayerId) plain.ApplyRandomChance();
+        const bool drew = move.MoveType() == hle::HanabiMove::kPlay ||
+                          move.MoveType() == hle::HanabiMove::kDiscard;
+
+        const hle::RememberedHand before = remembered;
+        CHECK(hle::AdvanceDeterminized(&state, move, kSearcher, mode, &remembered, &sampler));
+        CHECK_EQ(CardsInGame(state), FullDeckSize(game));
+        CHECK_EQ(state.CurPlayer(), plain.CurPlayer());
+        const int next = state.CurPlayer();
+        const bool resampled =
+            mode != hle::Determinization::kNone && !state.IsTerminal() && next != kSearcher;
+        if (resampled) {
+          // The next player's hand before resampling is the one remembered.
+          CHECK(remembered.valid);
+          CHECK(remembered.cards == plain.Hands()[next].Cards());
+        }
+        const bool restored = mode == hle::Determinization::kRestore && acting != kSearcher;
+        if (restored && !drew) {
+          // After a hint, the acting player gets their remembered hand back.
+          CHECK(state.Hands()[acting].Cards() == before.cards);
+        }
+        for (int player = 0; player < players; ++player) {
+          if (!((restored || drew) && player == acting) && !(resampled && player == next)) {
+            CHECK(state.Hands()[player].Cards() == plain.Hands()[player].Cards());
+          }
+        }
+      }
+    }
+  }
+}
+
 int main() { return hanabi_test::RunAll(); }

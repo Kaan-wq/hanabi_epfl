@@ -90,27 +90,19 @@ class AlphaZeroAgent(MCTSAgent):
         The path is selected by PUCT first, then replayed in this determinization.
         Finished games are valued by their score and impossible paths by the reward
         reached; leaves at the depth limit get the network's value but no children.
+        The path is replayed in one engine call (`DeterminizedEnv.play_moves`).
 
         Args:
             node: The root (AlphaZero always searches from it).
             observation: The searching player's observation at the root.
         """
         tree = self.tree
-        path, moves = tree.select()
+        path, move_uids = tree.select()
         environment = self.environment
+        # The tree only grows below max_depth, so paths fit the depth limit.
+        depth = environment.play_moves(move_uids)
         state = environment.state
-        depth = 0
-        impossible = False
-        for move in moves:
-            if state.is_terminal() or not state.move_is_legal(move):
-                impossible = True
-                break
-            environment.advance(move)
-            state = environment.state
-            depth += 1
-            if depth > self.max_depth:
-                break
-        if impossible or state.is_terminal():
+        if depth < len(move_uids) or state.is_terminal():
             reward = float(environment.reward())
         else:
             if depth == 0:
@@ -142,7 +134,7 @@ class AlphaZeroAgent(MCTSAgent):
             raise RuntimeError(f"choose_move called on terminal node {node}")
         root = self.tree.root
         self._moves_this_game += 1
-        if root is None or not root.moves:
+        if root is None or not root.move_uids:
             return super().choose_move(node)
         visits = root.visits
         self_play = self.self_play
@@ -151,21 +143,18 @@ class AlphaZeroAgent(MCTSAgent):
             and self._moves_this_game <= self_play.temperature_moves
             and sum(visits) > 0
         ):
-            return root.moves[self.rng.choices(range(len(visits)), visits)[0]]
-        # Unvisited children lose; the first of equally visited ones wins.
-        best = max(range(len(visits)), key=lambda index: visits[index] or -inf)
-        return root.moves[best]
+            best = self.rng.choices(range(len(visits)), visits)[0]
+        else:
+            # Unvisited children lose; the first of equally visited ones wins.
+            best = max(range(len(visits)), key=lambda index: visits[index] or -inf)
+        return self.environment.game.all_moves()[root.move_uids[best]]
 
     @override
     def root_visits(self) -> dict[int, float]:
         root = self.tree.root
         if root is None:
             return {}
-        game = self.environment.game
-        return {
-            game.get_move_uid(move): visits
-            for move, visits in zip(root.moves, root.visits, strict=True)
-        }
+        return dict(zip(root.move_uids, root.visits, strict=True))
 
     def _expand(
         self,
@@ -183,8 +172,6 @@ class AlphaZeroAgent(MCTSAgent):
         uids = state.legal_move_uids()
         if not uids.size:
             return
-        all_moves = self.environment.game.all_moves()
-        moves = [all_moves[uid] for uid in uids.tolist()]
         priors = policy[uids]  # (num_moves,)
         total = priors.sum()
         priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
@@ -192,9 +179,8 @@ class AlphaZeroAgent(MCTSAgent):
             priors = self._add_root_noise(priors, self.self_play, self.rng)
         positive = priors > 0
         if not positive.all():
-            moves = [move for move, keep in zip(moves, positive.tolist(), strict=True) if keep]
-            priors = priors[positive]
-        self.tree.expand(path, moves, priors.tolist())
+            uids, priors = uids[positive], priors[positive]
+        self.tree.expand(path, uids.tolist(), priors.tolist())
 
     @staticmethod
     def _add_root_noise(

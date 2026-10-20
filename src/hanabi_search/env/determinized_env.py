@@ -8,16 +8,14 @@ closely as possible.
 
 import enum
 import random
+from collections.abc import Sequence
 
-from hanabi_search.env._pyhanabi import CData, card_values, engine_message, ffi, lib
+from hanabi_search.env._pyhanabi import engine_message, ffi, lib
 from hanabi_search.env.game import GameParams
 from hanabi_search.env.hanabi_env import HanabiEnv, StepResult
 from hanabi_search.env.hand_sampler import resample_hand
-from hanabi_search.env.moves import HanabiMoveType
 from hanabi_search.env.observation_types import Action
-from hanabi_search.exceptions import EngineCallError, HanabiSearchError
-
-_CARD_MOVES = (HanabiMoveType.DISCARD, HanabiMoveType.PLAY)
+from hanabi_search.exceptions import EngineCallError, IllegalMoveError
 
 
 class DeterminizationType(enum.StrEnum):
@@ -26,6 +24,14 @@ class DeterminizationType(enum.StrEnum):
     RESTORE = "restore"  # Resample before they act, restore after.
     REPLACE = "replace"  # Resample before they act, never restore.
     NONE = "none"  # Never resample (the searcher sees true hands).
+
+
+# The engine's codes for each determinization (hand_sampler.h, `Determinization`).
+_DETERMINIZATION_CODES = {
+    DeterminizationType.RESTORE: 0,
+    DeterminizationType.REPLACE: 1,
+    DeterminizationType.NONE: 2,
+}
 
 
 class RolloutReward(enum.StrEnum):
@@ -62,11 +68,10 @@ class DeterminizedEnv(HanabiEnv):
         self.searching_player = searching_player
         self.determinization = determinization
         self.rollout_reward = rollout_reward
-        # The hand of the player about to act, before it was resampled, kept in
-        # engine card buffers: no Python card objects on this hot path.
+        # The hand of the player about to act, before it was resampled, kept
+        # by the engine between calls (count -1: nothing remembered yet).
         self._remembered = ffi.new("pyhanabi_card_t[]", self.game.hand_size())
-        self._num_remembered = -1  # Nothing remembered yet.
-        self._acted_card = ffi.new("pyhanabi_card_t*")
+        self._num_remembered = ffi.new("int32_t*", -1)
 
     def step(self, action: Action) -> StepResult:
         """Applies an action like `advance`, then returns every player's observation."""
@@ -78,31 +83,43 @@ class DeterminizedEnv(HanabiEnv):
 
         Builds no observations, unlike `step`: rollouts call `observe` for the
         one player who acts next.
+
+        Raises:
+            IllegalMoveError: If the action is not legal (or the game is over).
         """
         move = self.to_move(action)
-        state = self.state
-        acting_player = state.cur_player()
-        acted_color = acted_rank = -1
-        if move.type() in _CARD_MOVES:
-            self._read_card(acting_player, move.card_index(), self._acted_card)
-            acted_color, acted_rank = card_values(self._acted_card)
+        if not self.play_moves([self.game.get_move_uid(move)]):
+            raise IllegalMoveError(f"Illegal move {move} in state:\n{self.state}")
 
-        state.apply_move(move)
-        self._deal_pending_cards()
+    def play_moves(self, move_uids: Sequence[int]) -> int:
+        """Applies moves in order as `advance` does, in a single engine call.
 
-        if (
-            self.determinization == DeterminizationType.RESTORE
-            and acting_player != self.searching_player
-        ):
-            self._restore_hand(acting_player, acted_color, acted_rank, move.card_index())
+        Stops early at the first illegal move or once the game is over.
 
-        next_player = state.cur_player()
-        if (
-            self.determinization != DeterminizationType.NONE
-            and next_player != self.searching_player
-        ):
-            self._remember_hand(next_player)
-            self.replace_hand(next_player)
+        Args:
+            move_uids: Ids of the moves (see `HanabiGame.get_move_uid`).
+
+        Returns:
+            How many moves were applied.
+
+        Raises:
+            EngineCallError: If a move id is out of range or a hand cannot be swapped.
+        """
+        applied = int(
+            lib.pyhanabi_state_play_determinized(
+                self.state.c_state,
+                move_uids,
+                len(move_uids),
+                self.searching_player,
+                _DETERMINIZATION_CODES[self.determinization],
+                self._remembered,
+                self._num_remembered,
+                self.rng.getrandbits(64),
+            )
+        )
+        if applied < 0:
+            raise EngineCallError(engine_message(f"Cannot play the moves {list(move_uids)}"))
+        return applied
 
     def reward(self) -> int:
         """Returns the rollout reward selected by `rollout_reward`."""
@@ -113,32 +130,3 @@ class DeterminizedEnv(HanabiEnv):
     def replace_hand(self, player: int) -> None:
         """Replaces `player`'s hand with one sampled from what they know."""
         resample_hand(self.state, player, self.rng.getrandbits(64))
-
-    def _read_card(self, player: int, index: int, card: CData) -> None:
-        if not lib.StateGetHandCard(self.state.c_state, player, index, card):
-            raise EngineCallError(engine_message(f"No card {index} in the hand of {player}"))
-
-    def _remember_hand(self, player: int) -> None:
-        count = lib.StateGetHandSize(self.state.c_state, player)
-        remembered = self._remembered
-        for index in range(count):
-            self._read_card(player, index, remembered + index)
-        self._num_remembered = count
-
-    def _restore_hand(
-        self, player: int, removed_color: int, removed_rank: int, removed_index: int
-    ) -> None:
-        """Restores `player`'s hand to the remembered one (see `hand_sampler.restore_hand`)."""
-        if self._num_remembered < 0:
-            raise HanabiSearchError("restore_hand called before any hand was remembered")
-        if not lib.pyhanabi_state_restore_hand(
-            self.state.c_state,
-            player,
-            self._remembered,
-            self._num_remembered,
-            removed_color,
-            removed_rank,
-            removed_index,
-            self.rng.getrandbits(64),
-        ):
-            raise EngineCallError(engine_message(f"Cannot restore the hand of player {player}"))

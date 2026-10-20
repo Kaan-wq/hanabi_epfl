@@ -376,6 +376,23 @@ bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
                                  int32_t removed_color, int32_t removed_rank, int32_t removed_index,
                                  uint64_t seed);
 
+/* Plays moves of a re-determinizing rollout (DeterminizedEnv in Python):
+ * applies the moves with ids `move_uids` (int32_t[num_moves]; see
+ * GetMoveUid) in order, each followed by the cards it leaves due and the hand
+ * swaps of `determinization` (0: restore, 1: replace, 2: none; see
+ * hanabi_lib/hand_sampler.h, AdvanceDeterminized) for `searching_player`.
+ * Stops early, without error, at the first illegal move or once the game is
+ * over. `remembered` (pyhanabi_card_t[hand size]) and `*num_remembered` (-1
+ * while nothing is remembered) carry the hand of the player about to act,
+ * before it was resampled, from one call to the next; the caller owns them.
+ * All sampling draws from a generator seeded by `seed`.
+ * Returns the number of moves applied, or -1 if an argument is out of range
+ * or a hand swap fails (the state then holds the moves applied so far). */
+int32_t pyhanabi_state_play_determinized(pyhanabi_state_t* state, const int32_t* move_uids,
+                                         int32_t num_moves, int32_t searching_player,
+                                         int32_t determinization, pyhanabi_card_t* remembered,
+                                         int32_t* num_remembered, uint64_t seed);
+
 } /* extern "C" */
 
 #endif

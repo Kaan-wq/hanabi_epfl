@@ -8,8 +8,6 @@ visit count and value sum live in its parent's arrays; the root's are scalars.
 from dataclasses import dataclass
 from math import inf, sqrt
 
-from hanabi_search.env import HanabiMove
-
 
 @dataclass(slots=True)
 class TreeNode:
@@ -19,7 +17,7 @@ class TreeNode:
     a Python loop beats NumPy's per-call overhead.
 
     Attributes:
-        moves: Move leading to each child, shape (num_children,).
+        move_uids: Id of the move leading to each child, shape (num_children,).
         priors: The network's prior of each child, shape (num_children,).
         visits: Visit count of each child, shape (num_children,).
         totals: Sum of the rewards backpropagated through each child, in score
@@ -27,17 +25,17 @@ class TreeNode:
         children: Each child's node once it is expanded, else `None`.
     """
 
-    moves: list[HanabiMove]
+    move_uids: list[int]
     priors: list[float]
     visits: list[int]
     totals: list[float]
     children: list[TreeNode | None]
 
     @classmethod
-    def with_priors(cls, moves: list[HanabiMove], priors: list[float]) -> TreeNode:
-        """Returns an unvisited node whose children are `moves`."""
-        count = len(moves)
-        return cls(moves, priors, [0] * count, [0.0] * count, [None] * count)
+    def with_priors(cls, move_uids: list[int], priors: list[float]) -> TreeNode:
+        """Returns an unvisited node whose children follow the moves `move_uids`."""
+        count = len(move_uids)
+        return cls(move_uids, priors, [0] * count, [0.0] * count, [None] * count)
 
     def best_child(
         self, visits: float, total: float, exploration_weight: float, max_score: float
@@ -82,24 +80,24 @@ class SearchTree:
     root_visits: float = 0.0
     root_total: float = 0.0
 
-    def select(self) -> tuple[list[tuple[TreeNode, int]], list[HanabiMove]]:
+    def select(self) -> tuple[list[tuple[TreeNode, int]], list[int]]:
         """Descends by PUCT from the root to a node that is not expanded yet.
 
         Returns:
-            The path as (node, chosen child index) pairs, and the moves along it.
+            The path as (node, chosen child index) pairs, and the ids of the moves along it.
         """
         path: list[tuple[TreeNode, int]] = []
-        moves: list[HanabiMove] = []
+        move_uids: list[int] = []
         node = self.root
         visits, total = self.root_visits, self.root_total
         weight, max_score = self.exploration_weight, self.max_score
-        while node is not None and node.moves:
+        while node is not None and node.move_uids:
             index = node.best_child(visits, total, weight, max_score)
             path.append((node, index))
-            moves.append(node.moves[index])
+            move_uids.append(node.move_uids[index])
             visits, total = node.visits[index], node.totals[index]
             node = node.children[index]
-        return path, moves
+        return path, move_uids
 
     def is_expanded(self, path: list[tuple[TreeNode, int]]) -> bool:
         """Returns whether the node at the end of `path` is expanded."""
@@ -109,10 +107,10 @@ class SearchTree:
         return parent.children[index] is not None
 
     def expand(
-        self, path: list[tuple[TreeNode, int]], moves: list[HanabiMove], priors: list[float]
+        self, path: list[tuple[TreeNode, int]], move_uids: list[int], priors: list[float]
     ) -> None:
-        """Expands the node at the end of `path` with children `moves`."""
-        node = TreeNode.with_priors(moves, priors)
+        """Expands the node at the end of `path` with a child per move in `move_uids`."""
+        node = TreeNode.with_priors(move_uids, priors)
         if not path:
             self.root = node
         else:

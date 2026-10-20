@@ -76,6 +76,30 @@ class HandSampler {
   SplitMix64 rng_;
 };
 
+// How a re-determinizing rollout swaps the hands of players other than the
+// searcher.
+enum class Determinization {
+  kRestore = 0,  // Resample a hand before its player acts, restore it after.
+  kReplace = 1,  // Resample a hand before its player acts, never restore it.
+  kNone = 2,     // Never resample (the searcher sees true hands).
+};
+
+// The hand of the player about to act in a rollout, before it was resampled.
+struct RememberedHand {
+  HanabiHand::CardList cards;
+  bool valid = false;  // False until a hand is remembered.
+};
+
+// One move of a re-determinizing rollout: applies `move` (legal in `state`),
+// deals the cards it leaves due, then, unless the searcher acted, restores
+// the acting player's `remembered` hand (kRestore only). Unless kNone or the
+// game is over, it then remembers the next player's hand and resamples it,
+// if that player is not the searcher. All sampling draws from `sampler`.
+// Fails if a restore is due with no hand remembered, or sampling fails.
+Status AdvanceDeterminized(HanabiState* state, const HanabiMove& move, int searching_player,
+                           Determinization determinization, RememberedHand* remembered,
+                           HandSampler* sampler);
+
 }  // namespace hanabi_learning_env
 
 #endif  // HANABI_LIB_HAND_SAMPLER_H_

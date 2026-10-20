@@ -257,4 +257,35 @@ int HandSampler::SampleIndex(const int* counts, int num_counts, int total) {
   return num_counts - 1;  // Unreachable when total is the sum.
 }
 
+Status AdvanceDeterminized(HanabiState* state, const HanabiMove& move, int searching_player,
+                           Determinization determinization, RememberedHand* remembered,
+                           HandSampler* sampler) {
+  const int acting_player = state->CurPlayer();
+  HanabiCard acted_card;
+  if (move.MoveType() == HanabiMove::kPlay || move.MoveType() == HanabiMove::kDiscard) {
+    acted_card = state->Hands()[acting_player].Cards()[move.CardIndex()];
+  }
+  state->ApplyMove(move);
+  while (state->CurPlayer() == kChancePlayerId) state->ApplyRandomChance();
+
+  if (determinization == Determinization::kRestore && acting_player != searching_player) {
+    if (!remembered->valid) {
+      return std::unexpected(
+          std::format("no remembered hand to restore for player {}", acting_player));
+    }
+    const Status restored =
+        sampler->RestoreHand(state, acting_player, remembered->cards, acted_card,
+                             acted_card.IsValid() ? move.CardIndex() : -1);
+    if (!restored) return restored;
+  }
+  const int next_player = state->CurPlayer();
+  if (determinization != Determinization::kNone && !state->IsTerminal() &&
+      next_player != searching_player) {
+    remembered->cards = state->Hands()[next_player].Cards();
+    remembered->valid = true;
+    return sampler->ResampleHand(state, next_player);
+  }
+  return {};
+}
+
 }  // namespace hanabi_learning_env

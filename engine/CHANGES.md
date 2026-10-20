@@ -8,6 +8,29 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Determinized rollout moves in one call
+
+New `AdvanceDeterminized` (hand_sampler.h) and C API function
+`pyhanabi_state_play_determinized`: apply a sequence of move ids with the
+deals and hand swaps of re-determinizing MCTS (restore / replace / none),
+stopping at the first illegal move or the end of the game. `DeterminizedEnv`
+did this in Python with about ten engine calls per move; `advance` and the new
+`play_moves` now make one call, and AlphaZero replays a whole tree path in one.
+
+All sampling of one call draws from a single `HandSampler` seeded by its
+`seed`, so the random stream differs from the old per-swap seeds; rollouts
+are equally distributed but not move-for-move identical to before. Hands are
+no longer resampled once the game is over (that resample never mattered).
+
+Tests: `AdvanceDeterminizedSwapsOnlyOtherPlayersHands` (2-5 players, every
+mode: hands left alone, the next player's hand remembered, restored after a
+hint), C API argument and stop checks. Not on the engine benchmark (Python
+path); AlphaZero search, 1 process, 32 batched games, untrained network,
+rollouts/s: 2 players 35,616 -> 42,372 (1.19x), 4 players 39,686 -> 49,632
+(1.25x).
+
+---
+
 ## 2026-10-20: Link-time optimization; static C++ runtime on Linux
 
 Modernization step 5 (build only, no source change).

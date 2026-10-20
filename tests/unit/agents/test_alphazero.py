@@ -39,7 +39,9 @@ def _root_with_children(
     agent.reset(env.state)
     agent.root_node.focused_state = env.state
     moves = env.state.legal_moves()[: len(stats)]
-    agent.tree.expand([], moves, [prior for prior, _ in stats])
+    agent.tree.expand(
+        [], [env.game.get_move_uid(move) for move in moves], [prior for prior, _ in stats]
+    )
     root = agent.tree.root
     assert root is not None
     root.visits[:] = [visits for _, visits in stats]
@@ -67,7 +69,7 @@ def test_first_search_expands_the_root_with_priors_summing_to_one(env: HanabiEnv
     assert _search(agent, current_observation(env)) == 1
     root = agent.tree.root
     assert root is not None
-    assert root.moves == env.state.legal_moves()
+    assert root.move_uids == env.state.legal_move_uids().tolist()
     assert sum(root.priors) == pytest.approx(1.0)
     assert 0 <= agent.tree.root_total <= GAME.max_score
 
@@ -115,7 +117,7 @@ def _root_priors(env: HanabiEnv, self_play: SelfPlayConfig | None) -> dict[str, 
     _search(agent, current_observation(env))
     root = agent.tree.root
     assert root is not None
-    return {str(move): prior for move, prior in zip(root.moves, root.priors, strict=True)}
+    return dict(zip(map(str, root.move_uids), root.priors, strict=True))
 
 
 def test_root_noise_only_in_self_play(env: HanabiEnv) -> None:
