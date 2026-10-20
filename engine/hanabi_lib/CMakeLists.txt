@@ -8,6 +8,7 @@ add_library(hanabi STATIC
   hanabi_move.cc
   hanabi_observation.cc
   hanabi_state.cc
+  observation_features.cc
   json_checks.cc
   util.cc)
 

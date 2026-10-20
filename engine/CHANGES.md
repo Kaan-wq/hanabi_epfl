@@ -8,6 +8,46 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Observation buffers in the C API
+
+Python built each observation through 100+ small C calls (one or more per
+card, hint, discard and legal move) and encoded it by parsing a
+comma-separated string. Seven new functions in `capi/pyhanabi_observation.cc`
+each fill one whole field into caller-provided buffers (layouts in
+`pyhanabi.h`):
+
+| Function | Output |
+|---|---|
+| `pyhanabi_observation_hands` | hand sizes (P); colors, ranks (P, H), -1 hidden/empty |
+| `pyhanabi_observation_card_knowledge` | hinted color, rank (P, H); plausible mask (P, H, C, R) |
+| `pyhanabi_observation_discard_pile` | colors, ranks, oldest first |
+| `pyhanabi_observation_fireworks` | heights (C) |
+| `pyhanabi_observation_legal_move_uids` | move ids, engine order |
+| `pyhanabi_observation_unseen_card_counts` | copies the observer cannot see (C, R): new feature |
+| `pyhanabi_observation_encode` | canonical encoding as uint8 bits |
+
+- The counting is in `hanabi_lib/observation_features.{h,cc}`
+  (`UnseenCardCounts`, `PlausibleCards`); both read only the observation, so
+  the observer's own cards are never used. The canonical encoding is
+  unchanged (encoder version stays `hle-canonical-1`).
+- Wrong buffer sizes return false (or -1) and write nothing.
+- Tests (`tests/test_observation_buffers.cc`): every buffer equals the per-card
+  `Obs*` getters along random games (2-5 players, 2 and 5 colors); unseen
+  counts equal deck + own hand; swapping one of the observer's cards with a
+  deck card changes no buffer and no encoding bit; wrong sizes are rejected.
+- No game logic changed; parity tests pass.
+
+Benchmark: new row `observation features` (observation + both features):
+786k / 527k / 487k / 398k obs/s for 2-5 players. Other rows within noise
+(median of 5 alternating runs, largest delta -4.9%).
+
+End to end, with the Python side reading these buffers (observation dicts and
+rule-based card counting): MCTS 2p 2,617 -> 4,855, 3p 1,943 -> 3,833, 5p
+1,539 -> 3,171 rollouts/s (+86%, +97%, +106%); observation dict 2.1-2.6x;
+encoding from Python 30-44x (2p 32k -> 971k/s). Observation dicts (all
+players and observation types), encodings, rule outputs and MCTS decisions
+are identical to before.
+
 ## 2026-10-20: Split observation functions out of `capi/pyhanabi.cc`
 
 Code move only, no behavior change: the `Obs*` and observation-encoder

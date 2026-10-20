@@ -23,6 +23,7 @@ _LIB_NAMES = ("libpyhanabi.dylib", "libpyhanabi.so")
 _REPO_ROOT = Path(__file__).resolve().parents[3]
 
 CDEF = """
+
 typedef struct PyHanabiCard {
   int color;
   int rank;
@@ -62,7 +63,6 @@ typedef struct PyHanabiObservationEncoder {
   /* Points to a hanabi_learning_env::ObservationEncoder. */
   void* encoder;
 } pyhanabi_observation_encoder_t;
-
 
 /* Error convention. Functions that take an index, id or parameter from the
  * caller check it: on a bad value, a function returning bool returns false
@@ -249,6 +249,67 @@ bool HistoryItemFromJson(const char* json_str, pyhanabi_history_item_t* item);
 char* StateToJson(pyhanabi_state_t* state);
 bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_t* game);
 
+/* Observation buffers: one call fills a whole field of an observation.
+ *
+ * Each function writes into buffers the caller owns; nothing is allocated.
+ * Arrays are flat and row-major. Shapes use P = number of players, H = the
+ * game's hand size, C = number of colors, R = number of ranks; card
+ * identities are indexed color * R + rank. Player axes are offsets from the
+ * observer (0 is the observer), whose own cards are never revealed. Size
+ * arguments must match the game exactly; otherwise the function returns false
+ * (or -1) and writes nothing. */
+
+/* Writes every hand: `hand_sizes` int32_t[P] (cards in each hand) and
+ * `colors`, `ranks` int8_t[P * H] (index offset * H + position). Entries are -1
+ * for the observer's own cards (hidden) and for positions past the end of a
+ * hand. Returns false if `num_players` != P or `hand_size` != H. */
+bool pyhanabi_observation_hands(const pyhanabi_observation_t* observation, int32_t* hand_sizes,
+                                int8_t* colors, int8_t* ranks, int32_t num_players,
+                                int32_t hand_size);
+
+/* Writes what each player knows about their cards from hints:
+ * `hinted_colors`, `hinted_ranks` int8_t[P * H], the directly hinted color and
+ * rank, -1 if not hinted (and past the end of a hand); and `plausible`
+ * uint8_t[P * H * C * R] (index ((offset * H + position) * C + color) * R +
+ * rank), 1 if no hint rules that card out there, including negative hints;
+ * 0 past the end of a hand. Returns false if a dimension does not match. */
+bool pyhanabi_observation_card_knowledge(const pyhanabi_observation_t* observation,
+                                         int8_t* hinted_colors, int8_t* hinted_ranks,
+                                         uint8_t* plausible, int32_t num_players, int32_t hand_size,
+                                         int32_t num_colors, int32_t num_ranks);
+
+/* Writes the discard pile, oldest first, to `colors` and `ranks`
+ * (int8_t[capacity] each). Returns the number of discarded cards, or -1 if it
+ * exceeds `capacity` (the full deck size always suffices). */
+int32_t pyhanabi_observation_discard_pile(const pyhanabi_observation_t* observation, int8_t* colors,
+                                          int8_t* ranks, int32_t capacity);
+
+/* Writes the height of each firework to `heights` (int32_t[C]). Returns false
+ * if `num_colors` != C. */
+bool pyhanabi_observation_fireworks(const pyhanabi_observation_t* observation, int32_t* heights,
+                                    int32_t num_colors);
+
+/* Writes the ids (see GetMoveUid) of the observer's legal moves, in engine
+ * order, to `uids` (int32_t[capacity]). Returns their number (0 unless the
+ * observer is acting), or -1 if it exceeds `capacity` (MaxMoves suffices). */
+int32_t pyhanabi_observation_legal_move_uids(const pyhanabi_observation_t* observation,
+                                             int32_t* uids, int32_t capacity);
+
+/* Writes to `counts` (int32_t[C * R]) how many copies of each card the
+ * observer cannot see: the full deck minus the other players' hands, the
+ * discard pile and the fireworks; these copies are in the deck or in the
+ * observer's own hand. Returns false if `counts_size` != C * R. */
+bool pyhanabi_observation_unseen_card_counts(const pyhanabi_observation_t* observation,
+                                             int32_t* counts, int32_t counts_size);
+
+/* Writes the encoding of `observation` (0 or 1 per entry) to `bits`
+ * (uint8_t[size]); the same values EncodeObservation returns as a string.
+ * Returns false if `size` is not the encoder's flat length (product of
+ * ObservationShape). */
+bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
+                                 const pyhanabi_observation_t* observation, uint8_t* bits,
+                                 int32_t size);
+
 /* Hidden-hand sampling for re-determinizing MCTS (hanabi_lib/hand_sampler.h).
  *
  * Card buffers use pyhanabi_card_t; count buffers are int32_t[num_colors *
@@ -282,8 +343,9 @@ bool pyhanabi_state_resample_hand(pyhanabi_state_t* state, int32_t player, uint6
  * unchanged, if an argument is out of range or no consistent hand is found. */
 bool pyhanabi_state_restore_hand(pyhanabi_state_t* state, int32_t player,
                                  const pyhanabi_card_t* remembered, int32_t num_remembered,
-                                 int32_t removed_color, int32_t removed_rank,
-                                 int32_t removed_index, uint64_t seed);
+                                 int32_t removed_color, int32_t removed_rank, int32_t removed_index,
+                                 uint64_t seed);
+
 """
 
 ffi = FFI()

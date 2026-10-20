@@ -2,6 +2,9 @@
 
 from dataclasses import dataclass
 
+import numpy as np
+import numpy.typing as npt
+
 from hanabi_search.env.cards import COLOR_CHAR, color_char_to_idx
 from hanabi_search.env.game import GameParams, HanabiGame
 from hanabi_search.env.moves import HanabiMove, HanabiMoveType
@@ -13,6 +16,8 @@ from hanabi_search.env.observation import (
 from hanabi_search.env.observation_types import (
     Action,
     AllPlayerObservations,
+    CardDict,
+    KnowledgeDict,
     MoveDict,
     ObservationDict,
 )
@@ -55,6 +60,13 @@ class HanabiEnv:
         self.observation_encoder = ObservationEncoder(self.game, ObservationEncoderType.CANONICAL)
         self._cards_per_rank = [
             self.game.num_cards(0, rank) for rank in range(self.game.num_ranks())
+        ]
+        self._num_colors = self.game.num_colors()
+        self._num_ranks = self.game.num_ranks()
+        self._max_information_tokens = self.game.max_information_tokens()
+        # Dict form of every move, by move id; observations copy from it.
+        self._move_dicts = [
+            self.game.get_move(uid).to_dict() for uid in range(self.game.max_moves())
         ]
 
     def reset(self) -> AllPlayerObservations:
@@ -100,8 +112,8 @@ class HanabiEnv:
         """Returns the shape of `vectorized_observation` outputs."""
         return self.observation_encoder.shape()
 
-    def vectorized_observation(self, observation: HanabiObservation) -> list[int]:
-        """Encodes an engine observation as a bit vector."""
+    def vectorized_observation(self, observation: HanabiObservation) -> npt.NDArray[np.uint8]:
+        """Encodes an engine observation as a bit vector, shape (encoding length,)."""
         return self.observation_encoder.encode(observation)
 
     def observe_all(self) -> AllPlayerObservations:
@@ -123,29 +135,40 @@ class HanabiEnv:
 
     def observation_dict(self, observation: HanabiObservation) -> ObservationDict:
         """Converts an engine observation of the current state to dict form."""
-        legal_moves = observation.legal_moves()
-        fireworks = self.state.fireworks()
+        uids = observation.legal_move_uids().tolist()
+        hands = observation.hand_arrays()
+        knowledge = observation.knowledge_arrays()
+        discard_colors, discard_ranks = observation.discard_pile_arrays()
         return {
             "current_player": self.state.cur_player(),
             "current_player_offset": observation.cur_player_offset(),
             "life_tokens": observation.life_tokens(),
             "information_tokens": observation.information_tokens(),
-            "max_information_tokens": self.game.max_information_tokens(),
-            "num_players": observation.num_players(),
-            "num_colors": self.game.num_colors(),
-            "num_ranks": self.game.num_ranks(),
+            "max_information_tokens": self._max_information_tokens,
+            "num_players": self.num_players,
+            "num_colors": self._num_colors,
+            "num_ranks": self._num_ranks,
             "cards_per_rank": list(self._cards_per_rank),
             "deck_size": observation.deck_size(),
             "turns_to_play": self.state.turns_to_play(),
-            "fireworks": dict(zip(COLOR_CHAR, fireworks, strict=False)),
-            "legal_moves": [move.to_dict() for move in legal_moves],
-            "legal_moves_as_int": [self.game.get_move_uid(move) for move in legal_moves],
+            "fireworks": dict(zip(COLOR_CHAR, observation.fireworks(), strict=False)),
+            "legal_moves": [self._move_dicts[uid].copy() for uid in uids],
+            "legal_moves_as_int": uids,
             "observed_hands": [
-                [card.to_dict() for card in hand] for hand in observation.observed_hands()
+                _card_dicts(colors[:size], ranks[:size])
+                for size, colors, ranks in zip(
+                    hands.sizes.tolist(), hands.colors.tolist(), hands.ranks.tolist(), strict=True
+                )
             ],
-            "discard_pile": [card.to_dict() for card in observation.discard_pile()],
+            "discard_pile": _card_dicts(discard_colors.tolist(), discard_ranks.tolist()),
             "card_knowledge": [
-                [knowledge.to_dict() for knowledge in hand] for hand in observation.card_knowledge()
+                _knowledge_dicts(colors[:size], ranks[:size])
+                for size, colors, ranks in zip(
+                    hands.sizes.tolist(),
+                    knowledge.hinted_colors.tolist(),
+                    knowledge.hinted_ranks.tolist(),
+                    strict=True,
+                )
             ],
             "pyhanabi": observation,
         }
@@ -201,3 +224,23 @@ class HanabiEnv:
     def _deal_pending_cards(self) -> None:
         while self.state.cur_player() == CHANCE_PLAYER_ID:
             self.state.deal_random_card()
+
+
+def _color_char(color: int) -> str | None:
+    return COLOR_CHAR[color] if color >= 0 else None
+
+
+def _card_dicts(colors: list[int], ranks: list[int]) -> list[CardDict]:
+    """Card dicts as `HanabiCard.to_dict` makes them (hidden cards: color None, rank -1)."""
+    return [
+        {"color": _color_char(color), "rank": rank}
+        for color, rank in zip(colors, ranks, strict=True)
+    ]
+
+
+def _knowledge_dicts(colors: list[int], ranks: list[int]) -> list[KnowledgeDict]:
+    """Knowledge dicts as `HanabiCardKnowledge.to_dict` makes them (None where not hinted)."""
+    return [
+        {"color": _color_char(color), "rank": rank if rank >= 0 else None}
+        for color, rank in zip(colors, ranks, strict=True)
+    ]

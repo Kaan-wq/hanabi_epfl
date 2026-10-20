@@ -17,6 +17,7 @@
 #include "hanabi_observation.h"
 #include "hanabi_state.h"
 #include "hand_sampler.h"
+#include "observation_features.h"
 
 namespace hle = hanabi_learning_env;
 
@@ -140,6 +141,30 @@ Result ResampleHands(const std::vector<hle::HanabiState>& states, int rounds) {
   return result;
 }
 
+// Builds the acting player's observation and its card-counting features, as
+// a rule-based rollout policy needs them at every step.
+Result ObservationFeatures(const hle::HanabiGame& game, const std::vector<hle::HanabiState>& states,
+                           int rounds) {
+  std::vector<int32_t> unseen(static_cast<size_t>(game.NumColors()) * game.NumRanks());
+  std::vector<uint8_t> plausible(static_cast<size_t>(game.NumPlayers()) * game.HandSize() *
+                                 unseen.size());
+  Result result;
+  int64_t checksum = 0;
+  const auto start = Clock::now();
+  for (int r = 0; r < rounds; ++r) {
+    for (const auto& state : states) {
+      const hle::HanabiObservation observation(state, state.CurPlayer());
+      hle::UnseenCardCounts(observation, unseen.data());
+      hle::PlausibleCards(observation, plausible.data());
+      checksum += unseen[0] + plausible[0];
+      ++result.steps;
+    }
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
 void Report(const char* name, int players, const Result& result, const char* unit) {
   std::printf("%-22s %d players  %12.0f %s/s  (%lld in %.2fs)\n", name, players,
               static_cast<double>(result.steps) / result.seconds, unit,
@@ -162,6 +187,7 @@ int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a tool 
     Report("state copy", players, CopyStates(states, 50), "copies");
     Report("state JSON round-trip", players, JsonRoundTrips(game, states), "trips");
     Report("resample hand", players, ResampleHands(states, 10), "hands");
+    Report("observation features", players, ObservationFeatures(game, states, 10), "obs");
   }
   return 0;
 }

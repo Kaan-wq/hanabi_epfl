@@ -21,3 +21,9 @@ add_executable(test_hand_sampler test_hand_sampler.cc)
 target_link_libraries(test_hand_sampler PRIVATE hanabi)
 target_compile_options(test_hand_sampler PRIVATE ${HANABI_WARNINGS})
 add_test(NAME hand_sampler COMMAND test_hand_sampler)
+
+# Observation buffer functions of the C API; see the file comment.
+add_executable(test_observation_buffers test_observation_buffers.cc)
+target_link_libraries(test_observation_buffers PRIVATE pyhanabi nlohmann_json::nlohmann_json)
+target_compile_options(test_observation_buffers PRIVATE ${HANABI_WARNINGS})
+add_test(NAME observation_buffers COMMAND test_observation_buffers)

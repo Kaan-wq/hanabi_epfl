@@ -3,7 +3,7 @@ import pytest
 
 from hanabi_search.config import GameConfig
 from hanabi_search.env import HanabiEnv, candidate_counts
-from tests.support import PLAYER_COUNTS, SMALL_GAME, advance_randomly, make_env
+from tests.support import PLAYER_COUNTS, SMALL_GAME, advance_randomly, current_observation, make_env
 
 GAMES = [GameConfig(players=p) for p in PLAYER_COUNTS] + [SMALL_GAME]
 
@@ -57,3 +57,68 @@ def test_card_arrays_are_read_only(env: HanabiEnv) -> None:
         observation.unseen_card_counts()[0, 0] = 9
     with pytest.raises(ValueError, match="read-only"):
         observation.plausible_cards()[0, 0, 0, 0] = False
+
+
+@pytest.mark.parametrize("game", GAMES)
+def test_arrays_match_per_card_wrappers(game: GameConfig) -> None:
+    env = _mid_game(game)
+    for player in range(game.players):
+        observation = env.state.observation(player)
+        hands = observation.hand_arrays()
+        knowledge = observation.knowledge_arrays()
+        for offset, (hand, hints) in enumerate(
+            zip(observation.observed_hands(), observation.card_knowledge(), strict=True)
+        ):
+            size = hands.sizes[offset]
+            assert size == len(hand) == len(hints)
+            assert hands.colors[offset, :size].tolist() == [card.color() for card in hand]
+            assert hands.ranks[offset, :size].tolist() == [card.rank() for card in hand]
+            assert (hands.colors[offset, size:] == -1).all()
+            expected_colors = [-1 if k.color() is None else k.color() for k in hints]
+            expected_ranks = [-1 if k.rank() is None else k.rank() for k in hints]
+            assert knowledge.hinted_colors[offset, :size].tolist() == expected_colors
+            assert knowledge.hinted_ranks[offset, :size].tolist() == expected_ranks
+        assert (hands.colors[0] == -1).all()  # Own cards stay hidden.
+        colors, ranks = observation.discard_pile_arrays()
+        assert list(zip(colors.tolist(), ranks.tolist(), strict=True)) == [
+            (card.color(), card.rank()) for card in observation.discard_pile()
+        ]
+        uids = observation.legal_move_uids().tolist()
+        assert uids == [env.game.get_move_uid(move) for move in observation.legal_moves()]
+        assert (uids != []) == (observation.cur_player_offset() == 0)
+
+
+def test_observation_dict_matches_wrappers(env: HanabiEnv) -> None:
+    advance_randomly(env, 6)
+    for player in range(env.num_players):
+        observation = env.state.observation(player)
+        result = env.observation_dict(observation)
+        assert result["observed_hands"] == [
+            [card.to_dict() for card in hand] for hand in observation.observed_hands()
+        ]
+        assert result["card_knowledge"] == [
+            [k.to_dict() for k in hand] for hand in observation.card_knowledge()
+        ]
+        assert result["discard_pile"] == [card.to_dict() for card in observation.discard_pile()]
+        assert result["legal_moves"] == [move.to_dict() for move in observation.legal_moves()]
+
+
+def test_legal_move_dicts_are_copies(env: HanabiEnv) -> None:
+    first = current_observation(env)["legal_moves"]
+    first[0]["action_type"] = "CHANGED"
+    assert current_observation(env)["legal_moves"][0]["action_type"] != "CHANGED"
+
+
+def test_encoding_is_a_bit_array(env: HanabiEnv) -> None:
+    encoded = env.vectorized_observation(env.state.observation(0))
+    assert encoded.dtype == np.uint8
+    assert encoded.shape == (env.vectorized_observation_shape()[0],)
+    assert set(np.unique(encoded).tolist()) <= {0, 1}
+
+
+def test_hand_and_knowledge_arrays_are_read_only(env: HanabiEnv) -> None:
+    observation = env.state.observation(0)
+    with pytest.raises(ValueError, match="read-only"):
+        observation.hand_arrays().colors[0, 0] = 1
+    with pytest.raises(ValueError, match="read-only"):
+        observation.knowledge_arrays().hinted_ranks[0, 0] = 1
