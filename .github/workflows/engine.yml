@@ -50,4 +50,9 @@ jobs:
       - name: Mypy
         run: uv run mypy
       - name: Python tests
-        run: uv run pytest -m "not slow"
+        shell: bash
+        run: |
+          if ! uv run pytest -m "not slow" -v 2>&1 | tee pytest.log; then
+            echo "::error::pytest failed: $(tail -c 3000 pytest.log | tr '\n' ' ')"
+            exit 1
+          fi
