@@ -53,15 +53,13 @@ uv run python scripts/evaluate.py --config configs/alphazero_2p.yaml \
 ```
 
 Agent kinds: `rule_based` (policies `VanDenBergh`, `Piers`, `IGGI`, `Outer`,
-`Inner`, `Flawed`, `Mute`, `LegalRandom`), `mcts`, `alphazero` and `human`. Set
-`num_workers > 1` on an MCTS or AlphaZero agent to spread its rollouts over Ray
-worker processes. See [`src/hanabi_search/config.py`](src/hanabi_search/config.py)
+`Inner`, `Flawed`, `Mute`, `LegalRandom`), `mcts`, `alphazero` and `human`. See [`src/hanabi_search/config.py`](src/hanabi_search/config.py)
 for every option and its default.
 
 ## Development
 
 ```bash
-uv run pytest                 # all tests; add -m "not slow" to skip Ray/script tests
+uv run pytest                 # all tests; add -m "not slow" to skip script tests
 uv run ruff check . && uv run ruff format --check .
 uv run mypy                   # strict
 ./build/release/engine/benchmarks/bench_engine

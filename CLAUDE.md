@@ -40,7 +40,7 @@ SDKROOT=$(xcrun --show-sdk-path) uv run clang-tidy -p build/release \
   --extra-arg=-resource-dir=$(xcrun clang -print-resource-dir) <files>  # static analysis (macOS)
 
 uv sync                          # install / update the environment
-uv run pytest                    # Python tests (-m "not slow" skips Ray/script tests)
+uv run pytest                    # Python tests (-m "not slow" skips script tests)
 uv run ruff check --fix .        # lint + autofix
 uv run ruff format .             # format Python
 uv run mypy                      # strict type-check (src, tests, scripts)
@@ -91,8 +91,8 @@ Never leave the repo in a state where any of the above fail.
 │       ├── agents/           # agent policies (one subpackage per family):
 │       │   ├── base.py, factory.py, human.py
 │       │   ├── rule_based/   #   ruleset.py, card_counting.py, agents.py
-│       │   ├── mcts/         #   node.py, agent.py, parallel.py (Ray workers)
-│       │   └── alphazero/    #   node.py, agent.py, parallel.py (Ray workers)
+│       │   ├── mcts/         #   node.py, agent.py
+│       │   └── alphazero/    #   node.py, agent.py
 │       ├── networks/         # nn.Module definitions, no training logic
 │       ├── training/         # transitions, replay buffer, AlphaZero trainer
 │       ├── evaluation/       # game runner, score metrics

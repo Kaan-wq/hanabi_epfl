@@ -1,5 +1,3 @@
-from collections.abc import Iterator
-
 import pytest
 
 from hanabi_search.config import GameConfig
@@ -20,14 +18,3 @@ def env(game: GameConfig) -> HanabiEnv:
 @pytest.fixture
 def state(env: HanabiEnv) -> HanabiState:
     return env.state
-
-
-@pytest.fixture
-def ray_session() -> Iterator[None]:
-    ray = pytest.importorskip("ray")
-    from hanabi_search.agents.mcts.parallel import ensure_ray  # noqa: PLC0415
-
-    # AlphaZero workers each reserve 4 CPUs; Ray treats these as scheduling labels only.
-    ensure_ray(num_cpus=8)
-    yield
-    ray.shutdown()

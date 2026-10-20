@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 import torch
 
-from hanabi_search.agents import RULE_BASED_AGENTS, AlphaZeroAgent, MCTSAgent, ParallelMCTSAgent
+from hanabi_search.agents import RULE_BASED_AGENTS, AlphaZeroAgent, MCTSAgent
 from hanabi_search.config import AlphaZeroAgentConfig, GameConfig, MCTSAgentConfig, SelfPlayConfig
 from hanabi_search.env import HanabiEnv
 from hanabi_search.evaluation import evaluate, play_game, play_games
@@ -71,19 +71,6 @@ def test_same_seeds_give_identical_alphazero_self_play(players: int) -> None:
         assert a.value == b.value
     other_moves, _ = _self_play(game, [6])
     assert other_moves != first_moves
-
-
-@pytest.mark.slow
-@pytest.mark.usefixtures("ray_session")
-@pytest.mark.filterwarnings("ignore::ResourceWarning")  # Raised inside Ray's own process handling.
-@pytest.mark.filterwarnings("ignore::pytest.PytestUnraisableExceptionWarning")
-def test_same_seeds_give_identical_parallel_mcts_games() -> None:
-    game = GameConfig(players=2)
-    config = MCTSAgentConfig(rollouts=40, num_workers=2)
-    agents = [ParallelMCTSAgent(seat, game, config) for seat in range(2)]
-    first = play_games(game, agents, [10])
-    second = play_games(game, agents, [10])
-    assert first[0].moves == second[0].moves
 
 
 def test_game_outcome_does_not_depend_on_play_order() -> None:

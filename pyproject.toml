@@ -3,7 +3,7 @@ name = "hanabi-search"
 version = "0.1.0"
 description = "MCTS and AlphaZero agents for Hanabi, on a fork of DeepMind's Hanabi Learning Environment"
 readme = "README.md"
-requires-python = ">=3.14,<3.15"  # ray has no wheels for 3.15 yet.
+requires-python = ">=3.14"
 license = "Apache-2.0"
 authors = [{ name = "Kaan Uçar" }]
 dependencies = [
@@ -11,7 +11,6 @@ dependencies = [
     "numpy>=2.3",
     "pydantic>=2.11",
     "pyyaml>=6.0",
-    "ray>=2.50",
     "torch>=2.9",
     "tqdm>=4.67",
 ]

@@ -6,11 +6,9 @@ from dataclasses import dataclass
 import torch
 
 from hanabi_search.agents.alphazero.agent import AlphaZeroAgent
-from hanabi_search.agents.alphazero.parallel import ParallelAlphaZeroAgent
 from hanabi_search.agents.base import Agent
 from hanabi_search.agents.human import HumanAgent
 from hanabi_search.agents.mcts.agent import MCTSAgent
-from hanabi_search.agents.mcts.parallel import ParallelMCTSAgent
 from hanabi_search.agents.rule_based import RULE_BASED_AGENTS
 from hanabi_search.config import (
     AgentConfig,
@@ -63,22 +61,11 @@ def build_agent(
             if resources.ask is None or resources.show is None:
                 raise ConfigError("Human agents need ask/show functions")
             return HumanAgent(seat, game, resources.ask, resources.show)
-        case MCTSAgentConfig(num_workers=1):
-            return MCTSAgent(seat, game, config, resources.transition_sink)
         case MCTSAgentConfig():
-            return ParallelMCTSAgent(seat, game, config, resources.transition_sink)
+            return MCTSAgent(seat, game, config, resources.transition_sink)
         case AlphaZeroAgentConfig():
             if resources.network is None:
                 raise ConfigError("AlphaZero agents need a network")
-            if config.num_workers > 1:
-                return ParallelAlphaZeroAgent(
-                    seat,
-                    game,
-                    config,
-                    resources.network,
-                    resources.device,
-                    resources.transition_sink,
-                )
             return AlphaZeroAgent(
                 seat,
                 game,

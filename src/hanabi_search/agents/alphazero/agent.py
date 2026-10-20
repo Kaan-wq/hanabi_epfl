@@ -31,7 +31,6 @@ def as_search_config(config: AlphaZeroAgentConfig) -> MCTSAgentConfig:
         exploration_weight=config.exploration_weight,
         use_rules=config.use_rules,
         determinization=config.determinization,
-        num_workers=1,
         collect_data=True,
     )
 

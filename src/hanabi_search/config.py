@@ -80,7 +80,6 @@ class MCTSAgentConfig(_Config):
     use_rules: bool = Field(default=True, description="Expand only rule moves, not all legal")
     determinization: DeterminizationType = DeterminizationType.RESTORE
     rollout_reward: RolloutReward = RolloutReward.SCORE
-    num_workers: int = Field(default=1, ge=1, description=">1 runs rollouts on Ray workers")
     collect_data: bool = Field(default=False, description="Record (observation, visits) data")
 
 
@@ -93,7 +92,6 @@ class AlphaZeroAgentConfig(_Config):
     exploration_weight: float = Field(default=2.5, ge=0)
     use_rules: bool = Field(default=True, description="Expand only rule moves, not all legal")
     determinization: DeterminizationType = DeterminizationType.RESTORE
-    num_workers: int = Field(default=1, ge=1, description=">1 runs rollouts on Ray workers")
 
 
 type AgentConfig = Annotated[
@@ -172,17 +170,6 @@ class ExperimentConfig(_Config):
             raise ValueError(
                 f"agents must have 1 or {self.game.players} entries, got {len(self.agents)}"
             )
-        return self
-
-    @model_validator(mode="after")
-    def _check_training_workers(self) -> Self:
-        # Ray workers keep a snapshot of the initial weights, so they would never
-        # play with the network being trained.
-        if self.training is not None and any(
-            isinstance(agent, AlphaZeroAgentConfig) and agent.num_workers > 1
-            for agent in self.agents
-        ):
-            raise ValueError("AlphaZero training does not support num_workers > 1")
         return self
 
     def seat_agents(self) -> tuple[AgentConfig, ...]:

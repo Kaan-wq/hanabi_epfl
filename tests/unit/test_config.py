@@ -9,7 +9,6 @@ from hanabi_search.config import (
     MCTSAgentConfig,
     RuleBasedAgentConfig,
     SelfPlayConfig,
-    TrainingConfig,
 )
 from hanabi_search.exceptions import ConfigError
 from tests.support import REPO_ROOT
@@ -50,13 +49,9 @@ def test_self_play_noise_fraction_above_one_is_rejected() -> None:
         SelfPlayConfig(dirichlet_fraction=1.5)
 
 
-def test_training_with_parallel_alphazero_is_rejected() -> None:
-    with pytest.raises(ValueError, match="num_workers > 1"):
-        ExperimentConfig(
-            name="x", agents=(AlphaZeroAgentConfig(num_workers=2),), training=TrainingConfig()
-        )
-    # Evaluation may still use workers.
-    ExperimentConfig(name="x", agents=(AlphaZeroAgentConfig(num_workers=2),))
+def test_removed_num_workers_field_is_rejected() -> None:
+    with pytest.raises(ValueError, match="num_workers"):
+        AlphaZeroAgentConfig.model_validate({"num_workers": 2})
 
 
 def test_single_agent_fills_every_seat() -> None:
