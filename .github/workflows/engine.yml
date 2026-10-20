@@ -1,4 +1,4 @@
-# Builds and tests the engine and the Python package on Linux with GCC 15
+# Builds and tests the engine and the Python package on Linux with GCC 16
 # (the minimum for std::mdspan), on every push and pull request.
 name: engine
 
@@ -7,10 +7,10 @@ on:
   pull_request:
 
 jobs:
-  linux-gcc15:
+  linux-gcc16:
     runs-on: ubuntu-latest
     container:
-      image: gcc:15
+      image: gcc:16
       options: --cap-add SYS_PTRACE  # LeakSanitizer needs ptrace in containers.
     steps:
       - uses: actions/checkout@v4

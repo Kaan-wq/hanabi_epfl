@@ -114,7 +114,7 @@ decisions identical; all tests pass.
 
 `CMAKE_CXX_STANDARD` 17 -> 23 (approved modernization plan, step 1 of 6). No
 code change; the engine compiles warning-free as before and all tests pass.
-Requirements are now clang >= 18 or GCC >= 15 (for `std::mdspan`, used in a
+Requirements are now clang >= 18 or GCC >= 16 (for `std::mdspan`, used in a
 later step). bench_engine search iteration unchanged (231,111 vs 231,636 3p).
 On macOS, clang-tidy now needs `--extra-arg=-resource-dir=$(xcrun clang
 -print-resource-dir)` (see CLAUDE.md): from C++20 on, the SDK's `math.h`

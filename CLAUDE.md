@@ -65,7 +65,7 @@ Never leave the repo in a state where any of the above fail.
 ├── uv.lock                   # committed, never edited by hand
 ├── CMakeLists.txt            # top-level build, adds engine/
 ├── .clang-format / .clang-tidy
-├── .github/workflows/engine.yml  # CI: Linux GCC 15 build, engine tests, sanitizers, Python checks
+├── .github/workflows/engine.yml  # CI: Linux GCC 16 build, engine tests, sanitizers, Python checks
 ├── .git-blame-ignore-revs    # formatting-only commits, skipped by git blame
 ├── .gitignore
 ├── engine/                   # our fork of DeepMind's HLE
@@ -269,7 +269,7 @@ invalidates every result, so correctness comes before speed.
 ## C++ / C standards (engine)
 
 ### Language and build
-- Engine core: **C++23** (clang 18+ or GCC 15+; `std::mdspan` sets the floor).
+- Engine core: **C++23** (clang 18+ or GCC 16+; `std::mdspan` sets the floor).
   C API (`engine/capi/`): plain C types only inside `extern "C"` — no C++
   types, exceptions or templates cross the boundary.
 - Warnings: `-Wall -Wextra -Wpedantic -Wshadow`. New and modified code compiles
