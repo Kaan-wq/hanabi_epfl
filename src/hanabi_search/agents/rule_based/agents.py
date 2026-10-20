@@ -10,7 +10,7 @@ from hanabi_search.agents.base import Agent
 from hanabi_search.agents.rule_based import ruleset
 from hanabi_search.agents.rule_based.ruleset import Rule
 from hanabi_search.config import GameConfig, RuleBasedPolicy
-from hanabi_search.env import HanabiState, MoveDict, ObservationDict
+from hanabi_search.env import Action, HanabiState, MoveDict, ObservationDict
 
 
 class RuleBasedAgent(Agent):
@@ -37,7 +37,7 @@ class RuleBasedAgent(Agent):
         return ruleset.legal_random(observation, self.rng)
 
     @override
-    def act(self, observation: ObservationDict, state: HanabiState) -> MoveDict | None:
+    def act(self, observation: ObservationDict, state: HanabiState) -> Action | None:
         return self.choose(observation)
 
 
@@ -49,7 +49,11 @@ class LegalRandomAgent(RuleBasedAgent):
 
 
 class VanDenBerghAgent(RuleBasedAgent):
-    """High-performing rule-based agent (Van den Bergh et al.)."""
+    """High-performing rule-based agent (Van den Bergh et al.).
+
+    `act` runs the engine's port of these rules (engine/search/van_den_bergh.h);
+    `choose` runs them in Python, the reference the port is tested against.
+    """
 
     def __init__(self, player_id: int, game: GameConfig) -> None:
         super().__init__(
@@ -65,6 +69,15 @@ class VanDenBerghAgent(RuleBasedAgent):
                 ruleset.discard_probably_useless_factory(0),
             ],
         )
+
+    @override
+    def act(self, observation: ObservationDict, state: HanabiState) -> Action | None:
+        if observation["current_player_offset"] != 0:
+            return None
+        uid = observation["pyhanabi"].van_den_bergh_move_uid()
+        if uid is None:
+            return ruleset.legal_random(observation, self.rng)
+        return uid
 
 
 class FlawedAgent(RuleBasedAgent):

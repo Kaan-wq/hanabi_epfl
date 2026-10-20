@@ -6,7 +6,7 @@ from typing import override
 from hanabi_search.agents.base import Agent
 from hanabi_search.agents.rule_based import RULE_BASED_AGENTS, RuleBasedAgent
 from hanabi_search.config import GameConfig
-from hanabi_search.env import HanabiState, MoveDict, ObservationDict
+from hanabi_search.env import Action, HanabiState, MoveDict, ObservationDict
 
 BOTS = {name.upper(): agent for name, agent in RULE_BASED_AGENTS.items()}
 
@@ -60,11 +60,11 @@ class HumanAgent(Agent):
         self.bot: RuleBasedAgent | None = None
 
     @override
-    def act(self, observation: ObservationDict, state: HanabiState) -> MoveDict | None:
+    def act(self, observation: ObservationDict, state: HanabiState) -> Action | None:
         if observation["current_player_offset"] != 0:
             return None
         if self.bot is not None:
-            return self.bot.choose(observation)
+            return self.bot.act(observation, state)
 
         for item in reversed(observation["pyhanabi"].last_moves()):
             self._show(str(item))
@@ -78,7 +78,7 @@ class HumanAgent(Agent):
                 if len(words) == 2 and words[1] in BOTS:
                     self.bot = BOTS[words[1]](self.player_id, self.game)
                     self.bot.begin_episode(self.rng)
-                    return self.bot.choose(observation)
+                    return self.bot.act(observation, state)
                 self._show(f"Unknown bot. Choose one of {', '.join(BOTS)}")
                 continue
             action = parse_action(text)

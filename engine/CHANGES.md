@@ -8,6 +8,50 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Pure MCTS in the engine (`engine/search/mcts.{h,cc}`)
+
+`MctsSearch` runs a whole re-determinizing MCTS decision in C++ (engine core
+and game rules untouched): per iteration, copy the root, resample the
+searcher's hand, select by UCT, replay the path with `AdvanceDeterminized`,
+expand every legal move below `max_depth`, play a Van den Bergh rollout and
+backpropagate. Nodes live in one array with contiguous children. New C API
+`pyhanabi_state_mcts_search` returns the chosen move and fills a caller buffer
+with the root visits (for `collect_data`). `MCTSAgent` uses it when `use_rules`
+is off; rule-guided MCTS and AlphaZero still search in Python.
+
+Why: with rollouts in the engine, the Python tree (hashing, UCT, expansion)
+was ~95% of a pure-MCTS iteration. Same algorithm, not seed for seed (children
+are ordered by move id). Strength, 300 games, 2p, 1k rollouts: 13.16 +- 0.31
+(engine) vs 13.27 +- 0.34 (Python tree, engine rollouts) vs 12.98 +- 0.36
+(before both changes).
+
+Benchmark (new row): `mcts (1000 iterations)` 0.49M-0.55M iterations/s (2-5p),
+about 1.9 us per iteration against 31 us (2p) and 44 us (4p) in Python. End to
+end, 100 games at 10k rollouts (2p, 10 processes) take 24.5 s (was ~30 min
+before the Van den Bergh port).
+
+## 2026-10-20: Van den Bergh policy and rollouts in the engine (`engine/search/`)
+
+New library `engine/search/` (linked into `pyhanabi`; engine core and game rules
+untouched):
+- `van_den_bergh.{h,cc}`: a C++ port of the Python `VanDenBerghAgent` rules,
+  usable from a state (the acting player's view, as the game's observation type
+  defines it) or from an observation, and `PlayRollout`, which plays up to N
+  policy moves through `AdvanceDeterminized`.
+- `capi/pyhanabi_search.cc` holds the search C API: `pyhanabi_state_play_determinized`
+  (moved from `pyhanabi.cc`, unchanged), and the new
+  `pyhanabi_observation_van_den_bergh_move` and `pyhanabi_state_play_rollout`.
+
+Why: MCTS rollouts ran the rules in Python on observation dicts, 67% of the time
+of a pure-MCTS iteration. Tested against the Python rules on ~14k states (2-5
+players, every observation type, and a reduced game): same move in every state.
+The rollout fallback (no rule applies) draws a random legal move from a SplitMix64,
+so rollouts no longer match the old Python ones seed for seed.
+
+Benchmark (new rows): `van den bergh move` 2.5M/s (2p) to 5.3M/s (5p);
+`rollout (3 moves)` ~0.65M rollouts/s at every player count. End to end, pure
+MCTS (2p, `use_rules: false`) goes from ~240 to 31 us per iteration (4p: 44 us).
+
 ## 2026-10-20: Encode a state's observation directly; assign states in place
 
 New C API functions (no engine-core change, game rules untouched):

@@ -8,7 +8,12 @@ from hanabi_search.env.cards import (
     color_char_to_idx,
     color_idx_to_char,
 )
-from hanabi_search.env.determinized_env import DeterminizationType, DeterminizedEnv, RolloutReward
+from hanabi_search.env.determinized_env import (
+    DeterminizationType,
+    DeterminizedEnv,
+    RolloutReward,
+    SearchResult,
+)
 from hanabi_search.env.game import AgentObservationType, GameParams, HanabiGame
 from hanabi_search.env.hanabi_env import HanabiEnv, StepResult
 from hanabi_search.env.hand_sampler import candidate_counts, resample_hand, restore_hand
@@ -58,6 +63,7 @@ __all__ = [
     "ObservationEncoder",
     "ObservationEncoderType",
     "RolloutReward",
+    "SearchResult",
     "StepResult",
     "candidate_counts",
     "color_char_to_idx",

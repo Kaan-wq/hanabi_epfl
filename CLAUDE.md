@@ -72,8 +72,10 @@ Never leave the repo in a state where any of the above fail.
 │   ├── LICENSE               # upstream Apache-2.0 license, kept as-is
 │   ├── .clang-format / .clang-tidy  # C++ format and static-analysis config
 │   ├── hanabi_lib/           # C++ game engine (rules, state, observations)
+│   ├── search/               # search on top of the engine: Van den Bergh policy, rollouts, MCTS
 │   ├── capi/                 # C API exposed to Python: pyhanabi.h, pyhanabi.cc,
-│   │                         #   pyhanabi_observation.cc (Obs*), pyhanabi_internal.h
+│   │                         #   pyhanabi_observation.cc (Obs*), pyhanabi_search.cc
+│   │                         #   (determinized play, rollouts, MCTS), pyhanabi_internal.h
 │   ├── tests/                # C++ unit tests + parity/ (golden games from upstream)
 │   └── benchmarks/           # speed benchmarks (bench_engine)
 ├── src/
@@ -121,6 +123,7 @@ Git-ignored, never committed: `build/` (`release/`, `debug/`), `.cache/` (tool c
 | You are adding…                                   | Put it in…                          |
 |---------------------------------------------------|-------------------------------------|
 | Game logic, rules, state representation (C++)     | `engine/hanabi_lib/`                |
+| Search code in C++ (rollout policies, tree search) | `engine/search/`                   |
 | A new function exposed to Python                  | `engine/capi/` + `env/_pyhanabi.py` |
 | Engine test / benchmark                           | `engine/tests/` / `engine/benchmarks/` |
 | Observation encoding, env wrapper, action masking | `src/hanabi_search/env/`                 |

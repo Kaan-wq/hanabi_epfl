@@ -61,7 +61,9 @@ def test_human_agent_hands_over_to_a_bot(env: HanabiEnv) -> None:
     agent = HumanAgent(
         observation["current_player"], GameConfig(), lambda _: next(answers), shown.append
     )
-    assert agent.act(observation, env.state) in observation["legal_moves"]
+    action = agent.act(observation, env.state)
+    assert action is not None
+    assert env.state.move_is_legal(env.to_move(action))
     assert agent.bot is not None
     assert any("Unknown bot" in line for line in shown)
 

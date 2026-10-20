@@ -9,6 +9,7 @@ closely as possible.
 import enum
 import random
 from collections.abc import Sequence
+from dataclasses import dataclass
 
 from hanabi_search.env._pyhanabi import engine_message, ffi, lib
 from hanabi_search.env.game import GameParams
@@ -39,6 +40,23 @@ class RolloutReward(enum.StrEnum):
 
     SCORE = "score"  # Game score: 0 once all lives are lost.
     PROGRESS = "progress"  # Cards on the fireworks, even after losing all lives.
+
+
+# The engine's codes for each reward (search/van_den_bergh.h, `RolloutReward`).
+_REWARD_CODES = {RolloutReward.SCORE: 0, RolloutReward.PROGRESS: 1}
+
+
+@dataclass(frozen=True, slots=True)
+class SearchResult:
+    """Outcome of `DeterminizedEnv.search`.
+
+    Attributes:
+        move_uid: Id of the chosen move (see `HanabiGame.get_move_uid`).
+        root_visits: Visits of each root move in the tree, keyed by move id.
+    """
+
+    move_uid: int
+    root_visits: dict[int, int]
 
 
 class DeterminizedEnv(HanabiEnv):
@@ -121,6 +139,32 @@ class DeterminizedEnv(HanabiEnv):
             raise EngineCallError(engine_message(f"Cannot play the moves {list(move_uids)}"))
         return applied
 
+    def rollout(self, max_steps: int) -> int:
+        """Plays up to `max_steps` Van den Bergh moves in one engine call; returns the reward.
+
+        Each move is the engine's Van den Bergh choice for the acting player (a
+        random legal move if no rule applies), applied as `play_moves` applies
+        moves. Stops once the game is over.
+
+        Raises:
+            EngineCallError: If a card must be dealt first or a hand cannot be swapped.
+        """
+        reward = int(
+            lib.pyhanabi_state_play_rollout(
+                self.state.c_state,
+                max_steps,
+                self.searching_player,
+                _DETERMINIZATION_CODES[self.determinization],
+                self._remembered,
+                self._num_remembered,
+                _REWARD_CODES[self.rollout_reward],
+                self.rng.getrandbits(64),
+            )
+        )
+        if reward < 0:
+            raise EngineCallError(engine_message("Cannot play the rollout"))
+        return reward
+
     def reward(self) -> int:
         """Returns the rollout reward selected by `rollout_reward`."""
         if self.rollout_reward == RolloutReward.PROGRESS:
@@ -130,3 +174,38 @@ class DeterminizedEnv(HanabiEnv):
     def replace_hand(self, player: int) -> None:
         """Replaces `player`'s hand with one sampled from what they know."""
         resample_hand(self.state, player, self.rng.getrandbits(64))
+
+    def search(
+        self, iterations: int, max_depth: int, rollout_steps: int, exploration_weight: float
+    ) -> SearchResult:
+        """Runs re-determinizing MCTS for the acting player of `state` in one engine call.
+
+        Each iteration resamples the acting player's hand, descends by UCT, expands
+        every legal move of a leaf less than `max_depth` moves below the root, and
+        values it with a `rollout` of `rollout_steps` moves (under this env's
+        determinization and reward). `state` is not changed.
+
+        Raises:
+            EngineCallError: If an argument is out of range, the game is over, a
+                card must be dealt first, or a hand cannot be sampled.
+        """
+        num_moves = self.num_moves()
+        visits = ffi.new("int32_t[]", num_moves)
+        move_uid = int(
+            lib.pyhanabi_state_mcts_search(
+                self.state.c_state,
+                iterations,
+                max_depth,
+                rollout_steps,
+                exploration_weight,
+                _DETERMINIZATION_CODES[self.determinization],
+                _REWARD_CODES[self.rollout_reward],
+                self.rng.getrandbits(64),
+                visits,
+                num_moves,
+            )
+        )
+        if move_uid < 0:
+            raise EngineCallError(engine_message("Cannot run the search"))
+        root_visits = {uid: int(visits[uid]) for uid in range(num_moves) if visits[uid]}
+        return SearchResult(move_uid, root_visits)

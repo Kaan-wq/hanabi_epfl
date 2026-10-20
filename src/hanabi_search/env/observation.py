@@ -95,6 +95,16 @@ class HanabiObservation:
         assert self._observation is not None
         return self._observation
 
+    def van_den_bergh_move_uid(self) -> int | None:
+        """Returns the id of the move the engine's Van den Bergh rules choose for the observer.
+
+        Returns:
+            The move id (see `HanabiGame.get_move_uid`), or `None` if it is not the
+            observer's turn or no rule applies.
+        """
+        uid = int(lib.pyhanabi_observation_van_den_bergh_move(self.c_observation))
+        return uid if uid >= 0 else None
+
     def cur_player_offset(self) -> int:
         """Returns the acting player's offset from the observer."""
         return int(lib.ObsCurPlayerOffset(self.c_observation))

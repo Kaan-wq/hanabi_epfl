@@ -3,6 +3,9 @@
 // in MoveIsLegal, and out-of-range indices, ids and parameters everywhere else.
 // Run them under ASan + UBSan (Debug build).
 
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -610,6 +613,61 @@ HANABI_TEST(PlayDeterminizedRejectsBadArgumentsAndStopsAtIllegalMoves) {
   // Restoring before anything was remembered is an error.
   num_remembered = -1;
   CHECK_EQ(play({hint()}, 0, 0), -1);
+}
+
+HANABI_TEST(PlayRolloutRejectsBadArguments) {
+  Fixture f;
+  pyhanabi_card_t remembered[5] = {};
+  int32_t num_remembered = -1;
+  const auto rollout = [&](int max_steps, int searcher, int determinization, int reward) {
+    return pyhanabi_state_play_rollout(&f.state, max_steps, searcher, determinization, remembered,
+                                       &num_remembered, reward, 1);
+  };
+  const std::string before = StateJson(f);
+  CHECK_EQ(rollout(-1, 0, 0, 0), -1);
+  CHECK_EQ(rollout(5, kNumPlayers, 0, 0), -1);
+  CHECK_EQ(rollout(5, 0, 3, 0), -1);
+  CHECK_EQ(rollout(5, 0, 0, 2), -1);
+  num_remembered = 6;
+  CHECK_EQ(rollout(5, 0, 0, 0), -1);
+  num_remembered = -1;
+  CHECK_EQ(StateJson(f), before);
+
+  CHECK_EQ(rollout(0, 0, 0, 0), 0);  // No moves: the score of a fresh game.
+  CHECK_EQ(StateJson(f), before);
+  CHECK(rollout(1000, 0, 0, 1) >= 0);
+  CHECK(StateEndOfGameStatus(&f.state) != 0);  // Not kNotFinished.
+}
+
+HANABI_TEST(MctsSearchRejectsBadArguments) {
+  Fixture f;
+  std::vector<int32_t> visits(static_cast<size_t>(MaxMoves(&f.game)), -7);
+  const auto search = [&](int iterations, int max_depth, int rollout_steps, double exploration,
+                          int determinization, int reward, int num_visits) {
+    return pyhanabi_state_mcts_search(&f.state, iterations, max_depth, rollout_steps, exploration,
+                                      determinization, reward, 1, visits.data(), num_visits);
+  };
+  const int num_moves = MaxMoves(&f.game);
+  const std::string before = StateJson(f);
+  CHECK_EQ(search(0, 60, 3, 2.5, 0, 0, num_moves), -1);
+  CHECK_EQ(search(10, 0, 3, 2.5, 0, 0, num_moves), -1);
+  CHECK_EQ(search(10, 60, -1, 2.5, 0, 0, num_moves), -1);
+  CHECK_EQ(search(10, 60, 3, -1.0, 0, 0, num_moves), -1);
+  CHECK_EQ(search(10, 60, 3, std::nan(""), 0, 0, num_moves), -1);
+  CHECK_EQ(search(10, 60, 3, 2.5, 3, 0, num_moves), -1);
+  CHECK_EQ(search(10, 60, 3, 2.5, 0, 2, num_moves), -1);
+  CHECK_EQ(search(10, 60, 3, 2.5, 0, 0, num_moves - 1), -1);
+  CHECK(std::ranges::all_of(visits, [](int32_t v) { return v == -7; }));
+
+  const int32_t move = search(50, 60, 3, 2.5, 0, 0, num_moves);
+  CHECK(move >= 0 && move < num_moves);
+  CHECK(visits[static_cast<size_t>(move)] > 0);
+  CHECK_EQ(StateJson(f), before);
+
+  pyhanabi_card_t remembered[5] = {};
+  int32_t num_remembered = -1;
+  CHECK(pyhanabi_state_play_rollout(&f.state, 1000, 0, 0, remembered, &num_remembered, 0, 1) >= 0);
+  CHECK_EQ(search(10, 60, 3, 2.5, 0, 0, num_moves), -1);  // The game is over.
 }
 
 // Whether pyhanabi_last_error() mentions `text`.

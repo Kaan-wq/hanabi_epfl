@@ -17,11 +17,10 @@ from hanabi_search.agents.base import (
     run_steps,
 )
 from hanabi_search.agents.mcts.node import MCTSNode
-from hanabi_search.agents.rule_based import VanDenBerghAgent, ruleset
+from hanabi_search.agents.rule_based import ruleset
 from hanabi_search.agents.rule_based.ruleset import Rule
 from hanabi_search.config import GameConfig, MCTSAgentConfig
 from hanabi_search.env import DeterminizedEnv, HanabiMove, HanabiState, MoveDict, ObservationDict
-from hanabi_search.exceptions import HanabiSearchError
 from hanabi_search.training.transition import (
     PendingDecision,
     TransitionSink,
@@ -67,7 +66,8 @@ class MCTSAgent(Agent):
 
     Each rollout resamples this agent's own hand from what it knows, replays the
     tree path, expands one node, and runs `max_simulation_steps` moves of
-    Van den Bergh rule-based play to estimate the outcome.
+    Van den Bergh rule-based play to estimate the outcome. Without `use_rules`,
+    the whole search runs in the engine (`DeterminizedEnv.search`).
 
     Args:
         player_id: Absolute seat of this agent.
@@ -95,7 +95,6 @@ class MCTSAgent(Agent):
         self.environment = DeterminizedEnv(
             game.to_params(), player_id, config.determinization, config.rollout_reward
         )
-        self.rollout_agents = [VanDenBerghAgent(seat, game) for seat in range(game.players)]
         self.children: dict[MCTSNode, Collection[MCTSNode]] = {}
         self.visits: defaultdict[MCTSNode, int] = defaultdict(int)
         self.total_reward: defaultdict[MCTSNode, float] = defaultdict(float)
@@ -119,6 +118,8 @@ class MCTSAgent(Agent):
     def act_steps(self, observation: ObservationDict, state: HanabiState) -> ActSteps:
         if observation["current_player_offset"] != 0:
             return None
+        if self.searches_in_engine:
+            return self._search_in_engine(observation, state)
         self.reset(state)
         for _ in range(self.rollouts):
             self.redeterminize()
@@ -129,12 +130,18 @@ class MCTSAgent(Agent):
             self._pending.append(self._decision(observation, self.root_visits()))
         return best
 
+    @property
+    def searches_in_engine(self) -> bool:
+        """Whether `act_steps` runs the whole search in one engine call.
+
+        The engine expands every legal move, so this holds without expansion rules.
+        """
+        return self.rules is None
+
     @override
     def begin_episode(self, rng: random.Random) -> None:
         super().begin_episode(rng)
         self.environment.rng = rng
-        for agent in self.rollout_agents:
-            agent.begin_episode(rng)
 
     @override
     def end_episode(self, final_score: int) -> None:
@@ -240,21 +247,12 @@ class MCTSAgent(Agent):
     def simulate(self, node: MCTSNode) -> float:
         """Plays up to `max_simulation_steps` rule-based moves from `node` and returns the reward.
 
+        The moves are the engine's Van den Bergh rules, played in one engine call.
         Note: the rollout continues in `node.focused_state` itself, not a copy.
         """
         environment = self.environment
         environment.state = node.state
-        done = node.is_terminal()
-        steps = 0
-        while not done and steps < self.config.max_simulation_steps:
-            player = environment.state.cur_player()
-            action = self.rollout_agents[player].choose(environment.observe(player))
-            if action is None:
-                raise HanabiSearchError("rollout agent declined to act on its own turn")
-            environment.advance(action)
-            done = environment.state.is_terminal()
-            steps += 1
-        return float(environment.reward())
+        return float(environment.rollout(self.config.max_simulation_steps))
 
     def backpropagate(self, path: list[MCTSNode], reward: float) -> None:
         """Adds one visit and `reward` to every node on `path`."""
@@ -299,6 +297,18 @@ class MCTSAgent(Agent):
             game.get_move_uid(child.initial_move()): self.visits[child]
             for child in self.children.get(self.root_node, ())
         }
+
+    def _search_in_engine(self, observation: ObservationDict, state: HanabiState) -> HanabiMove:
+        """Searches from `state` in the engine (`DeterminizedEnv.search`); returns the move."""
+        environment = self.environment
+        environment.state = state  # The search does not change it.
+        result = environment.search(
+            self.rollouts, self.max_depth, self.config.max_simulation_steps, self.exploration_weight
+        )
+        if self.collects_data:
+            visits = {uid: float(count) for uid, count in result.root_visits.items()}
+            self._pending.append(self._decision(observation, visits))
+        return environment.game.get_move(result.move_uid)
 
     @property
     def _root_state(self) -> HanabiState:

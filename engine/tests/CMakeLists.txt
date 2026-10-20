@@ -33,3 +33,15 @@ add_executable(test_fast_paths test_fast_paths.cc)
 target_link_libraries(test_fast_paths PRIVATE hanabi)
 target_compile_options(test_fast_paths PRIVATE ${HANABI_WARNINGS})
 add_test(NAME fast_paths COMMAND test_fast_paths)
+
+# The Van den Bergh policy and rollouts of engine/search/.
+add_executable(test_van_den_bergh test_van_den_bergh.cc)
+target_link_libraries(test_van_den_bergh PRIVATE search)
+target_compile_options(test_van_den_bergh PRIVATE ${HANABI_WARNINGS})
+add_test(NAME van_den_bergh COMMAND test_van_den_bergh)
+
+# The MCTS of engine/search/.
+add_executable(test_mcts test_mcts.cc)
+target_link_libraries(test_mcts PRIVATE search)
+target_compile_options(test_mcts PRIVATE ${HANABI_WARNINGS})
+add_test(NAME mcts COMMAND test_mcts)

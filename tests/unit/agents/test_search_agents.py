@@ -52,6 +52,14 @@ def test_mcts_returns_a_legal_move(env: HanabiEnv) -> None:
     assert sum(agent.root_visits().values()) > 0
 
 
+def test_only_mcts_without_rules_searches_in_the_engine() -> None:
+    game = GameConfig(players=2)
+    assert MCTSAgent(0, game, MCTSAgentConfig(use_rules=False)).searches_in_engine
+    assert not MCTSAgent(0, game, MCTSAgentConfig(use_rules=True)).searches_in_engine
+    alphazero = AlphaZeroAgent(0, game, AlphaZeroAgentConfig(), _network(game))
+    assert not alphazero.searches_in_engine
+
+
 def test_mcts_without_rules_is_waiting_when_not_its_turn(env: HanabiEnv) -> None:
     observations = env.observe_all()
     waiting = 1 - observations["current_player"]

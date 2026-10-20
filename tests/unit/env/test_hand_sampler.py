@@ -9,6 +9,7 @@ from hanabi_search.env import (
     HanabiEnv,
     HanabiMove,
     HanabiState,
+    RolloutReward,
     candidate_counts,
     resample_hand,
     restore_hand,
@@ -203,3 +204,66 @@ def test_sampling_errors_carry_the_engine_reason(env: HanabiEnv) -> None:
     remembered = env.state.player_hands()[1]
     with pytest.raises(EngineCallError, match=r"removed_index 5 is not in \[-1, 5\)"):
         restore_hand(env.state, 1, remembered, None, len(remembered), seed=0)
+
+
+@pytest.mark.parametrize("game", [GameConfig(players=p) for p in (2, 3, 4, 5)] + [SMALL_GAME])
+@pytest.mark.parametrize("reward", list(RolloutReward))
+def test_rollout_plays_to_the_end_and_returns_the_reward(
+    game: GameConfig, reward: RolloutReward
+) -> None:
+    real = make_env(game, seed=4)
+    env = DeterminizedEnv(game.to_params(), real.state.cur_player(), rollout_reward=reward)
+    env.state = real.state.copy()
+    full_deck = _full_deck_size(env)
+    assert env.rollout(1000) == env.reward()
+    assert env.state.is_terminal()
+    assert _cards_in_game(env.state) == full_deck
+
+
+def test_rollout_stops_after_max_steps() -> None:
+    game = GameConfig(players=3)
+    real = make_env(game, seed=4)
+    env = DeterminizedEnv(game.to_params(), real.state.cur_player())
+    env.state = real.state.copy()
+    dealt = len(env.state.move_history())
+    env.rollout(0)
+    assert len(env.state.move_history()) == dealt
+    env.rollout(5)
+    moves = [item for item in env.state.move_history()[dealt:] if item.player() >= 0]
+    assert len(moves) == 5
+
+
+def test_rollout_rejects_negative_steps() -> None:
+    game = GameConfig(players=2)
+    env = DeterminizedEnv(game.to_params(), searching_player=0)
+    env.state = make_env(game).state.copy()
+    with pytest.raises(EngineCallError, match="max_steps -1 is negative"):
+        env.rollout(-1)
+
+
+@pytest.mark.parametrize("game", [*(GameConfig(players=p) for p in (2, 3, 4, 5)), SMALL_GAME])
+@pytest.mark.parametrize("determinization", list(DeterminizationType))
+def test_search_returns_a_legal_move_and_root_visits(
+    game: GameConfig, determinization: DeterminizationType
+) -> None:
+    real = make_env(game, seed=4)
+    env = DeterminizedEnv(game.to_params(), real.state.cur_player(), determinization)
+    env.state = real.state.copy()
+    before = str(env.state)
+    result = env.search(iterations=100, max_depth=60, rollout_steps=3, exploration_weight=2.5)
+    move = env.game.get_move(result.move_uid)
+    assert env.state.move_is_legal(move)
+    assert sum(result.root_visits.values()) == 99  # The first iteration visits only the root.
+    assert all(env.state.move_is_legal(env.game.get_move(uid)) for uid in result.root_visits)
+    assert str(env.state) == before
+
+
+def test_search_rejects_bad_arguments_and_finished_games() -> None:
+    game = GameConfig(players=2)
+    env = DeterminizedEnv(game.to_params(), searching_player=0)
+    env.state = make_env(game).state.copy()
+    with pytest.raises(EngineCallError, match="iterations 0 is not positive"):
+        env.search(iterations=0, max_depth=60, rollout_steps=3, exploration_weight=2.5)
+    env.rollout(1000)
+    with pytest.raises(EngineCallError, match="the game is over"):
+        env.search(iterations=10, max_depth=60, rollout_steps=3, exploration_weight=2.5)

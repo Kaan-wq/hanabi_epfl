@@ -24,6 +24,8 @@
 #include "hanabi_state.h"
 #include "hand_sampler.h"
 #include "observation_features.h"
+#include "search/mcts.h"
+#include "search/van_den_bergh.h"
 
 namespace hle = hanabi_learning_env;
 
@@ -171,6 +173,67 @@ Result ObservationFeatures(const hle::HanabiGame& game, const std::vector<hle::H
   return result;
 }
 
+// Picks the acting player's Van den Bergh move from the state.
+Result VanDenBerghMoves(const std::vector<hle::HanabiState>& states, int rounds) {
+  Result result;
+  int64_t checksum = 0;
+  const auto start = Clock::now();
+  for (int r = 0; r < rounds; ++r) {
+    for (const auto& state : states) {
+      checksum += hle::VanDenBerghRuleMove(state);
+      ++result.steps;
+    }
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
+// An MCTS leaf evaluation: copy a state and play `steps` re-determinized
+// Van den Bergh moves from it, as MCTSAgent.simulate does.
+Result Rollouts(const std::vector<hle::HanabiState>& states, int rounds, int steps) {
+  hle::HandSampler sampler(19);
+  hle::SplitMix64 rng(29);
+  Result result;
+  int64_t checksum = 0;
+  const auto start = Clock::now();
+  for (int r = 0; r < rounds; ++r) {
+    for (const auto& root : states) {
+      hle::HanabiState state(root);
+      hle::RememberedHand remembered;
+      checksum += hle::PlayRollout(&state, steps, root.CurPlayer(), hle::Determinization::kRestore,
+                                   &remembered, &sampler, &rng)
+                      .has_value();
+      checksum += hle::Reward(state, hle::RolloutReward::kScore);
+      ++result.steps;
+    }
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
+// Pure MCTS decisions (MCTSAgent without rules): `iterations` per searched
+// state, from the first `num_states` decision states. Counts iterations.
+Result MctsIterations(const hle::HanabiGame& game, const std::vector<hle::HanabiState>& states,
+                      int num_states, int iterations) {
+  std::vector<int32_t> visits(static_cast<size_t>(game.MaxMoves()));
+  const hle::MctsConfig config{.iterations = iterations};
+  Result result;
+  int64_t checksum = 0;
+  uint64_t seed = 31;
+  const auto start = Clock::now();
+  for (const auto& state : states) {
+    if (result.steps >= int64_t{num_states} * iterations) break;
+    if (state.IsTerminal() || state.CurPlayer() == hle::kChancePlayerId) continue;
+    checksum += hle::MctsSearch(state, config, seed++, visits).value_or(-1);
+    result.steps += iterations;
+  }
+  result.seconds = Seconds(start);
+  if (checksum == -1) std::puts("");
+  return result;
+}
+
 // One iteration of a re-determinizing tree search, as a C++ search would run
 // it: copy a root state, resample the searcher's hand, replay a path of up to
 // `depth` moves (listing legal moves, applying one, dealing, restoring the
@@ -266,6 +329,15 @@ int main(int argc, char** argv) {  // NOLINT(bugprone-exception-escape): a tool 
     if (run("resample hand")) Report("resample hand", players, ResampleHands(states, 10), "hands");
     if (run("observation features")) {
       Report("observation features", players, ObservationFeatures(game, states, 10), "obs");
+    }
+    if (run("van den bergh move")) {
+      Report("van den bergh move", players, VanDenBerghMoves(states, 100), "moves");
+    }
+    if (run("rollout (3 moves)")) {
+      Report("rollout (3 moves)", players, Rollouts(states, 25, 3), "rollouts");
+    }
+    if (run("mcts (1000 iterations)")) {
+      Report("mcts (1000 iterations)", players, MctsIterations(game, states, 200, 1000), "iters");
     }
   }
   return 0;

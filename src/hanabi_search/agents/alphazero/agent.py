@@ -76,6 +76,11 @@ class AlphaZeroAgent(MCTSAgent):
         super().end_episode(final_score)
         self._moves_this_game = 0
 
+    @property
+    @override
+    def searches_in_engine(self) -> bool:
+        return False  # Leaves are valued by the network, in Python.
+
     @override
     def reset(self, state: HanabiState) -> None:
         super().reset(state)

@@ -329,8 +329,8 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
  * Returns false if `player` is not in [0, NumPlayers) or `size` is not the
  * encoder's flat length. */
 bool pyhanabi_state_encode_observation(const pyhanabi_observation_encoder_t* encoder,
-                                       const pyhanabi_state_t* state, int32_t player,
-                                       uint8_t* bits, int32_t size);
+                                       const pyhanabi_state_t* state, int32_t player, uint8_t* bits,
+                                       int32_t size);
 
 /* State buffers: like the observation buffers above (caller-owned buffers,
  * nothing allocated, sizes must match the game exactly or the function
@@ -405,6 +405,47 @@ int32_t pyhanabi_state_play_determinized(pyhanabi_state_t* state, const int32_t*
                                          int32_t num_moves, int32_t searching_player,
                                          int32_t determinization, pyhanabi_card_t* remembered,
                                          int32_t* num_remembered, uint64_t seed);
+
+/* The Van den Bergh rule-based policy (engine/search/van_den_bergh.h). */
+
+/* Returns the id (see GetMoveUid) of the move of the first Van den Bergh rule
+ * that applies for the observer of `observation`, or -1 if it is not their
+ * turn or no rule applies (the caller then picks a random legal move). */
+int32_t pyhanabi_observation_van_den_bergh_move(const pyhanabi_observation_t* observation);
+
+/* Plays a rollout from `state`: up to `max_steps` moves, each the Van den
+ * Bergh move of the acting player (a random legal move if no rule applies),
+ * applied with the deals and hand swaps of pyhanabi_state_play_determinized,
+ * whose `searching_player`, `determinization`, `remembered` and
+ * `*num_remembered` this takes and updates in the same way. Stops once the
+ * game is over. All sampling draws from generators seeded by `seed`.
+ * Returns the reward of the state reached, `reward_kind` 0: the score (0 once
+ * all lives are lost), 1: the cards on the fireworks; or -1 if an argument is
+ * out of range, a card must be dealt first, or a hand swap fails (the state
+ * then holds the moves played so far). */
+int32_t pyhanabi_state_play_rollout(pyhanabi_state_t* state, int32_t max_steps,
+                                    int32_t searching_player, int32_t determinization,
+                                    pyhanabi_card_t* remembered, int32_t* num_remembered,
+                                    int32_t reward_kind, uint64_t seed);
+
+/* Searches for the acting player of `state` with re-determinizing MCTS
+ * (engine/search/mcts.h): `iterations` iterations, each resampling the
+ * player's own hand, descending by UCT (exploration weight
+ * `exploration_weight`), expanding every legal move of leaves less than
+ * `max_depth` moves below the root, and valuing them with a rollout of
+ * `rollout_steps` moves (see pyhanabi_state_play_rollout for `determinization`
+ * and `reward_kind`). All sampling draws from generators seeded by `seed`.
+ * `state` is not changed. Writes the visits of each root move into
+ * `root_visits` (int32_t[num_root_visits], indexed by move id; MaxMoves
+ * entries suffice; 0 for moves not in the tree), owned by the caller.
+ * Returns the id of the root move with the best mean reward among those
+ * visited more than once, or -1 if an argument is out of range, the game is
+ * over, a card must be dealt first, or a hand cannot be sampled. */
+int32_t pyhanabi_state_mcts_search(const pyhanabi_state_t* state, int32_t iterations,
+                                   int32_t max_depth, int32_t rollout_steps,
+                                   double exploration_weight, int32_t determinization,
+                                   int32_t reward_kind, uint64_t seed, int32_t* root_visits,
+                                   int32_t num_root_visits);
 
 } /* extern "C" */
 
