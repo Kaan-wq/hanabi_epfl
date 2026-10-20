@@ -8,6 +8,29 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Encode into a caller buffer (search iteration 3.96x)
+
+`CanonicalObservationEncoder::Encode` returns a fresh `std::vector<int>`
+(658 ints for 3 players) and recomputed `Shape()` (another vector) on every
+call; the C API then copied it into the caller's uint8 buffer. The section
+writers are now templates on the entry type, and the new
+`EncodeInto(obs, uint8_t* bits)` writes the same encoding straight into a
+buffer; `pyhanabi_observation_encode` uses it. `Encode` is unchanged for
+other callers. `tests/test_fast_paths.cc` checks both agree for every
+observer of every state of random playouts (all three observation types),
+including states re-determinized by `HandSampler`.
+
+| Row (3 players) | Before | After |
+|---|---|---|
+| search iteration | 178,757 | 185,179 (1.04x; 3.96x baseline) |
+
+Kept despite the small gain because it removes code (the C API's copy loop);
+other rows within noise. Also: inherited sign-compare and clang-tidy
+warnings fixed in the encoder files, and `CommitHand` no longer checks
+legality twice (`ApplyMove` checks).
+
+---
+
 ## 2026-10-20: Random deals from fixed arrays (search iteration 3.82x)
 
 `ApplyRandomChance` built the full `ChanceOutcomes()` list (two growing

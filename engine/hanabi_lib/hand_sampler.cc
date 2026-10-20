@@ -95,8 +95,7 @@ void CommitHand(HanabiState* state, int player, const std::vector<int>& hand,
     if (!forget.empty() && forget[position]) state->RemoveKnowledge(player, position);
     const HanabiMove deal(HanabiMove::kDealSpecific, position, player,
                           hand[position] / game.NumRanks(), hand[position] % game.NumRanks());
-    REQUIRE(state->MoveIsLegal(deal));  // Guaranteed by sampling from DeckWithHand.
-    state->ApplyMove(deal);
+    state->ApplyMove(deal);  // Legal by construction (drawn from DeckWithHand); checked there.
   }
 }
 

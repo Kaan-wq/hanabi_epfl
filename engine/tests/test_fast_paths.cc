@@ -3,15 +3,19 @@
 // limits) and whole random playouts. Each optimization that replaces a
 // straightforward computation adds its check here.
 
+#include <cstdint>
 #include <random>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
+#include "canonical_encoders.h"
 #include "check.h"
 #include "hanabi_game.h"
 #include "hanabi_move.h"
+#include "hanabi_observation.h"
 #include "hanabi_state.h"
+#include "hand_sampler.h"
 
 namespace hle = hanabi_learning_env;
 
@@ -19,6 +23,7 @@ namespace {
 
 struct Variant {
   int players, colors, ranks, hand_size, max_information_tokens;
+  int observation_type = hle::HanabiGame::kCardKnowledge;
 };
 
 // Default games for every player count, plus reduced ones with edge limits.
@@ -30,6 +35,8 @@ std::vector<Variant> Variants() {
   variants.push_back({4, 3, 5, 3, 2});
   variants.push_back({5, 5, 2, 1, 8});
   variants.push_back({2, 5, 5, 8, 3});
+  variants.push_back({3, 5, 5, -1, 8, hle::HanabiGame::kMinimal});
+  variants.push_back({4, 4, 4, 3, 5, hle::HanabiGame::kSeer});
   return variants;
 }
 
@@ -39,6 +46,7 @@ hle::HanabiGame MakeGame(const Variant& v, int seed) {
       {"colors", std::to_string(v.colors)},
       {"ranks", std::to_string(v.ranks)},
       {"max_information_tokens", std::to_string(v.max_information_tokens)},
+      {"observation_type", std::to_string(v.observation_type)},
       {"seed", std::to_string(seed)}};
   if (v.hand_size > 0) params["hand_size"] = std::to_string(v.hand_size);
   return hle::HanabiGame(params);
@@ -108,6 +116,30 @@ HANABI_TEST(RandomChanceDealsWhatTheChanceOutcomeListWouldDeal) {
       CHECK(fast.IsTerminal());
     }
   }
+}
+
+HANABI_TEST(EncodeIntoWritesWhatEncodeReturns) {
+  // Every observer of every state, plus states whose history holds the
+  // return and deal-specific moves of re-determinization.
+  hle::HandSampler sampler(5);
+  ForEachState(10, [&sampler](const hle::HanabiState& state) {
+    const hle::HanabiGame& game = *state.ParentGame();
+    const hle::CanonicalObservationEncoder encoder(&game);
+    std::vector<uint8_t> bits(encoder.Length(), 7);
+    hle::HanabiState redeterminized = state;
+    if (!state.IsTerminal() && state.CurPlayer() != hle::kChancePlayerId) {
+      CHECK(sampler.ResampleHand(&redeterminized, (state.CurPlayer() + 1) % game.NumPlayers()));
+    }
+    for (const hle::HanabiState* s :
+         {&state, static_cast<const hle::HanabiState*>(&redeterminized)}) {
+      for (int observer = 0; observer < game.NumPlayers(); ++observer) {
+        const hle::HanabiObservation observation(*s, observer);
+        const std::vector<int> expected = encoder.Encode(observation);
+        encoder.EncodeInto(observation, bits.data());
+        CHECK(std::vector<int>(bits.begin(), bits.end()) == expected);
+      }
+    }
+  });
 }
 
 int main() { return hanabi_test::RunAll(); }

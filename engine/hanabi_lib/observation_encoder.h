@@ -11,12 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// Modified for hanabi_search; see engine/CHANGES.md for every change.
 
 // A helper object to translate Hanabi observations to agent inputs
 // (e.g. tensors).
 
-#ifndef __OBSERVATION_ENCODER_H__
-#define __OBSERVATION_ENCODER_H__
+#ifndef HANABI_LIB_OBSERVATION_ENCODER_H_
+#define HANABI_LIB_OBSERVATION_ENCODER_H_
 
 #include <vector>
 

@@ -335,14 +335,11 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
   REQUIRE(encoder != nullptr);
   REQUIRE(encoder->encoder != nullptr);
   REQUIRE(bits != nullptr);
+  // NewObservationEncoder only creates canonical encoders.
   const auto& obs_encoder =
-      *static_cast<const hanabi_learning_env::ObservationEncoder*>(encoder->encoder);
-  int64_t length = 1;
-  for (int dim : obs_encoder.Shape()) length *= dim;
-  if (size != length) return false;
-  const std::vector<int> encoding = obs_encoder.Encode(Observation(observation));
-  std::transform(encoding.begin(), encoding.end(), bits,
-                 [](int bit) { return static_cast<uint8_t>(bit != 0); });
+      *static_cast<const hanabi_learning_env::CanonicalObservationEncoder*>(encoder->encoder);
+  if (size != obs_encoder.Length()) return false;
+  obs_encoder.EncodeInto(Observation(observation), bits);
   return true;
 }
 

@@ -179,9 +179,7 @@ Result ObservationFeatures(const hle::HanabiGame& game, const std::vector<hle::H
 Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::HanabiState>& roots,
                         int rounds, int depth) {
   const hle::CanonicalObservationEncoder encoder(&game);
-  int length = 1;
-  for (int dim : encoder.Shape()) length *= dim;
-  std::vector<uint8_t> bits(length);
+  std::vector<uint8_t> bits(encoder.Length());
   hle::HandSampler sampler(17);
   std::mt19937 rng(23);
   std::vector<hle::HanabiCard> remembered;
@@ -217,9 +215,7 @@ Result SearchIterations(const hle::HanabiGame& game, const std::vector<hle::Hana
       }
       const int observer = state.IsTerminal() ? searcher : state.CurPlayer();
       const hle::HanabiObservation observation(state, observer);
-      const std::vector<int> encoding = encoder.Encode(observation);
-      std::transform(encoding.begin(), encoding.end(), bits.begin(),
-                     [](int bit) { return static_cast<uint8_t>(bit != 0); });
+      encoder.EncodeInto(observation, bits.data());
       checksum += bits[0];
       ++result.steps;
     }
