@@ -1,0 +1,39 @@
+# Builds and tests the engine and the Python package on Linux with GCC 15
+# (the minimum for std::mdspan), on every push and pull request.
+name: engine
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux-gcc15:
+    runs-on: ubuntu-latest
+    container:
+      image: gcc:15
+      options: --cap-add SYS_PTRACE  # LeakSanitizer needs ptrace in containers.
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build tools
+        run: apt-get update && apt-get install -y --no-install-recommends cmake curl ca-certificates
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Release build and engine tests
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DHANABI_NATIVE_ARCH=OFF
+          cmake --build build -j
+          ctest --test-dir build --output-on-failure
+      - name: Engine tests under ASan + UBSan
+        run: |
+          cmake -S . -B build-debug -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build-debug -j
+          ctest --test-dir build-debug --output-on-failure
+      - name: Python checks
+        run: |
+          uv sync
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run mypy
+          uv run pytest -m "not slow"

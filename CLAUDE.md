@@ -65,6 +65,7 @@ Never leave the repo in a state where any of the above fail.
 ├── uv.lock                   # committed, never edited by hand
 ├── CMakeLists.txt            # top-level build, adds engine/
 ├── .clang-format / .clang-tidy
+├── .github/workflows/engine.yml  # CI: Linux GCC 15 build, engine tests, sanitizers, Python checks
 ├── .git-blame-ignore-revs    # formatting-only commits, skipped by git blame
 ├── .gitignore
 ├── engine/                   # our fork of DeepMind's HLE
