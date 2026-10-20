@@ -120,7 +120,7 @@ class AlphaZeroAgent(MCTSAgent):
                 # Chance (-1) wraps to the last player, as in the original implementation.
                 player = state.cur_player() % environment.num_players
                 encoded = environment.observation_encoder.encode_state(state, player)
-            policy, value = yield np.asarray(encoded, dtype=np.float32)
+            policy, value = yield encoded
             reward = (value + 1) / 2 * self.game.max_score
             if depth < self.max_depth and not tree.is_expanded(path):
                 self._expand(path, state, policy)

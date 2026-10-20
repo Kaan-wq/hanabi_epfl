@@ -63,19 +63,20 @@ class AlphaZeroNetwork(nn.Module):
 
     @torch.inference_mode()
     def predict(
-        self, observations: npt.NDArray[np.float32]
+        self, observations: npt.NDArray[np.uint8] | npt.NDArray[np.float32]
     ) -> tuple[npt.NDArray[np.float32], npt.NDArray[np.float32]]:
         """Evaluates a batch on the network's device, for search (call `eval()` first).
 
         Args:
-            observations: Encoded observations, shape (batch, observation_size).
+            observations: Encoded observations (0/1 values, any real or integer dtype),
+                shape (batch, observation_size).
 
         Returns:
             Move probabilities, shape (batch, num_actions), and values in [-1, 1],
             shape (batch,).
         """
         device = next(self.parameters()).device
-        logits, values = self(torch.from_numpy(observations).to(device))
+        logits, values = self(torch.from_numpy(observations).to(device, torch.float32))
         # One device-to-host copy for both outputs.
         outputs = torch.cat([torch.softmax(logits, dim=1), values], dim=1).cpu().numpy()
         return outputs[:, :-1], outputs[:, -1]

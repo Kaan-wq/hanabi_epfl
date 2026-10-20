@@ -12,8 +12,8 @@ from hanabi_search.env import Action, HanabiState, ObservationDict
 from hanabi_search.exceptions import HanabiSearchError
 
 # A position a search agent needs the network to evaluate: its encoded
-# observation, shape (observation_size,).
-type EvaluationRequest = npt.NDArray[np.float32]
+# observation as 0/1 values, shape (observation_size,).
+type EvaluationRequest = npt.NDArray[np.uint8]
 # The network's answer: move probabilities, shape (num_actions,), and a value in [-1, 1].
 type Evaluation = tuple[npt.NDArray[np.float32], float]
 # A decision in progress: yields requests, receives their evaluations, returns the action.

@@ -40,11 +40,9 @@ class TreeNode:
 
         Children are sorted by decreasing prior; equal priors keep their order.
         """
-        order = sorted(
-            (index for index, prior in enumerate(priors) if prior > 0),
-            key=priors.__getitem__,
-            reverse=True,
-        )
+        order = sorted(range(len(priors)), key=priors.__getitem__, reverse=True)
+        while order and priors[order[-1]] <= 0:  # Zero priors sort last.
+            order.pop()
         count = len(order)
         return cls(
             [move_uids[index] for index in order],
