@@ -135,7 +135,7 @@ class MCTSAgent(Agent):
         state = environment.state
         depth = 0
         for move in leaf.moves:
-            if move not in state.legal_moves():
+            if state.is_terminal() or not state.move_is_legal(move):
                 # The path is impossible under this determinization.
                 reward = float(environment.reward())
                 self.backpropagate(path, reward)
