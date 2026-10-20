@@ -9,9 +9,11 @@ target_compile_options(pyhanabi PRIVATE ${HANABI_WARNINGS})
 # a newer compiler than the system's (otherwise: "GLIBCXX_... not found").
 # --exclude-libs hides the bundled runtime's symbols; exported, its global
 # locale facet ids clash with the libstdc++ that torch loads, and torch
-# segfaults on import.
+# segfaults on import. Not in Debug: ASan must see the runtime's operator
+# new/delete, and Python never loads the sanitizer build.
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  target_link_options(pyhanabi PRIVATE -static-libstdc++ -static-libgcc -Wl,--exclude-libs,ALL)
+  target_link_options(pyhanabi PRIVATE
+    "$<$<NOT:$<CONFIG:Debug>>:-static-libstdc++;-static-libgcc;-Wl,--exclude-libs,ALL>")
 endif()
 
 if(HANABI_BUILD_TESTS)
