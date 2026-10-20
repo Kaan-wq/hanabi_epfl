@@ -9,13 +9,15 @@ closely as possible.
 import enum
 import random
 
-from hanabi_search.env.cards import HanabiCard
+from hanabi_search.env._pyhanabi import CData, card_values, engine_message, ffi, lib
 from hanabi_search.env.game import GameParams
 from hanabi_search.env.hanabi_env import HanabiEnv, StepResult
-from hanabi_search.env.hand_sampler import resample_hand, restore_hand
+from hanabi_search.env.hand_sampler import resample_hand
 from hanabi_search.env.moves import HanabiMoveType
 from hanabi_search.env.observation_types import Action
-from hanabi_search.exceptions import HanabiSearchError
+from hanabi_search.exceptions import EngineCallError, HanabiSearchError
+
+_CARD_MOVES = (HanabiMoveType.DISCARD, HanabiMoveType.PLAY)
 
 
 class DeterminizationType(enum.StrEnum):
@@ -60,7 +62,11 @@ class DeterminizedEnv(HanabiEnv):
         self.searching_player = searching_player
         self.determinization = determinization
         self.rollout_reward = rollout_reward
-        self._remembered_hand: list[HanabiCard] | None = None
+        # The hand of the player about to act, before it was resampled, kept in
+        # engine card buffers: no Python card objects on this hot path.
+        self._remembered = ffi.new("pyhanabi_card_t[]", self.game.hand_size())
+        self._num_remembered = -1  # Nothing remembered yet.
+        self._acted_card = ffi.new("pyhanabi_card_t*")
 
     def step(self, action: Action) -> StepResult:
         """Applies an action like `advance`, then returns every player's observation."""
@@ -76,9 +82,10 @@ class DeterminizedEnv(HanabiEnv):
         move = self.to_move(action)
         state = self.state
         acting_player = state.cur_player()
-        acted_card = None
-        if move.type() in (HanabiMoveType.DISCARD, HanabiMoveType.PLAY):
-            acted_card = state.player_hand(acting_player)[move.card_index()]
+        acted_color = acted_rank = -1
+        if move.type() in _CARD_MOVES:
+            self._read_card(acting_player, move.card_index(), self._acted_card)
+            acted_color, acted_rank = card_values(self._acted_card)
 
         state.apply_move(move)
         self._deal_pending_cards()
@@ -87,16 +94,14 @@ class DeterminizedEnv(HanabiEnv):
             self.determinization == DeterminizationType.RESTORE
             and acting_player != self.searching_player
         ):
-            if self._remembered_hand is None:
-                raise HanabiSearchError("restore_hand called before any hand was remembered")
-            self.restore_hand(acting_player, self._remembered_hand, acted_card, move.card_index())
+            self._restore_hand(acting_player, acted_color, acted_rank, move.card_index())
 
         next_player = state.cur_player()
         if (
             self.determinization != DeterminizationType.NONE
             and next_player != self.searching_player
         ):
-            self._remembered_hand = state.player_hand(next_player)
+            self._remember_hand(next_player)
             self.replace_hand(next_player)
 
     def reward(self) -> int:
@@ -109,26 +114,31 @@ class DeterminizedEnv(HanabiEnv):
         """Replaces `player`'s hand with one sampled from what they know."""
         resample_hand(self.state, player, self.rng.getrandbits(64))
 
-    def restore_hand(
-        self,
-        player: int,
-        remembered_hand: list[HanabiCard],
-        removed_card: HanabiCard | None = None,
-        removed_card_index: int = -1,
-    ) -> None:
-        """Restores `player`'s hand as closely as possible to `remembered_hand`.
+    def _read_card(self, player: int, index: int, card: CData) -> None:
+        if not lib.StateGetHandCard(self.state.c_state, player, index, card):
+            raise EngineCallError(engine_message(f"No card {index} in the hand of {player}"))
 
-        Args:
-            player: Absolute id of the player.
-            remembered_hand: Hand to match, usually remembered before re-determinizing.
-            removed_card: Card just played or discarded; resolves conflicts within the hand.
-            removed_card_index: Position of that card in `remembered_hand`; skipped.
-        """
-        restore_hand(
-            self.state,
+    def _remember_hand(self, player: int) -> None:
+        count = lib.StateGetHandSize(self.state.c_state, player)
+        remembered = self._remembered
+        for index in range(count):
+            self._read_card(player, index, remembered + index)
+        self._num_remembered = count
+
+    def _restore_hand(
+        self, player: int, removed_color: int, removed_rank: int, removed_index: int
+    ) -> None:
+        """Restores `player`'s hand to the remembered one (see `hand_sampler.restore_hand`)."""
+        if self._num_remembered < 0:
+            raise HanabiSearchError("restore_hand called before any hand was remembered")
+        if not lib.pyhanabi_state_restore_hand(
+            self.state.c_state,
             player,
-            remembered_hand,
-            removed_card,
-            removed_card_index,
+            self._remembered,
+            self._num_remembered,
+            removed_color,
+            removed_rank,
+            removed_index,
             self.rng.getrandbits(64),
-        )
+        ):
+            raise EngineCallError(engine_message(f"Cannot restore the hand of player {player}"))
