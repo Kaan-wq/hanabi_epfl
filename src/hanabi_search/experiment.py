@@ -149,9 +149,10 @@ def evaluate_experiment(
 ) -> ScoreSummary:
     """Plays the evaluation games, split over `evaluation.num_processes` processes.
 
-    Game `i` uses seed `evaluation.seed + i`. Each process builds its own agents and
-    network and plays every `num_processes`-th seed, batching network evaluations
-    over `evaluation.parallel_games` games. A game depends only on its seed, so the
+    Game `i` uses seed `evaluation.seed + i`. With a network, each process builds its
+    own agents and network and plays every `num_processes`-th seed, batching network
+    evaluations over `evaluation.parallel_games` games; without one, processes take
+    games one at a time as they finish. A game depends only on its seed, so the
     scores do not depend on the number of processes (up to floating-point
     differences between batch sizes).
 
@@ -167,7 +168,13 @@ def evaluate_experiment(
     if num_processes == 1:
         results = _play_evaluation_games(config, checkpoint, seeds)
     else:
-        shards = [seeds[start::num_processes] for start in range(num_processes)]
+        # Agents without a network are cheap to build: hand out games one at a time,
+        # so processes on slower cores take fewer of them.
+        shards = (
+            [seeds[start::num_processes] for start in range(num_processes)]
+            if uses_network(config)
+            else [[seed] for seed in seeds]
+        )
         context = multiprocessing.get_context("spawn")
         with ProcessPoolExecutor(num_processes, mp_context=context) as pool:
             parts = pool.map(_play_evaluation_games, repeat(config), repeat(checkpoint), shards)
