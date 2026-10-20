@@ -5,6 +5,11 @@ add_library(pyhanabi SHARED capi/pyhanabi.cc capi/pyhanabi_observation.cc)
 target_include_directories(pyhanabi PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/capi)
 target_link_libraries(pyhanabi PRIVATE hanabi)
 target_compile_options(pyhanabi PRIVATE ${HANABI_WARNINGS})
+# On Linux, bundle the C++ runtime: Python can then load an engine built with
+# a newer compiler than the system's (otherwise: "GLIBCXX_... not found").
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  target_link_options(pyhanabi PRIVATE -static-libstdc++ -static-libgcc)
+endif()
 
 if(HANABI_BUILD_TESTS)
   add_subdirectory(tests)

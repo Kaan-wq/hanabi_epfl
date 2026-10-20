@@ -8,6 +8,31 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: Link-time optimization; static C++ runtime on Linux
+
+Modernization step 5 (build only, no source change).
+
+- Release builds use link-time optimization when the compiler supports it
+  (`check_ipo_supported`; option `HANABI_LTO`, default ON). Debug builds are
+  unaffected.
+- On Linux, `libpyhanabi` links `-static-libstdc++ -static-libgcc`, so Python
+  can load an engine built with a newer compiler than the system's.
+
+Median of 5 (search iteration) / 3 (other rows), 3 players:
+
+| Row | Before | After |
+|---|---|---|
+| search iteration | 257,006 | 268,612 (1.05x; 5.66x original baseline) |
+| random games | 3,354,891 | 3,784,928 (1.13x) |
+| random games + encode | 1,031,219 | 1,130,683 (1.10x) |
+| observation features | 2,557,299 | 2,424,194 (0.95x) |
+
+Search iteration 2/4/5 players: 1.03x / 1.04x / 1.05x. Observation features
+loses 4-5% at every player count (different inlining); kept because the
+search loop, the headline metric, gains. Other rows within noise.
+
+---
+
 ## 2026-10-20: `std::expected` and error reasons through the C API
 
 Modernization step 4. Failures now say why, from the engine to Python.
