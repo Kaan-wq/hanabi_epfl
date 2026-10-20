@@ -19,6 +19,7 @@ from hanabi_search.config import (
     HumanAgentConfig,
     MCTSAgentConfig,
     RuleBasedAgentConfig,
+    SelfPlayConfig,
 )
 from hanabi_search.exceptions import ConfigError
 from hanabi_search.networks import AlphaZeroNetwork
@@ -35,6 +36,8 @@ class AgentResources:
         transition_sink: Where search agents send training data, if collecting.
         ask: Input function for human agents.
         show: Output function for human agents.
+        self_play: Exploration for AlphaZero agents in training games; `None` when
+            evaluating.
     """
 
     network: AlphaZeroNetwork | None = None
@@ -42,6 +45,7 @@ class AgentResources:
     transition_sink: TransitionSink | None = None
     ask: Callable[[str], str] | None = None
     show: Callable[[str], None] | None = None
+    self_play: SelfPlayConfig | None = None
 
 
 def build_agent(
@@ -66,9 +70,23 @@ def build_agent(
         case AlphaZeroAgentConfig():
             if resources.network is None:
                 raise ConfigError("AlphaZero agents need a network")
-            agent_type = AlphaZeroAgent if config.num_workers == 1 else ParallelAlphaZeroAgent
-            return agent_type(
-                seat, game, config, resources.network, resources.device, resources.transition_sink
+            if config.num_workers > 1:
+                return ParallelAlphaZeroAgent(
+                    seat,
+                    game,
+                    config,
+                    resources.network,
+                    resources.device,
+                    resources.transition_sink,
+                )
+            return AlphaZeroAgent(
+                seat,
+                game,
+                config,
+                resources.network,
+                resources.device,
+                resources.transition_sink,
+                resources.self_play,
             )
 
 

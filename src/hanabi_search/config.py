@@ -118,6 +118,20 @@ class ReplayBufferConfig(_Config):
     save_transitions: bool = Field(default=True, description="Append transitions to a JSONL file")
 
 
+class SelfPlayConfig(_Config):
+    """Exploration of AlphaZero agents in training games; evaluation never uses it."""
+
+    dirichlet_alpha: float = Field(default=0.3, gt=0, description="Root noise concentration")
+    dirichlet_fraction: float = Field(
+        default=0.25, ge=0, le=1, description="Weight of the noise in the root priors"
+    )
+    temperature_moves: int = Field(
+        default=10,
+        ge=0,
+        description="Own moves per game drawn in proportion to root visits (then most visited)",
+    )
+
+
 class TrainingConfig(_Config):
     """AlphaZero training."""
 
@@ -128,6 +142,7 @@ class TrainingConfig(_Config):
     value_loss_weight: float = Field(default=10.0, ge=0)
     train_every_step: bool = Field(default=True, description="Also train after every move")
     replay_buffer: ReplayBufferConfig = ReplayBufferConfig()
+    self_play: SelfPlayConfig = SelfPlayConfig()
 
 
 class EvaluationConfig(_Config):

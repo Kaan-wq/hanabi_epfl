@@ -7,6 +7,7 @@ from hanabi_search.config import (
     GameConfig,
     MCTSAgentConfig,
     RuleBasedAgentConfig,
+    SelfPlayConfig,
 )
 from hanabi_search.exceptions import ConfigError
 from tests.support import REPO_ROOT
@@ -40,6 +41,11 @@ def test_game_params_match_engine_names() -> None:
 def test_hand_size_above_engine_limit_is_rejected() -> None:
     with pytest.raises(ValueError, match="hand_size"):
         GameConfig(players=2, hand_size=9)
+
+
+def test_self_play_noise_fraction_above_one_is_rejected() -> None:
+    with pytest.raises(ValueError, match="dirichlet_fraction"):
+        SelfPlayConfig(dirichlet_fraction=1.5)
 
 
 def test_single_agent_fills_every_seat() -> None:

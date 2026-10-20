@@ -23,6 +23,10 @@ training:
     capacity: 10000
     alpha: 0.6
     beta: 0.4
+  self_play:
+    dirichlet_alpha: 0.3
+    dirichlet_fraction: 0.25
+    temperature_moves: 10
 evaluation:
   num_games: 1000
   seed: 1000000

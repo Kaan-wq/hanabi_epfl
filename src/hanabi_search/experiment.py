@@ -11,7 +11,12 @@ import numpy as np
 import torch
 
 from hanabi_search.agents import Agent, AgentResources, build_agents
-from hanabi_search.config import AlphaZeroAgentConfig, ExperimentConfig, NetworkConfig
+from hanabi_search.config import (
+    AlphaZeroAgentConfig,
+    ExperimentConfig,
+    NetworkConfig,
+    SelfPlayConfig,
+)
 from hanabi_search.env import OBSERVATION_ENCODER_VERSION, HanabiEnv, StepResult
 from hanabi_search.evaluation import play_games
 from hanabi_search.exceptions import ConfigError
@@ -91,6 +96,7 @@ def set_up(
     config: ExperimentConfig,
     checkpoint: Path | None = None,
     transition_sink: TransitionSink | None = None,
+    self_play: SelfPlayConfig | None = None,
     ask: Callable[[str], str] | None = None,
     show: Callable[[str], None] | None = None,
 ) -> Setup:
@@ -100,6 +106,7 @@ def set_up(
         config: The experiment.
         checkpoint: Network weights overriding `config.network.checkpoint`.
         transition_sink: Where search agents send training data.
+        self_play: Exploration for AlphaZero agents; only for training games.
         ask: Input function for human seats.
         show: Output function for human seats.
     """
@@ -113,7 +120,7 @@ def set_up(
             )
         network = make_network(config.model_copy(update={"network": network_config}), device)
         network.eval()
-    resources = AgentResources(network, device, transition_sink, ask, show)
+    resources = AgentResources(network, device, transition_sink, ask, show, self_play)
     return Setup(build_agents(config.seat_agents(), config.game, resources), network, device)
 
 
@@ -140,7 +147,7 @@ def train_alphazero(config: ExperimentConfig, run_dir: Path) -> Path:
         rng=np.random.default_rng(config.seed),
         save_path=run_dir / "transitions.jsonl" if buffer_config.save_transitions else None,
     )
-    setup = set_up(config, transition_sink=buffer.add)
+    setup = set_up(config, transition_sink=buffer.add, self_play=training.self_play)
     assert setup.network is not None
     trainer = AlphaZeroTrainer(setup.network, buffer, training, setup.device)
     metrics_path = run_dir / "metrics.jsonl"

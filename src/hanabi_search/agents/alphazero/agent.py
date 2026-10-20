@@ -1,5 +1,6 @@
 """AlphaZero-style agent: information-set MCTS guided by a policy/value network."""
 
+import random
 from math import sqrt
 from typing import override
 
@@ -10,7 +11,12 @@ import torch
 from hanabi_search.agents.alphazero.node import AlphaZeroNode
 from hanabi_search.agents.mcts.agent import MCTSAgent
 from hanabi_search.agents.mcts.node import MCTSNode
-from hanabi_search.config import AlphaZeroAgentConfig, GameConfig, MCTSAgentConfig
+from hanabi_search.config import (
+    AlphaZeroAgentConfig,
+    GameConfig,
+    MCTSAgentConfig,
+    SelfPlayConfig,
+)
 from hanabi_search.env import HanabiMove, ObservationDict
 from hanabi_search.networks import AlphaZeroNetwork
 from hanabi_search.training.transition import TransitionSink
@@ -43,6 +49,9 @@ class AlphaZeroAgent(MCTSAgent):
         network: Policy/value network; shared with the trainer, if any.
         device: Device the network lives on.
         transition_sink: Receives this agent's labelled decisions after each game.
+        self_play: Exploration for training games: Dirichlet noise on the root priors
+            and the first moves drawn in proportion to root visits. `None` searches
+            and plays greedily.
     """
 
     node_type = AlphaZeroNode
@@ -55,12 +64,20 @@ class AlphaZeroAgent(MCTSAgent):
         network: AlphaZeroNetwork,
         device: torch.device,
         transition_sink: TransitionSink | None = None,
+        self_play: SelfPlayConfig | None = None,
     ) -> None:
         super().__init__(player_id, game, as_search_config(config), transition_sink)
         self.alphazero_config = config
         self.network = network
         self.device = device
         self.num_actions = self.environment.num_moves()
+        self.self_play = self_play
+        self._moves_this_game = 0
+
+    @override
+    def end_episode(self, final_score: int) -> None:
+        super().end_episode(final_score)
+        self._moves_this_game = 0
 
     @override
     def select(self, node: MCTSNode) -> list[MCTSNode]:
@@ -94,6 +111,8 @@ class AlphaZeroAgent(MCTSAgent):
         priors = policy[uids]  # (num_candidates,)
         total = priors.sum()
         priors = priors / total if total > 0 else np.full(len(uids), 1 / len(uids))
+        if self.self_play is not None and node == self.root_node:
+            priors = self._add_root_noise(priors, self.self_play)
 
         children: set[MCTSNode] = set()
         for move, prior in zip(moves, priors.tolist(), strict=True):
@@ -146,18 +165,47 @@ class AlphaZeroAgent(MCTSAgent):
 
     @override
     def choose_move(self, node: MCTSNode) -> HanabiMove:
-        """Returns the most visited root move."""
+        """Returns the most visited root move.
+
+        In self-play, this agent's first `temperature_moves` moves of each game are
+        instead drawn in proportion to root visits.
+        """
         if node.is_terminal():
             raise RuntimeError(f"choose_move called on terminal node {node}")
         children = self.children.get(node)
+        self._moves_this_game += 1
         if not children:
             return super().choose_move(node)
+        if self.self_play is not None and self._moves_this_game <= self.self_play.temperature_moves:
+            # Sorted by move uid: set order must not affect which move is drawn.
+            game = self.environment.game
+            ordered = sorted(children, key=lambda child: game.get_move_uid(child.initial_move()))
+            weights = [self.visits[child] for child in ordered]
+            if sum(weights) > 0:
+                return random.choices(ordered, weights)[0].initial_move()
 
         def visit_count(child: MCTSNode) -> float:
             visits = self.visits[child]
             return float("-inf") if visits == 0 else visits
 
         return max(children, key=visit_count).initial_move()
+
+    @staticmethod
+    def _add_root_noise(
+        priors: npt.NDArray[np.float32], self_play: SelfPlayConfig
+    ) -> npt.NDArray[np.float32]:
+        """Mixes Dirichlet noise into the root priors, shape (num_candidates,).
+
+        Drawn with Python's `random` (gamma variates), which each game reseeds.
+        """
+        gammas = np.array(
+            [random.gammavariate(self_play.dirichlet_alpha, 1.0) for _ in range(len(priors))],
+            dtype=np.float32,
+        )
+        noise = gammas / gammas.sum()
+        fraction = self_play.dirichlet_fraction
+        mixed: npt.NDArray[np.float32] = (1 - fraction) * priors + fraction * noise
+        return mixed
 
     def _evaluate(self, observation: ObservationDict) -> tuple[npt.NDArray[np.float32], float]:
         """Returns the network's move probabilities and value for `observation`.
