@@ -16,7 +16,9 @@ Modernization step 5 (build only, no source change).
   (`check_ipo_supported`; option `HANABI_LTO`, default ON). Debug builds are
   unaffected.
 - On Linux, `libpyhanabi` links `-static-libstdc++ -static-libgcc`, so Python
-  can load an engine built with a newer compiler than the system's.
+  can load an engine built with a newer compiler than the system's. It also
+  links `-Wl,--exclude-libs,ALL` to keep the bundled runtime's symbols private:
+  exported, they clash with the libstdc++ torch uses and torch segfaults on import.
 
 Median of 5 (search iteration) / 3 (other rows), 3 players:
 

@@ -7,8 +7,11 @@ target_link_libraries(pyhanabi PRIVATE hanabi)
 target_compile_options(pyhanabi PRIVATE ${HANABI_WARNINGS})
 # On Linux, bundle the C++ runtime: Python can then load an engine built with
 # a newer compiler than the system's (otherwise: "GLIBCXX_... not found").
+# --exclude-libs hides the bundled runtime's symbols; exported, its global
+# locale facet ids clash with the libstdc++ that torch loads, and torch
+# segfaults on import.
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-  target_link_options(pyhanabi PRIVATE -static-libstdc++ -static-libgcc)
+  target_link_options(pyhanabi PRIVATE -static-libstdc++ -static-libgcc -Wl,--exclude-libs,ALL)
 endif()
 
 if(HANABI_BUILD_TESTS)
