@@ -140,15 +140,16 @@ class MCTSAgent(Agent):
                 reward = float(environment.reward())
                 self.backpropagate(path, reward)
                 return reward
-            result = environment.step(move)
+            environment.advance(move)
             state = environment.state
-            # Index -1 (chance) wraps to the last player, as in the original implementation.
-            observation = result.observations["player_observations"][state.cur_player()]
             depth += 1
             if depth > self.max_depth:
                 break
         leaf.focused_state = state
         if depth < self.max_depth:
+            if depth > 0:
+                # Chance (-1) wraps to the last player, as in the original implementation.
+                observation = environment.observe(state.cur_player() % environment.num_players)
             self.expand(leaf, observation)
         reward = self.simulate(leaf)
         self.backpropagate(path, reward)
@@ -183,20 +184,17 @@ class MCTSAgent(Agent):
         """
         environment = self.environment
         environment.state = node.state
-        observations = environment.observe_all()
         done = node.is_terminal()
-        reward = environment.reward()
         steps = 0
         while not done and steps < self.config.max_simulation_steps:
-            player_observations = observations["player_observations"]
-            observation = player_observations[player_observations[0]["current_player"]]
-            action = self.rollout_agents[observation["current_player"]].choose(observation)
+            player = environment.state.cur_player()
+            action = self.rollout_agents[player].choose(environment.observe(player))
             if action is None:
                 raise HanabiSearchError("rollout agent declined to act on its own turn")
-            result = environment.step(action)
-            observations, reward, done = result.observations, result.reward, result.done
+            environment.advance(action)
+            done = environment.state.is_terminal()
             steps += 1
-        return float(reward)
+        return float(environment.reward())
 
     def backpropagate(self, path: list[MCTSNode], reward: float) -> None:
         """Adds one visit and `reward` to every node on `path`."""

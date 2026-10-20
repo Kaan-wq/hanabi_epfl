@@ -151,3 +151,21 @@ def test_determinized_env_is_reproducible_from_random_seed() -> None:
         env.replace_hand(0)
         hands.append(env.state.player_hands()[0])
     assert hands[0] == hands[1]
+
+
+def test_advance_changes_the_state_like_step() -> None:
+    game = GameConfig(players=3)
+    states = []
+    for use_step in (True, False):
+        real = make_env(game, seed=6)  # Deals use the real game's RNG, so one per run.
+        random.seed(2)
+        env = DeterminizedEnv(game.to_params(), searching_player=real.state.cur_player())
+        env.state = real.state.copy()
+        for _ in range(6):
+            move = next(m for m in env.state.legal_moves() if m.type().name != "PLAY")
+            if use_step:
+                env.step(move)
+            else:
+                env.advance(move)
+        states.append(env.state.to_json())
+    assert states[0] == states[1]

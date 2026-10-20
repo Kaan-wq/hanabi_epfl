@@ -4,7 +4,7 @@ import pytest
 
 from hanabi_search.config import GameConfig
 from hanabi_search.env import HanabiEnv, HanabiMove
-from hanabi_search.exceptions import IllegalMoveError
+from hanabi_search.exceptions import EngineCallError, IllegalMoveError
 from tests.support import PLAYER_COUNTS, SMALL_GAME, current_observation, make_env
 
 
@@ -60,6 +60,21 @@ def test_legal_move_mask_matches_engine(game: GameConfig) -> None:
             assert {str(env.game.get_move(uid)) for uid in uids} == engine_moves
         else:
             assert uids == []
+
+
+def test_observe_matches_observe_all(env: HanabiEnv) -> None:
+    observations = env.observe_all()["player_observations"]
+    for player, expected in enumerate(observations):
+        observation = env.observe(player)
+        assert {k: v for k, v in observation.items() if k != "pyhanabi"} == {
+            k: v for k, v in expected.items() if k != "pyhanabi"
+        }
+
+
+@pytest.mark.parametrize("player", [-1, 2])
+def test_observe_out_of_range_raises(env: HanabiEnv, player: int) -> None:
+    with pytest.raises(EngineCallError):
+        env.observe(player)
 
 
 def test_step_accepts_all_action_forms(env: HanabiEnv) -> None:

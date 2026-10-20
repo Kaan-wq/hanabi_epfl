@@ -65,7 +65,16 @@ class DeterminizedEnv(HanabiEnv):
         self._remembered_hand: list[HanabiCard] | None = None
 
     def step(self, action: Action) -> StepResult:
-        """Applies an action, deals, then restores/resamples hands as configured."""
+        """Applies an action like `advance`, then returns every player's observation."""
+        self.advance(action)
+        return StepResult(self.observe_all(), self.reward(), self.state.is_terminal())
+
+    def advance(self, action: Action) -> None:
+        """Applies an action, deals, then restores/resamples hands as configured.
+
+        Builds no observations, unlike `step`: rollouts call `observe` for the
+        one player who acts next.
+        """
         move = self.to_move(action)
         state = self.state
         acting_player = state.cur_player()
@@ -91,9 +100,6 @@ class DeterminizedEnv(HanabiEnv):
         ):
             self._remembered_hand = state.player_hands()[next_player]
             self.replace_hand(next_player)
-
-        observations = self.observe_all()
-        return StepResult(observations, self.reward(), state.is_terminal())
 
     def reward(self) -> int:
         """Returns the rollout reward selected by `rollout_reward`."""

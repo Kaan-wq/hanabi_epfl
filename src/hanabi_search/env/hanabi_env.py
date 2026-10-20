@@ -108,11 +108,18 @@ class HanabiEnv:
         """Returns every player's observation of the current state."""
         return {
             "current_player": self.state.cur_player(),
-            "player_observations": [
-                self.observation_dict(self.state.observation(player))
-                for player in range(self.num_players)
-            ],
+            "player_observations": [self.observe(player) for player in range(self.num_players)],
         }
+
+    def observe(self, player: int) -> ObservationDict:
+        """Returns one player's observation of the current state.
+
+        Cheaper than `observe_all` when only one player's view is needed.
+
+        Args:
+            player: Absolute player id, in [0, num_players).
+        """
+        return self.observation_dict(self.state.observation(player))
 
     def observation_dict(self, observation: HanabiObservation) -> ObservationDict:
         """Converts an engine observation of the current state to dict form."""
