@@ -15,12 +15,16 @@ from hanabi_search.exceptions import EngineCallError
 
 @dataclass(frozen=True, slots=True)
 class HandArrays:
-    """Every hand as the observer sees it; player axes are offsets (0 is the observer).
+    """Every hand, from an observation or a state.
+
+    In an observation, player axes are offsets from the observer (0 is the
+    observer) and the observer's own cards are hidden; in a state, players are
+    absolute ids and every card is visible.
 
     Attributes:
         sizes: Number of cards in each hand, shape (num_players,), int32.
         colors: Color of each card, shape (num_players, hand_size), int8; -1 for
-            the observer's own cards (hidden) and past the end of a hand.
+            hidden cards and past the end of a hand.
         ranks: Rank of each card, same shape and convention as `colors`.
     """
 

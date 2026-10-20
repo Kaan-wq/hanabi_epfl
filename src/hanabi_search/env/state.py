@@ -4,11 +4,13 @@ import enum
 import json
 from typing import Self
 
+import numpy as np
+
 from hanabi_search.env._pyhanabi import CData, card_values, ffi, lib, take_string
 from hanabi_search.env.cards import HanabiCard
 from hanabi_search.env.game import HanabiGame
 from hanabi_search.env.moves import HanabiHistoryItem, HanabiMove
-from hanabi_search.env.observation import HanabiObservation
+from hanabi_search.env.observation import HanabiObservation, HandArrays
 from hanabi_search.exceptions import EngineCallError, IllegalMoveError, SerializationError
 
 CHANCE_PLAYER_ID = -1
@@ -133,15 +135,46 @@ class HanabiState:
 
     def player_hands(self) -> list[list[HanabiCard]]:
         """Returns every player's hand, cards ordered oldest to newest."""
-        c_card = ffi.new("pyhanabi_card_t*")
-        hands = []
-        for player in range(self.num_players()):
-            hand = []
-            for index in range(lib.StateGetHandSize(self.c_state, player)):
-                lib.StateGetHandCard(self.c_state, player, index, c_card)
-                hand.append(HanabiCard(*card_values(c_card)))
-            hands.append(hand)
-        return hands
+        hands = self.hand_arrays()
+        return [
+            _cards(colors[:size], ranks[:size])
+            for size, colors, ranks in zip(
+                hands.sizes.tolist(), hands.colors.tolist(), hands.ranks.tolist(), strict=True
+            )
+        ]
+
+    def player_hand(self, player: int) -> list[HanabiCard]:
+        """Returns `player`'s hand, cards ordered oldest to newest.
+
+        Raises:
+            IndexError: If `player` is not in [0, num_players).
+        """
+        if not 0 <= player < self._game.num_players():
+            raise IndexError(f"Player {player} is out of range")
+        hands = self.hand_arrays()
+        size = int(hands.sizes[player])
+        return _cards(hands.colors[player, :size].tolist(), hands.ranks[player, :size].tolist())
+
+    def hand_arrays(self) -> HandArrays:
+        """Returns every hand as arrays (see `HandArrays`); players are absolute ids.
+
+        Returns:
+            Fresh arrays: the state can change, so nothing is cached.
+        """
+        game = self._game
+        shape = (game.num_players(), game.hand_size())
+        sizes = np.empty(shape[0], dtype=np.int32)
+        colors = np.empty(shape, dtype=np.int8)
+        ranks = np.empty(shape, dtype=np.int8)
+        if not lib.pyhanabi_state_hands(
+            self.c_state,
+            ffi.from_buffer("int32_t[]", sizes),
+            ffi.from_buffer("int8_t[]", colors),
+            ffi.from_buffer("int8_t[]", ranks),
+            *shape,
+        ):
+            raise EngineCallError("pyhanabi_state_hands rejected the game's shape")
+        return HandArrays(sizes, colors, ranks)
 
     def information_tokens(self) -> int:
         """Returns the number of information tokens left."""
@@ -164,17 +197,18 @@ class HanabiState:
         return self.end_of_game_status() != HanabiEndOfGameType.NOT_FINISHED
 
     def legal_moves(self) -> list[HanabiMove]:
-        """Returns the acting player's legal moves (empty once the game has ended)."""
-        if self.is_terminal():
-            return []
-        c_movelist = lib.StateLegalMoves(self.c_state)
-        moves = []
-        for index in range(lib.NumMoves(c_movelist)):
-            c_move = ffi.new("pyhanabi_move_t*")
-            lib.GetMove(c_movelist, index, c_move)
-            moves.append(HanabiMove(c_move))
-        lib.DeleteMoveList(c_movelist)
-        return moves
+        """Returns the acting player's legal moves (empty once the game has ended).
+
+        The moves are shared with `HanabiGame.all_moves` (moves are immutable).
+        """
+        moves = self._game.all_moves()
+        uids = np.empty(len(moves), dtype=np.int32)
+        count = lib.pyhanabi_state_legal_move_uids(
+            self.c_state, ffi.from_buffer("int32_t[]", uids), uids.size
+        )
+        if count < 0:
+            raise EngineCallError("pyhanabi_state_legal_move_uids rejected the capacity")
+        return [moves[uid] for uid in uids[:count].tolist()]
 
     def move_is_legal(self, move: HanabiMove) -> bool:
         """Returns whether `move` is legal for the acting player."""
@@ -231,3 +265,7 @@ class HanabiState:
         if self._state is not None:
             lib.DeleteState(self._state)
             self._state = None
+
+
+def _cards(colors: list[int], ranks: list[int]) -> list[HanabiCard]:
+    return [HanabiCard(color, rank) for color, rank in zip(colors, ranks, strict=True)]

@@ -313,6 +313,24 @@ bool pyhanabi_observation_encode(const pyhanabi_observation_encoder_t* encoder,
                                  const pyhanabi_observation_t* observation, uint8_t* bits,
                                  int32_t size);
 
+/* State buffers: like the observation buffers above (caller-owned buffers,
+ * nothing allocated, sizes must match the game exactly or the function
+ * returns false or -1 and writes nothing), but on the full state: players
+ * are absolute ids and every card is visible. */
+
+/* Writes every hand: `hand_sizes` int32_t[P] and `colors`, `ranks`
+ * int8_t[P * H] (index player * H + position), -1 past the end of a hand.
+ * Returns false if `num_players` != P or `hand_size` != H. */
+bool pyhanabi_state_hands(const pyhanabi_state_t* state, int32_t* hand_sizes, int8_t* colors,
+                          int8_t* ranks, int32_t num_players, int32_t hand_size);
+
+/* Writes the ids (see GetMoveUid) of the acting player's legal moves, in
+ * engine order (as StateLegalMoves lists them, ascending), to `uids`
+ * (int32_t[capacity]). Returns their number (0 once the game has ended or
+ * when a card must be dealt), or -1 if `capacity` < MaxMoves. */
+int32_t pyhanabi_state_legal_move_uids(const pyhanabi_state_t* state, int32_t* uids,
+                                       int32_t capacity);
+
 /* Hidden-hand sampling for re-determinizing MCTS (hanabi_lib/hand_sampler.h).
  *
  * Card buffers use pyhanabi_card_t; count buffers are int32_t[num_colors *

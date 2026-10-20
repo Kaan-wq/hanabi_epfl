@@ -8,6 +8,33 @@ games), on an Apple Silicon MacBook unless stated otherwise.
 
 ---
 
+## 2026-10-20: State buffers for hands and legal moves
+
+`HanabiState.player_hands()` made one C call per card, and `legal_moves()`
+about 8 per legal move (heap copy, five field getters, delete). Two new
+functions in `capi/pyhanabi.cc` (layouts in `pyhanabi.h`):
+
+| Function | Output |
+|---|---|
+| `pyhanabi_state_hands` | hand sizes (P); colors, ranks (P, H), -1 past the end; every card visible |
+| `pyhanabi_state_legal_move_uids` | acting player's legal move ids, ascending (the `LegalMoves` order); 0 when terminal or a card must be dealt |
+
+- `legal_move_uids` repeats `LegalMoves`' scan over move ids without building
+  the move list; unlike `StateLegalMoves` it is safe on the chance player.
+- Python maps the ids to a per-game table of immutable `HanabiMove`s
+  (`HanabiGame.all_moves`); `DeterminizedEnv` reads only the hand it needs
+  (`HanabiState.player_hand`).
+- Tests (`tests/test_capi_buffers.cc`, renamed from
+  `test_observation_buffers.cc`): both buffers equal the per-card getters and
+  `StateLegalMoves` along random games (2-5 players, 2 and 5 colors), no
+  legal moves while a card must be dealt, wrong sizes rejected unwritten.
+- `hanabi_lib` is unchanged, so `bench_engine` is unaffected.
+
+End to end (with the MCTS replay change committed just before): MCTS 2p
+4,868 -> 6,071, 3p 3,877 -> 5,091, 5p 3,193 -> 4,375 rollouts/s; MCTS
+without rule filtering, 3p 4,597 -> 6,148. Observation dicts, rule outputs and
+MCTS decisions (with and without rule filtering) are identical to before.
+
 ## 2026-10-20: Observation buffers in the C API
 
 Python built each observation through 100+ small C calls (one or more per

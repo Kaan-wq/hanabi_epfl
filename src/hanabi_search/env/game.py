@@ -36,9 +36,10 @@ class HanabiGame:
         params: Game parameters; `None` for the engine's default game.
     """
 
-    __slots__ = ("_game",)
+    __slots__ = ("_all_moves", "_game")
 
     def __init__(self, params: GameParams | None = None) -> None:
+        self._all_moves: list[HanabiMove] | None = None
         self._game: CData | None = ffi.new("pyhanabi_game_t*")
         if params is None:
             lib.NewDefaultGame(self._game)
@@ -57,6 +58,7 @@ class HanabiGame:
     @classmethod
     def _from_c_game(cls, c_game: CData) -> Self:
         game = cls.__new__(cls)
+        game._all_moves = None
         game._game = c_game
         return game
 
@@ -124,6 +126,15 @@ class HanabiGame:
         if not lib.GetMoveByUid(self.c_game, move_uid, c_move):
             raise EngineCallError(f"Move id {move_uid} is out of range")
         return HanabiMove(c_move)
+
+    def all_moves(self) -> list[HanabiMove]:
+        """Returns every non-chance move, indexed by move id.
+
+        Built on first use and shared (moves are immutable); do not modify the list.
+        """
+        if self._all_moves is None:
+            self._all_moves = [self.get_move(uid) for uid in range(self.max_moves())]
+        return self._all_moves
 
     def to_json(self) -> str:
         """Serializes the game, including its RNG state, to a JSON string."""

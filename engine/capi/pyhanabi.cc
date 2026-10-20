@@ -657,6 +657,53 @@ bool StateFromJson(const char* json_str, pyhanabi_state_t* state, pyhanabi_game_
 /* ============================= HanabiObservation ============================= */
 
 /*==============================================================================
+ *                  State buffers
+ *============================================================================*/
+
+bool pyhanabi_state_hands(const pyhanabi_state_t* state, int32_t* hand_sizes, int8_t* colors,
+                          int8_t* ranks, int32_t num_players, int32_t hand_size) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  REQUIRE(hand_sizes != nullptr && colors != nullptr && ranks != nullptr);
+  const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
+  const auto& game = *hanabi_state.ParentGame();
+  if (num_players != game.NumPlayers() || hand_size != game.HandSize()) return false;
+  const size_t cells = static_cast<size_t>(num_players) * hand_size;
+  std::fill(colors, colors + cells, -1);
+  std::fill(ranks, ranks + cells, -1);
+  for (int player = 0; player < num_players; ++player) {
+    const auto& cards = hanabi_state.Hands()[player].Cards();
+    hand_sizes[player] = static_cast<int32_t>(cards.size());
+    const size_t row = static_cast<size_t>(player) * hand_size;
+    for (size_t index = 0; index < cards.size(); ++index) {
+      colors[row + index] = static_cast<int8_t>(cards[index].Color());
+      ranks[row + index] = static_cast<int8_t>(cards[index].Rank());
+    }
+  }
+  return true;
+}
+
+int32_t pyhanabi_state_legal_move_uids(const pyhanabi_state_t* state, int32_t* uids,
+                                       int32_t capacity) {
+  REQUIRE(state != nullptr);
+  REQUIRE(state->state != nullptr);
+  REQUIRE(uids != nullptr);
+  const auto& hanabi_state = *static_cast<const hanabi_learning_env::HanabiState*>(state->state);
+  const auto& game = *hanabi_state.ParentGame();
+  if (capacity < game.MaxMoves()) return -1;
+  if (hanabi_state.IsTerminal() ||
+      hanabi_state.CurPlayer() == hanabi_learning_env::kChancePlayerId) {
+    return 0;
+  }
+  // The same scan as HanabiState::LegalMoves, without building the move list.
+  int32_t count = 0;
+  for (int uid = 0; uid < game.MaxMoves(); ++uid) {
+    if (hanabi_state.MoveIsLegal(game.GetMove(uid))) uids[count++] = uid;
+  }
+  return count;
+}
+
+/*==============================================================================
  *                  Hidden-hand sampling
  *============================================================================*/
 

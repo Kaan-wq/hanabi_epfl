@@ -80,7 +80,7 @@ class DeterminizedEnv(HanabiEnv):
         acting_player = state.cur_player()
         acted_card = None
         if move.type() in (HanabiMoveType.DISCARD, HanabiMoveType.PLAY):
-            acted_card = state.player_hands()[acting_player][move.card_index()]
+            acted_card = state.player_hand(acting_player)[move.card_index()]
 
         state.apply_move(move)
         self._deal_pending_cards()
@@ -98,7 +98,7 @@ class DeterminizedEnv(HanabiEnv):
             self.determinization != DeterminizationType.NONE
             and next_player != self.searching_player
         ):
-            self._remembered_hand = state.player_hands()[next_player]
+            self._remembered_hand = state.player_hand(next_player)
             self.replace_hand(next_player)
 
     def reward(self) -> int:

@@ -1,6 +1,7 @@
-// Tests for the observation buffer functions of the C API: each buffer must
-// match the per-card Obs* getters, never reveal the observer's own cards, and
-// reject wrong sizes without writing. Run them under ASan + UBSan too.
+// Tests for the observation and state buffer functions of the C API: each
+// buffer must match the per-card getters, observation buffers must never
+// reveal the observer's own cards, and wrong sizes must be rejected without
+// writing. Run them under ASan + UBSan too.
 
 #include <cstddef>
 #include <cstdint>
@@ -309,6 +310,76 @@ HANABI_TEST(WrongSizesAreRejectedWithoutWriting) {
     CHECK(NewObservation(&game.state, 0, o));
   }
   CHECK_EQ(pyhanabi_observation_discard_pile(o, colors.data(), ranks.data(), 0), -1);
+}
+
+HANABI_TEST(StateBuffersMatchGettersAlongRandomGames) {
+  for (int players = 2; players <= 5; ++players) {
+    for (int colors : {5, 2}) {
+      Game game(players, colors);
+      const int h = game.hand_size;
+      const int max_moves = MaxMoves(&game.game);
+      std::mt19937 rng(players * 7 + colors);
+      do {
+        std::vector<int32_t> sizes(players);
+        std::vector<int8_t> card_colors(Size(players, h)), card_ranks(Size(players, h));
+        CHECK(pyhanabi_state_hands(&game.state, sizes.data(), card_colors.data(), card_ranks.data(),
+                                   players, h));
+        for (int player = 0; player < players; ++player) {
+          CHECK_EQ(sizes[player], StateGetHandSize(&game.state, player));
+          for (int index = 0; index < h; ++index) {
+            const size_t i = Size(player, h) + index;
+            pyhanabi_card_t card{-1, -1};
+            if (index < sizes[player]) CHECK(StateGetHandCard(&game.state, player, index, &card));
+            CHECK(card_colors[i] == card.color && card_ranks[i] == card.rank);
+          }
+        }
+
+        std::vector<int32_t> uids(max_moves);
+        const int32_t count = pyhanabi_state_legal_move_uids(&game.state, uids.data(), max_moves);
+        std::vector<int32_t> expected;
+        if (StateEndOfGameStatus(&game.state) == 0) {
+          void* moves = StateLegalMoves(&game.state);
+          for (int index = 0; index < NumMoves(moves); ++index) {
+            pyhanabi_move_t move{};
+            CHECK(GetMove(moves, index, &move));
+            expected.push_back(GetMoveUid(&game.game, &move));
+            DeleteMove(&move);
+          }
+          DeleteMoveList(moves);
+        }
+        CHECK(count >= 0);
+        CHECK(std::vector<int32_t>(uids.begin(), uids.begin() + count) == expected);
+      } while (game.Step(&rng));
+    }
+  }
+}
+
+HANABI_TEST(NoLegalMovesWhileACardMustBeDealt) {
+  pyhanabi_game_t game{};
+  const char* params[] = {"players", "2"};
+  CHECK(NewGame(&game, 2, params));
+  pyhanabi_state_t state{};
+  NewState(&game, &state);
+  CHECK_EQ(StateCurPlayer(&state), -1);
+  std::vector<int32_t> uids(MaxMoves(&game), 7);
+  CHECK_EQ(pyhanabi_state_legal_move_uids(&state, uids.data(), MaxMoves(&game)), 0);
+  DeleteState(&state);
+  DeleteGame(&game);
+}
+
+HANABI_TEST(WrongStateBufferSizesAreRejectedWithoutWriting) {
+  Game game(3);
+  const int p = game.players, h = game.hand_size;
+  std::vector<int32_t> sizes(p + 1, 7);
+  std::vector<int8_t> colors(Size(p + 1, h + 1), 7), ranks(Size(p + 1, h + 1), 7);
+  CHECK(!pyhanabi_state_hands(&game.state, sizes.data(), colors.data(), ranks.data(), p - 1, h));
+  CHECK(!pyhanabi_state_hands(&game.state, sizes.data(), colors.data(), ranks.data(), p, h + 1));
+  std::vector<int32_t> uids(MaxMoves(&game.game), 7);
+  CHECK_EQ(pyhanabi_state_legal_move_uids(&game.state, uids.data(), MaxMoves(&game.game) - 1), -1);
+  for (int32_t v : sizes) CHECK_EQ(v, 7);
+  for (int8_t v : colors) CHECK_EQ(v, 7);
+  for (int8_t v : ranks) CHECK_EQ(v, 7);
+  for (int32_t v : uids) CHECK_EQ(v, 7);
 }
 
 int main() { return hanabi_test::RunAll(); }

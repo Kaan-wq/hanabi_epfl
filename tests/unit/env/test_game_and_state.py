@@ -3,6 +3,7 @@ from typing import Any, cast
 
 import pytest
 
+from hanabi_search.config import GameConfig
 from hanabi_search.env import (
     CHANCE_PLAYER_ID,
     AgentObservationType,
@@ -190,3 +191,48 @@ def test_observation_and_knowledge_out_of_range_raise(state: HanabiState) -> Non
         knowledge.color_plausible(5)
     with pytest.raises(EngineCallError):
         knowledge.rank_plausible(-1)
+
+
+@pytest.mark.parametrize("game", [GameConfig(players=p) for p in (2, 3, 5)] + [SMALL_GAME])
+def test_legal_moves_are_the_legal_ones_of_all_moves(game: GameConfig) -> None:
+    env = make_env(game, seed=4)
+    for _ in range(12):
+        if env.state.is_terminal():
+            break
+        legal = env.state.legal_moves()
+        assert legal == [m for m in env.game.all_moves() if env.state.move_is_legal(m)]
+        assert [env.game.get_move_uid(m) for m in legal] == sorted(
+            env.game.get_move_uid(m) for m in legal
+        )
+        env.step(legal[-1])
+
+
+def test_all_moves_are_indexed_by_id(env: HanabiEnv) -> None:
+    moves = env.game.all_moves()
+    assert len(moves) == env.game.max_moves()
+    assert [env.game.get_move_uid(move) for move in moves] == list(range(len(moves)))
+    assert env.game.all_moves() is moves
+
+
+def test_no_legal_moves_while_a_card_must_be_dealt() -> None:
+    state = HanabiState(HanabiGame({"players": 2}))
+    assert state.cur_player() == CHANCE_PLAYER_ID
+    assert state.legal_moves() == []
+
+
+def test_hands_from_arrays_match_per_player(env: HanabiEnv) -> None:
+    advance_randomly(env, 8)
+    hands = env.state.player_hands()
+    arrays = env.state.hand_arrays()
+    for player, hand in enumerate(hands):
+        assert env.state.player_hand(player) == hand
+        assert arrays.sizes[player] == len(hand)
+        assert arrays.colors[player, : len(hand)].tolist() == [card.color() for card in hand]
+        assert (arrays.colors[player, len(hand) :] == -1).all()
+        assert all(card.valid() for card in hand)
+
+
+@pytest.mark.parametrize("player", [-1, 2])
+def test_player_hand_out_of_range_raises(env: HanabiEnv, player: int) -> None:
+    with pytest.raises(IndexError):
+        env.state.player_hand(player)
