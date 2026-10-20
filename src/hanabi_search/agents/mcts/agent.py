@@ -2,13 +2,20 @@
 
 import random
 from collections import defaultdict
-from collections.abc import Sequence
+from collections.abc import Generator, Sequence
+from dataclasses import dataclass
 from math import log, sqrt
 from typing import override
 
 import numpy as np
 
-from hanabi_search.agents.base import Agent
+from hanabi_search.agents.base import (
+    ActSteps,
+    Agent,
+    Evaluation,
+    EvaluationRequest,
+    run_steps,
+)
 from hanabi_search.agents.mcts.node import MCTSNode
 from hanabi_search.agents.rule_based import VanDenBerghAgent, ruleset
 from hanabi_search.agents.rule_based.ruleset import Rule
@@ -21,6 +28,23 @@ from hanabi_search.training.transition import (
     value_target,
     visit_policy,
 )
+
+
+@dataclass(frozen=True, slots=True)
+class Descent:
+    """Where the descent of one search iteration ended.
+
+    Attributes:
+        path: Nodes from the starting node to the leaf.
+        observation: Observation of the player acting at the leaf, to expand it
+            with; `None` if the leaf is at the depth limit or the path is impossible.
+        impossible: Whether the path is impossible under this determinization (an
+            illegal move, or the game ended before the leaf).
+    """
+
+    path: list[MCTSNode]
+    observation: ObservationDict | None
+    impossible: bool
 
 
 def default_expansion_rules() -> list[Rule]:
@@ -87,16 +111,33 @@ class MCTSAgent(Agent):
 
     @override
     def act(self, observation: ObservationDict, state: HanabiState) -> HanabiMove | None:
+        move = run_steps(self.act_steps(observation, state), self.evaluate)
+        assert move is None or isinstance(move, HanabiMove)
+        return move
+
+    @override
+    def act_steps(self, observation: ObservationDict, state: HanabiState) -> ActSteps:
         if observation["current_player_offset"] != 0:
             return None
         self.reset(state)
         for _ in range(self.rollouts):
-            self.run_rollout(observation)
+            self.redeterminize()
+            yield from self.search_steps(self.root_node, observation)
         self.root_node.focused_state = self._root_state.copy()
         best = self.choose_move(self.root_node)
         if self.collects_data:
             self._pending.append(self._decision(observation, self.root_visits()))
         return best
+
+    def evaluate(self, request: EvaluationRequest) -> Evaluation:
+        """Answers one evaluation request; plain MCTS never makes any.
+
+        Raises:
+            HanabiSearchError: Always.
+        """
+        raise HanabiSearchError(
+            f"MCTS values leaves by rollouts; unexpected evaluation request {request.shape}"
+        )
 
     @override
     def begin_episode(self, rng: random.Random) -> None:
@@ -123,18 +164,45 @@ class MCTSAgent(Agent):
         self.visits[self.root_node] = 0
         self.total_reward[self.root_node] = 0
 
-    def run_rollout(self, observation: ObservationDict) -> None:
-        """Re-determinizes this agent's hand and runs one search iteration."""
+    def redeterminize(self) -> None:
+        """Starts a search iteration from the root with this agent's hand resampled."""
         self.environment.state = self._root_state.copy()
         self.environment.replace_hand(self.player_id)
         self.root_node.focused_state = self.environment.state
-        self.search(self.root_node, observation)
+
+    def search_steps(
+        self, node: MCTSNode, observation: ObservationDict
+    ) -> Generator[EvaluationRequest, Evaluation]:
+        """One search iteration from `node`, yielding any leaf evaluation it needs.
+
+        Plain MCTS values leaves by rollouts, so it yields nothing.
+        """
+        yield from ()
+        self.search(node, observation)
 
     def search(self, node: MCTSNode, observation: ObservationDict) -> float:
         """Selects a leaf, replays its moves, expands it, evaluates it and backpropagates.
 
         Returns:
             The reward backpropagated along the path.
+        """
+        descent = self.descend(node, observation)
+        leaf = descent.path[-1]
+        if descent.impossible:
+            reward = float(self.environment.reward())
+        else:
+            if descent.observation is not None:
+                self.expand(leaf, descent.observation)
+            reward = self.simulate(leaf)
+        self.backpropagate(descent.path, reward)
+        return reward
+
+    def descend(self, node: MCTSNode, observation: ObservationDict) -> Descent:
+        """Selects a leaf below `node` and replays its moves in the environment.
+
+        Args:
+            node: Where to start; the environment holds its state.
+            observation: The acting player's observation at `node`.
         """
         path = self.select(node)
         leaf = path[-1]
@@ -143,24 +211,19 @@ class MCTSAgent(Agent):
         depth = 0
         for move in leaf.moves:
             if state.is_terminal() or not state.move_is_legal(move):
-                # The path is impossible under this determinization.
-                reward = float(environment.reward())
-                self.backpropagate(path, reward)
-                return reward
+                return Descent(path, None, impossible=True)
             environment.advance(move)
             state = environment.state
             depth += 1
             if depth > self.max_depth:
                 break
         leaf.focused_state = state
-        if depth < self.max_depth:
-            if depth > 0:
-                # Chance (-1) wraps to the last player, as in the original implementation.
-                observation = environment.observe(state.cur_player() % environment.num_players)
-            self.expand(leaf, observation)
-        reward = self.simulate(leaf)
-        self.backpropagate(path, reward)
-        return reward
+        if depth >= self.max_depth:
+            return Descent(path, None, impossible=False)
+        if depth > 0:
+            # Chance (-1) wraps to the last player, as in the original implementation.
+            observation = environment.observe(state.cur_player() % environment.num_players)
+        return Descent(path, observation, impossible=False)
 
     def select(self, node: MCTSNode) -> list[MCTSNode]:
         """Descends by UCT until reaching an unexpanded node or an unvisited child."""

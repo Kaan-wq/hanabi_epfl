@@ -120,7 +120,7 @@ def set_up(
             )
         network = make_network(config.model_copy(update={"network": network_config}), device)
         network.eval()
-    resources = AgentResources(network, device, transition_sink, ask, show, self_play)
+    resources = AgentResources(network, transition_sink, ask, show, self_play)
     return Setup(build_agents(config.seat_agents(), config.game, resources), network, device)
 
 

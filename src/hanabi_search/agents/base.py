@@ -2,9 +2,34 @@
 
 import random
 from abc import ABC, abstractmethod
+from collections.abc import Callable, Generator
+
+import numpy as np
+import numpy.typing as npt
 
 from hanabi_search.config import GameConfig
 from hanabi_search.env import Action, HanabiState, ObservationDict
+
+# A position a search agent needs the network to evaluate: its encoded
+# observation, shape (observation_size,).
+type EvaluationRequest = npt.NDArray[np.float32]
+# The network's answer: move probabilities, shape (num_actions,), and a value in [-1, 1].
+type Evaluation = tuple[npt.NDArray[np.float32], float]
+# A decision in progress: yields requests, receives their evaluations, returns the action.
+type ActSteps = Generator[EvaluationRequest, Evaluation, Action | None]
+
+
+def run_steps(
+    steps: ActSteps, evaluate: Callable[[EvaluationRequest], Evaluation]
+) -> Action | None:
+    """Runs a decision to completion, answering each request with `evaluate`."""
+    try:
+        request = next(steps)
+        while True:
+            request = steps.send(evaluate(request))
+    except StopIteration as finished:
+        action: Action | None = finished.value
+        return action
 
 
 class Agent(ABC):
@@ -41,6 +66,16 @@ class Agent(ABC):
             observation: This agent's observation.
             state: The true game state (see class docstring for allowed uses).
         """
+
+    def act_steps(self, observation: ObservationDict, state: HanabiState) -> ActSteps:
+        """Like `act`, but yields every position it needs the network to evaluate.
+
+        The caller sends back each position's `Evaluation`, so it can batch the
+        requests of many games into one forward pass. Agents without a network
+        yield nothing.
+        """
+        yield from ()
+        return self.act(observation, state)
 
     def end_episode(self, final_score: int) -> None:  # noqa: B027 -- optional hook
         """Called once per finished game; override to record training data."""

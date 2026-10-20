@@ -1,14 +1,15 @@
 """AlphaZero-style agent: information-set MCTS guided by a policy/value network."""
 
 import random
+from collections.abc import Generator
 from math import sqrt
 from typing import override
 
 import numpy as np
 import numpy.typing as npt
-import torch
 
 from hanabi_search.agents.alphazero.node import AlphaZeroNode
+from hanabi_search.agents.base import Evaluation, EvaluationRequest
 from hanabi_search.agents.mcts.agent import MCTSAgent
 from hanabi_search.agents.mcts.node import MCTSNode
 from hanabi_search.config import (
@@ -45,8 +46,8 @@ class AlphaZeroAgent(MCTSAgent):
         player_id: Absolute seat of this agent.
         game: The game being played.
         config: Search hyperparameters.
-        network: Policy/value network; shared with the trainer, if any.
-        device: Device the network lives on.
+        network: Policy/value network; shared with the trainer, if any. `act` evaluates
+            leaves with it one at a time; batching callers use `act_steps` instead.
         transition_sink: Receives this agent's labelled decisions after each game.
         self_play: Exploration for training games: Dirichlet noise on the root priors
             and the first moves drawn in proportion to root visits. `None` searches
@@ -61,14 +62,12 @@ class AlphaZeroAgent(MCTSAgent):
         game: GameConfig,
         config: AlphaZeroAgentConfig,
         network: AlphaZeroNetwork,
-        device: torch.device,
         transition_sink: TransitionSink | None = None,
         self_play: SelfPlayConfig | None = None,
     ) -> None:
         super().__init__(player_id, game, as_search_config(config), transition_sink)
         self.alphazero_config = config
         self.network = network
-        self.device = device
         self.num_actions = self.environment.num_moves()
         self.self_play = self_play
         self._moves_this_game = 0
@@ -91,13 +90,49 @@ class AlphaZeroAgent(MCTSAgent):
         return path
 
     @override
-    def expand(self, node: MCTSNode, observation: ObservationDict) -> None:
-        """Evaluates `node` with the network and adds children with their priors."""
-        assert isinstance(node, AlphaZeroNode)
-        if node in self.children or node.is_terminal():
-            return
-        policy, node.value = self._evaluate(observation)
+    def search_steps(
+        self, node: MCTSNode, observation: ObservationDict
+    ) -> Generator[EvaluationRequest, Evaluation]:
+        """One search iteration: yields the leaf for the network, then expands it.
 
+        Finished games are valued by their score and impossible paths by the reward
+        reached; leaves at the depth limit get the network's value but no children.
+        """
+        descent = self.descend(node, observation)
+        leaf = descent.path[-1]
+        environment = self.environment
+        if descent.impossible or leaf.is_terminal():
+            reward = float(environment.reward())
+        else:
+            leaf_observation = descent.observation or environment.observe(
+                # Chance (-1) wraps to the last player, as in `descend`.
+                leaf.state.cur_player() % environment.num_players
+            )
+            encoded = environment.vectorized_observation(leaf_observation["pyhanabi"])
+            policy, value = yield np.asarray(encoded, dtype=np.float32)
+            reward = (value + 1) / 2 * self.game.max_score
+            if descent.observation is not None:
+                self.add_children(leaf, descent.observation, policy)
+        self.backpropagate(descent.path, reward)
+
+    @override
+    def evaluate(self, request: EvaluationRequest) -> Evaluation:
+        """Evaluates one position with this agent's network (batch of one)."""
+        policies, values = self.network.predict(request[np.newaxis])
+        return policies[0], float(values[0])
+
+    def add_children(
+        self, node: MCTSNode, observation: ObservationDict, policy: npt.NDArray[np.float32]
+    ) -> None:
+        """Adds `node`'s candidate moves as children, with priors from `policy`.
+
+        Args:
+            node: The leaf being expanded.
+            observation: Observation of the player acting at `node`.
+            policy: The network's move probabilities at `node`, shape (num_actions,).
+        """
+        if node in self.children:
+            return
         candidates = node.find_children(observation, self.rng)
         if not candidates:
             return
@@ -141,20 +176,6 @@ class AlphaZeroAgent(MCTSAgent):
             return mean / max_score + scale * child.prior / (1 + visits)
 
         return max(self.children[node], key=puct)
-
-    @override
-    def simulate(self, node: MCTSNode) -> float:
-        """Returns the final score of a finished game, otherwise the network's value."""
-        assert isinstance(node, AlphaZeroNode)
-        if node.is_terminal():
-            return float(self.environment.reward())
-        if node.value is None:
-            # Not expanded (depth limit reached): evaluate without adding children.
-            environment = self.environment
-            # Chance (-1) wraps to the last player, as in `search`.
-            player = node.state.cur_player() % environment.num_players
-            return self._evaluate(environment.observe(player))[1]
-        return node.value
 
     @override
     def backpropagate(self, path: list[MCTSNode], reward: float) -> None:
@@ -202,18 +223,3 @@ class AlphaZeroAgent(MCTSAgent):
         fraction = self_play.dirichlet_fraction
         mixed: npt.NDArray[np.float32] = (1 - fraction) * priors + fraction * noise
         return mixed
-
-    def _evaluate(self, observation: ObservationDict) -> tuple[npt.NDArray[np.float32], float]:
-        """Returns the network's move probabilities and value for `observation`.
-
-        Returns:
-            The policy, shape (num_actions,), and the value in score units (the
-            predicted final score).
-        """
-        encoded = self.environment.vectorized_observation(observation["pyhanabi"])
-        # (1, observation_size)
-        inputs = torch.tensor(encoded, dtype=torch.float32, device=self.device).unsqueeze(0)
-        with torch.no_grad():
-            logits, value = self.network(inputs)
-            policy = torch.softmax(logits, dim=1).squeeze(0).cpu().numpy()  # (num_actions,)
-        return policy, (value.item() + 1) / 2 * self.game.max_score

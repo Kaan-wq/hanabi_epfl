@@ -2,6 +2,8 @@
 
 from collections.abc import Sequence
 
+import numpy as np
+import numpy.typing as npt
 import torch
 from torch import nn
 
@@ -58,3 +60,22 @@ class AlphaZeroNetwork(nn.Module):
         """
         features = self.backbone(observations)
         return self.policy_head(features), self.value_head(features)
+
+    @torch.no_grad()
+    def predict(
+        self, observations: npt.NDArray[np.float32]
+    ) -> tuple[npt.NDArray[np.float32], npt.NDArray[np.float32]]:
+        """Evaluates a batch on the network's device, for search.
+
+        Args:
+            observations: Encoded observations, shape (batch, observation_size).
+
+        Returns:
+            Move probabilities, shape (batch, num_actions), and values in [-1, 1],
+            shape (batch,).
+        """
+        device = next(self.parameters()).device
+        logits, values = self(torch.from_numpy(observations).to(device))
+        # One device-to-host copy for both outputs.
+        outputs = torch.cat([torch.softmax(logits, dim=1), values], dim=1).cpu().numpy()
+        return outputs[:, :-1], outputs[:, -1]

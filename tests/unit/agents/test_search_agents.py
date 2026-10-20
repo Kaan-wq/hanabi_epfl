@@ -79,7 +79,6 @@ def test_alphazero_plays_and_records_every_decision(game: GameConfig) -> None:
             game,
             AlphaZeroAgentConfig(rollouts=4),
             network,
-            torch.device("cpu"),
             collected.extend,
         )
         for seat in range(game.players)

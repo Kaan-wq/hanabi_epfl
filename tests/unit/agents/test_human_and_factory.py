@@ -1,5 +1,4 @@
 import pytest
-import torch
 
 from hanabi_search.agents import (
     AgentResources,
@@ -71,7 +70,7 @@ def test_build_agents_for_every_kind() -> None:
     game = GameConfig(players=2)
     env = HanabiEnv(game.to_params())
     network = AlphaZeroNetwork(env.num_moves(), env.vectorized_observation_shape()[0], (8,))
-    resources = AgentResources(network, torch.device("cpu"), None, input, print)
+    resources = AgentResources(network, None, input, print)
     configs = (RuleBasedAgentConfig(policy="Piers"), MCTSAgentConfig(rollouts=1))
     assert [type(a) for a in build_agents(configs, game, resources)] == [PiersAgent, MCTSAgent]
     assert isinstance(build_agent(0, AlphaZeroAgentConfig(), game, resources), AlphaZeroAgent)

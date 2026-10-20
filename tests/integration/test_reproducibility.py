@@ -49,7 +49,6 @@ def _self_play(game: GameConfig, seeds: list[int]) -> tuple[list[list[str]], lis
             game,
             AlphaZeroAgentConfig(rollouts=4),
             network,
-            torch.device("cpu"),
             collected.extend,
             SelfPlayConfig(),
         )

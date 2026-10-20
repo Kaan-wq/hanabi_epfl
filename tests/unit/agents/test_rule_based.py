@@ -101,3 +101,14 @@ def test_discard_rules_respect_full_tokens(env: HanabiEnv) -> None:
     assert observation["information_tokens"] == observation["max_information_tokens"]
     assert ruleset.discard_most_confident(observation, random.Random(0)) is None
     assert ruleset.discard_oldest_first(observation, random.Random(0)) is None
+
+
+def test_rule_based_act_steps_requests_no_evaluation(env: HanabiEnv) -> None:
+    observation = current_observation(env)
+    agent = RULE_BASED_AGENTS["VanDenBergh"](observation["current_player"], GameConfig())
+    agent.begin_episode(random.Random(0))
+    steps = agent.act_steps(observation, env.state)
+    with pytest.raises(StopIteration) as finished:
+        next(steps)
+    agent.begin_episode(random.Random(0))
+    assert finished.value.value == agent.act(observation, env.state)

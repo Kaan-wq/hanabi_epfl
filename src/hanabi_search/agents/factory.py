@@ -3,8 +3,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-import torch
-
 from hanabi_search.agents.alphazero.agent import AlphaZeroAgent
 from hanabi_search.agents.base import Agent
 from hanabi_search.agents.human import HumanAgent
@@ -30,7 +28,6 @@ class AgentResources:
 
     Attributes:
         network: AlphaZero network, required for AlphaZero agents.
-        device: Device of `network`.
         transition_sink: Where search agents send training data, if collecting.
         ask: Input function for human agents.
         show: Output function for human agents.
@@ -39,7 +36,6 @@ class AgentResources:
     """
 
     network: AlphaZeroNetwork | None = None
-    device: torch.device = torch.device("cpu")  # noqa: RUF009 -- immutable value
     transition_sink: TransitionSink | None = None
     ask: Callable[[str], str] | None = None
     show: Callable[[str], None] | None = None
@@ -71,7 +67,6 @@ def build_agent(
                 game,
                 config,
                 resources.network,
-                resources.device,
                 resources.transition_sink,
                 resources.self_play,
             )
